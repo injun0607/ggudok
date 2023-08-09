@@ -10,10 +10,7 @@ import './styles/globalResponsive.css';
 function App() {
   return (
     <div className="App">
-      <Routes>
-        <Route path="/" element={<Layout />} />
-        <Route path="/admin/*" element={<AdminLayout />} />
-      </Routes>
+      <Layout />
     </div>
   );
 }

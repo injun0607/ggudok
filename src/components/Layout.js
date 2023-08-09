@@ -38,7 +38,7 @@ const Layout = () => {
 			<div className={style.body}>
 				<Routes>
 					<Route path='/' element={<Home />} />
-					<Route path='Home' element={<Home />}></Route>
+					<Route path='/Home' element={<Home />}></Route>
 
 					<Route path='/Auth/Login' element={ <Login /> }></Route>
 					<Route path='/Auth/Join' element={ <Join /> }></Route>

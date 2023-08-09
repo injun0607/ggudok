@@ -16,11 +16,7 @@ const AdminLayout = () => {
 		<div className={style.layout}>
       <AdminHeader />
 			<div className={style.body}>
-        <Routes>
-          {/* <Route path="/" element={<DashboardPage />} />
-          <Route path="/admin/dashboard" element={<DashboardPage />} />
-          <Route path="/admin/users" element={<UserManagementPage />} /> */}
-        </Routes>
+        <Error />
       </div>
       <AdminFooter />
     </div>
