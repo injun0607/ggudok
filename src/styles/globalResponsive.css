@@ -1,0 +1,140 @@
+@charset "utf-8";
+
+@media screen and (max-width:1300px) {
+/**************************************************************/
+/**************************************************************/
+/****************************basic css*************************/
+/**************************************************************/
+/**************************************************************/
+
+html, body { font-size: 15px; }
+:root {
+    --web-width: 100%;
+}
+
+.clearfix::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+.pc_hidden {
+    display: block !important;
+}
+.m_hidden {
+    display: none !important;
+}
+
+.min_img {
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+.webwidth {padding: 0 1.125rem;}
+.webwidth_pd {padding: 2rem 1.125rem;}
+
+/* ---------------------- 슬라이더 ------------------------*/
+.react-slideshow-container .nav:first-of-type {left: 1rem;}
+.react-slideshow-container .nav:last-of-type {right: 1rem;}
+.bannerslider h3 {font-size: 1.75rem; margin: 1.25rem 0 1rem;}
+.bannerslider h4 {font-size: 1.25rem;}
+.section .bannerslider h3 {font-size: 1.75rem; margin: 1.25rem 0 1rem;}
+.section .bannerslider h4 {font-size: 1.125rem;}
+.react-slideshow-container .default-nav {width: 1.25rem; height: 1.25rem;}
+}
+
+
+/*----------------------------------------1024--------------------------------*/
+
+@media screen and (max-width:1024px) {
+   
+
+}
+
+
+
+
+/*--------------------------------------700----------------------------------*/
+@media screen and (max-width:700px) {
+   
+}
+
+
+
+
+/*----------------------------------------640--------------------------------*/
+
+@media screen and (max-width:640px) {
+    /**************************** basic **************************/
+
+	input[type="text"], input[type="password"], select { font-size:0.875rem; }
+	input[type="file"] { font-size: 0.875rem; }
+	textarea { font-size:0.875rem; }
+    .form-inline .i_sup_hf {width:100%;}
+    .form-inline .i_sup_md { display: block;}
+
+	.btn { height: 48px; line-height: 48px; min-width: 90px; font-size: 0.875rem; }	
+	.btn_s {  font-size:0.875rem; }
+    a.btn_write {
+        margin-bottom: 10px;
+    }
+   
+
+    }
+
+
+
+
+
+
+/*----------------------------------------580--------------------------------*/
+
+@media screen and (max-width:580px) {
+   
+}
+	
+	
+	
+	
+	
+/*----------------------------------------480--------------------------------*/
+
+@media screen and (max-width:480px) {
+    /*************************** basic ***************************/
+    table th {
+        font-size: 1rem;
+    }
+    .txt_ex {
+        display: block;
+    }
+    .flex_res {
+        display: flex;
+    }
+    .flex_res .btn_modify, .flex_res .btn_delete, .flex_res .btn_back {
+        float: inherit;
+        width: 32%;
+        margin-right: 2%;
+    }
+    .flex_res .btn_back {
+        margin-right: 0;
+    }
+    .btn_ic_wrap {gap: 0.5rem;}
+    .waiting_sub {width: 80%;}
+    .waiting_sub::before {width: 100%;}
+    .waiting_sub p {font-size: 1rem;}
+
+   
+}	
+	
+	
+	
+	
+/*----------------------------------------380--------------------------------*/
+
+@media screen and (max-width:380px) {
+
+
+    /******************* tab contents setting ********************/
+    .tab_link-tab .tabl {width: 50%;font-size: 1rem;}
+    .i_sup_md {min-width:150px; width: 120px;}
+    .cal_wrap .cal {width:150px;}
+    .check_group { display: block;}
+}

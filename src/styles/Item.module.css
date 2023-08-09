@@ -1,0 +1,94 @@
+@charset "utf-8";
+
+.pagewrapPd {padding: 4rem 0;}
+
+/* 섹션레이아웃 */
+.section {
+  margin-top: 4rem;
+}
+.section .tit {
+  font-size: 1.5rem;
+  color: var(--txt-color);
+}
+.section:last-child {margin-bottom: 2rem;}
+.categorysection {display: flex; gap: 2rem;}
+.categorysection .left {width: 12rem; padding: 2rem 2rem 4rem 0.5rem; border-right: 1px solid var(--c-black-6);}
+.categorysection .right {width: calc(100% - 14rem); padding: 4rem 0;}
+
+/* 아이템리스트 */
+.itemlist {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+.itemlist .item {
+  width: calc((100% - 8em) / 5);
+  overflow: hidden;
+  cursor: pointer;
+}
+.itemlist .item .img {
+  height: 10rem;
+  border-radius: var(--radius-all-sm);
+  overflow: hidden;
+}
+.itemlist .item .img img {width: 100%; height: 100%; object-fit: cover; transition: all .5s ease;}
+.itemlist .item:hover .img img {
+  transform: scale(1.05);
+}
+.itemlist .item .txt {
+  background: var(--bg-color);
+  padding: 1rem 0.25rem 0;
+  position: relative;
+  z-index: 1;
+}
+.itemlist .item .txt h4 {font-size: 1.125rem; color: var(--txt-color);}
+.itemlist .item .tag {display: flex; gap: 0.5rem; margin-top: 1rem;}
+.itemlist .item .tag p {
+  background: var(--bg-color-2);
+  color: var(--txt-color);
+  padding: 0.125rem 0.5rem;
+  font-size: 0.925rem;
+  border-radius: 6px;
+}
+
+/* 좌측 카테고리 */
+.categorysection .left .category { width: 100%; background-color: var(--bg-color); top: 5rem;}
+.categorysection .left .category .depths {display: flex; gap: 0.75rem; margin-top: 1.25rem; color: var(--txt-color);}
+.categorysection .left .category .depths:first-child {margin: 0;}
+.categorysection .left .category .depths img {width: 1.125rem; transition: 0.3s;}
+.categorysection .left .category .depths:hover img { margin-top: -6px;}
+.categorysection .left .category .depths p {font-size: 1rem; font-weight: 400; color: var(--txt-color-2);}
+
+/* 디테일페이지 */
+.detailsection { display: flex; gap: 4rem; }
+.detailsection .left {width: calc(100% - 4rem - 40%);}
+.detailsection .left .detailLg {width: 100%;}
+.detailsection .left .detailLg .img {width: 100%; overflow: hidden; aspect-ratio: 3/2;}
+.detailsection .left .detailLg .img img {width: 100%; height: 100%; object-fit: cover;}
+.detailsection .left .detailSm {}
+.detailsection .left .detailSm .cont {padding: 3rem 0; border-bottom: 1px solid var(--c-black-6); margin-bottom: 3rem;}
+.detailsection .left .detailSm .cont p { color: var(--txt-color-2); font-size: 0.925rem; line-height: 1.5em;}
+.detailsection .left .chartwrap {display: flex; gap: 2rem; flex-wrap: wrap;}
+.detailsection .left .chartwrap .tit {width: 100%;}
+.detailsection .left .chartwrap .tit h5 {font-size: 1.5rem; font-weight: 500;}
+.detailsection .left .chartwrap .chart {width: calc((100% - 2rem) / 2);}
+
+.detailsection .right {width: 40%;}
+.detailsection .right .fixed {position: sticky; top: 2rem;}
+.detailsection .right .fixed .box {width: 100%; border: 1px solid var(--c-black-6); border-radius: var(--radius-all-md); box-shadow: var(--box-shadow);}
+.detailsection .right .fixed .box .name {font-size: 1.75rem; padding: 3.5rem 3rem 1rem; font-weight: 400; color: var(--txt-color);}
+.detailsection .right .fixed .box .tag {display: flex; gap: 0.5rem; margin-top: 1rem; padding: 0 3rem;}
+.detailsection .right .fixed .box .tag p {
+  background: var(--bg-color-2);
+  color: var(--txt-color);
+  padding: 0.125rem 0.5rem;
+  font-size: 0.925rem;
+  border-radius: 6px;
+}
+.detailsection .right .fixed .box .price {padding: 1rem 3rem 1.5rem;}
+.detailsection .right .fixed .box .price p {display: flex; justify-content: flex-end; gap: 0.5rem; align-items: baseline; font-size: 1.125rem; color: var(--txt-color-2);}
+.detailsection .right .fixed .box .price p .point {color: var(--main-color); font-size: 2rem;}
+.detailsection .right .fixed .box .starrating {border-top: 1px solid var(--c-black-6); display: flex; width: 100%; padding: 1.5rem 3rem 2rem; gap: 0.5rem;}
+.detailsection .right .fixed .box .starrating .star {display: flex; color: var(--sub-color);}
+.detailsection .right .fixed .box .starrating p {}

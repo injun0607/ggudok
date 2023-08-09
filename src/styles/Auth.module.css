@@ -1,0 +1,82 @@
+@charset "utf-8";
+
+.auth {
+  min-height: calc(100vh - 17.063rem);
+  box-sizing: border-box;
+  padding: 2rem 0;
+}
+.login {padding: 4rem 0; box-sizing: border-box;}
+.join .form, .login .form {max-width: 36rem; margin: 0 auto;}
+.form form {display: flex; gap: 1rem; flex-wrap: wrap;}
+.form form .inputwrap {width: 100%; display: flex; flex-wrap: wrap; gap: 1rem;}
+.auth .form input {
+  width: 100%;
+  height: 3.5rem;
+  padding-left: 1.5rem;
+  color: #000;
+  font-size: 1.125rem;
+  /* background: transparent; */
+  border: 1px solid var(--c-black-6);
+  overflow: hidden;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  cursor: pointer;
+  border-radius: var(--radius-all-xs);
+  box-sizing: border-box;
+  display: block;
+}
+.auth .form input:focus {
+  border: 1px solid var(--main-color);
+}
+.auth .form input:disabled {
+  background: var(--c-black-7);
+  color: var(--c-black-3);
+}
+.form button {width: 100%;}
+.form .doublebutton {margin-top: 1rem; display: flex; flex-wrap: wrap; gap: 1rem; width: 100%;}
+.form .doublebutton a, .form .doublebutton button {width: calc((100% - 1rem) / 2);}
+
+.form form input.input_half {width: calc((100% - 1rem) / 2);}
+.form form textarea {
+  width: 100%;
+  height: 15rem;
+  padding-left: 1.5rem;
+  color: #000;
+  font-size: 1.125rem;
+  /* background: transparent; */
+  border: 1px solid var(--c-black-6);
+  overflow: hidden;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  cursor: pointer;
+  border-radius: var(--radius-all-xs);
+  box-sizing: border-box;
+  display: block;
+}
+
+.join .form .easySignup {width: 100%; display: flex; flex-wrap: wrap; gap: 0.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--c-black-6);}
+.join .form .easySignup .sns {
+  width: 100%;
+  height: 3.5rem;
+  padding-left: 1.5rem;
+  color: #000;
+  font-size: 1.125rem;
+  overflow: hidden;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  cursor: pointer;
+  border-radius: var(--radius-all-xs);
+  color: #fff;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+.join .form .easySignup .sns.naver {background-color: rgb(99, 195, 61);}
+.join .form .easySignup .sns.kakao {background-color: rgb(252, 232, 77); color: rgb(51, 51, 51);}
+.join .form .easySignup .sns.facebook {background-color: rgb(24, 119, 242);}
+.join .form .easySignup .sns.google {background-color: rgb(208, 83, 63);}
+.join .form .easySignup .sns.apple {background-color: rgb(0, 0, 0);}
+.join .form .easySignup .sns img {width: 1.875rem;}
