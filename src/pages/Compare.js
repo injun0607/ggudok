@@ -26,29 +26,29 @@ const Compare = () => {
     dispatch(setSelectedOneDepth(e.target.value));
   }
 
-  const handleChangeCompareItem = (e) => {
+  const handleChangeCompareItem = (e, itemNumber) => {
     const selectedItemId = e.target.value;
     const selectedItem = items.find(item => item.id === selectedItemId);
-    if(e.target.value == compareItem1){
+    if (itemNumber === 1) {
       dispatch(setCompareItem1(selectedItem));
-    } else if(e.target.value == compareItem2){
+    } else if (itemNumber === 2) {
       dispatch(setCompareItem2(selectedItem));
     }
   };
 
-  const handleChangeTwoDepth1 = (e) => {
-    const selectedItemId = e.target.value;
-    const selectedItem = items.find(item => item.id === selectedItemId);
+  // const handleChangeTwoDepth1 = (e) => {
+  //   const selectedItemId = e.target.value;
+  //   const selectedItem = items.find(item => item.id === selectedItemId);
   
-    dispatch(setCompareItem1(selectedItem));
-  };
+  //   dispatch(setCompareItem1(selectedItem));
+  // };
 
-  const handleChangeTwoDepth2 = (e) => {
-    const selectedItemId = e.target.value;
-    const selectedItem = items.find(item => item.id === selectedItemId);
+  // const handleChangeTwoDepth2 = (e) => {
+  //   const selectedItemId = e.target.value;
+  //   const selectedItem = items.find(item => item.id === selectedItemId);
   
-    dispatch(setCompareItem2(selectedItem));
-  };
+  //   dispatch(setCompareItem2(selectedItem));
+  // };
   
 
   // 카테고리 선택하지 않으면 아이템 선택 비활성화
@@ -73,7 +73,7 @@ const Compare = () => {
             </select>
           </div>
           <div className={style.twodepth}>
-            <select className={style.select} onChange={handleChangeCompareItem} value={compareItem1} disabled={!isOneDepthSelected}>
+            <select className={`${style.select} ${style.select01}`} onChange={(e) => handleChangeCompareItem(e, 1)} value={compareItem1} disabled={!isOneDepthSelected}>
               <option value="">첫번째 구독서비스를 선택하세요.</option>
               {
                 twoDepthItems.map((item, index) => 
@@ -81,7 +81,7 @@ const Compare = () => {
                 )
               }
             </select>
-            <select className={style.select} onChange={handleChangeCompareItem} value={compareItem2} disabled={!isOneDepthSelected}>
+            <select className={`${style.select} ${style.select02}`} onChange={(e) => handleChangeCompareItem(e, 2)} value={compareItem2} disabled={!isOneDepthSelected}>
               <option value="">두번째 구독서비스를 선택하세요.</option>
               {
                 twoDepthItems.map((item, index) => 
