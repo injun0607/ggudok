@@ -47,5 +47,8 @@
       "last 1 safari version"
     ]
   },
-  "homepage": "https://Zoey-Sunlight.github.io/ggudok"
+  "homepage": "https://Zoey-Sunlight.github.io/ggudok",
+  "devDependencies": {
+    "gh-pages": "^5.0.0"
+  }
 }
