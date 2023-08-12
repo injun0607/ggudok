@@ -63,10 +63,11 @@ const Topheader = () => {
 							</>
 						) : (
 							<>
-								<Link to="/Auth/Login">로그인</Link>
+								<Link to="/Auth/Login">로그인</Link> 
 								<Link to="/Auth/Join" className={style.point}>회원가입</Link>
 							</>
 						)}
+						<Link to="/Admin/" className={style.pointAdmin}><span className='material-icons'>settings</span><p>Admin</p></Link>
 					</div>
 				</div>
 			</div>

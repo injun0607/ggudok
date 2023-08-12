@@ -9,6 +9,7 @@ import style from '../styles/Layout.module.css';
 import Header from './Header';
 import Footer from './Footer';
 import Error from './Error.js'
+import AdminLayout from './Admin/AdminLayout';
 // page import
 import Home from '../pages/Home';
 import Login from '../pages/Login';
@@ -27,6 +28,7 @@ const ItemDetail = lazy( () => import('../pages/ItemDetail') )
 const Layout = () => {
 	const categories = useSelector(state => state.category.categories);
   const featuredcategories = useSelector(state => state.category.featuredcategories);
+	const isadminLayout = useSelector(state => state.adminLayout.isadminLayout);
 
 	// 다크모드 state 감지
   const darkMode = useSelector(state => state.darkMode.darkMode);
@@ -34,11 +36,12 @@ const Layout = () => {
 	return (
 		<div className={`${darkMode ? 'dark' : ''}`}>
 		<div className={style.layout}>
-			<Header />
+			{isadminLayout ? null : <Header />} {/* AdminLayout 사용 시 Header 렌더링하지 않음 */}
 			<div className={style.body}>
 				<Routes>
 					<Route path='/' element={<Home />} />
 					<Route path='/Home' element={<Home />}></Route>
+					<Route path="/Admin/*" element={<AdminLayout isadminLayout />} />
 
 					<Route path='/Auth/Login' element={ <Login /> }></Route>
 					<Route path='/Auth/Join' element={ <Join /> }></Route>
@@ -72,7 +75,7 @@ const Layout = () => {
 					<Route path='*' element={ <Error /> }></Route>
 				</Routes>
 			</div>
-			<Footer />
+			{isadminLayout ? null : <Footer />} {/* AdminLayout 사용 시 Footer 렌더링하지 않음 */}
 
 			<Darkmodebtn />
 			<Topbtn />

@@ -8,6 +8,7 @@ import itemReducer from './itemReducer';
 import compareReducer from './compareReducer';
 import eventReducer from './eventReducer';
 import darkModeReducer from './darkModeReducer';
+import adminLayoutReducer from './adminLayoutReducer';
 
 const rootReducer = combineReducers({
   user: userReducer,
@@ -20,7 +21,7 @@ const rootReducer = combineReducers({
   compare: compareReducer,
   event: eventReducer,
   darkMode: darkModeReducer,
-  
+  adminLayout: adminLayoutReducer,
 });
 
 export default rootReducer;

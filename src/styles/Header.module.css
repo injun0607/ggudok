@@ -6,6 +6,8 @@
 .header .link .nav {display: flex; gap: 1.5rem; align-items: center; font-size: 0.925rem;}
 .header .link .nav a, .header .link .nav button {color: var(--txt-color); font-size: 0.925rem;}
 .header .link .nav a.point {color: #fff; display: inline-block; background-color: var(--main-color); padding: 0.25rem 0.5rem; border-radius: var(--radius-all-min);}
+.header .link .nav a.pointAdmin {color: #fff; display: inline-block; background-color: var(--sub-color-4); padding: 0.25rem 0.5rem; border-radius: var(--radius-all-min); display: flex; gap: 0.25rem; align-items: center;}
+.header .link .nav a.pointAdmin span {font-size: 0.938rem; color: #fff;}
 .header .logo {display: flex; justify-content: center; align-items: center;}
 .header .logo a {font-family: var(--main-font); color: var(--txt-color);font-size: 2.125rem; transition: 0.15s; display: flex;}
 .header .logo a span {font-family: var(--main-font); color: var(--txt-color);font-size: 2.125rem; transition: 0.2s;margin-top: -3px; display: inline-block;}
