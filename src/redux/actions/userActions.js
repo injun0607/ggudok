@@ -4,18 +4,20 @@ export const join = (emailid, password) => {
         payload: {
             emailid,
             password,
-        // 기타 로그인 정보
         }
     };
 }
+export const sendEmail = () => {
+    return {
+        type: 'SEND_EMAIL',
+    };
+}
 export const login = (emailid, password) => {
-    // 로그인 정보를 받아와서 로그인 액션 객체를 반환
     return {
         type: 'LOGIN',
         payload: {
             emailid,
             password,
-        // 기타 로그인 정보
         }
     };
 };

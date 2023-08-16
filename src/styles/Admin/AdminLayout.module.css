@@ -1,0 +1,109 @@
+@charset "utf-8";
+
+.layout {
+  background-color: #37394d;
+  position: relative;
+  color: #fff;
+}
+
+.errorpage p {color: #fff;}
+
+/* 위로가기 버튼 */
+.topbtn {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  right: 3vw;
+  bottom: 18vh;
+  padding: var(--pad-sm);
+  background: #fff;
+  color: var(--sub-color-2);
+  border-radius: 100%;
+  box-shadow: var(--box-shadow);
+  transition: 0.3s;
+}
+.topbtn.show {display: block;}
+
+
+/**************************************************************/
+/**************************************************************/
+/************************animate setting **********************/
+/**************************************************************/
+/**************************************************************/
+.body {
+  z-index: 1;
+  color: #fff;
+}
+.layout .ani {
+  /* z-index: -1; */
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+}
+.layout .ani .ani06 {
+  display: block;
+  /* background: url('/images/common/animateBG-01.svg') center center no-repeat; */
+  position: absolute;
+  right: -5rem;
+  top: -5rem;
+  animation: rotate 20s infinite linear;
+  width: 40vw;
+  aspect-ratio: 1/1;
+}
+.layout .ani .ani08 {
+  display: block;
+  /* background: url('/images/common/animateBG-02.svg') center center no-repeat; */
+  position: absolute;
+  left: -8rem;
+  bottom: -8rem;
+  animation: updown02 5s ease-in-out infinite;
+  width: 30vw;
+  aspect-ratio: 1/1;
+  opacity: 0.8;
+}
+.layout .ani .ani00 {
+  display: block;
+  /* background: url('/images/common/animateBG-03.svg') center center no-repeat; */
+  position: absolute;
+  right: 15vw;
+  top: 20vh;
+  animation: updown 5s ease-in-out infinite;
+  width: 20vw;
+  aspect-ratio: 1/1;
+}
+
+@keyframes updown02 {
+  0%{
+    transform: translate(0,0);
+  }
+  50%{
+    transform: translate(0,20px);
+  }
+  100%{
+    transform: translate(0,0);
+  }
+}
+
+
+@keyframes updown {
+  0%{
+    transform: translate(0,0);
+  }
+  50%{
+    transform: translate(0,-20px);
+  }
+  100%{
+    transform: translate(0,0);
+  }
+}
+
+
+@keyframes rotate {
+  0%{
+    transform: rotate(0);
+  }
+  100%{
+    transform: rotate(-360deg);
+  }
+}

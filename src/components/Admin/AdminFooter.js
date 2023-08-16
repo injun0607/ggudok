@@ -1,5 +1,5 @@
 /* css import */
-import style from '../../styles/Footer.module.css';
+import style from '../../styles/Admin/AdminFooter.module.css';
 
 
 const Footer = () => {

@@ -1,4 +1,5 @@
 const initialState = {
+  isEmailSent: false,
   isLoggedIn: false,
   emailid: null,
   password: null,
@@ -13,6 +14,11 @@ const userReducer = (state = initialState, action) => {
         ...state,
         emailid: action.payload.emailid,
         password: action.payload.password,
+      };
+    case 'SEND_EMAIL':
+      return {
+        ...state,
+        isEmailSent: true,
       };
     case 'LOGIN':
       return {

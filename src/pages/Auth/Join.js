@@ -2,9 +2,9 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 // css import
-import style from '../styles/Auth.module.css'
+import style from '../../styles/Auth.module.css'
 // redux import
-import { join } from '../redux/actions/userActions';
+import { join } from '../../redux/actions/userActions';
 
 const Join = () => {
   const dispatch = useDispatch();
@@ -52,7 +52,7 @@ const Join = () => {
             </Link>
           </div>
           <div className={style.doublebutton}>
-            <Link to="/Home" className='btn btn_full'>이메일로 회원가입하기</Link>
+            <Link to="/Auth/JoinEmail" className='btn btn_full'>이메일로 회원가입하기</Link>
             <Link className='btn btn_normal' onClick={ ()=>{ navigate(-1) } }>뒤로 가기</Link>
           </div>
         </div>

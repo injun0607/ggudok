@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 /* css import */
-import style from '../../styles/Header.module.css';
+import style from '../../styles/Admin/AdminHeader.module.css';
 // redux import
 import { logout } from '../../redux/actions/userActions';
 import { setSearchQuery } from '../../redux/actions/searchActions';
@@ -42,7 +42,7 @@ const Topheader = () => {
 			<div className='webwidth'>
 				<div className={style.link}>
 					<h1 className={style.logo}>
-						<Link to="/Home">꾸<span>독</span></Link>
+						<Link to="/Admin/AdminHome">꾸<span>독</span></Link>
 					</h1>
 					<div className={style.search}>
 						<div className={style.searchbar}>
@@ -56,17 +56,8 @@ const Topheader = () => {
 						</div>
 					</div>
 					<div className={style.nav}>
-						{isLoggedIn ? (
-							<>
-								<button onClick={ handleLogout }>로그아웃</button>
-								<Link to="/Auth/Join" className={style.point}>마이페이지</Link>
-							</>
-						) : (
-							<>
-								<Link to="/Auth/Login">로그인</Link>
-								<Link to="/Auth/Join" className={style.point}>회원가입</Link>
-							</>
-						)}
+						<button onClick={ handleLogout }>로그아웃</button>
+						<Link to="/Auth/Join" className={style.point}>홈페이지</Link>
 					</div>
 				</div>
 			</div>

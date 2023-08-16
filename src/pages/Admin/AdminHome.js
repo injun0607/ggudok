@@ -2,7 +2,7 @@ import React from 'react';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Pie } from 'react-chartjs-2';
 // css import
-import style from '../../styles/Admin.module.css'
+import style from '../../styles/Admin/AdminLayout.module.css';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 

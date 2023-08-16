@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Routes, Route, } from 'react-router-dom';
 
 // css import
-import style from '../../styles/Admin.module.css';
+import style from '../../styles/Admin/AdminLayout.module.css';
 // component import
 import AdminHeader from './AdminHeader';
 import AdminFooter from './AdminFooter';
@@ -30,6 +30,8 @@ const AdminLayout = () => {
         <Routes>
           <Route path='/Admin/' element={<AdminHome />}></Route>
           <Route path='/Admin/AdminHome' element={<AdminHome />}></Route>
+
+          <Route path='*' element={ <Error /> }></Route>
         </Routes>
       </div>
       <AdminFooter />

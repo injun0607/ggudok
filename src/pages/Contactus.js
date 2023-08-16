@@ -28,9 +28,9 @@ const Contactus = () => {
         <div className={style.form}>
           <form onSubmit={ handleContact }>
             <div className={style.inputwrap}>
-              <input type='text' name='name' placeholder='성함을 입력해주세요.' className={style.input_half} />
-              <input type='text' name='email' placeholder='이메일 주소를 입력해주세요.' className={style.input_half} />
-              <input type='text' name='subject' placeholder='제목을 입력해주세요.' />
+              <input type='text' name='name' placeholder='성함을 입력하세요.' className={style.input_half} />
+              <input type='text' name='email' placeholder='이메일 주소를 입력하세요.' className={style.input_half} />
+              <input type='text' name='subject' placeholder='제목을 입력하세요.' />
               <textarea type='text' name='content' />
             </div>
             <div className={style.doublebutton}>

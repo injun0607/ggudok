@@ -12,8 +12,9 @@ import Error from './Error.js'
 import AdminLayout from './Admin/AdminLayout';
 // page import
 import Home from '../pages/Home';
-import Login from '../pages/Login';
-import Join from '../pages/Join';
+import Login from '../pages/Auth/Login';
+import Join from '../pages/Auth/Join';
+import JoinEmail from '../pages/Auth/JoinEmail';
 import Itemlist from '../pages/Itemlist';
 import FeaturedItemlist from '../pages/FeaturedItemlist';
 import Compare from '../pages/Compare';
@@ -45,6 +46,7 @@ const Layout = () => {
 
 					<Route path='/Auth/Login' element={ <Login /> }></Route>
 					<Route path='/Auth/Join' element={ <Join /> }></Route>
+					<Route path='/Auth/JoinEmail' element={ <JoinEmail /> }></Route>
 
 					{categories.map((category) => (
 						<Route
@@ -75,9 +77,9 @@ const Layout = () => {
 					<Route path='*' element={ <Error /> }></Route>
 				</Routes>
 			</div>
-			{isadminLayout ? null : <Footer />} {/* AdminLayout 사용 시 Footer 렌더링하지 않음 */}
+			{isadminLayout ? null : <Footer />} {}
 
-			<Darkmodebtn />
+			{isadminLayout ? null : <Darkmodebtn />}
 			<Topbtn />
 			{/* <div className={style.ani}>
 				<span className={style.ani06}><img src='/images/common/animateBG-01.svg' alt='animate'/></span>
