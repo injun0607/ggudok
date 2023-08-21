@@ -1,11 +1,5 @@
 @charset "utf-8";
 
-.layout {
-  background-color: #37394d;
-  position: relative;
-  color: #fff;
-}
-
 .errorpage p {color: #fff;}
 
 /* 위로가기 버튼 */
@@ -24,6 +18,25 @@
 }
 .topbtn.show {display: block;}
 
+/**************************************************************/
+/**************************************************************/
+/********************** basic box setting *********************/
+/**************************************************************/
+/**************************************************************/
+.home {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(20%, auto));
+  grid-auto-rows: minmax(100px, auto);
+  gap: 1.5rem;
+}
+.home .dashbox {background: #fff;}
+.home .dashbox .dashtit {}
+.home .dashbox .dashtit h4 {
+  font-size: 1.5rem;
+  font-weight: 500;
+}
+.home .dashbox .dashcont {}
+
 
 /**************************************************************/
 /**************************************************************/
@@ -34,14 +47,14 @@
   z-index: 1;
   color: #fff;
 }
-.layout .ani {
+.adminLayout .ani {
   /* z-index: -1; */
   position: fixed;
   width: 100vw;
   height: 100vh;
   top: 0;
 }
-.layout .ani .ani06 {
+.adminLayout .ani .ani06 {
   display: block;
   /* background: url('/images/common/animateBG-01.svg') center center no-repeat; */
   position: absolute;
@@ -51,7 +64,7 @@
   width: 40vw;
   aspect-ratio: 1/1;
 }
-.layout .ani .ani08 {
+.adminLayout .ani .ani08 {
   display: block;
   /* background: url('/images/common/animateBG-02.svg') center center no-repeat; */
   position: absolute;
@@ -62,7 +75,7 @@
   aspect-ratio: 1/1;
   opacity: 0.8;
 }
-.layout .ani .ani00 {
+.adminLayout .ani .ani00 {
   display: block;
   /* background: url('/images/common/animateBG-03.svg') center center no-repeat; */
   position: absolute;

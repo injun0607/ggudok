@@ -22,7 +22,7 @@ const Contactus = () => {
   };
 
   return (
-    <div className={`${style.contactus} ${style.auth}`}>
+    <section className={`${style.contactus} ${style.auth}`}>
       <div className='webwidth webwidth_pd'>
         <div className='page_tit'><h4>언제든지 열려 있어요</h4></div>
         <div className={style.form}>
@@ -40,7 +40,7 @@ const Contactus = () => {
           </form>
         </div>
       </div>
-    </div>
+    </section>
   )
 }
 

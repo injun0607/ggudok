@@ -31,7 +31,7 @@ const JoinEmail = () => {
   };
 
   return (
-    <div className={`${style.join} ${style.auth}`}>
+    <section className={`${style.join} ${style.auth}`}>
       <div className='webwidth webwidth_pd'>
         <div className='page_tit'><h4>이메일 회원가입</h4></div>
         <div className={style.form}>
@@ -50,7 +50,7 @@ const JoinEmail = () => {
           </div>
         </div>
       </div>
-    </div>
+    </section>
   )
 }
 

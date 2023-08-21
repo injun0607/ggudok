@@ -1,23 +1,90 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Pie } from 'react-chartjs-2';
 // css import
 import style from '../../styles/Admin/AdminLayout.module.css';
+//redux import
+import { useDispatch } from 'react-redux';
+import { setAdminLayout } from '../../redux/actions/adminLayoutActions';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 const AdminHome = () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(setAdminLayout(true)); // Admin 내에서는 isadminLayout을 true로 설정
+    return () => {
+      dispatch(setAdminLayout(false)); // 컴포넌트 언마운트 시에는 다시 false로 설정
+    };
+  }, [dispatch]);
+
   return (
-    <div className={style.home}>
-      <div className={style.dashbox}>
+    <section className={style.home}>
+      <article className={style.dashbox}>
         <div className={style.dashtit}>
           <h4>구독통계</h4>
         </div>
         <div className={style.dashcont}>
           <Pie data={dataAge} />
         </div>
-      </div>
-    </div>
+      </article>
+      <article className={style.dashbox}>
+        <div className={style.dashtit}>
+          <h4>구독통계</h4>
+        </div>
+        <div className={style.dashcont}>
+          <Pie data={dataAge} />
+        </div>
+      </article>
+      <article className={style.dashbox}>
+        <div className={style.dashtit}>
+          <h4>구독통계</h4>
+        </div>
+        <div className={style.dashcont}>
+          <Pie data={dataAge} />
+        </div>
+      </article>
+      <article className={style.dashbox}>
+        <div className={style.dashtit}>
+          <h4>구독통계</h4>
+        </div>
+        <div className={style.dashcont}>
+          <Pie data={dataAge} />
+        </div>
+      </article>
+      <article className={style.dashbox}>
+        <div className={style.dashtit}>
+          <h4>구독통계</h4>
+        </div>
+        <div className={style.dashcont}>
+          <Pie data={dataAge} />
+        </div>
+      </article>
+      <article className={style.dashbox}>
+        <div className={style.dashtit}>
+          <h4>구독통계</h4>
+        </div>
+        <div className={style.dashcont}>
+          <Pie data={dataAge} />
+        </div>
+      </article>
+      <article className={style.dashbox}>
+        <div className={style.dashtit}>
+          <h4>구독통계</h4>
+        </div>
+        <div className={style.dashcont}>
+          <Pie data={dataAge} />
+        </div>
+      </article>
+      <article className={style.dashbox}>
+        <div className={style.dashtit}>
+          <h4>구독통계</h4>
+        </div>
+        <div className={style.dashcont}>
+          <Pie data={dataAge} />
+        </div>
+      </article>
+    </section>
   )
 }
 

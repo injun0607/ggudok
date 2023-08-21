@@ -11,7 +11,7 @@ import { setSearchQuery } from '../redux/actions/searchActions';
 const Header = () => {
 
   return (
-	<>	
+	<header>	
 		<Topheader />
 		<div className={style.category}>
 			<div className='webwidth'>
@@ -21,7 +21,7 @@ const Header = () => {
 				<Link to="/Contactus" className={style.pointdepth}><p>Contact Us</p></Link>
 			</div>
 		</div>
-	</>
+	</header>
   )
 }
 
@@ -67,7 +67,7 @@ const Topheader = () => {
 								<Link to="/Auth/Join" className={style.point}>회원가입</Link>
 							</>
 						)}
-						<Link to="/Admin/" className={style.pointAdmin}><span className='material-icons'>settings</span><p>Admin</p></Link>
+						<Link to="/Admin/AdminHome" className={style.pointAdmin}><span className='material-icons'>settings</span><p>Admin</p></Link>
 					</div>
 				</div>
 			</div>
@@ -84,7 +84,7 @@ const Allcategory = () => {
 	}
 
 	return (
-		<div className={style.allcategory}>
+		<nav className={style.allcategory}>
 			<div className={style.onedepth} onClick={handleTwodepth}>
 				<span className='material-icons'>menu</span>
 				전체카테고리
@@ -104,7 +104,7 @@ const Allcategory = () => {
 						)
 					}
 				</div>)}
-		</div>
+		</nav>
 	)
 }
 

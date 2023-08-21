@@ -25,7 +25,7 @@ const Login = () => {
   };
 
   return (
-    <div className={`${style.login} ${style.auth}`}>
+    <section className={`${style.login} ${style.auth}`}>
       <div className='webwidth webwidth_pd'>
         <div className='page_tit'><h4>로그인</h4></div>
         <div className={style.form}>
@@ -42,7 +42,7 @@ const Login = () => {
           </div>
         </div>
       </div>
-    </div>
+    </section>
   )
 }
 

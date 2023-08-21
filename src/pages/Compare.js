@@ -55,13 +55,13 @@ const Compare = () => {
   const isOneDepthSelected = selectedOneDepth !== '';
 
   return (
-    <div className={style.pagewrapPd}>
+    <section className={style.pagewrapPd}>
       <div className='webwidth'>
         <div className='page_tit'>
           <h4>구독서비스 간편비교하기</h4>
         </div>
 
-        <div className={style.search}>
+        <section className={style.search}>
           <div className={style.onedepth}>
             <select className={style.select} onChange={ handleChangeOneDepth } value={selectedOneDepth}>
               <option value="">우선 카테고리를 선택하세요.</option>
@@ -90,9 +90,9 @@ const Compare = () => {
               }
             </select>
           </div>
-        </div>
+        </section>
 
-        <div className={style.detail}>
+        <section className={style.detail}>
           {/* {compareItem1 ? alert('on') : null } */}
           {compareItem1 ? (
             <div className={style.boxrow}>
@@ -163,10 +163,10 @@ const Compare = () => {
             ) : (
             <div className={`${style.boxrow} ${style.boxrowerror}`}><p>구독서비스를 선택하세요!</p></div>
             )}
-        </div>
+        </section>
 
       </div>
-    </div>
+    </section>
   );
 };
 

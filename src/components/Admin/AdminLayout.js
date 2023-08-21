@@ -28,7 +28,6 @@ const AdminLayout = () => {
       <AdminHeader />
 			<div className={style.body}>
         <Routes>
-          <Route path='/Admin/' element={<AdminHome />}></Route>
           <Route path='/Admin/AdminHome' element={<AdminHome />}></Route>
 
           <Route path='*' element={ <Error /> }></Route>

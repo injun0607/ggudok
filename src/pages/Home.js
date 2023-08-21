@@ -15,14 +15,14 @@ const Home = () => {
   const isLoggedIn = useSelector(state => state.user.isLoggedIn);
 
   return (
-    <div className={style.home}>
+    <section className={style.home}>
       <div className='webwidth'>
-        <div className={style.bannerslider}>
+        <section className={style.bannerslider}>
             <Bannerslider />
-        </div>
-        <div className={style.section}>
+        </section>
+        <section className={style.section}>
           <h3 className={style.tit}>전체 카테고리</h3>
-          <div className={`${style.allcategory} ${style.box}`}>
+          <nav className={`${style.allcategory} ${style.box}`}>
             {
               categories.map((category, index) =>
               <Link
@@ -35,12 +35,12 @@ const Home = () => {
               </Link>
               )
             }
-          </div>
-        </div>
+          </nav>
+        </section>
         {isLoggedIn ? (
-          <div className={style.section}>
+          <section className={style.section}>
             <h3 className={style.tit}>취향저격 카테고리</h3>
-            <div className={`${style.mycategory} ${style.box}`}>
+            <nav className={`${style.mycategory} ${style.box}`}>
               {favoritecategories.map((category, index) => 
               <Link
                 to={`/Category/${category.categoryEng}`}
@@ -51,10 +51,10 @@ const Home = () => {
                 <p>{category.category}</p>
               </Link>
               )}
-            </div>
-          </div>
+            </nav>
+          </section>
         ) : null}
-        <div className={style.section}>
+        <section className={style.section}>
           <h3 className={style.tit}>알고리즘 저격! <span className='sub_clr'>맞춤 서비스</span></h3>
           <div className='item-list'>
             {
@@ -74,8 +74,8 @@ const Home = () => {
               )
             }
           </div>
-        </div>
-        <div className={style.section}>
+        </section>
+        <section className={style.section}>
           <h3 className={style.tit}>나와 같은 <span className='main_clr'>20대 남성</span>이 가장 많이 구독한 서비스</h3>
           <div className='item-list'>
             {
@@ -95,9 +95,9 @@ const Home = () => {
               )
             }
           </div>
-        </div>
+        </section>
       </div>
-    </div>
+    </section>
   )
 }
 

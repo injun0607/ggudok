@@ -22,7 +22,7 @@ const Bannerslider = () => {
   const events = useSelector(state => state.event.events);
 
     return (
-      <div className="slide-container">
+      <section className="slide-container">
         <Fade>
         {events.map((event, index) => (
           <div key={index} className='bannerslider'>
@@ -37,7 +37,7 @@ const Bannerslider = () => {
           </div>
         ))}
         </Fade>
-      </div>
+      </section>
     )
 }
 

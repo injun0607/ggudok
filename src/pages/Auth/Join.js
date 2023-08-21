@@ -25,7 +25,7 @@ const Join = () => {
   };
 
   return (
-    <div className={`${style.join} ${style.auth}`}>
+    <section className={`${style.join} ${style.auth}`}>
       <div className='webwidth webwidth_pd'>
         <div className='page_tit'><h4>3초만에 끝나는 간편회원가입</h4></div>
         <div className={style.form}>
@@ -57,7 +57,7 @@ const Join = () => {
           </div>
         </div>
       </div>
-    </div>
+    </section>
   )
 }
 

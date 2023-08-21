@@ -30,9 +30,9 @@ const ItemDetail = () => {
   }
 
   return (
-    <div className={style.pagewrapPd}>
+    <section className={style.pagewrapPd}>
       <div className='webwidth'>
-        <div className={style.detailsection}>
+        <article className={style.detailsection}>
 
           <div className={style.left}>
             <div className={style.detailLg}>
@@ -85,10 +85,10 @@ const ItemDetail = () => {
             </div>
           </div>
 
-        </div>
+        </article>
 
         
-        <div className={style.section}>
+        <section className={style.section}>
           <div className='cont_tit_m'>
             <h5>비슷한 구독상품</h5>
           </div>
@@ -110,9 +110,9 @@ const ItemDetail = () => {
               </Link>
             ))}
           </div>
-        </div>
+        </section>
       </div>
-    </div>
+    </section>
   );
 }
 

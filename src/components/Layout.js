@@ -9,7 +9,8 @@ import style from '../styles/Layout.module.css';
 import Header from './Header';
 import Footer from './Footer';
 import Error from './Error.js'
-import AdminLayout from './Admin/AdminLayout';
+import AdminHeader from './Admin/AdminHeader';
+import AdminFooter from './Admin/AdminFooter';
 // page import
 import Home from '../pages/Home';
 import Login from '../pages/Auth/Login';
@@ -20,6 +21,7 @@ import FeaturedItemlist from '../pages/FeaturedItemlist';
 import Compare from '../pages/Compare';
 import Event from '../pages/Event';
 import Contactus from '../pages/Contactus';
+import AdminHome from '../pages/Admin/AdminHome';
 // redux import
 import { toggleDarkMode } from '../redux/actions/darkModeActions';
 
@@ -36,13 +38,14 @@ const Layout = () => {
 
 	return (
 		<div className={`${darkMode ? 'dark' : ''}`}>
-		<div className={style.layout}>
-			{isadminLayout ? null : <Header />} {/* AdminLayout 사용 시 Header 렌더링하지 않음 */}
+		<div className={`${isadminLayout ? `adminLayout` : `${style.layout}` }`}>
+			{/* {isadminLayout ? <div className={style.adminLayout}> : <div className={style.layout}>} */}
+			{isadminLayout ? <AdminHeader /> : <Header />} 
 			<div className={style.body}>
 				<Routes>
 					<Route path='/' element={<Home />} />
 					<Route path='/Home' element={<Home />}></Route>
-					<Route path="/Admin/*" element={<AdminLayout isadminLayout />} />
+					<Route path="/Admin/AdminHome" element={<AdminHome isadminLayout />} />
 
 					<Route path='/Auth/Login' element={ <Login /> }></Route>
 					<Route path='/Auth/Join' element={ <Join /> }></Route>
@@ -77,7 +80,7 @@ const Layout = () => {
 					<Route path='*' element={ <Error /> }></Route>
 				</Routes>
 			</div>
-			{isadminLayout ? null : <Footer />} {}
+			{isadminLayout ? <AdminFooter /> : <Footer />} {}
 
 			{isadminLayout ? null : <Darkmodebtn />}
 			<Topbtn />

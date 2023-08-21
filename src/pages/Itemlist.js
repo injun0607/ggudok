@@ -33,10 +33,10 @@ const Itemlist = ({ category }) => {
 
 
   return (
-    <div className={style.pagewrap}>
+    <section className={style.pagewrap}>
       <div className='webwidth'>
         <div className={style.categorysection}>
-          <div className={style.left}>
+          <aside className={style.left}>
             <div className={style.category}>
               {
                 categories.map((category, index) => 
@@ -51,7 +51,7 @@ const Itemlist = ({ category }) => {
                 )
               }
             </div>
-          </div>
+          </aside>
           <div className={style.right}>
             <div className='page_tit'>
               <h4>{category}</h4>
@@ -91,7 +91,7 @@ const Itemlist = ({ category }) => {
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 

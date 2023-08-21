@@ -29,7 +29,7 @@ const FeaturedItemlist = ({ category }) => {
 
 
   return (
-    <div className={style.pagewrapPd}>
+    <section className={style.pagewrapPd}>
       <div className='webwidth'>
         <div className='page_tit'>
           <h4>{category}</h4>
@@ -84,7 +84,7 @@ const FeaturedItemlist = ({ category }) => {
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 
