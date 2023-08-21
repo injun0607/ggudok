@@ -10,7 +10,7 @@ const ITEMS_PER_PAGE = 15;
 const NO_IMAGE_URL = '/images/common/noimg.png';
 
 const Itemlist = ({ category }) => {
-  const categories = useSelector(state => state.category.categories);
+  // const categories = useSelector(state => state.category.categories);
   const items = useSelector(state => state.item.items);
   const filteredItems = items.filter(item => item.category === category);
 

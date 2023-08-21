@@ -59,7 +59,8 @@ const Home = () => {
           <div className='item-list'>
             {
               items.slice(0, 4).map((item, index) => 
-              <div className='item-list-box' key={index}>
+              <Link to={`/ItemDetail/${item.id}`} key={index} className='item-list-box'>
+              {/* <div className='item-list-box' key={index}> */}
                 <div className='img'>
                   <img src={`${item.image}`} alt={item.name} onError={(e) => {e.target.src = NO_IMAGE_URL;}}/>
                 </div>
@@ -70,7 +71,8 @@ const Home = () => {
                     <p>{item.tag}</p>
                   </div>
                 </div>
-              </div>
+              {/* </div> */}
+              </Link>
               )
             }
           </div>
@@ -80,7 +82,7 @@ const Home = () => {
           <div className='item-list'>
             {
               items.slice(0, 4).map((item, index) => 
-              <div className='item-list-box' key={index}>
+              <Link to={`/ItemDetail/${item.id}`} key={index} className='item-list-box'>
                 <div className='img'>
                   <img src={`${item.image}`} alt={item.name} onError={(e) => {e.target.src = NO_IMAGE_URL;}}/>
                 </div>
@@ -91,7 +93,7 @@ const Home = () => {
                     <p>{item.tag}</p>
                   </div>
                 </div>
-              </div>
+              </Link>
               )
             }
           </div>

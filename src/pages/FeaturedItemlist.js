@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 // css import
 import style from '../styles/Item.module.css';
@@ -37,7 +38,7 @@ const FeaturedItemlist = ({ category }) => {
         <section className='item-list'>
           {
             bestitems.slice(0, 4).map((item, index) => 
-            <div className='item-list-box' key={index}>
+            <Link to={`/ItemDetail/${item.id}`} key={index} className='item-list-box'>
               <div className='img'>
                 <img src={`${item.image}`} alt={item.name} onError={(e) => {e.target.src = NO_IMAGE_URL;}}/>
               </div>
@@ -48,7 +49,7 @@ const FeaturedItemlist = ({ category }) => {
                   <p>{item.tag}</p>
                 </div>
               </div>
-            </div>
+            </Link>
             )
           }
         </section>
@@ -56,7 +57,7 @@ const FeaturedItemlist = ({ category }) => {
         <section className={style.section}>
           <div className={style.itemlist}>
             {slicedItems.map((item, index) => (
-              <div className={style.item} key={index}>
+              <Link to={`/ItemDetail/${item.id}`} key={index} className={style.item}>
                 <div className={style.img}>
                   <img src={`${item.image}`} alt={item.name} onError={(e) => {e.target.src = NO_IMAGE_URL;}}/>
                 </div>
@@ -67,7 +68,7 @@ const FeaturedItemlist = ({ category }) => {
                     <p>{item.tag}</p>
                   </div>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         </section>
