@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 // css import
 import style from '../styles/Item.module.css';
+// component import
+import Filteraside from '../components/Filteraside';
 
 const ITEMS_PER_PAGE = 15;
 const NO_IMAGE_URL = '/images/common/noimg.png';
@@ -38,23 +40,12 @@ const Itemlist = ({ category }) => {
         <div className={style.categorysection}>
           <aside className={style.left}>
             <div className={style.category}>
-              {
-                categories.map((category, index) => 
-                <Link
-                  to={`/Category/${category.categoryEng}`}
-                  className={style.depths}
-                  key={index}
-                >
-                    <img src={`${category.icon}`} alt={category.category} />
-                    <p>{category.category}</p>
-                </Link>
-                )
-              }
+              <Filteraside />
             </div>
           </aside>
-          <div className={style.right}>
+          <section className={style.right}>
             <div className='page_tit'>
-              <h4>{category}</h4>
+              <h2>{category}</h2>
             </div>
             <div className={style.section}>
               <div className={style.itemlist}>
@@ -65,7 +56,7 @@ const Itemlist = ({ category }) => {
                         <img src={`${item.image}`} alt={item.name} onError={(e) => {e.target.src = NO_IMAGE_URL;}}/>
                       </div>
                       <div className={style.txt}>
-                        <h4>{item.name}</h4>
+                        <h3>{item.name}</h3>
                         <div className={style.tag}>
                           <p>{item.category}</p>
                           <p>{item.tag}</p>
@@ -88,7 +79,7 @@ const Itemlist = ({ category }) => {
                   </button>
                 </div>
             </div>
-          </div>
+          </section>
         </div>
       </div>
     </section>

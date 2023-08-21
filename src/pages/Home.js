@@ -21,7 +21,7 @@ const Home = () => {
             <Bannerslider />
         </section>
         <section className={style.section}>
-          <h3 className={style.tit}>전체 카테고리</h3>
+          <h2 className={style.tit}>전체 카테고리</h2>
           <nav className={`${style.allcategory} ${style.box}`}>
             {
               categories.map((category, index) =>
@@ -39,7 +39,7 @@ const Home = () => {
         </section>
         {isLoggedIn ? (
           <section className={style.section}>
-            <h3 className={style.tit}>취향저격 카테고리</h3>
+            <h2 className={style.tit}>취향저격 카테고리</h2>
             <nav className={`${style.mycategory} ${style.box}`}>
               {favoritecategories.map((category, index) => 
               <Link
@@ -55,7 +55,7 @@ const Home = () => {
           </section>
         ) : null}
         <section className={style.section}>
-          <h3 className={style.tit}>알고리즘 저격! <span className='sub_clr'>맞춤 서비스</span></h3>
+          <h2 className={style.tit}>알고리즘 저격! <span className='sub_clr'>맞춤 서비스</span></h2>
           <div className='item-list'>
             {
               items.slice(0, 4).map((item, index) => 
@@ -64,7 +64,7 @@ const Home = () => {
                   <img src={`${item.image}`} alt={item.name} onError={(e) => {e.target.src = NO_IMAGE_URL;}}/>
                 </div>
                 <div className='txt'>
-                  <h4>{item.name}</h4>
+                  <h3>{item.name}</h3>
                   <div className='tag'>
                     <p>{item.category}</p>
                     <p>{item.tag}</p>
@@ -76,7 +76,7 @@ const Home = () => {
           </div>
         </section>
         <section className={style.section}>
-          <h3 className={style.tit}>나와 같은 <span className='main_clr'>20대 남성</span>이 가장 많이 구독한 서비스</h3>
+          <h2 className={style.tit}>나와 같은 <span className='main_clr'>20대 남성</span>이 가장 많이 구독한 서비스</h2>
           <div className='item-list'>
             {
               items.slice(0, 4).map((item, index) => 
@@ -85,7 +85,7 @@ const Home = () => {
                   <img src={`${item.image}`} alt={item.name} onError={(e) => {e.target.src = NO_IMAGE_URL;}}/>
                 </div>
                 <div className='txt'>
-                  <h4>{item.name}</h4>
+                  <h3>{item.name}</h3>
                   <div className='tag'>
                     <p>{item.category}</p>
                     <p>{item.tag}</p>

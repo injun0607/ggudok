@@ -27,7 +27,7 @@ const Join = () => {
   return (
     <section className={`${style.join} ${style.auth}`}>
       <div className='webwidth webwidth_pd'>
-        <div className='page_tit'><h4>3초만에 끝나는 간편회원가입</h4></div>
+        <div className='page_tit'><h2>3초만에 끝나는 간편회원가입</h2></div>
         <div className={style.form}>
           <div className={style.easySignup}>
             <Link to="" className={`${style.sns} ${style.naver}`}>
@@ -52,8 +52,8 @@ const Join = () => {
             </Link>
           </div>
           <div className={style.doublebutton}>
-            <Link to="/Auth/JoinEmail" className='btn btn_full'>이메일로 회원가입하기</Link>
-            <Link className='btn btn_normal' onClick={ ()=>{ navigate(-1) } }>뒤로 가기</Link>
+            <Link to="/Auth/JoinEmail" className="btn btn_full">이메일로 회원가입하기</Link>
+            <Link className="btn btn_normal" onClick={ ()=>{ navigate(-1) } }>뒤로 가기</Link>
           </div>
         </div>
       </div>

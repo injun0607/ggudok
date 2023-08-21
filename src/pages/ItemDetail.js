@@ -49,7 +49,7 @@ const ItemDetail = () => {
             </div>
             <div className={style.chartwrap}>
               <div className={style.tit}>
-                <h5>구독 유형 분석</h5>
+                <h3>구독 유형 분석</h3>
               </div>
               <div className={style.chart}>
                 <Pie data={dataAge} />
@@ -90,7 +90,7 @@ const ItemDetail = () => {
         
         <section className={style.section}>
           <div className='cont_tit_m'>
-            <h5>비슷한 구독상품</h5>
+            <h2>비슷한 구독상품</h2>
           </div>
           <div className={style.itemlist}>
             {similarItems.map((item, index) => (
@@ -100,7 +100,7 @@ const ItemDetail = () => {
                     <img src={`${item.image}`} alt={item.name} onError={(e) => {e.target.src = NO_IMAGE_URL;}}/>
                   </div>
                   <div className={style.txt}>
-                    <h4>{item.name}</h4>
+                    <h3>{item.name}</h3>
                     <div className={style.tag}>
                       <p>{item.category}</p>
                       <p>{item.tag}</p>

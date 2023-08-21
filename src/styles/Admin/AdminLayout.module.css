@@ -24,18 +24,30 @@
 /**************************************************************/
 /**************************************************************/
 .home {
+  min-height: calc(100vh - 17.063rem);
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(20%, auto));
   grid-auto-rows: minmax(100px, auto);
-  gap: 1.5rem;
+  gap: 1.125rem;
+  padding: var(--pad-sm);
 }
-.home .dashbox {background: #fff;}
-.home .dashbox .dashtit {}
-.home .dashbox .dashtit h4 {
-  font-size: 1.5rem;
-  font-weight: 500;
+.home .dashbox {
+  background: #ffffff22;
+  border-radius: var(--radius-all-sm);
 }
-.home .dashbox .dashcont {}
+.home .dashbox .dashtit {
+  padding: var(--pad-md);
+  border-bottom: 1px solid #ffffff22;
+  margin-bottom: 1rem;
+  padding-bottom: 1.25rem;
+}
+.home .dashbox .dashtit h2 {
+  font-size: 1.15rem;
+  font-weight: 400;
+}
+.home .dashbox .dashcont {
+  padding: var(--pad-md);
+}
 
 
 /**************************************************************/

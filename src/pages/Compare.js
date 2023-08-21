@@ -36,21 +36,6 @@ const Compare = () => {
     }
   };
 
-  // const handleChangeTwoDepth1 = (e) => {
-  //   const selectedItemId = e.target.value;
-  //   const selectedItem = items.find(item => item.id === selectedItemId);
-  
-  //   dispatch(setCompareItem1(selectedItem));
-  // };
-
-  // const handleChangeTwoDepth2 = (e) => {
-  //   const selectedItemId = e.target.value;
-  //   const selectedItem = items.find(item => item.id === selectedItemId);
-  
-  //   dispatch(setCompareItem2(selectedItem));
-  // };
-  
-
   // 카테고리 선택하지 않으면 아이템 선택 비활성화
   const isOneDepthSelected = selectedOneDepth !== '';
 
@@ -58,7 +43,7 @@ const Compare = () => {
     <section className={style.pagewrapPd}>
       <div className='webwidth'>
         <div className='page_tit'>
-          <h4>구독서비스 간편비교하기</h4>
+          <h2>구독서비스 간편비교하기</h2>
         </div>
 
         <section className={style.search}>

@@ -22,7 +22,7 @@ const AdminHome = () => {
     <section className={style.home}>
       <article className={style.dashbox}>
         <div className={style.dashtit}>
-          <h4>구독통계</h4>
+          <h2>구독통계</h2>
         </div>
         <div className={style.dashcont}>
           <Pie data={dataAge} />
@@ -30,7 +30,7 @@ const AdminHome = () => {
       </article>
       <article className={style.dashbox}>
         <div className={style.dashtit}>
-          <h4>구독통계</h4>
+          <h2>구독통계</h2>
         </div>
         <div className={style.dashcont}>
           <Pie data={dataAge} />
@@ -38,7 +38,7 @@ const AdminHome = () => {
       </article>
       <article className={style.dashbox}>
         <div className={style.dashtit}>
-          <h4>구독통계</h4>
+          <h2>구독통계</h2>
         </div>
         <div className={style.dashcont}>
           <Pie data={dataAge} />
@@ -46,7 +46,7 @@ const AdminHome = () => {
       </article>
       <article className={style.dashbox}>
         <div className={style.dashtit}>
-          <h4>구독통계</h4>
+          <h2>구독통계</h2>
         </div>
         <div className={style.dashcont}>
           <Pie data={dataAge} />
@@ -54,7 +54,7 @@ const AdminHome = () => {
       </article>
       <article className={style.dashbox}>
         <div className={style.dashtit}>
-          <h4>구독통계</h4>
+          <h2>구독통계</h2>
         </div>
         <div className={style.dashcont}>
           <Pie data={dataAge} />
@@ -62,7 +62,7 @@ const AdminHome = () => {
       </article>
       <article className={style.dashbox}>
         <div className={style.dashtit}>
-          <h4>구독통계</h4>
+          <h2>구독통계</h2>
         </div>
         <div className={style.dashcont}>
           <Pie data={dataAge} />
@@ -70,7 +70,7 @@ const AdminHome = () => {
       </article>
       <article className={style.dashbox}>
         <div className={style.dashtit}>
-          <h4>구독통계</h4>
+          <h2>구독통계</h2>
         </div>
         <div className={style.dashcont}>
           <Pie data={dataAge} />
@@ -78,7 +78,7 @@ const AdminHome = () => {
       </article>
       <article className={style.dashbox}>
         <div className={style.dashtit}>
-          <h4>구독통계</h4>
+          <h2>구독통계</h2>
         </div>
         <div className={style.dashcont}>
           <Pie data={dataAge} />

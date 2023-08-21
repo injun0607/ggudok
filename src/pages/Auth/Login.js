@@ -27,7 +27,7 @@ const Login = () => {
   return (
     <section className={`${style.login} ${style.auth}`}>
       <div className='webwidth webwidth_pd'>
-        <div className='page_tit'><h4>로그인</h4></div>
+        <div className='page_tit'><h2>로그인</h2></div>
         <div className={style.form}>
           <form onSubmit={ handleLogin }>
             <div className={style.inputwrap}>

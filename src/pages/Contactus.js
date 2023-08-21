@@ -24,7 +24,7 @@ const Contactus = () => {
   return (
     <section className={`${style.contactus} ${style.auth}`}>
       <div className='webwidth webwidth_pd'>
-        <div className='page_tit'><h4>언제든지 열려 있어요</h4></div>
+        <div className='page_tit'><h2>언제든지 열려 있어요</h2></div>
         <div className={style.form}>
           <form onSubmit={ handleContact }>
             <div className={style.inputwrap}>

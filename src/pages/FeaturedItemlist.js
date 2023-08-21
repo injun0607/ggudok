@@ -32,9 +32,9 @@ const FeaturedItemlist = ({ category }) => {
     <section className={style.pagewrapPd}>
       <div className='webwidth'>
         <div className='page_tit'>
-          <h4>{category}</h4>
+          <h2>{category}</h2>
         </div>
-        <div className='item-list'>
+        <section className='item-list'>
           {
             bestitems.slice(0, 4).map((item, index) => 
             <div className='item-list-box' key={index}>
@@ -42,7 +42,7 @@ const FeaturedItemlist = ({ category }) => {
                 <img src={`${item.image}`} alt={item.name} onError={(e) => {e.target.src = NO_IMAGE_URL;}}/>
               </div>
               <div className='txt'>
-                <h4>{item.name}</h4>
+                <h3>{item.name}</h3>
                 <div className='tag'>
                   <p>{item.category}</p>
                   <p>{item.tag}</p>
@@ -51,9 +51,9 @@ const FeaturedItemlist = ({ category }) => {
             </div>
             )
           }
-        </div>
+        </section>
 
-        <div className={style.section}>
+        <section className={style.section}>
           <div className={style.itemlist}>
             {slicedItems.map((item, index) => (
               <div className={style.item} key={index}>
@@ -61,7 +61,7 @@ const FeaturedItemlist = ({ category }) => {
                   <img src={`${item.image}`} alt={item.name} onError={(e) => {e.target.src = NO_IMAGE_URL;}}/>
                 </div>
                 <div className={style.txt}>
-                  <h4>{item.name}</h4>
+                  <h3>{item.name}</h3>
                   <div className={style.tag}>
                     <p>{item.category}</p>
                     <p>{item.tag}</p>
@@ -70,7 +70,7 @@ const FeaturedItemlist = ({ category }) => {
               </div>
             ))}
           </div>
-        </div>
+        </section>
 
         <div className='pagination-wrap'>
           <div className='pagination'>

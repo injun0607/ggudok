@@ -9,7 +9,7 @@ const Event = () => {
     <section className={style.pagewrapPd}>
       <div className='webwidth'>
         <div className='page_tit'>
-          <h4>이벤트</h4>
+          <h2>이벤트</h2>
         </div>
 
         <section className='section'>

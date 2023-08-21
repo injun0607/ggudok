@@ -5,6 +5,7 @@ import paymentReducer from './paymentReducer';
 import searchReducer from './searchReducer';
 import {categoryReducer, categoryToEngReducer} from './categoryReducer';
 import itemReducer from './itemReducer';
+import filterReducer from './filterReducer';
 import compareReducer from './compareReducer';
 import eventReducer from './eventReducer';
 import darkModeReducer from './darkModeReducer';
@@ -18,6 +19,7 @@ const rootReducer = combineReducers({
   category: categoryReducer,
   categorytoeng: categoryToEngReducer,
   item: itemReducer,
+  filter: filterReducer,
   compare: compareReducer,
   event: eventReducer,
   darkMode: darkModeReducer,

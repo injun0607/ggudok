@@ -391,7 +391,7 @@ accent-color: #FF724C;
 }
 
 /* ------------------서브페이지 첫번째 제목------------------*/
-.page_tit h4 {
+.page_tit h2 {
     font-size: 2.25rem;
     margin-bottom: 3.125rem;
     text-align: center;
@@ -401,7 +401,7 @@ accent-color: #FF724C;
     color: var(--txt-color);
 }
 /* ------서브페이지 두번째 제목 (bullet 없는 센터버전)-------*/
-.cont_tit_m h5 {
+.cont_tit_m h2 {
     font-size: 2rem;
     margin: 5.625rem 0 2.5rem;
     display: block;
@@ -411,7 +411,7 @@ accent-color: #FF724C;
     color: var(--txt-color);
     font-weight: 500;
 }
-.cont_tit_nm h5 {
+.cont_tit_nm h2 {
     font-size: 2rem;
     margin: 0 0 2.5rem;
     display: block;
@@ -421,7 +421,7 @@ accent-color: #FF724C;
     color: var(--txt-color);
     font-weight: 500;
 }
-.cont_tit_m h4, .cont_tit_nm h4 {font-weight: 500;}
+.cont_tit_m h3, .cont_tit_nm h3 {font-weight: 500;}
 .cont_tit_m .txt_strong {
     font-weight: 500;
     color: var(--c-black-1);
@@ -903,7 +903,7 @@ table .sub_tit:last-child {
     position: relative;
     z-index: 1;
 }
-.item-list-box .txt h4 {
+.item-list-box .txt h3 {
     font-size: 1.125rem;
     /* color: var(--txt-color); */
 }

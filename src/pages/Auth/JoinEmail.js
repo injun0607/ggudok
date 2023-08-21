@@ -33,7 +33,7 @@ const JoinEmail = () => {
   return (
     <section className={`${style.join} ${style.auth}`}>
       <div className='webwidth webwidth_pd'>
-        <div className='page_tit'><h4>이메일 회원가입</h4></div>
+        <div className='page_tit'><h2>이메일 회원가입</h2></div>
         <div className={style.form}>
           <form onSubmit={ handleJoin }>
             <div className={style.inputwrap}>
