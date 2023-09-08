@@ -12,7 +12,7 @@
 .header .search .searchbar input {width: calc(100% - 2rem); border: none; background: var(--bg-color-2);}
 .header .search .searchbar span {cursor: pointer; color: var(--txt-color);}
 .header .link {padding: 1.25rem 0 0; display: flex; justify-content: space-between; gap: 3rem;}
-.header .link .nav {display: flex; gap: 1.5rem; align-items: center; font-size: 0.925rem;}
+.header .link .nav {display: flex; gap: 1rem; align-items: center; font-size: 0.925rem;}
 .header .link .nav a, .header .link .nav button {color: var(--txt-color); font-size: 0.925rem; background: none;}
 .header .link .nav a.point {color: #fff; display: inline-block; background-color: var(--main-color); padding: 0.25rem 0.5rem; border-radius: var(--radius-all-min);}
 .header .link .nav a.pointAdmin {color: #fff; display: inline-block; background-color: var(--sub-color-4); padding: 0.25rem 0.5rem; border-radius: var(--radius-all-min); display: flex; gap: 0.25rem; align-items: center;}
@@ -22,7 +22,7 @@
 .category {background: var(--bg-color); border-bottom: 1px solid var(--c-black-6);padding: 1.5rem 0 1.25rem; position: relative;}
 .category .allcategory .onedepth {display: flex; align-items: center; gap: 0.5rem; font-weight: 600; cursor: pointer; font-size: 1.125rem; color: var(--txt-color);}
 .category .allcategory .twodepth {max-width: 10rem; position: absolute; z-index: 99; background-color: var(--bg-color-2); padding: 1.5rem 1.5rem; top: 5rem; border-radius: 0 0 1rem 1rem; box-shadow: 4px 12px 30px 6px rgba(0,0,0,.09);}
-.category .allcategory .twodepth .depths {display: flex; gap: 0.75rem; margin-top: 1rem; color: var(--txt-color);}
+.category .allcategory .twodepth .depths {display: flex; gap: 0.75rem; margin-top: 1rem; color: var(--txt-color); min-height: auto;}
 .category .allcategory .twodepth .depths:first-child {margin: 0;}
 .category .allcategory .twodepth .depths img {width: 1.125rem; transition: 0.3s;}
 .category .allcategory .twodepth .depths:hover img { margin-top: -6px;}

@@ -10,18 +10,15 @@ const NO_IMAGE_URL = '/images/common/noimg.png';
 const FeaturedItemlist = ({ category }) => {
   const bestitems = useSelector(state => state.item.bestitems);
 
-  // State variables for pagination
+  
+  // 아이템 개수 설정 및 페이지 이동
   const [currentPage, setCurrentPage] = useState(1);
-
-  // Calculate the total number of pages
   const totalPages = Math.ceil(bestitems.length / ITEMS_PER_PAGE);
 
-  // Slice data to display items for the current page
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE + 4;
   const endIndex = startIndex + ITEMS_PER_PAGE;
   const slicedItems = bestitems.slice(startIndex, endIndex);
 
-  // Function to handle page change
   const handlePageChange = (newPage) => {
     if (newPage >= 1 && newPage <= totalPages) {
       setCurrentPage(newPage);
@@ -35,7 +32,7 @@ const FeaturedItemlist = ({ category }) => {
         <div className='page_tit'>
           <h2>{category}</h2>
         </div>
-        <section className='item-list'>
+        <section className='item-list mb_60'>
           {
             bestitems.slice(0, 4).map((item, index) => 
             <Link to={`/ItemDetail/${item.id}`} key={index} className='item-list-box'>

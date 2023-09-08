@@ -38,6 +38,8 @@ const Compare = () => {
 
   // 카테고리 선택하지 않으면 아이템 선택 비활성화
   const isOneDepthSelected = selectedOneDepth !== '';
+  const isCompareItem1Selected = compareItem1 !== null;
+  const isCompareItem2Selected = compareItem2 !== null;
 
   return (
     <section className={style.pagewrapPd}>
@@ -59,7 +61,7 @@ const Compare = () => {
           </div>
           <div className={style.twodepth}>
             <select className={`${style.select} ${style.select01}`} onChange={(e) => handleChangeCompareItem(e, 1)} value={compareItem1} disabled={!isOneDepthSelected}>
-              <option value="">첫번째 구독서비스를 선택하세요.</option>
+              <option value="">{isCompareItem1Selected ? `${compareItem1.name}` : '첫번째 구독서비스를 선택하세요.'}</option>
               {
                 twoDepthItems.map((item, index) => 
                 <option value={item.id} key={index}>{item.name}</option>
@@ -67,7 +69,7 @@ const Compare = () => {
               }
             </select>
             <select className={`${style.select} ${style.select02}`} onChange={(e) => handleChangeCompareItem(e, 2)} value={compareItem2} disabled={!isOneDepthSelected}>
-              <option value="">두번째 구독서비스를 선택하세요.</option>
+              <option value="">{isCompareItem2Selected ? `${compareItem2.name}` : '두번째 구독서비스를 선택하세요.'}</option>
               {
                 twoDepthItems.map((item, index) => 
                 <option value={item.id} key={index}>{item.name}</option>
@@ -83,31 +85,33 @@ const Compare = () => {
             <div className={style.boxrow}>
               <div className={`${style.box} ${style.titbox}`}>
                 <img src={`${compareItem1.image}`} alt={compareItem1.name} onError={(e) => {e.target.src = NO_IMAGE_URL;}}/>
-                <p>{compareItem1.name}</p>
+                <h3>{compareItem1.name}</h3>
               </div>
               <div className={style.box}>
-                <div>{compareItem1.category}</div>
-                <h5>카테고리</h5>
+                <p>{compareItem1.category}</p>
+                <h3>카테고리</h3>
               </div>
               <div className={style.box}>
-                <div className={style.tag}>{compareItem1.tag}</div>
-                <h5>태그</h5>
+                <p className={style.tag}>{compareItem1.tag}</p>
+                <h3>태그</h3>
               </div>
               <div className={style.box}>
-                <div className={style.star}>
-                  <span className="material-icons">star</span>
-                  <span className="material-icons">star</span>
-                  <span className="material-icons">star</span>
-                  <span className="material-icons">star</span>
-                  <span className="material-icons">star</span>
+                <div className={style.starrating}>
+                  <div className={style.star}>
+                    <span className={`material-icons ${style.starActive}`}>star</span>
+                    <span className={`material-icons ${style.starActive}`}>star</span>
+                    <span className={`material-icons ${style.starActive}`}>star</span>
+                    <span className={`material-icons ${style.starActive}`}>star</span>
+                    <span className="material-icons">star</span>
+                  </div>
                 </div>
-                <h5>별점</h5>
+                <h3>별점</h3>
               </div>
               <div className={style.box}>
-                <div className={style.price}>
-                  <p>한 달 <span className={style.point}>40,000 원</span></p>
-                </div>
-                <h5>가격</h5>
+                <p className={style.price}>
+                  스탠다드 <span className={style.point}>월 8,900 원</span>
+                </p>
+                <h3>가격</h3>
               </div>
             </div>
             ) : (
@@ -118,31 +122,33 @@ const Compare = () => {
             <div className={style.boxrow}>
               <div className={`${style.box} ${style.titbox}`}>
                 <img src={`${compareItem2.image}`} alt={compareItem2.name} onError={(e) => {e.target.src = NO_IMAGE_URL;}}/>
-                <p>{compareItem2.name}</p>
+                <h3>{compareItem2.name}</h3>
               </div>
               <div className={style.box}>
-                <div>{compareItem2.category}</div>
-                <h5>카테고리</h5>
+                <p>{compareItem2.category}</p>
+                <h3>카테고리</h3>
               </div>
               <div className={style.box}>
-                <div className={style.tag}>{compareItem2.tag}</div>
-                <h5>태그</h5>
+                <p className={style.tag}>{compareItem2.tag}</p>
+                <h3>태그</h3>
               </div>
               <div className={style.box}>
-                <div className={style.star}>
-                  <span className="material-icons">star</span>
-                  <span className="material-icons">star</span>
-                  <span className="material-icons">star</span>
-                  <span className="material-icons">star</span>
-                  <span className="material-icons">star</span>
+                <div className={style.starrating}>
+                  <div className={style.star}>
+                    <span className={`material-icons ${style.starActive}`}>star</span>
+                    <span className={`material-icons ${style.starActive}`}>star</span>
+                    <span className={`material-icons ${style.starActive}`}>star</span>
+                    <span className={`material-icons ${style.starActive}`}>star</span>
+                    <span className="material-icons">star</span>
+                  </div>
                 </div>
-                <h5>별점</h5>
+                <h3>별점</h3>
               </div>
               <div className={style.box}>
-                <div className={style.price}>
-                  <p>한 달 <span className={style.point}>40,000 원</span></p>
-                </div>
-                <h5>가격</h5>
+                <p className={style.price}>
+                  스탠다드 <span className={style.point}>월 8,900 원</span>
+                </p>
+                <h3>가격</h3>
               </div>
             </div>
             ) : (

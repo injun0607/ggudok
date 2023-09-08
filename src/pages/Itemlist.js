@@ -37,16 +37,12 @@ const Itemlist = ({ category }) => {
   return (
     <section className={style.pagewrap}>
       <div className='webwidth'>
+        <div className='page_tit page_tit-side'>
+          <h2>{category}</h2>
+        </div>
         <div className={style.categorysection}>
-          <aside className={style.left}>
-            <div className={style.category}>
-              <Filteraside />
-            </div>
-          </aside>
+          <Filteraside />
           <section className={style.right}>
-            <div className='page_tit'>
-              <h2>{category}</h2>
-            </div>
             <div className={style.section}>
               <div className={style.itemlist}>
                 {slicedItems.map((item, index) => (

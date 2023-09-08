@@ -3,6 +3,7 @@
 .layout {
     background-color: var(--bg-color);
     position: relative;
+    margin-top: 8.750em;
 }
 
 /* 다크모드 버튼 */

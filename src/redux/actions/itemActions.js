@@ -1,9 +1,6 @@
-export const categoryToEng = (category) => {
-  // 결제 정보를 받아와서 결제 성공 액션 객체를 반환
+export const setLikedItem = (likeditem) => {
   return {
-    type: 'CATEGORY_TO_ENG',
-    payload: {
-      category,
-    }
+    type: 'SET_LIKED_ITEM',
+    payload: likeditem,
   };
 };

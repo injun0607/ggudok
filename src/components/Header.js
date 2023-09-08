@@ -59,11 +59,12 @@ const Topheader = () => {
 						{isLoggedIn ? (
 							<>
 								<button onClick={ handleLogout }>로그아웃</button>
-								<Link to="/Auth/Join" className={style.point}>마이페이지</Link>
+								<Link to="/Mypage/MySubscribe" className={style.point}>마이페이지</Link>
 							</>
 						) : (
 							<>
 								<Link to="/Auth/Login">로그인</Link> 
+								<Link to="/Mypage/MySubscribe">마이페이지</Link>
 								<Link to="/Auth/Join" className={style.point}>회원가입</Link>
 							</>
 						)}

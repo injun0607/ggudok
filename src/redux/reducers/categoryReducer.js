@@ -22,11 +22,11 @@ const initialState = {
     { categoryEng: 'event', category: '이벤트',},
     { categoryEng: 'contactus', category: 'Contact Us',},
   ],
-  usercategories: [
-    { categoryEng: 'mypage', category: '마이페이지',},
-    { categoryEng: 'modify', category: '회원정보수정',},
-    { categoryEng: 'myitem', category: '구독내역',},
-  ],
+  // usercategories: [
+  //   { categoryEng: 'mypage', category: '회원 정보 수정',},
+  //   { categoryEng: 'modify', category: '관심 서비스',},
+  //   { categoryEng: 'myitem', category: '구독내역',},
+  // ],
 };
 
 

@@ -16,11 +16,16 @@ import Home from '../pages/Home';
 import Login from '../pages/Auth/Login';
 import Join from '../pages/Auth/Join';
 import JoinEmail from '../pages/Auth/JoinEmail';
+import EditProfile from '../pages/Auth/EditProfile';
 import Itemlist from '../pages/Itemlist';
 import FeaturedItemlist from '../pages/FeaturedItemlist';
 import Compare from '../pages/Compare';
 import Event from '../pages/Event';
 import Contactus from '../pages/Contactus';
+import Mypage from '../pages/Mypage/Mypage';
+import MySubscribe from '../pages/Mypage/MySubscribe';
+import MyReview from '../pages/Mypage/MyReview';
+import MyLike from '../pages/Mypage/MyLike';
 import AdminHome from '../pages/Admin/AdminHome';
 // redux import
 import { toggleDarkMode } from '../redux/actions/darkModeActions';
@@ -32,6 +37,7 @@ const Layout = () => {
 	const categories = useSelector(state => state.category.categories);
   const featuredcategories = useSelector(state => state.category.featuredcategories);
 	const isadminLayout = useSelector(state => state.adminLayout.isadminLayout);
+  const isLoggedIn = useSelector(state => state.user.isLoggedIn);
 
 	// 다크모드 state 감지
   const darkMode = useSelector(state => state.darkMode.darkMode);
@@ -47,9 +53,16 @@ const Layout = () => {
 					<Route path='/Home' element={<Home />}></Route>
 					<Route path="/Admin/AdminHome" element={<AdminHome isadminLayout />} />
 
+					<Route path='/Mypage' element={ <Mypage /> }>
+						<Route path="MySubscribe" element={ <MySubscribe /> } />
+						<Route path="MyReview" element={ <MyReview /> } />
+						<Route path="MyLike" element={ <MyLike /> } />
+					</Route>
+
 					<Route path='/Auth/Login' element={ <Login /> }></Route>
 					<Route path='/Auth/Join' element={ <Join /> }></Route>
 					<Route path='/Auth/JoinEmail' element={ <JoinEmail /> }></Route>
+					<Route path='/Auth/EditProfile' element={ <EditProfile /> }></Route>
 
 					{categories.map((category) => (
 						<Route

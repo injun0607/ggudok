@@ -18,3 +18,10 @@ export const setSelectedTag = (selectedTag) => {
     payload: selectedTag,
   };
 };
+
+export const setHideMenu = (section, value) => {
+  return {
+    type: 'SET_HIDE_MENU',
+    payload: {section, value},
+  };
+};

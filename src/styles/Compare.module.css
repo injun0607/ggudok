@@ -1,6 +1,9 @@
 @charset "utf-8";
 
 .pagewrapPd {padding: 4rem 0;}
+.starrating {display: flex;}
+.starrating span {color: var(--sub-color-5);}
+.starrating .starActive {color: var(--sub-color);}
 
 /* 섹션레이아웃 */
 .section {
@@ -40,6 +43,15 @@
 
 /* 비교 상세박스 */
 .detail {margin-top: 4rem; display: flex; gap: 1rem;}
-.boxrow {display: flex; flex-wrap: wrap; gap: 1rem; width: calc((100% - 1rem) / 2); border-top: var(--sub-color-3) 2px solid;}
-.boxrow.boxrowerror {width: 100%; min-height: 17rem; display: flex; justify-content: center; align-items: center; border-bottom: 1px solid var(--c-black-6); color: var(--txt-color-2); border-top: 2px var(--sub-color-5) solid;}
-.boxrow .box {width: 100%; border-bottom: 1px solid var(--c-black-6); padding: 3rem;}
+.boxrow {display: flex; flex-wrap: wrap; min-width: calc((100% - 1rem) / 2); border-top: var(--sub-color-3) 2px solid;}
+.boxrow.boxrowerror {width: 100%; min-height: 17rem; display: flex; justify-content: center; align-items: flex-start; border-bottom: 1px solid var(--c-black-6); color: var(--txt-color-2); border-top: 2px var(--sub-color-5) solid; padding-top: 3rem;}
+.boxrow .box {width: 100%; border-bottom: 1px solid var(--c-black-7); padding: 2rem;}
+.boxrow .box.titbox img {border-radius: var(--radius-all-xs); max-width: 10rem; max-height: 10rem;}
+.boxrow .box.titbox h3 {font-size: 1.5rem; color: var(--txt-color);}
+.boxrow .box {text-align: center;}
+.boxrow .box p {font-size: 1.5rem; color: var(--txt-color);}
+.boxrow .box h3 {font-size: 1.063rem; color: var(--c-black-3); font-weight: 400; margin-top: 1.5rem;}
+.boxrow .box .starrating {width: 100%; display: flex; justify-content: center;}
+.boxrow .box .starrating .star span {font-size: 2rem;}
+.boxrow .box .price {display: flex; justify-content: center; gap: 0.5rem; align-items: baseline; font-size: 1.125rem; color: var(--txt-color-2); margin-top: 0.5rem;}
+.boxrow .box .price .point {font-size: 1.5rem; color: var(--txt-color);}

@@ -3,17 +3,28 @@ import { useDispatch, useSelector } from 'react-redux';
 // css import
 import style from '../styles/Filter.module.css';
 // redux import
-import { setSelectedPrice, setSelectedRating, setSelectedTag } from '../redux/actions/filterActions';
+import { setSelectedPrice, setSelectedRating, setSelectedTag, setHideMenu } from '../redux/actions/filterActions';
 
 const Filteraside = () => {
   const dispatch = useDispatch();
   const selectedPrice = useSelector(state => state.filter.price);
   const selectedRating = useSelector(state => state.filter.rating);
   const selectedTag = useSelector(state => state.filter.tag);
+  const hideMenuPrice = useSelector(state => state.filter.hideMenu.price);
+  const hideMenuRating = useSelector(state => state.filter.hideMenu.rating);
+  const hideMenuTag = useSelector(state => state.filter.hideMenu.tag);
 
-  
+  const handlehideMenu = (section) => {
+    dispatch(setHideMenu(section));
+  }
+
   const handlePriceChange = (e) => {
-    dispatch(setSelectedPrice(e.target.value));
+    const price = e.target.value;
+    if (selectedPrice.includes(price)) {
+      dispatch(setSelectedRating(selectedPrice.filter(r => r !== price)));
+    } else {
+      dispatch(setSelectedRating([...selectedPrice, price]));
+    }
   };
 
   const handleRatingChange = (e) => {
@@ -34,63 +45,157 @@ const Filteraside = () => {
     }
   };
 
-
-  // 필터 적용 버튼 핸들러
-  const applyFilters = () => {
-    // 여기서 선택된 필터들을 사용하여 아이템을 필터링하고 결과를 보여줄 수 있습니다.
-  };
   // 리셋 버튼 핸들러
   const resetFilters = () => {
     setSelectedPrice('');
     setSelectedRating([]);
     setSelectedTag([]);
-    // 필터를 초기화하고 전체 아이템을 보여줄 수 있습니다.
   };
 
   return (
-    <>
-      <div className={style.filterSidebar}>
-        <div className={style.filterSection}>
-          <h2>가격</h2>
-          <select value={selectedPrice} onChange={ handlePriceChange }>
-            <option value="">전체</option>
-            <option value="low">낮은 가격</option>
-            <option value="medium">중간 가격</option>
-            <option value="high">높은 가격</option>
-          </select>
+    <aside className={style.left}>
+      <div className={style.category}>
+        <div className={style.sideBarTit}>
+          <h2>필터</h2>
+          <button onClick={ resetFilters } className={style.resetBtn}>
+            <span className="material-icons">restart_alt</span>
+            초기화
+          </button>
         </div>
-        <div className={style.filterSection}>
-          <h2>평점</h2>
-          <div>
-            <label>
-              <input type="checkbox" value="1" checked={selectedRating.includes("1")} onChange={ handleRatingChange } />
-              1점
-            </label>
-            <label>
-              <input type="checkbox" value="2" checked={selectedRating.includes("2")} onChange={ handleRatingChange } />
-              2점
-            </label>
-          </div>
-        </div>
-        <div className={style.filterSection}>
-          <h2>태그</h2>
-          <div>
-            <label>
-              <input type="checkbox" value="tag1" checked={selectedTag.includes("tag1")} onChange={ handleTagChange } />
-              태그1
-            </label>
-            <label>
-              <input type="checkbox" value="tag2" checked={selectedTag.includes("tag2")} onChange={ handleTagChange } />
-              태그2
-            </label>
-          </div>
-        </div>
-        <div className={style.doublebutton}>
-          <button onClick={ applyFilters } className="btn btn_full">검색</button>
-          <button onClick={ resetFilters } className="btn btn_normal">초기화</button>
+        <div className={style.sideBar}>
+          <section className={style.filter}>
+            <div className={style.tit}>
+              <h3>가격</h3>
+              <button className={`${style.hideMenuBtn} ${hideMenuPrice ? style.hideMenuBtnActive : ''}`} type='button' onClick={() => handlehideMenu('price')} data-section={'price'}>
+                <span className='material-icons'>expand_more</span>
+              </button>
+            </div>
+            <ul className={`${style.cont} ${hideMenuPrice ? style.hide : ''}`}>
+              <li className={style.checkInputWrap}>
+                <input type="checkbox" name='price' className='checkInput' id="priceRow" value="row" checked={selectedPrice.includes("priceRow")} onChange={handlePriceChange} />
+                <label htmlFor="priceRow" className='checkbox-label'>
+                    5,900원 미만
+                </label>
+              </li>
+              <li className={style.checkInputWrap}>
+                <input type="checkbox" name='price' className='checkInput' id="priceMedium" value="medium" checked={selectedPrice.includes("priceMedium")} onChange={handlePriceChange} />
+                <label htmlFor="priceMedium" className='checkbox-label'>
+                    5,900원 ~ 9,900원
+                </label>
+              </li>
+              <li className={style.checkInputWrap}>
+                <input type="checkbox" name='price' className='checkInput' id="priceHigh" value="high" checked={selectedPrice.includes("priceHigh")} onChange={handlePriceChange} />
+                <label htmlFor="priceHigh" className='checkbox-label'>
+                    10,000원 이상
+                </label>
+              </li>
+            </ul>
+          </section>
+          <section className={style.filter}>
+            <div className={style.tit}>
+              <h3>평점</h3>
+              <button className={`${style.hideMenuBtn} ${hideMenuRating ? style.hideMenuBtnActive : ''}`} type='button' onClick={() => handlehideMenu('rating')} data-section={'rating'}>
+                <span className='material-icons'>expand_more</span>
+              </button>
+            </div>
+            <ul className={`${style.cont} ${hideMenuRating ? style.hide : ''}`}>
+              <li className={style.checkInputWrap}>
+                <input type="checkbox" name='rating' className='checkInput' id="star1" value="star1" checked={selectedRating.includes("star1")} onChange={handleRatingChange} />
+                <label htmlFor="priceRow" className='checkbox-label'>
+                  <div className='starrating'>
+                    <div className='starrating'>
+                      <span className="material-icons starActive">star</span>
+                      <span className="material-icons">star</span>
+                      <span className="material-icons">star</span>
+                      <span className="material-icons">star</span>
+                      <span className="material-icons">star</span>
+                    </div>
+                  </div>
+                </label>
+              </li>
+              <li className={style.checkInputWrap}>
+                <input type="checkbox" name='rating' className='checkInput' id="star2" value="star2" checked={selectedRating.includes("star2")} onChange={handleRatingChange} />
+                <label htmlFor="priceRow" className='checkbox-label'>
+                  <div className='starrating'>
+                    <div className='starrating'>
+                      <span className="material-icons starActive">star</span>
+                      <span className="material-icons starActive">star</span>
+                      <span className="material-icons">star</span>
+                      <span className="material-icons">star</span>
+                      <span className="material-icons">star</span>
+                    </div>
+                  </div>
+                </label>
+              </li>
+              <li className={style.checkInputWrap}>
+                <input type="checkbox" name='rating' className='checkInput' id="star3" value="star3" checked={selectedRating.includes("star3")} onChange={handleRatingChange} />
+                <label htmlFor="priceRow" className='checkbox-label'>
+                  <div className='starrating'>
+                    <div className='starrating'>
+                      <span className="material-icons starActive">star</span>
+                      <span className="material-icons starActive">star</span>
+                      <span className="material-icons starActive">star</span>
+                      <span className="material-icons">star</span>
+                      <span className="material-icons">star</span>
+                    </div>
+                  </div>
+                </label>
+              </li>
+              <li className={style.checkInputWrap}>
+                <input type="checkbox" name='rating' className='checkInput' id="star4" value="star4" checked={selectedRating.includes("star4")} onChange={handleRatingChange} />
+                <label htmlFor="priceRow" className='checkbox-label'>
+                  <div className='starrating'>
+                    <div className='starrating'>
+                      <span className="material-icons starActive">star</span>
+                      <span className="material-icons starActive">star</span>
+                      <span className="material-icons starActive">star</span>
+                      <span className="material-icons starActive">star</span>
+                      <span className="material-icons">star</span>
+                    </div>
+                  </div>
+                </label>
+              </li>
+              <li className={style.checkInputWrap}>
+                <input type="checkbox" name='rating' className='checkInput' id="star5" value="star5" checked={selectedRating.includes("star5")} onChange={ handleRatingChange } />
+                <label htmlFor="priceRow" className='checkbox-label'>
+                  <div className='starrating'>
+                    <div className='starrating'>
+                      <span className="material-icons starActive">star</span>
+                      <span className="material-icons starActive">star</span>
+                      <span className="material-icons starActive">star</span>
+                      <span className="material-icons starActive">star</span>
+                      <span className="material-icons starActive">star</span>
+                    </div>
+                  </div>
+                </label>
+              </li>
+            </ul>
+          </section>
+          <section className={style.filter}>
+            <div className={style.tit}>
+              <h3>태그</h3>
+              <button className={`${style.hideMenuBtn} ${hideMenuTag ? style.hideMenuBtnActive : ''}`} type='button' onClick={() => handlehideMenu('tag')} data-section={'tag'}>
+                <span className='material-icons'>expand_more</span>
+              </button>
+            </div>
+            <ul className={`${style.cont} ${hideMenuTag ? style.hide : ''}`}>
+              <li className={style.checkInputWrap}>
+                <input type="checkbox" name='tag' className='checkInput' id="tag1" value="tag1" checked={selectedTag.includes("tag1")} onChange={ handleTagChange } />
+                <label htmlFor="tag1" className='checkbox-label'>
+                    20대
+                </label>
+              </li>
+              <li className={style.checkInputWrap}>
+                <input type="checkbox" name='tag' className='checkInput' id="tag2" value="tag2" checked={selectedTag.includes("tag2")} onChange={ handleTagChange } />
+                <label htmlFor="tag2" className='checkbox-label'>
+                    30대
+                </label>
+              </li>
+            </ul>
+          </section>
         </div>
       </div>
-    </>
+    </aside>
   )
 }
 

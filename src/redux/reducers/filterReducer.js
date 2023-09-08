@@ -2,6 +2,7 @@ const initialState = {
   price: [],
   rating: [],
   tag: [],
+  hideMenu: { price: false, rating: false, tag: true, }
 };
 
 const filterReducer = (state = initialState, action) => {
@@ -20,6 +21,14 @@ const filterReducer = (state = initialState, action) => {
       return {
         ...state,
         price: [...state.tag, action.payload]
+      };
+    case 'SET_HIDE_MENU':
+      return {
+        ...state,
+        hideMenu: {
+          ...state.hideMenu,
+          [action.payload.section]: !state.hideMenu[action.payload.section],
+        }
       };
     default:
       return state;

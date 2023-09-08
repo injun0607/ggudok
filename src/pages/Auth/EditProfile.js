@@ -6,7 +6,7 @@ import style from '../../styles/Auth.module.css'
 // redux import
 import { join, sendEmail } from '../../redux/actions/userActions';
 
-const JoinEmail = () => {
+const EditProfile = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   
@@ -24,14 +24,7 @@ const JoinEmail = () => {
     }
   };
 
-
-  const isEmailSent = useSelector(state => state.user.isEmailSent);
-
-  const handleSendEmail = () => {
-    dispatch(sendEmail());
-  }
-
-  const handleJoin = (e) => {
+  const handleEdit = (e) => {
     e.preventDefault();
     const emailId = e.target.emailid.value;
     const password = e.target.password.value;
@@ -48,18 +41,16 @@ const JoinEmail = () => {
   return (
     <section className={`${style.join} ${style.auth}`}>
       <div className='webwidth webwidth_pd'>
-        <div className='page_tit'><h2>이메일 회원가입</h2></div>
+        <div className='page_tit'><h2>회원정보수정</h2></div>
         <div className={style.form}>
-          <form onSubmit={ handleJoin }>
+          <form onSubmit={ handleEdit }>
             <div className={style.inputwrap}>
-              <input type='text' name='emailid' placeholder='이메일 아이디를 입력하세요.' />
-              <button type='button' onClick={handleSendEmail} className='btn btn_normal_b'>인증 이메일 {isEmailSent && '다시'} 보내기</button>
-              {isEmailSent && <input type='text' name='emailauth' placeholder='이메일로 전송된 인증번호를 입력하세요.' />}
+              <input type="text" name='emailid' value="injun0607" readOnly />
               <input
                 type="password"
                 name="password"
                 autoComplete="off"
-                placeholder="비밀번호를 입력하세요."
+                placeholder="새 비밀번호를 입력하세요."
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
@@ -67,24 +58,23 @@ const JoinEmail = () => {
                 type="password"
                 name="confirmPassword"
                 autoComplete="off"
-                placeholder="비밀번호를 한번 더 입력하세요."
+                placeholder="새 비밀번호를 한번 더 입력하세요."
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
               />
               {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
-              <input type='text' name='name' placeholder='이름을 입력하세요.' />
-              <input type='number' name='mobile' placeholder='휴대폰 번호를 숫자만 입력하세요.' />
+              <input type='text' name='name' value="여인준" readOnly />
+              <input type='text' name='mobile' placeholder='휴대폰 번호를 010-0000-0000 형태로 입력하세요.' />
             </div>
-            <button type='submit' className='btn btn_full'>회원가입</button>
+            <div className={style.doublebutton}>
+              <button type='submit' className='btn btn_full'>수정 완료</button>
+              <Link className='btn btn_normal' onClick={ ()=>{ navigate(-1) } }>뒤로 가기</Link>
+            </div>
           </form>
-          <div className={style.doublebutton}>
-            <Link to="/Auth/Join" className='btn btn_full02'>간편회원가입 하러가기</Link>
-            <Link className='btn btn_normal' onClick={ ()=>{ navigate(-1) } }>뒤로 가기</Link>
-          </div>
         </div>
       </div>
     </section>
   )
 }
 
-export default JoinEmail;
+export default EditProfile;
