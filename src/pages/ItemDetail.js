@@ -10,25 +10,49 @@ import style from '../styles/Item.module.css';
 import Error from '../components/Error';
 // redux import
 import { setLikedItem, } from '../redux/actions/itemActions';
-
+import { setReviewModal, } from '../redux/actions/reviewActions';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
+
+const ITEMS_PER_PAGE = 5;
 const NO_IMAGE_URL = '/images/common/noimg.png';
 
 
 const ItemDetail = () => {
   let dispatch = useDispatch()
-  const categories = useSelector(state => state.category.categories);
   const items = useSelector(state => state.item.items);
   const likeditems = useSelector(state => state.item.likeditems);
+  const reviewModal = useSelector(state => state.review.reviewModal);
+  const reviews = useSelector(state => state.review.reviews);
+
   const [isLikedOn, setIsLikedOn] = useState(false);
+  const [clickMoreReview, setClickMoreReview] = useState(0);
   
   const { itemId } = useParams();
+
+  // 해당 아이템의 리뷰 filter
+  const filteredReviews = reviews.filter(review => review.itemid === itemId );
+
+  // 리뷰 페이지네이션 구현
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const totalPages = Math.ceil(filteredReviews.length / ITEMS_PER_PAGE);
+
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const endIndex = startIndex + ITEMS_PER_PAGE;
+  const slicedReviews = filteredReviews.slice(startIndex, endIndex);
+
+  const handlePageChange = (newPage) => {
+    if (newPage >= 1 && newPage <= totalPages) {
+      setCurrentPage(newPage);
+    }
+  };
+
   // 관련상품
   const item = items.find(item => item.id === itemId);
   const similarItems = items.slice(0,4).filter(itemall => item.category === itemall.category);
+
   // 찜하기
-  
   useEffect(() => {
     const likedItem = likeditems.find(likeditem => likeditem.id === itemId);
     if (likedItem === undefined) {
@@ -38,14 +62,15 @@ const ItemDetail = () => {
 
   const handleLikedItem = () => { dispatch(setLikedItem(item)) }
 
+  // 리뷰모달팝업
+  const handleReviewModal = () => { dispatch(setReviewModal()) }
+
   // item이 undefined인 경우 error 페이지
-  if (!item) {
-    return (
-      <Error />
-    );
-  }
+  if (!item) { return ( <Error /> ); }
 
   return (
+    <>
+    { reviewModal ? <><ReviewModal /> <div className='modalBg' onClick={ handleReviewModal }></div></> : null}
     <section className={style.pagewrapPd}>
       <div className='webwidth'>
         <div className={style.detailwrap}>
@@ -74,14 +99,14 @@ const ItemDetail = () => {
                     <span className={`material-icons ${style.starActive}`}>star</span>
                     <span className="material-icons">star</span>
                   </div>
-                  <p className='txt_ex'><span>4</span>명의 사람들이 평가했어요.</p>
+                  <p className='txt_ex'>4명의 사람들이 평가했어요.</p>
                 </div>
               </div>
               <div className={style.btnArea}>
                 <button type='button' className={style.likebtn} onClick={ handleLikedItem }>
-                  {isLikedOn ? <span className={`material-icons ${style.starActive}`}>favorite</span> : <span className="material-icons">favorite_border</span>}
+                  {isLikedOn ? <span className={`material-icons ${style.likeActive}`}>favorite</span> : <span className="material-icons">favorite_border</span>}
                 </button>
-                <button type='button' className={style.reviewbtn}>
+                <button type='button' className={style.reviewbtn} onClick={ handleReviewModal }>
                   <span className="material-icons">edit</span>
                 </button>
               </div>
@@ -103,49 +128,32 @@ const ItemDetail = () => {
               <div className={style.tit}>
                 <h3>구독자 한줄평</h3>
               </div>
-              <div className={style.ratings}>
-                <div className={style.rating}>
+              {filteredReviews.index > 0 ? <div className={style.ratings}>
+                {slicedReviews.map((slicedReview, index) => (
+                  <article className={style.rating} key={index}>
                   <div className={style.userImg}>
                     <div className={style.circle}>
                       <img src='../images/common/' alt='유저 이미지' onError={(e) => {e.target.src = NO_IMAGE_URL;}}/>
                     </div>
                   </div>
                   <div className={style.txt}>
-                    <h4 className={style.name}>휘성</h4>
+                    <h4 className={style.name}>{slicedReview.username}</h4>
                     <div className={style.starrating}>
                       <div className={style.star}>
-                        <span className={`material-icons ${style.starActive}`}>star</span>
-                        <span className={`material-icons ${style.starActive}`}>star</span>
-                        <span className={`material-icons ${style.starActive}`}>star</span>
-                        <span className={`material-icons ${style.starActive}`}>star</span>
-                        <span className={`material-icons ${style.starActive}`}>star</span>
+                        { slicedReview.star.map((isActive, starIndex) => (
+                        <span key={starIndex} className={`material-icons ${isActive ? style.starActive : ''}`}>
+                          star
+                        </span>
+                      )) }
                       </div>
                     </div>
-                    <p className={style.review}>우리가 낳은 사랑은 버려진다 그래 이별은 너와 나의 책임이야 사랑 앞에 우린 죄인이야 울지마 바보야 나 정말 괜찮아</p>
+                    <p className={style.review}>{slicedReview.contents}</p>
                   </div>
-                </div>
-                <div className={style.rating}>
-                  <div className={style.userImg}>
-                    <div className={style.circle}>
-                      <img src='../images/common/' alt='유저 이미지' onError={(e) => {e.target.src = NO_IMAGE_URL;}}/>
-                    </div>
-                  </div>
-                  <div className={style.txt}>
-                    <h4 className={style.name}>임창정</h4>
-                    <div className={style.starrating}>
-                      <div className={style.star}>
-                        <span className={`material-icons ${style.starActive}`}>star</span>
-                        <span className={`material-icons ${style.starActive}`}>star</span>
-                        <span className={`material-icons ${style.starActive}`}>star</span>
-                        <span className="material-icons">star</span>
-                        <span className="material-icons">star</span>
-                      </div>
-                    </div>
-                    <p className={style.review}>여보세요 나야 정말 미안해 이기적인 그때의 나에게 그대를 다시 불러오라고 미친 듯이 외쳤어</p>
-                  </div>
-                </div>
+                </article>
+                ))}
               </div>
-              {/* <div className='pagination-wrap'>
+              : <div className='txt_grey txt_center'>등록된 리뷰가 없습니다.</div> }
+              { filteredReviews.index > 5 ? <div className='pagination-wrap'>
                 <div className='pagination'>
                   <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>
                   <span className='material-icons'>chevron_left</span>
@@ -155,7 +163,7 @@ const ItemDetail = () => {
                   <span className='material-icons'>chevron_right</span>
                   </button>
                 </div>
-              </div> */}
+              </div> : null }
             </article>
             <article className={`${style.cont} ${style.chartwrap}`}>
               <div className={style.tit}>
@@ -198,7 +206,56 @@ const ItemDetail = () => {
         </section>
       </div>
     </section>
+    </>
   );
+}
+
+const ReviewModal = () => {
+  const dispatch = useDispatch();
+  const reviewModal = useSelector(state => state.review.reviewModal);
+
+  // 리뷰모달팝업
+  const handleReviewModal = () => { dispatch(setReviewModal()) }
+
+  const [editStar, setEditStar] = useState([false, false, false, false, false]);
+  const handleEditStar = index => {
+    let clickStates = [...editStar];
+    for (let i = 0; i < 5; i++) {
+      clickStates[i] = i <= index ? true : false;
+    }
+    setEditStar(clickStates);
+  };
+  let resultEditStar = editStar.filter(Boolean).length;
+
+  return (
+    <form className='modal_conts'>
+      <div className='modal_tit'>
+        <h2>리뷰 작성하기</h2>
+      </div>
+      <div className={style.modalCont}>
+        <div className={style.starrating}>
+          <div className={style.star}>
+            { editStar.map((EditActive, editstarIndex) => (
+              <span
+                key={editstarIndex}
+                className={`material-icons ${style.editStar} ${EditActive ? style.starActive : ''}`}
+                onClick={() => handleEditStar(editstarIndex)}
+              >
+                star
+              </span>
+            )) }
+          </div>
+        </div>
+        <div className={style.reviewEdit}>
+          <textarea type='text' name='content' className={style.editArea} />
+        </div>
+        <div className={style.doublebutton}>
+          <Link className='btn_s btn_normal' onClick={ handleReviewModal }>닫기</Link>
+          <button type='submit' className='btn_s btn_full'>저장</button>
+        </div>
+      </div>
+    </form>
+  )
 }
 
 export const dataAge = {

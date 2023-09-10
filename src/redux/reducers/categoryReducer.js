@@ -27,30 +27,16 @@ const initialState = {
   //   { categoryEng: 'modify', category: '관심 서비스',},
   //   { categoryEng: 'myitem', category: '구독내역',},
   // ],
+  dropCategory: false,
 };
 
 
 const categoryReducer = (state = initialState, action) => {
   switch (action.type) {
-    case 'ADD_MY_CATEGORY':
-      const existingCategory = state.mycategories.find(
-        (category) => category.category === action.payload.category
-      );
-      if (existingCategory) {
-        return state;
-      }
+    case 'SHOW_CATEGORY':
       return {
         ...state,
-        mycategories: [...state.mycategories, action.payload],
-      };
-      
-    case 'CANCEL_MY_CATEGORY':
-      const updatedMycategories = state.mycategories.filter(
-        (category) => category.category !== action.payload.category
-      );
-      return {
-        ...state,
-        mycategories: updatedMycategories,
+        dropCategory: !state.dropCategory,
       };
 
     default:

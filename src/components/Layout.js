@@ -9,6 +9,7 @@ import style from '../styles/Layout.module.css';
 import Header from './Header';
 import Footer from './Footer';
 import Error from './Error.js'
+import ErrorItem from './ErrorItem.js'
 import AdminHeader from './Admin/AdminHeader';
 import AdminFooter from './Admin/AdminFooter';
 // page import
@@ -19,6 +20,7 @@ import JoinEmail from '../pages/Auth/JoinEmail';
 import EditProfile from '../pages/Auth/EditProfile';
 import Itemlist from '../pages/Itemlist';
 import FeaturedItemlist from '../pages/FeaturedItemlist';
+import SearchItemlist from '../pages/SearchItemlist';
 import Compare from '../pages/Compare';
 import Event from '../pages/Event';
 import Contactus from '../pages/Contactus';
@@ -64,6 +66,8 @@ const Layout = () => {
 					<Route path='/Auth/JoinEmail' element={ <JoinEmail /> }></Route>
 					<Route path='/Auth/EditProfile' element={ <EditProfile /> }></Route>
 
+					<Route path='/SearchItemlist/:searchQuery' element={ <SearchItemlist /> }></Route>
+
 					{categories.map((category) => (
 						<Route
 							key={category.categoryEng}
@@ -91,6 +95,7 @@ const Layout = () => {
 					<Route path='Contactus' element={ <Contactus /> }></Route>
 
 					<Route path='*' element={ <Error /> }></Route>
+					<Route path='*' element={ <ErrorItem /> }></Route>
 				</Routes>
 			</div>
 			{isadminLayout ? <AdminFooter /> : <Footer />} {}

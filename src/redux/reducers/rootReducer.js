@@ -7,6 +7,7 @@ import {categoryReducer, categoryToEngReducer} from './categoryReducer';
 import itemReducer from './itemReducer';
 import filterReducer from './filterReducer';
 import compareReducer from './compareReducer';
+import reviewReducer from './reviewReducer';
 import eventReducer from './eventReducer';
 import darkModeReducer from './darkModeReducer';
 import adminLayoutReducer from './adminLayoutReducer';
@@ -24,6 +25,7 @@ const rootReducer = combineReducers({
   event: eventReducer,
   darkMode: darkModeReducer,
   adminLayout: adminLayoutReducer,
+  review: reviewReducer,
 });
 
 export default rootReducer;

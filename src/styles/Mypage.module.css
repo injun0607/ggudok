@@ -2,8 +2,10 @@
 
 .pagewrapPd {padding: 4rem 0;}
 .starrating {display: flex;}
-.starrating span {display: flex; color: var(--sub-color-5); font-size: 1.125rem; vertical-align: baseline;}
+.starrating span {color: var(--sub-color-5); font-size: 1.125rem; letter-spacing: -1px;}
 .starrating .starActive {color: var(--sub-color);}
+.starrating .editStar {cursor: pointer; transition: 0.3s;}
+.starrating .editStar:hover {color: var(--sub-color);}
 
 .both {display: flex; gap: 4rem;}
 .both .left {display: flex; flex-wrap: wrap; gap: 2rem; width: 18rem; height: fit-content; position: sticky; top: 11rem;}
@@ -38,9 +40,12 @@
 .ratingwrap .ratings .service .circle {width: 3rem; border-radius: var(--radius-all-xs); aspect-ratio: 1/1; overflow: hidden;}
 .ratingwrap .ratings .service .circle img {width: 100%; height: 100%; object-fit: cover;}
 .ratingwrap .ratings .service .name {font-size: 1.25rem; font-weight: 500;}
-.ratingwrap .ratings .txt { display: flex; gap: 0.25rem; align-items: center; flex-wrap: wrap; width: calc(100% - 1rem - 3rem);}
+.ratingwrap .ratings .txt { display: flex; gap: 0.25rem; align-items: center; flex-wrap: wrap; width: 100%;}
 .ratingwrap .ratings .txt .starrating .star span {font-size: 1.325rem;}
 .ratingwrap .ratings .txt .review {width: 100%; margin-top: 0.5rem;}
+.ratingwrap .ratings .txt .reviewEdit {width: 100%; margin-top: 0.5rem; display: flex; gap: 1rem; align-items: flex-end;}
+.ratingwrap .ratings .txt .reviewEdit .editArea {width: calc(100% - 1rem - 5rem);}
+.ratingwrap .ratings .txt .reviewEdit .editBtn {width: 5rem; border-radius: var(--radius-all-xs); background: var(--sub-color-5); height: 64px;}
 
 .subscribewrap .overallprice {border-top: 2px solid var(--sub-color); padding: 1.5rem 0; display: flex; align-items: flex-end; justify-content: flex-end; gap: 0.5rem;  z-index: -2; color: var(--txt-color);}
 .subscribewrap .overallprice img {max-width: 2.25rem;}

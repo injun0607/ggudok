@@ -1,9 +1,11 @@
 @charset "utf-8";
 
 .pagewrapPd {padding: 4rem 0;}
-.starrating .star {display: flex; color: var(--sub-color-5);}
-.starActive {color: var(--sub-color);}
-button .starActive {color: var(--main-color);}
+.starrating {display: flex;}
+.starrating span {color: var(--sub-color-5);}
+.starrating .starActive {color: var(--sub-color);}
+.starrating .editStar {cursor: pointer; transition: 0.3s;}
+.starrating .editStar:hover {color: var(--sub-color);}
 
 /* 섹션레이아웃 */
 .section .tit {
@@ -93,6 +95,8 @@ button .starActive {color: var(--main-color);}
   transition: 0.3s;
 }
 .detailwrap .fixed .btnArea button .likeActive {color: var(--main-color);}
+.detailwrap .fixed .btnArea .likebtn:hover {color: var(--main-color);}
+.detailwrap .fixed .btnArea .reviewbtn:hover {color: var(--sub-color);}
 
 .detailwrap .right {width: calc(100% - 6rem - 30%);}
 .detailwrap .cont .tit {width: 100%; margin-bottom: 2rem;}
@@ -114,3 +118,13 @@ button .starActive {color: var(--main-color);}
 .detailwrap .ratingwrap .ratings .txt .name {font-size: 1rem; font-weight: 500; color: var(--txt-color);}
 .detailwrap .ratingwrap .ratings .txt .starrating .star span {font-size: 0.938rem;}
 .detailwrap .ratingwrap .ratings .txt .review {width: 100%;}
+
+
+/* 리뷰작성모달 */
+.modalCont .starrating {margin-bottom: 1rem;}
+.modalCont .starrating .star {display: flex; width: 100%; justify-content: center;}
+.modalCont .starrating .star span {font-size: 2.5rem;}
+.modalCont .reviewEdit {width: 100%; margin-top: 1rem;}
+.modalCont .reviewEdit .editArea {width: 100%; margin-bottom: 1rem; min-height: 6rem;}
+.modalCont .doublebutton {margin-top: 1rem; display: flex; flex-wrap: wrap; gap: 1rem; width: 100%;}
+.modalCont .doublebutton a, .form .doublebutton button {width: calc((100% - 1rem) / 2);}

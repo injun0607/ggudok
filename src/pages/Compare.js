@@ -88,7 +88,10 @@ const Compare = () => {
                 <h3>{compareItem1.name}</h3>
               </div>
               <div className={style.box}>
-                <p>{compareItem1.category}</p>
+                <div className={style.category}>
+                  <img src={`${compareItem1.icon}`} alt={compareItem1.category} />
+                  <p>{compareItem1.category}</p>
+                </div>
                 <h3>카테고리</h3>
               </div>
               <div className={style.box}>
@@ -125,7 +128,10 @@ const Compare = () => {
                 <h3>{compareItem2.name}</h3>
               </div>
               <div className={style.box}>
-                <p>{compareItem2.category}</p>
+                <div className={style.category}>
+                  <img src={`${compareItem2.icon}`} alt={compareItem2.category} />
+                  <p>{compareItem2.category}</p>
+                </div>
                 <h3>카테고리</h3>
               </div>
               <div className={style.box}>

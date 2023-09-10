@@ -49,6 +49,8 @@
 .boxrow .box.titbox img {border-radius: var(--radius-all-xs); max-width: 10rem; max-height: 10rem;}
 .boxrow .box.titbox h3 {font-size: 1.5rem; color: var(--txt-color);}
 .boxrow .box {text-align: center;}
+.boxrow .box .category {display: flex; justify-content: center; gap: 0.5rem; align-items: center;}
+.boxrow .box .category img {max-width: 1.5rem;}
 .boxrow .box p {font-size: 1.5rem; color: var(--txt-color);}
 .boxrow .box h3 {font-size: 1.063rem; color: var(--c-black-3); font-weight: 400; margin-top: 1.5rem;}
 .boxrow .box .starrating {width: 100%; display: flex; justify-content: center;}
