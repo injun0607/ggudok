@@ -21,8 +21,9 @@ public class MemberController {
         if (isSuccess) {
             return "성공";
         } else {
-            return "실패";
+            return "실패.";
         }
+
 
     }
 }
