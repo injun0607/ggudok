@@ -12,6 +12,7 @@ import Error from './Error.js'
 import ErrorItem from './ErrorItem.js'
 import AdminHeader from './Admin/AdminHeader';
 import AdminFooter from './Admin/AdminFooter';
+import Loading from './Loading';
 // page import
 import Home from '../pages/Home';
 import Login from '../pages/Auth/Login';
@@ -56,9 +57,15 @@ const Layout = () => {
 					<Route path="/Admin/AdminHome" element={<AdminHome isadminLayout />} />
 
 					<Route path='/Mypage' element={ <Mypage /> }>
-						<Route path="MySubscribe" element={ <MySubscribe /> } />
-						<Route path="MyReview" element={ <MyReview /> } />
-						<Route path="MyLike" element={ <MyLike /> } />
+						<Route path="MySubscribe" element={
+          	<Suspense fallback={ <Loading /> }><MySubscribe /></Suspense>
+						} />
+						<Route path="MyReview" element={
+          	<Suspense fallback={ <Loading /> }><MyReview /></Suspense>
+						} />
+						<Route path="MyLike" element={
+          	<Suspense fallback={ <Loading /> }><MyLike /></Suspense>
+						} />
 					</Route>
 
 					<Route path='/Auth/Login' element={ <Login /> }></Route>
@@ -66,25 +73,25 @@ const Layout = () => {
 					<Route path='/Auth/JoinEmail' element={ <JoinEmail /> }></Route>
 					<Route path='/Auth/EditProfile' element={ <EditProfile /> }></Route>
 
-					<Route path='/SearchItemlist/:searchQuery' element={ <SearchItemlist /> }></Route>
+					<Route path='/SearchItemlist' element={ <Suspense fallback={ <Loading /> }><SearchItemlist /></Suspense>} />
 
 					{categories.map((category) => (
 						<Route
 							key={category.categoryEng}
 							path={`/Category/${category.categoryEng}`}
-							element={<Itemlist category={category.category} />}
+							element={ <Suspense fallback={ <Loading /> }><Itemlist category={category.category} /></Suspense>}
 						/>
 					))}
 					{featuredcategories.map((featuredcategories) => (
 						<Route
 							key={featuredcategories.categoryEng}
 							path={`/Category/${featuredcategories.categoryEng}`}
-							element={<FeaturedItemlist category={featuredcategories.category} />}
+							element={ <Suspense fallback={ <Loading /> }><FeaturedItemlist category={featuredcategories.category} /></Suspense>}
 						/>
 					))}
 
 					<Route path='/ItemDetail/:itemId' element={
-          	<Suspense fallback={ <div>Loading...</div> }>
+          	<Suspense fallback={ <Loading /> }>
 							<ItemDetail />
 						</Suspense>
 						} />

@@ -3,7 +3,7 @@ import userReducer from './userReducer';
 import subscriptionReducer from './subscriptionReducer';
 import paymentReducer from './paymentReducer';
 import searchReducer from './searchReducer';
-import {categoryReducer, categoryToEngReducer} from './categoryReducer';
+import { categoryReducer } from './categoryReducer';
 import itemReducer from './itemReducer';
 import filterReducer from './filterReducer';
 import compareReducer from './compareReducer';
@@ -18,7 +18,6 @@ const rootReducer = combineReducers({
   payment: paymentReducer,
   search: searchReducer,
   category: categoryReducer,
-  categorytoeng: categoryToEngReducer,
   item: itemReducer,
   filter: filterReducer,
   compare: compareReducer,

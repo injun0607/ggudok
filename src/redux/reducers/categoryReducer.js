@@ -44,13 +44,4 @@ const categoryReducer = (state = initialState, action) => {
   }
 };
 
-const categoryToEngReducer = (state = null, action) => {
-  const { categories } = initialState;
-  if (action.type === 'GET_CATEGORY_ENG') {
-    const transformedCategory = categories.find((cat) => cat.category === action.payload.category)?.categoryEng;
-    return transformedCategory;
-  }
-  return state;
-};
-
-export { categoryReducer, categoryToEngReducer };
+export { categoryReducer };

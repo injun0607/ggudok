@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 // css import
 import style from '../../styles/Mypage.module.css'
@@ -34,6 +34,10 @@ function ReviewItem({ review }) {
     setEditStar(clickStates);
   };
   let resultEditStar = editStar.filter(Boolean).length;
+
+  useEffect(() => {
+    return () => { setEditStar(review.star); };
+  }, [dispatch, isediting])
 
   return (
     <article className={style.rating}>

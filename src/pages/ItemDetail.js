@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams, Link } from 'react-router-dom';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
@@ -11,6 +11,7 @@ import Error from '../components/Error';
 // redux import
 import { setLikedItem, } from '../redux/actions/itemActions';
 import { setReviewModal, } from '../redux/actions/reviewActions';
+import { hover } from '@testing-library/user-event/dist/hover';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -26,18 +27,17 @@ const ItemDetail = () => {
   const reviews = useSelector(state => state.review.reviews);
 
   const [isLikedOn, setIsLikedOn] = useState(false);
-  const [clickMoreReview, setClickMoreReview] = useState(0);
   
   const { itemId } = useParams();
-
+  
   // 해당 아이템의 리뷰 filter
   const filteredReviews = reviews.filter(review => review.itemid === itemId );
-
+  
   // 리뷰 페이지네이션 구현
   const [currentPage, setCurrentPage] = useState(1);
-
+  
   const totalPages = Math.ceil(filteredReviews.length / ITEMS_PER_PAGE);
-
+  
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const endIndex = startIndex + ITEMS_PER_PAGE;
   const slicedReviews = filteredReviews.slice(startIndex, endIndex);
@@ -74,7 +74,6 @@ const ItemDetail = () => {
     <section className={style.pagewrapPd}>
       <div className='webwidth'>
         <div className={style.detailwrap}>
-
           <section className={style.left}>
             <div className={style.fixed}>
               <div className={style.box}>
@@ -99,7 +98,7 @@ const ItemDetail = () => {
                     <span className={`material-icons ${style.starActive}`}>star</span>
                     <span className="material-icons">star</span>
                   </div>
-                  <p className='txt_ex'>4명의 사람들이 평가했어요.</p>
+                  <p className='txt_ex'>{filteredReviews.length}명의 사람들이 평가했어요.</p>
                 </div>
               </div>
               <div className={style.btnArea}>
@@ -112,7 +111,6 @@ const ItemDetail = () => {
               </div>
             </div>
           </section>
-
           <section className={style.right}>
             <article className={`${style.cont} ${style.detailLg}`}>
               <div className={style.img}>
@@ -128,7 +126,7 @@ const ItemDetail = () => {
               <div className={style.tit}>
                 <h3>구독자 한줄평</h3>
               </div>
-              {filteredReviews.index > 0 ? <div className={style.ratings}>
+              {filteredReviews.length > 0 ? <div className={style.ratings}>
                 {slicedReviews.map((slicedReview, index) => (
                   <article className={style.rating} key={index}>
                   <div className={style.userImg}>
@@ -153,7 +151,7 @@ const ItemDetail = () => {
                 ))}
               </div>
               : <div className='txt_grey txt_center'>등록된 리뷰가 없습니다.</div> }
-              { filteredReviews.index > 5 ? <div className='pagination-wrap'>
+              { filteredReviews.length > 5 ? <div className='pagination-wrap'>
                 <div className='pagination'>
                   <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>
                   <span className='material-icons'>chevron_left</span>
@@ -217,11 +215,12 @@ const ReviewModal = () => {
   // 리뷰모달팝업
   const handleReviewModal = () => { dispatch(setReviewModal()) }
 
+  //별점 수정
   const [editStar, setEditStar] = useState([false, false, false, false, false]);
-  const handleEditStar = index => {
+  const handleEditStar = editstarIndex => {
     let clickStates = [...editStar];
     for (let i = 0; i < 5; i++) {
-      clickStates[i] = i <= index ? true : false;
+      clickStates[i] = i <= editstarIndex ? true : false;
     }
     setEditStar(clickStates);
   };
@@ -240,6 +239,7 @@ const ReviewModal = () => {
                 key={editstarIndex}
                 className={`material-icons ${style.editStar} ${EditActive ? style.starActive : ''}`}
                 onClick={() => handleEditStar(editstarIndex)}
+                onMouseEnter={() => handleEditStar(editstarIndex)}
               >
                 star
               </span>

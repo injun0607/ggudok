@@ -24,7 +24,7 @@ const Header = () => {
 	</header>
   )
 }
-
+// 상단 메뉴
 const Topheader = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -42,7 +42,7 @@ const Topheader = () => {
 		e.preventDefault();
 		// 검색 실행 또는 다른 작업 수행
 		// 검색 결과 페이지로 이동
-		navigate(`/SearchItemlist/${searchQuery}`);
+		navigate(`/SearchItemlist?q=${searchQuery}`);
 	}
 	return (
 		<div className={style.header}>
@@ -82,16 +82,19 @@ const Topheader = () => {
 		</div>
 	)
 }
-
+// 하단메뉴 전체카테고리/드롭다운 메뉴
 const Allcategory = () => {
   const dispatch = useDispatch();
 
   const categories = useSelector(state => state.category.categories);
   const dropCategory = useSelector(state => state.category.dropCategory);
-
+	
 	const handleTwodepth = () => {
 		dispatch(setDropCategory());
 	}
+	
+	const dropdownRef = useRef(null);
+	useOutsideClick(dropdownRef);
 
 	return (
 		<nav className={style.allcategory}>
@@ -100,7 +103,7 @@ const Allcategory = () => {
 				전체카테고리
 			</div>
 			{dropCategory ? 
-				<div className={style.twodepth}>
+				<div className={style.twodepth} ref={dropdownRef}>
 					{
 						categories.map((category, index) => 
 						<Link
@@ -117,7 +120,23 @@ const Allcategory = () => {
 		</nav>
 	)
 }
-
+// 드롭메뉴 다른 곳 눌렀을 때 꺼지기
+function useOutsideClick(ref) {
+  const dispatch = useDispatch();
+	
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (ref.current && !ref.current.contains(event.target)) {
+				dispatch(setDropCategory());
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [dispatch, ref]);
+}
+// 중간 메뉴
 const Featuredcategory = () => {
   const featuredcategories = useSelector(state => state.category.featuredcategories);
 	return (
@@ -125,7 +144,7 @@ const Featuredcategory = () => {
 			{
 				featuredcategories.map((category, index) =>
 					<Link
-						to={`/Category/${category.categoryEng}`} // Use 'to' instead of 'href'
+						to={`/Category/${category.categoryEng}`}
 						className={style.depths}
 						key={index}
 					>

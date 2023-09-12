@@ -1,17 +1,23 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 // css import
 import style from '../styles/Item.module.css';
 // component import
 import Filteraside from '../components/Filteraside';
+import ErrorItem from '../components/ErrorItem';
+// redux import
+import { setNoResult } from '../redux/actions/itemActions';
 
 const ITEMS_PER_PAGE = 15;
 const NO_IMAGE_URL = '/images/common/noimg.png';
 
 const Itemlist = ({ category }) => {
+  let dispatch = useDispatch()
+
   const items = useSelector(state => state.item.items);
   const filteredItems = items.filter(item => item.category === category);
+  const noResult = useSelector(state => state.item.noResult);
 
   // 페이지네이션 구현
   const [currentPage, setCurrentPage] = useState(1);
@@ -28,6 +34,14 @@ const Itemlist = ({ category }) => {
     }
   };
 
+
+  // 존재하지 않는 아이템 검사
+  useEffect(() => {
+    console.log(filteredItems.length)
+    if (filteredItems.length === 0) { dispatch(setNoResult(false)) }
+    else { dispatch(setNoResult(true)) }
+  }, [dispatch, filteredItems])
+
   return (
     <section className={style.pagewrap}>
       <div className='webwidth'>
@@ -39,7 +53,7 @@ const Itemlist = ({ category }) => {
           <section className={style.right}>
             <div className={style.section}>
               <div className={style.itemlist}>
-                {slicedItems.map((item, index) => (
+                {noResult ? slicedItems.map((item, index) => (
                   <Link to={`/ItemDetail/${item.id}`} key={index} className={style.item}>
                     {/* <div className={style.item}> */}
                       <div className={style.img}>
@@ -54,11 +68,11 @@ const Itemlist = ({ category }) => {
                       </div>
                     {/* </div> */}
                   </Link>
-                ))}
+                )) : <ErrorItem />}
               </div>
             </div>
 
-            <div className='pagination-wrap'>
+            {noResult && <div className='pagination-wrap'>
               <div className='pagination'>
                   <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>
                   <span className='material-icons'>chevron_left</span>
@@ -68,7 +82,7 @@ const Itemlist = ({ category }) => {
                   <span className='material-icons'>chevron_right</span>
                   </button>
                 </div>
-            </div>
+            </div>}
           </section>
         </div>
       </div>

@@ -108,6 +108,7 @@ const initialState = {
   ],
   likeditems: [
   ],
+  noResult: true,
 };
 
 const itemReducer = (state = initialState, action) => {
@@ -130,7 +131,12 @@ const itemReducer = (state = initialState, action) => {
           ...state,
           likeditems: [...state.likeditems, action.payload],
         };
-      }
+      };
+    case 'SET_NORESULT':
+      return {
+        ...state,
+        noResult: action.payload,
+      };
     default:
       return state;
   }
