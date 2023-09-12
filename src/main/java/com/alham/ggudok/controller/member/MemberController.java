@@ -23,7 +23,7 @@ public class MemberController {
         } else {
             return "실패";
         }
-
-
     }
+
+
 }

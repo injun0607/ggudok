@@ -10,7 +10,7 @@ import static lombok.AccessLevel.PROTECTED;
 @Entity
 @Getter
 @NoArgsConstructor(access = PROTECTED)
-public class SubsContents {
+public class SubsContent {
 
     @Id
     @GeneratedValue
@@ -22,4 +22,13 @@ public class SubsContents {
     private SubsRank subsRank;
 
     private String content;
+
+    public SubsContent(String content) {
+        this.content = content;
+    }
+
+    public void addSubsRank(SubsRank subsRank) {
+        this.subsRank = subsRank;
+        subsRank.getContents().add(this);
+    }
 }

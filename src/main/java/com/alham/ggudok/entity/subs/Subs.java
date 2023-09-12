@@ -44,4 +44,10 @@ public class Subs {
     public Subs(String subsName) {
         this.subsName = subsName;
     }
+
+    public void addCategory(Category category) {
+        this.category = category;
+        category.getSubsList().add(this);
+    }
+
 }

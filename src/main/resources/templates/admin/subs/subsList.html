@@ -1,0 +1,33 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header" />
+<body>
+<div class="container">
+    <div th:replace="fragments/bodyHeader :: bodyHeader"/>
+    <div>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>카테고리</th>
+                <th>이름</th>
+                <th>
+                    <a href="#" th:href="@{/admin/register/category}"
+                       class="btn btn-primary" role="button">카테고리 등록</a>
+                </th>
+            </tr>
+
+            </thead>
+            <tbody>
+            <tr th:each="subs : ${subsList}">
+                <td th:text="${subs.subsId}"></td>
+                <td th:text="${subs.category.categoryName}"></td>
+                <td th:text="${subs.subsName}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div th:replace="fragments/footer :: footer"/>
+</div> <!-- /container -->
+</body>
+</html>

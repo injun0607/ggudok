@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static jakarta.persistence.CascadeType.ALL;
@@ -31,11 +32,19 @@ public class SubsRank {
     @JoinColumn(name = "subs_id")
     private Subs subs;
 
-    @OneToMany(mappedBy = "subsRank",cascade = ALL)
-    private List<SubsContents> contents;
+    @OneToMany(mappedBy = "subsRank", cascade = ALL)
+    private List<SubsContent> contents = new ArrayList<>();
 
+    public SubsRank(String rankName, int price, RankLevel rankLevel) {
+        this.rankName = rankName;
+        this.price = price;
+        this.rankLevel = rankLevel;
+    }
 
-
+    public void addSubs(Subs subs) {
+        this.subs = subs;
+        subs.getSubsRanks().add(this);
+    }
 
 
 }
