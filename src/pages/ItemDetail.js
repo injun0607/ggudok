@@ -295,8 +295,8 @@ export const dataGender = {
       label: '구독자 수',
       data: [12, 19],
       backgroundColor: [
-        '#FDBF50',
-        '#80C3FC',
+        '#d4d9dd',
+        '#858c94',
         // '#FFCA7A',
         // '#FFD699',
         // '#FFE3B8',

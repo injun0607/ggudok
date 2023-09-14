@@ -7,6 +7,7 @@
 }
 .login {padding: 4rem 0; box-sizing: border-box;}
 .join .form, .login .form {max-width: 36rem; margin: 0 auto;}
+.contactus .form {max-width: 50rem; margin: 0 auto;}
 .form form {display: flex; gap: 1rem; flex-wrap: wrap;}
 .form form .inputwrap {width: 100%; display: flex; flex-wrap: wrap; gap: 1rem;}
 .auth .form input {
