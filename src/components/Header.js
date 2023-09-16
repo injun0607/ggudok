@@ -18,7 +18,7 @@ const Header = () => {
 				<Allcategory />
 				<Featuredcategory />
 
-				<Link to="/Contactus" className={style.pointdepth}><p>Contact Us</p></Link>
+				<Link to="/Contactus" className={style.pointdepth}><span className='material-icons'>mail</span><p>Contact Us</p></Link>
 			</div>
 		</div>
 	</header>
@@ -31,19 +31,16 @@ const Topheader = () => {
   const isLoggedIn = useSelector(state => state.user.isLoggedIn);
   const searchQuery = useSelector(state => state.search.searchQuery);
 	const handleLogout = () => {
-    // 로그아웃 처리
     dispatch(logout());
   };
 	const handleSearchChange = (e) => {
-		// 검색어 입력 시 검색어 상태 변경
 		dispatch(setSearchQuery(e.target.value));
 	}
 	const handleSearchSubmit = (e) => {
 		e.preventDefault();
-		// 검색 실행 또는 다른 작업 수행
-		// 검색 결과 페이지로 이동
 		navigate(`/SearchItemlist?q=${searchQuery}`);
 	}
+
 	return (
 		<div className={style.header}>
 			<div className='webwidth'>
@@ -55,9 +52,10 @@ const Topheader = () => {
 						<form onSubmit={ handleSearchSubmit } className={style.searchbar}>
 							<input
 								type='text'
-								placeholder='관심있는 구독서비스 또는 태그를 입력하세요.'
+								placeholder='구독서비스 또는 태그를 입력하세요.'
 								value={ searchQuery }
 								onChange={ handleSearchChange }
+								id='searchInput'
 							/>
 							<button type='submit'><span className='material-icons'>search</span></button>
 						</form>
@@ -100,7 +98,7 @@ const Allcategory = () => {
 		<nav className={style.allcategory}>
 			<div className={style.onedepth} onClick={ handleTwodepth }>
 				<span className='material-icons'>menu</span>
-				전체카테고리
+				<p>전체카테고리</p>
 			</div>
 			{dropCategory ? 
 				<div className={style.twodepth} ref={dropdownRef}>

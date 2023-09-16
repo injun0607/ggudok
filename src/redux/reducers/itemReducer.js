@@ -1,7 +1,7 @@
 const initialState = {
   items: [
     // Category: 영상
-  { id: '1', name: '스마트비디오', category: '영상', tag: '20대 여성', icon: '/images/icons/ott.svg', image: '/images/thumbnails/thumb00.png' },
+  { id: '1', name: '스마트비디오', category: '영상', tag: ['20대', '30대', '여성'], icon: '/images/icons/ott.svg', image: '/images/thumbnails/thumb00.png' },
   { id: '2', name: '클립비젼', category: '영상', tag: '20대 남성', icon: '/images/icons/ott.svg', image: '/images/thumbnails/thumb02.png' },
   { id: '3', name: '월드픽', category: '영상', tag: '30대 여성', icon: '/images/icons/ott.svg', image: '/images/thumbnails/thumb03.png' },
   { id: '4', name: '무비스톤', category: '영상', tag: '30대 남성', icon: '/images/icons/ott.svg', image: '/images/thumbnails/thumb00.png' },

@@ -10,6 +10,7 @@
 .header .search {flex-grow: 1;}
 .header .search .searchbar {float: right; width: 24rem; border: 1px solid var(--c-black-5); overflow: hidden; border-radius: var(--radius-all-lg); padding: 0 0.25rem 0 0.5rem; display: flex; align-items: center; background: var(--bg-color-2);}
 .header .search .searchbar input {width: calc(100% - 2rem); border: none; background: var(--bg-color-2);}
+.header .search .searchbar button {background: none;}
 .header .search .searchbar span {cursor: pointer; color: var(--txt-color);}
 .header .link {padding: 1.25rem 0 0; display: flex; justify-content: space-between; gap: 3rem;}
 .header .link .nav {display: flex; gap: 1rem; align-items: center; font-size: 0.925rem;}
@@ -30,7 +31,33 @@
 .category .featuredcategory {display: flex; gap: 5.5rem; font-weight: 500; font-size: 1.125rem;}
 .category .featuredcategory a { color: var(--txt-color);}
 .category .pointdepth {border: 1px solid var(--c-black-6); padding: 0.325rem 1rem; border-radius: var(--radius-all-md); color: var(--main-color); font-weight: 500; transition: 0.3s; font-size: 0.925rem;}
+.category .pointdepth span {display: none;}
 .category .pointdepth:hover {background: var(--bg-color-2);}
 
-@media screen and (max-width:1300px) {
+@media screen and (max-width:800px) {
+  .header .logo a, .header .logo a span {font-size: 1.825rem;}
+  .header .link {flex-wrap: wrap; gap: 1rem; padding-top: 3.5rem;}
+  .header .link .nav {width: 100%; justify-content: flex-end; position: absolute; right: 1.125rem; top: 0.75rem;}
+  .header .link .logo {max-width: 50px;}
+  .header .link .search {width: calc(100% - 60px - 6rem); flex-grow: inherit;}
+  .header .search .searchbar {width: 100%;}
+  .header .search .searchbar input {height: 32px;}
+  
+  .category {padding: 1.25rem 0 1rem}
+  .category .allcategory .twodepth {top: 4.5rem;}
+  .category .featuredcategory {gap: 3rem;}
+}
+@media screen and (max-width:640px) {
+  .category .allcategory .onedepth p {display: none;}
+  .category .pointdepth {border: 0; padding: 0;}
+  .category .pointdepth span {display: inline-block;}
+  .category .pointdepth p {display: none;}
+}
+@media screen and (max-width:480px) {
+  .header .link .search {width: calc(100% - 50px - 1rem);}
+  .header .link .search input::placeholder {letter-spacing: -1px;}
+  .category>div {gap: 1rem;}
+  .category .featuredcategory {gap: 2rem;}
+  .category .featuredcategory p {letter-spacing: -1px;}
+  
 }

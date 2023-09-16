@@ -10,6 +10,7 @@
 .section .tit {
     font-size: 1.5rem;
     color: var(--txt-color);
+    font-weight: 600;
 }
 .box {
     width: 100%;
@@ -20,7 +21,7 @@
     box-shadow: 4px 12px 30px 6px rgba(0,0,0,.09);
     transition: all .3s ease;
     margin-top: 2rem;
-    padding: 1.5rem 1.75rem;
+    padding: 1.5rem 0 1.25rem;
     justify-content: space-evenly;
 }
 /* .box:hover {
@@ -34,3 +35,33 @@
 }
 .category p {font-size: 1rem; font-weight: 600; color: var(--txt-color); text-align: center; margin-top: 1rem;}
 .home .section:last-child {margin-bottom: 2rem;}
+
+
+@media screen and (max-width:800px) {
+    .home {padding-top: 3rem;}
+    .section .tit {font-size: 1.325rem;}
+    .section {margin-top: 2.5rem;}
+    .box {margin-top: 1.5rem; padding: 1.125rem 1.25rem; overflow-x: auto; justify-content: flex-start; border-radius: var(--radius-all-xs);}
+    /* .category {width: calc((100% - 4rem) / 5);} */
+    /* 수평 스크롤바 커스터마이징 */
+    .box::-webkit-scrollbar {
+        height: 6px;
+    }
+    .box::-webkit-scrollbar-track {
+        background: #f1f1f1;
+    }
+    .box::-webkit-scrollbar-thumb {
+        background: var(--sub-color-5);
+        border-radius: 6px;
+    }
+    .box::-webkit-scrollbar-thumb:hover {
+        background: var(--sub-color-4);
+    }
+    .category {min-width: 50px;}
+    .category img {width: 1.75rem;}
+    .category p {margin-top: 0.5rem;}
+}
+
+@media screen and (max-width:480px) {
+    /* .category {width: calc((100% - 3rem) / 4);} */
+}

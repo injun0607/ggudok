@@ -7,7 +7,7 @@
 /**************************************************************/
 /**************************************************************/
 
-html, body { font-size: 15px; }
+html, body { font-size: 14px; }
 :root {
     --web-width: 100%;
 }
@@ -28,8 +28,10 @@ html, body { font-size: 15px; }
     overflow-x: auto;
     overflow-y: hidden;
 }
-.webwidth {padding: 0 1.125rem;}
+.webwidth {width: 100%; padding: 0 1.125rem; box-sizing: border-box;}
 .webwidth_pd {padding: 2rem 1.125rem;}
+
+.page_tit h2 {font-size: 2rem;}
 
 /* ---------------------- 슬라이더 ------------------------*/
 .react-slideshow-container .nav:first-of-type {left: 1rem;}
@@ -52,9 +54,23 @@ html, body { font-size: 15px; }
 
 
 
-/*--------------------------------------700----------------------------------*/
-@media screen and (max-width:700px) {
-   
+/*--------------------------------------800----------------------------------*/
+@media screen and (max-width:800px) {
+.page_tit h2 {font-size: 1.75rem;}
+.page_tit.page_tit-side {padding-top: 5rem;}
+
+/* ---------------------- 리스트 (박스) ------------------------*/
+.item-list {flex-wrap: wrap;}
+.item-list-box {width: calc((100% - 1.5rem) / 2);}
+
+/* ---------------------- 슬라이더 ------------------------*/
+.bannerslider {height: 12rem;}
+.bannerslider .tag {margin-top: 0;}
+.bannerslider .tag p {padding: 0.125rem 0.5rem;}
+.bannerslider h3 {font-size: 1.5rem; margin: 1rem 0 0.75rem;}
+.bannerslider h4 {font-size: 1.085rem; margin: 0 0 0.5rem;}
+.react-slideshow-container .default-nav {width: 18px; height: 18px; min-width: inherit; min-height: inherit;}
+.react-slideshow-container .default-nav svg {object-fit: cover; width: 100%; height: 100%;}
 }
 
 

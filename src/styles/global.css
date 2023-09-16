@@ -403,15 +403,6 @@ accent-color: #FF724C;
     color: var(--txt-color);
 }
 .page_tit.page_tit-side {padding-top: 4rem;}
-.page_tit h2 {
-    font-size: 2.25rem;
-    margin-bottom: 3.125rem;
-    text-align: center;
-    width: 100%;
-    letter-spacing: 1px;
-    font-weight: 500;
-    color: var(--txt-color);
-}
 /* ------서브페이지 두번째 제목 (bullet 없는 센터버전)-------*/
 .cont_tit_m h2 {
     font-size: 2rem;
@@ -976,7 +967,7 @@ table .sub_tit:last-child {
     transform: translateY(-5px);
     box-shadow: 4px 12px 20px 6px rgba(0,0,0,.18);
 }
-.item-list-box .rank {position: absolute; background: var(--main-color); border-top: 5px solid var(--main-color-2); border-radius: 0 0 10rem 10rem; z-index: 9; left: 2rem; padding: 1rem 1.25rem;box-shadow: rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgb(35 40 45 / 20%) 0px 0px 15px 0px; -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px);}
+.item-list-box .rank {position: absolute; background: var(--main-color); border-top: 5px solid var(--main-color-2); border-radius: 0 0 10rem 10rem; z-index: 9; left: 2rem; padding: 0.5rem 1rem 0.75rem;box-shadow: rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgb(35 40 45 / 20%) 0px 0px 15px 0px; -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px);}
 .item-list-box .rank .rankNum {color: #fff; font-size: 1.25rem; font-weight: 900;}
 .item-list-box .img {height: 12rem;}
 .item-list-box .img img {width: 100%; height: 100%; object-fit: cover;}
