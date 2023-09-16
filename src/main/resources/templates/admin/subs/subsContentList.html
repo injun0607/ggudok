@@ -1,0 +1,42 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header" />
+<body>
+<div class="container">
+    <div th:replace="fragments/bodyHeader :: bodyHeader"/>
+    <div>
+        <table class="table table-striped">
+            <div>
+                <a th:text="${subs.getSubsName()}"></a>
+            </div>
+            <div>
+                <a th:text="${subsRank.getRankName()}"></a>
+            </div>
+
+            <thead>
+                <div>
+                    <a href="#" th:href="@{/admin/subs/{subsId}/{subsRankId}/contents/add (subsId=${subs.getSubsId()} ,subsRankId=${subsRank.getRankId()})}"
+                       class="btn btn-primary" role="button">구독 컨텐츠 등록</a>
+                </div>
+                <tr>
+                    <th>#</th>
+                    <th>컨텐츠내용</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="content : ${contents}">
+                    <td th:text="${content.contentId}"></td>
+                    <td th:text="${content.content}"></td>
+
+                    <td>
+                        <a href="#"
+                           class="btn btn-primary" role="button">수정</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div th:replace="fragments/footer :: footer"/>
+</div> <!-- /container -->
+</body>
+</html>

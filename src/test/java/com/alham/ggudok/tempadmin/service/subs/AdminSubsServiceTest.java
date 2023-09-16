@@ -134,17 +134,17 @@ class AdminSubsServiceTest {
         em.clear();
         //when
 
-        subsAdminService.addSubsContent(netflix.getSubsId(), "premium", "gift1");
-        subsAdminService.addSubsContent(netflix.getSubsId(), "premium", "gift2");
-        int netfilxPr = subsAdminService.addSubsContent(netflix.getSubsId(), "premium", "gift3");
+        subsAdminService.addSubsContent(netflix.getSubsId(), 1l, "gift1");
+        subsAdminService.addSubsContent(netflix.getSubsId(), 1l, "gift2");
+        int netfilxPr = subsAdminService.addSubsContent(netflix.getSubsId(), 1l, "gift3");
 
-        subsAdminService.addSubsContent(netflix.getSubsId(), "default", "gift4");
-        int netfilxDef = subsAdminService.addSubsContent(netflix.getSubsId(), "default", "gift5");
+        subsAdminService.addSubsContent(netflix.getSubsId(), 2l, "gift4");
+        int netfilxDef = subsAdminService.addSubsContent(netflix.getSubsId(), 2l, "gift5");
 
 
-        int memlonBasic = subsAdminService.addSubsContent(melon.getSubsId(), "basic", "gift6");
-        subsAdminService.addSubsContent(melon.getSubsId(), "super", "gift7");
-        int melonSu = subsAdminService.addSubsContent(melon.getSubsId(), "super", "gift8");
+        int memlonBasic = subsAdminService.addSubsContent(melon.getSubsId(), 3l, "gift6");
+        subsAdminService.addSubsContent(melon.getSubsId(), 4l, "gift7");
+        int melonSu = subsAdminService.addSubsContent(melon.getSubsId(), 4l, "gift8");
 
 
 

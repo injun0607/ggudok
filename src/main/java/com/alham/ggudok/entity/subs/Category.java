@@ -22,6 +22,8 @@ public class Category {
 
     private String categoryName;
 
+    private String categoryEng;
+
     @OneToMany(mappedBy = "category",cascade = ALL)
     private List<Subs> subsList = new ArrayList<>();
 

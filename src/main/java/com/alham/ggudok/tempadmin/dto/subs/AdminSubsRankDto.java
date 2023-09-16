@@ -2,8 +2,10 @@ package com.alham.ggudok.tempadmin.dto.subs;
 
 import com.alham.ggudok.entity.subs.RankLevel;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 public class AdminSubsRankDto {
 
     private String rankName;
@@ -15,4 +17,6 @@ public class AdminSubsRankDto {
         this.price = price;
         this.rankLevel = rankLevel;
     }
+
+
 }

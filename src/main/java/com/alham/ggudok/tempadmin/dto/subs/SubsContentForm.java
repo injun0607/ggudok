@@ -5,6 +5,8 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class CategoryRegisterDto {
-    private String categoryName;
+public class SubsContentForm {
+
+    private String content;
+
 }

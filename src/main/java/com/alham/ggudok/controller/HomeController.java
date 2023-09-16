@@ -18,9 +18,14 @@ public class HomeController {
         boolean isLogin = memberService.memberLoginCheck(loginDto);
         if (isLogin) {
             return "성공";
-        } else{
+        } else {
             return "실패";
         }
+    }
+
+    @GetMapping("/seohee")
+    public String seohee() {
+        return "서히야 안녕";
     }
 
 }

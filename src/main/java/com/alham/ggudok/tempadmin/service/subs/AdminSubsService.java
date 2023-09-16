@@ -45,6 +45,10 @@ public class AdminSubsService {
 
         return subs;
     }
+    @Transactional(readOnly = true)
+    public List<Category> findAllCategories() {
+        return categoryRepository.findAll();
+    }
 
     public Long addSubsRank(Long subsId, AdminSubsRankDto subsRankDto) {
 
@@ -57,12 +61,12 @@ public class AdminSubsService {
         return subsId;
     }
 
-    public int addSubsContent(Long subsId, String subsRankName, String content) {
+    public int addSubsContent(Long subsId, Long subsRankId, String content) {
         Subs subs = subsRepository.findById(subsId).get();
         SubsContent subsContent = new SubsContent(content);
 
         SubsRank subsRank = subs.getSubsRanks().stream()
-                .filter(s -> s.getRankName().equals(subsRankName))
+                .filter(s -> s.getRankId().equals(subsRankId))
                 .findFirst().get();
 
         subsContent.addSubsRank(subsRank);
@@ -86,4 +90,12 @@ public class AdminSubsService {
     public List<Subs> findSubs() {
         return subsRepository.findAll();
     }
+
+
+    public Subs findSubsById(Long subsId) {
+        return subsRepository.findById(subsId).get();
+
+    }
+
+
 }

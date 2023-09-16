@@ -1,0 +1,40 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header" />
+<body>
+<div class="container">
+    <div th:replace="fragments/bodyHeader :: bodyHeader"/>
+    <div>
+        <table class="table table-striped">
+            <thead>
+            <div>
+                <a href="#" th:href="@{/admin/subs/{subsId}/subsRank (subsId =${subsId})}"
+                   class="btn btn-primary" role="button">구독요금제 등록</a>
+            </div>
+            <div>
+                <a th:text="${subsName}"></a>
+            </div>
+            <tr>
+                <th>등급</th>
+                <th>이름</th>
+                <th>가격</th>
+            </tr>
+
+            </thead>
+            <tbody>
+            <tr th:each="subsRank : ${subsRanks}">
+                <td th:text="${subsRank.rankLevel}"></td>
+                <td th:text="${subsRank.rankName}"></td>
+                <td th:text="${subsRank.price}"></td>
+                <td>
+                    <a href="#" th:href="@{/admin/subs/{subsId}/{subsRankId}/contents (subsId=${subsId} ,subsRankId =${subsRank.getRankId()})}"
+                       class="btn btn-primary" role="button">상세 관리</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div th:replace="fragments/footer :: footer"/>
+</div> <!-- /container -->
+</body>
+</html>
