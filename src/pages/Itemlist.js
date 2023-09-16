@@ -37,7 +37,6 @@ const Itemlist = ({ category }) => {
 
   // 존재하지 않는 아이템 검사
   useEffect(() => {
-    console.log(filteredItems.length)
     if (filteredItems.length === 0) { dispatch(setNoResult(false)) }
     else { dispatch(setNoResult(true)) }
   }, [dispatch, filteredItems])

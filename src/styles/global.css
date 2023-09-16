@@ -969,7 +969,10 @@ table .sub_tit:last-child {
 }
 .item-list-box .rank {position: absolute; background: var(--main-color); border-top: 5px solid var(--main-color-2); border-radius: 0 0 10rem 10rem; z-index: 9; left: 2rem; padding: 0.5rem 1rem 0.75rem;box-shadow: rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgb(35 40 45 / 20%) 0px 0px 15px 0px; -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px);}
 .item-list-box .rank .rankNum {color: #fff; font-size: 1.25rem; font-weight: 900;}
-.item-list-box .img {height: 12rem;}
+.item-list-box .img {
+    /* height: 12rem; */
+    aspect-ratio: 3/2;
+}
 .item-list-box .img img {width: 100%; height: 100%; object-fit: cover;}
 .item-list-box .txt {
     /* background: var(--bg-color); */
@@ -981,7 +984,7 @@ table .sub_tit:last-child {
     font-size: 1.125rem;
     /* color: var(--txt-color); */
 }
-.item-list-box .tag {display: flex; gap: 0.5rem; margin-top: 1rem;}
+.item-list-box .tag {display: flex; gap: 0.5rem; margin-top: 1rem; flex-wrap: wrap;}
 .item-list-box .tag p {
     background: var(--sub-color-3);
     color: var(--sub-color-2);

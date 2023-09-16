@@ -1,3 +1,4 @@
+import React from 'react'
 // component import
 import Eventbanner from '../components/Eventbanner';
 // css import

@@ -1,7 +1,6 @@
 @charset "utf-8";
 
 .left {width: 18rem;}
-.left .category {}
 .sideBarTit {display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;}
 .sideBarTit h2 {font-size: 1.425rem; font-weight: 600; color: var(--txt-color);}
 .sideBarTit .resetBtn {font-size: 1rem; color: var(--sub-color-4); background: none; display: flex; align-items: center; font-weight: 600; gap: 0.125rem; transition: 0.3s;}
@@ -16,3 +15,12 @@
 .sideBar .filter .cont.hide {max-height: 0;}
 .sideBar .filter .cont select {width: 100%; border-radius: var(--radius-all-md); border: 1px solid var(--sub-color-5); padding: 0 1rem;}
 .checkInputWrap {margin-top: 10px;}
+
+@media screen and (max-width:640px) {
+  .left {width: 100%; background: var(--bg-color-2); padding: 1.25rem 1.325rem 1rem; border-radius: var(--radius-all-sm);}
+  .sideBarTit {margin-bottom: 0.5rem;}
+  .sideBar .filter {padding: 0.25rem 0 1rem; border-top: 1px solid var(--c-black-6);}
+  .sideBar .filter:last-child {padding-bottom: 0;}
+  .checkInputWrap {margin-top: 8px;}
+  .checkInputWrap:first-child {margin-top: 0;}
+}

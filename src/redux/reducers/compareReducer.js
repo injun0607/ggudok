@@ -1,8 +1,8 @@
 const initialState = {
   selectedOneDepth: '',
   twoDepthItems: [],
-  compareItem1: null,
-  compareItem2: null,
+  compareItem1: '',
+  compareItem2: '',
 };
 
 const compareReducer = (state = initialState, action) => {

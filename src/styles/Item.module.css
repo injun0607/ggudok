@@ -29,7 +29,8 @@
   cursor: pointer;
 }
 .itemlist .item .img {
-  height: 10rem;
+  /* height: 10rem; */
+  aspect-ratio: 1/1;
   border-radius: var(--radius-all-sm);
   overflow: hidden;
 }
@@ -128,3 +129,17 @@
 .modalCont .reviewEdit .editArea {width: 100%; margin-bottom: 1rem; min-height: 6rem;}
 .modalCont .doublebutton {margin-top: 1rem; display: flex; flex-wrap: wrap; gap: 1rem; width: 100%;}
 .modalCont .doublebutton a, .form .doublebutton button {width: calc((100% - 1rem) / 2);}
+
+
+@media screen and (max-width:1024px) {
+  .categorysection {gap: 2rem;}
+  .categorysection .right {width: calc(100% - 20rem); }
+  .itemlist {gap: 1.5rem;}
+  .itemlist .item {width: calc((100% - 1.5rem) / 2);}
+}
+
+
+@media screen and (max-width:640px) {
+  .categorysection {flex-wrap: wrap;}
+  .categorysection .right {width: 100%; }
+}

@@ -27,11 +27,8 @@
     <link rel="icon" href="%PUBLIC_URL%/images/favicon.ico" />
 
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <script>
-      if (global === undefined) {
-        var global = window;
-      }
-    </script>
+
+    <script>const global = globalThis;</script>
   </head>
   <body>
     <div id="root"></div>

@@ -39,7 +39,7 @@
 
 @media screen and (max-width:800px) {
     .home {padding-top: 3rem;}
-    .section .tit {font-size: 1.325rem;}
+    .section .tit {font-size: 1.325rem; line-height: 1.4em;}
     .section {margin-top: 2.5rem;}
     .box {margin-top: 1.5rem; padding: 1.125rem 1.25rem; overflow-x: auto; justify-content: flex-start; border-radius: var(--radius-all-xs);}
     /* .category {width: calc((100% - 4rem) / 5);} */

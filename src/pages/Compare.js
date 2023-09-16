@@ -38,8 +38,8 @@ const Compare = () => {
 
   // 카테고리 선택하지 않으면 아이템 선택 비활성화
   const isOneDepthSelected = selectedOneDepth !== '';
-  const isCompareItem1Selected = compareItem1 !== null;
-  const isCompareItem2Selected = compareItem2 !== null;
+  const isCompareItem1Selected = compareItem1.length !== 0;
+  const isCompareItem2Selected = compareItem2.length !== 0;
 
   return (
     <section className={style.pagewrapPd}>

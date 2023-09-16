@@ -2,7 +2,7 @@ const initialState = {
   price: [],
   rating: [],
   tag: [],
-  hideMenu: { price: false, rating: false, tag: true, }
+  hideMenu: { price: false, rating: false, tag: false, }
 };
 
 const filterReducer = (state = initialState, action) => {

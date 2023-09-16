@@ -92,6 +92,8 @@ html, body { font-size: 14px; }
     a.btn_write {
         margin-bottom: 10px;
     }
+    .checkbox-label {padding-left: 24px;}
+    .checkbox-label::after {width: 18px;height: 18px;background-size: cover; top: 0;}
    
 
     }
@@ -137,7 +139,12 @@ html, body { font-size: 14px; }
     .waiting_sub::before {width: 100%;}
     .waiting_sub p {font-size: 1rem;}
 
-   
+/* ---------------------- 리스트 (박스) ------------------------*/
+    /* .item-list-box .img {height: 8rem;} */
+    .item-list-box .txt {padding: 1rem;}
+    .item-list-box .txt h3 {font-size: 1rem;}
+    .item-list-box .tag {margin-top: 0.5rem;}
+    .item-list-box .tag p {letter-spacing: -1px;}
 }	
 	
 	

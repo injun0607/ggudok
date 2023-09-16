@@ -1,3 +1,4 @@
+import React from 'react'
 /* css import */
 import style from '../../styles/Admin/AdminFooter.module.css';
 

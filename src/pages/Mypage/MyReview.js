@@ -37,6 +37,7 @@ function ReviewItem({ review }) {
 
   useEffect(() => {
     return () => { setEditStar(review.star); };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, isediting])
 
   return (
@@ -62,6 +63,7 @@ function ReviewItem({ review }) {
                 key={editstarIndex}
                 className={`material-icons ${style.editStar} ${EditActive ? style.starActive : ''}`}
                 onClick={() => handleEditStar(editstarIndex)}
+                onMouseEnter={() => handleEditStar(editstarIndex)}
               >
                 star
               </span>

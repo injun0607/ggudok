@@ -83,6 +83,7 @@ const Topheader = () => {
 // 하단메뉴 전체카테고리/드롭다운 메뉴
 const Allcategory = () => {
   const dispatch = useDispatch();
+	const dropdownRef = useRef(null);
 
   const categories = useSelector(state => state.category.categories);
   const dropCategory = useSelector(state => state.category.dropCategory);
@@ -91,9 +92,23 @@ const Allcategory = () => {
 		dispatch(setDropCategory());
 	}
 	
-	const dropdownRef = useRef(null);
 	useOutsideClick(dropdownRef);
-
+	// 드롭메뉴 다른 곳 눌렀을 때 꺼지기
+	function useOutsideClick(ref) {
+		const dispatch = useDispatch();
+		
+		useEffect(() => {
+			function handleClickOutside(event) {
+				if (ref.current && !ref.current.contains(event.target)) {
+					dispatch(setDropCategory());
+				}
+			}
+			document.addEventListener("mousedown", handleClickOutside);
+			return () => {
+				document.removeEventListener("mousedown", handleClickOutside);
+			};
+		}, [dispatch, ref]);
+	}
 	return (
 		<nav className={style.allcategory}>
 			<div className={style.onedepth} onClick={ handleTwodepth }>
@@ -117,22 +132,6 @@ const Allcategory = () => {
 				</div> : null}
 		</nav>
 	)
-}
-// 드롭메뉴 다른 곳 눌렀을 때 꺼지기
-function useOutsideClick(ref) {
-  const dispatch = useDispatch();
-	
-  useEffect(() => {
-    function handleClickOutside(event) {
-      if (ref.current && !ref.current.contains(event.target)) {
-				dispatch(setDropCategory());
-      }
-    }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [dispatch, ref]);
 }
 // 중간 메뉴
 const Featuredcategory = () => {

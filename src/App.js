@@ -1,3 +1,4 @@
+import React from 'react'
 // component import
 import Layout from './components/Layout'
 // css import

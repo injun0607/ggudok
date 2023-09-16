@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 // css import
 import style from '../styles/Filter.module.css';
@@ -51,6 +51,29 @@ const Filteraside = () => {
     setSelectedRating([]);
     setSelectedTag([]);
   };
+
+  // 화면 너비에 따라 필터 접기
+  const [isResponsive, setIsResponsive] = useState(false);
+  useEffect(() => {
+    function handleResize() {
+      setIsResponsive(window.innerWidth <= 640);
+    }
+    window.addEventListener('resize', handleResize);
+    handleResize();
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  useEffect(() => {
+    if (isResponsive) {
+      dispatch(setHideMenu('price', false));
+      dispatch(setHideMenu('rating', false));
+      dispatch(setHideMenu('tag', false));
+    } else {
+      dispatch(setHideMenu('price', false));
+      dispatch(setHideMenu('rating', false));
+      dispatch(setHideMenu('tag', false));
+    }
+  }, [isResponsive, dispatch]);
 
   return (
     <aside className={style.left}>
