@@ -35,13 +35,10 @@ const ItemDetail = () => {
   
   // 리뷰 페이지네이션 구현
   const [currentPage, setCurrentPage] = useState(1);
-  
   const totalPages = Math.ceil(filteredReviews.length / ITEMS_PER_PAGE);
-  
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const endIndex = startIndex + ITEMS_PER_PAGE;
   const slicedReviews = filteredReviews.slice(startIndex, endIndex);
-
   const handlePageChange = (newPage) => {
     if (newPage >= 1 && newPage <= totalPages) {
       setCurrentPage(newPage);
