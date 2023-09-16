@@ -1,20 +1,15 @@
 package com.alham.ggudok.dto.subs;
 
-
 import com.alham.ggudok.entity.Tag;
-import com.alham.ggudok.entity.subs.SubsRank;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * subs객체 변환 Dto
- */
 @Data
 @NoArgsConstructor
-public class SubsDto {
+public class SubsDetailDto {
 
     private Long id;
 
@@ -28,10 +23,8 @@ public class SubsDto {
 
     private int ratingAvg = 3;
 
-    List<SubsRankDto> ranks = new ArrayList<>();
+    List<SubsRankDetailDto> ranks = new ArrayList<>();
 
     private List<Tag> tags = new ArrayList<>();
-
-
 
 }

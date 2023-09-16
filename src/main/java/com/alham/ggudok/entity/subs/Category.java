@@ -30,4 +30,9 @@ public class Category {
     public Category(String categoryName) {
         this.categoryName = categoryName;
     }
+
+    public Category(String categoryName, String categoryEng) {
+        this.categoryName = categoryName;
+        this.categoryEng = categoryEng;
+    }
 }

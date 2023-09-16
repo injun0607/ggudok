@@ -1,8 +1,10 @@
 package com.alham.ggudok.tempadmin.service.subs;
 
+import com.alham.ggudok.entity.Tag;
 import com.alham.ggudok.entity.subs.Category;
 import com.alham.ggudok.entity.subs.RankLevel;
 import com.alham.ggudok.entity.subs.Subs;
+import com.alham.ggudok.repository.TagRepository;
 import com.alham.ggudok.repository.subs.CategoryRepository;
 import com.alham.ggudok.repository.subs.SubsRepository;
 import com.alham.ggudok.tempadmin.dto.subs.AdminSubsRankDto;
@@ -29,6 +31,8 @@ class AdminSubsServiceTest {
     @Autowired
     SubsRepository subsRepository;
 
+    @Autowired
+    TagRepository tagRepository;
     @PersistenceContext
     EntityManager em;
 
@@ -160,5 +164,7 @@ class AdminSubsServiceTest {
 
 
     }
+
+
 
 }

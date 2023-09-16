@@ -25,4 +25,14 @@ public class SubsRelTag {
     @JoinColumn(name = "tag_id")
     private Tag tag;
 
+    public static SubsRelTag createSubsRelTag(Subs subs, Tag tag) {
+        SubsRelTag subsRelTag = new SubsRelTag(subs,tag);
+        subs.getSubsRelTags().add(subsRelTag);
+        return subsRelTag;
+    }
+
+    private SubsRelTag(Subs subs, Tag tag) {
+        this.subs = subs;
+        this.tag = tag;
+    }
 }

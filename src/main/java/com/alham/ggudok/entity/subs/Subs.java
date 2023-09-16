@@ -1,5 +1,7 @@
 package com.alham.ggudok.entity.subs;
 
+import com.alham.ggudok.entity.ImageResourceEntity;
+import com.alham.ggudok.entity.Tag;
 import com.alham.ggudok.entity.member.Review;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -18,7 +20,7 @@ import static lombok.AccessLevel.PROTECTED;
 @Entity
 @Getter
 @NoArgsConstructor(access = PROTECTED)
-public class Subs {
+public class Subs extends ImageResourceEntity {
     @Id
     @GeneratedValue
     @Column(name = "subs_id")
@@ -50,4 +52,8 @@ public class Subs {
         category.getSubsList().add(this);
     }
 
+
+    public void addTag(Tag tag) {
+        SubsRelTag subsRelTag = SubsRelTag.createSubsRelTag(this, tag);
+    }
 }

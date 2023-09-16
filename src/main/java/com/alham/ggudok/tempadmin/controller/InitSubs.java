@@ -37,8 +37,8 @@ public class InitSubs {
 
         @Transactional
         public void init() {
-            Category movie = new Category("영화");
-            Category music = new Category("음악");
+            Category movie = new Category("영화","ott");
+            Category music = new Category("음악","music");
 
             em.persist(movie);
             em.persist(music);
@@ -121,6 +121,7 @@ public class InitSubs {
             Tag age1 = new Tag("20대");
             Tag age2 = new Tag("30대");
             Tag age3 = new Tag("40대");
+
             Tag gender1 = new Tag("여성");
             Tag gender2 = new Tag("남성");
 
@@ -130,6 +131,19 @@ public class InitSubs {
 
             em.persist(gender1);
             em.persist(gender2);
+
+            netfilx.addTag(age1);
+            netfilx.addTag(age2);
+            netfilx.addTag(age3);
+
+            netfilx.addTag(gender1);
+            netfilx.addTag(gender2);
+
+            melon.addTag(age1);
+            melon.addTag(age2);
+
+            watcha.addTag(gender1);
+            watcha.addTag(gender2);
 
 
         }
