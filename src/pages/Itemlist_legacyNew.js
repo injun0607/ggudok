@@ -24,8 +24,6 @@ const Itemlist = ({ category, categoryEng }) => {
   const IsResult = useSelector(state => state.item.IsResult);
   const IsLoading = useSelector(state => state.item.IsLoading);
   const [filterTag, setFilterTag] = useState([]);
-  const [IsPager, setIsPager] = useState(false);
-  const [slicedItems, setSlicedItems] = useState([]);
 
   // ************************** 기본 아이템 fetch ***************************
   useEffect(() => {
@@ -38,7 +36,6 @@ const Itemlist = ({ category, categoryEng }) => {
         const tagsAll = data.map(item => item.tags.map(tag => tag.tagName)).flat();
         setFilterTag(tagsAll.reduce((ac, v) => ac.includes(v) ? ac : [...ac, v], []));
         dispatch(fetchItemsSuccess(data));
-        setSlicedItems([...items]);
         dispatch(setIsLoading(false));
         dispatch(setIsResult(true));
       } catch (error) {
@@ -47,8 +44,47 @@ const Itemlist = ({ category, categoryEng }) => {
       }
     };
     fetchData();
-  }, [categoryEng]);
+  }, [dispatch, categoryEng]);
 
+  // ************************ 필터 및 기본 아이템 페이저 **********************
+  const [IsPager, setIsPager] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [slicedItems, setSlicedItems] = useState(items.slice(0, ITEMS_PER_PAGE));
+  const totalPages = Math.ceil(items.length / ITEMS_PER_PAGE);
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const endIndex = startIndex + ITEMS_PER_PAGE;
+  useEffect(() => {
+    if (IsLoading) return;
+    if((selectedPrice !== null || selectedRating !== null || selectedTag.length !== 0) && filtereditems.length !== 0){ // 필터 O + 아이템 O
+      const newSlicedItems = filtereditems.slice(startIndex, endIndex);
+      console.log(`필터 O + 아이템 O`)
+      if(filtereditems.length > ITEMS_PER_PAGE){ setIsPager(true); }
+      setSlicedItems(newSlicedItems);
+      dispatch(setIsResult(true));
+      return;
+    } else if ((selectedPrice !== null || selectedRating !== null || selectedTag.length !== 0) && filtereditems.length === 0){ // 필터 O + 아이템 X
+      console.log(`필터 O + 아이템 X`)
+      dispatch(setIsResult(false));
+      return;
+    } else { // 필터 X + 아이템 X || 필터 X + 아이템 O
+      if(items.length === 0){
+        console.log(`필터 X + 아이템 X`)
+        dispatch(setIsResult(false));
+        return;
+      }
+      console.log(`필터 X + 아이템 O`)
+      const newSlicedItems = items.slice(startIndex, endIndex);
+      setSlicedItems(newSlicedItems);
+      dispatch(setIsResult(true));
+      if(filtereditems.length > ITEMS_PER_PAGE){ setIsPager(true); }
+    }
+  }, [IsLoading, selectedPrice, selectedRating, selectedTag]);
+  const handlePageChange = (newPage) => {
+    if (newPage >= 1 && newPage <= totalPages) {
+      setCurrentPage(newPage);
+    }
+  };
+  
   // ****************************** 필터 버튼 핸들러 *******************************
   // 리셋 버튼 핸들러
   const resetFilters = () => {
@@ -91,10 +127,24 @@ const Itemlist = ({ category, categoryEng }) => {
   };
 
   // 필터적용 핸들러
-  const handleFilteredItems = async() => {
-    let updateditems = items;
+  const handleFilteredItems = () => {
+    let filteredItems = items;
     if(selectedPrice !== null){
-      updateditems = updateditems.filter(item => {
+      console.log(`selectedPrice : ${selectedPrice}`)
+      // if(selectedPrice === 'priceRow'){
+      //   filteredItems = filteredItems.filter(item => 
+      //     item.ranks.some(rank => rank.price < 5900)
+      //   );
+      // } else if(selectedPrice === 'priceMedium'){
+      //   filteredItems = filteredItems.filter(item => 
+      //     item.ranks.some(rank => 5900 <= rank.price && rank.price <= 9900)
+      //   );
+      // } else {
+      //   filteredItems = filteredItems.filter(item => 
+      //     item.ranks.some(rank => rank.price > 9900)
+      //   );
+      // }
+      filteredItems = filteredItems.filter(item => {
         if (selectedPrice === 'priceRow') {
           return item.ranks.some(rank => rank.price < 5900);
         } else if (selectedPrice === 'priceMedium') {
@@ -106,39 +156,22 @@ const Itemlist = ({ category, categoryEng }) => {
     };
     if(selectedRating !== null){
       let selectedRatingAvg = parseInt(selectedRating.substr(-1));
-      updateditems = updateditems.filter(item => item.ratingAvg === selectedRatingAvg );
+      console.log(`selectedRatingAvg : ${selectedRatingAvg}`)
+      filteredItems = filteredItems.filter(item => item.ratingAvg === selectedRatingAvg );
     };
     if(selectedTag.length !== 0){
-      updateditems = updateditems.filter(item => 
+      filteredItems = filteredItems.filter(item => 
         selectedTag.every(selectedtag => 
           item.tags.some(tag => tag.tagName === selectedtag)
         )
       );
     };
-    dispatch(filterItem(updateditems));
-    setSlicedItems(updateditems);
+    dispatch(filterItem(filteredItems));
   }
   useEffect(() => {
     handleFilteredItems();
-  }, [selectedPrice, selectedRating, selectedTag]);
-
-  useEffect(() => {
-    if (!IsLoading) {
-      if (selectedPrice || selectedRating || selectedTag.length > 0) {
-        if(filtereditems.length !== 0){
-          dispatch(setIsResult(true));
-          setSlicedItems([...filtereditems]);
-        } else if((filtereditems.length === 0)) {
-          dispatch(setIsResult(false));
-          setSlicedItems([]);
-        }
-      } else {
-        dispatch(setIsResult(true));
-        setSlicedItems([...items]);
-      }
-    }
-  }, [IsLoading, filtereditems, items, selectedPrice, selectedRating, selectedTag]);
-
+  }, [selectedPrice,selectedRating,selectedTag]);
+  
 
   return (
     <section className={style.pagewrap}>
@@ -172,7 +205,7 @@ const Itemlist = ({ category, categoryEng }) => {
               </div>
             </div>
 
-            {/* {IsPager && <div className='pagination-wrap'>
+            {IsPager && <div className='pagination-wrap'>
               <div className='pagination'>
                   <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>
                   <span className='material-icons'>chevron_left</span>
@@ -182,7 +215,7 @@ const Itemlist = ({ category, categoryEng }) => {
                   <span className='material-icons'>chevron_right</span>
                   </button>
                 </div>
-            </div>} */}
+            </div>}
           </section>
         </div>
       </div>

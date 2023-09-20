@@ -5,7 +5,7 @@ import style from '../styles/Filter.module.css';
 // redux import
 import { setHideMenu } from '../redux/actions/filterActions';
 
-const Filteraside = ({ resetFilters, handleSelectedPrice, handleSelectedRating, handleSelectedTag, filterTag }) => {
+const Filteraside = ({ resetFilters, handleSelectedPrice, handleSelectedRating, handleSelectedTag, filterTag, handleFilteredItems }) => {
   const dispatch = useDispatch();
   const selectedPrice = useSelector(state => state.filter.selectedPrice);
   const selectedRating = useSelector(state => state.filter.selectedRating);
@@ -13,16 +13,6 @@ const Filteraside = ({ resetFilters, handleSelectedPrice, handleSelectedRating, 
   const hideMenuPrice = useSelector(state => state.filter.hideMenu.price);
   const hideMenuRating = useSelector(state => state.filter.hideMenu.rating);
   const hideMenuTag = useSelector(state => state.filter.hideMenu.tag);
-
-  // 체크박스 단일선택
-  const checkOnlyOne = (checkThis, groupName) => {
-    const checkboxes = document.getElementsByName(groupName);
-    for (let i = 0; i < checkboxes.length; i++) {
-      if (checkboxes[i] !== checkThis) {
-        checkboxes[i].checked = false;
-      }
-    }
-  };  
 
   // 필터 접기
   const handlehideMenu = (section) => {
@@ -74,10 +64,9 @@ const Filteraside = ({ resetFilters, handleSelectedPrice, handleSelectedRating, 
                 <input type="checkbox" name='price' className='checkInput'
                   id="priceRow" value="priceRow"
                   onChange={(e) => {
-                    checkOnlyOne(e.target, 'price');
                     handleSelectedPrice(e);
                   }}
-                  checked={selectedPrice.includes('priceRow')} />
+                  checked={selectedPrice==='priceRow'} />
                 <label htmlFor="priceRow" className='checkbox-label'>
                     5,900원 미만
                 </label>
@@ -86,10 +75,9 @@ const Filteraside = ({ resetFilters, handleSelectedPrice, handleSelectedRating, 
                 <input type="checkbox" name='price' className='checkInput' 
                   id="priceMedium" value="priceMedium"
                   onChange={(e) => {
-                    checkOnlyOne(e.target, 'price');
                     handleSelectedPrice(e);
                   }}
-                  checked={selectedPrice.includes('priceMedium')} />
+                  checked={selectedPrice==='priceMedium'} />
                 <label htmlFor="priceMedium" className='checkbox-label'>
                     5,900원 ~ 9,900원
                 </label>
@@ -97,12 +85,10 @@ const Filteraside = ({ resetFilters, handleSelectedPrice, handleSelectedRating, 
               <li className={style.checkInputWrap}>
                 <input type="checkbox" name='price' className='checkInput' 
                   id="priceHigh" value="priceHigh"
-                  // checked={selectedPrice.includes("priceHigh")}
                   onChange={(e) => {
-                    checkOnlyOne(e.target, 'price');
                     handleSelectedPrice(e);
                   }}
-                  checked={selectedPrice.includes('priceHigh')} />
+                  checked={selectedPrice==='priceHigh'} />
                 <label htmlFor="priceHigh" className='checkbox-label'>
                     9,900원 이상
                 </label>
@@ -120,10 +106,9 @@ const Filteraside = ({ resetFilters, handleSelectedPrice, handleSelectedRating, 
               <li className={style.checkInputWrap}>
                 <input type="checkbox" name='rating' className='checkInput' id="star1" value="star1"
                 onChange={(e) => {
-                  checkOnlyOne(e.target, 'rating');
                   handleSelectedRating(e);
                 }}
-                checked={selectedRating.includes('star1')} />
+                checked={selectedRating === 'star1'} />
                 <label htmlFor="star1" className='checkbox-label'>
                   <div className='starrating'>
                     <div className='starrating'>
@@ -139,10 +124,9 @@ const Filteraside = ({ resetFilters, handleSelectedPrice, handleSelectedRating, 
               <li className={style.checkInputWrap}>
                 <input type="checkbox" name='rating' className='checkInput' id="star2" value="star2"
                 onChange={(e) => {
-                  checkOnlyOne(e.target, 'rating');
                   handleSelectedRating(e);
                 }}
-                checked={selectedRating.includes('star2')} />
+                checked={selectedRating === 'star2'} />
                 <label htmlFor="star2" className='checkbox-label'>
                   <div className='starrating'>
                     <div className='starrating'>
@@ -158,10 +142,9 @@ const Filteraside = ({ resetFilters, handleSelectedPrice, handleSelectedRating, 
               <li className={style.checkInputWrap}>
                 <input type="checkbox" name='rating' className='checkInput' id="star3" value="star3"
                 onChange={(e) => {
-                  checkOnlyOne(e.target, 'rating');
                   handleSelectedRating(e);
                 }}
-                checked={selectedRating.includes('star3')} />
+                checked={selectedRating === 'star3'} />
                 <label htmlFor="star3" className='checkbox-label'>
                   <div className='starrating'>
                     <div className='starrating'>
@@ -177,10 +160,9 @@ const Filteraside = ({ resetFilters, handleSelectedPrice, handleSelectedRating, 
               <li className={style.checkInputWrap}>
                 <input type="checkbox" name='rating' className='checkInput' id="star4" value="star4"
                 onChange={(e) => {
-                  checkOnlyOne(e.target, 'rating');
                   handleSelectedRating(e);
                 }}
-                checked={selectedRating.includes('star4')} />
+                checked={selectedRating === 'star4'} />
                 <label htmlFor="star4" className='checkbox-label'>
                   <div className='starrating'>
                     <div className='starrating'>
@@ -196,10 +178,9 @@ const Filteraside = ({ resetFilters, handleSelectedPrice, handleSelectedRating, 
               <li className={style.checkInputWrap}>
                 <input type="checkbox" name='rating' className='checkInput' id="star5" value="star5"
                 onChange={(e) => {
-                  checkOnlyOne(e.target, 'rating');
                   handleSelectedRating(e);
                 }}
-                checked={selectedRating.includes('star5')} />
+                checked={selectedRating === 'star5'} />
                 <label htmlFor="star5" className='checkbox-label'>
                   <div className='starrating'>
                     <div className='starrating'>
@@ -220,7 +201,11 @@ const Filteraside = ({ resetFilters, handleSelectedPrice, handleSelectedRating, 
                 태그
                 <span className={style.filterMultiTxt}>* 중복선택가능</span>
               </h3>
-              <button className={`${style.hideMenuBtn} ${hideMenuTag ? style.hideMenuBtnActive : ''}`} type='button' onClick={() => handlehideMenu('tag')} data-section={'tag'}>
+              <button className={`${style.hideMenuBtn} ${hideMenuTag ? style.hideMenuBtnActive : ''}`} type='button'
+              onClick={(e) => {
+                handlehideMenu('tag');
+              }}
+              data-section={'tag'}>
                 <span className='material-icons'>expand_more</span>
               </button>
             </div>

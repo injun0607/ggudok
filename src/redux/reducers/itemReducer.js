@@ -148,8 +148,7 @@ const itemReducer = (state = initialState, action) => {
           ...state,
           likeditems: updatedLikedItem,
         };
-      }
-      else {
+      } else {
         return {
           ...state,
           likeditems: [...state.likeditems, action.payload],

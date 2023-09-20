@@ -1,6 +1,6 @@
 const initialState = {
-  selectedPrice: [],
-  selectedRating: [],
+  selectedPrice: null,
+  selectedRating: null,
   selectedTag: [],
 
   hideMenu: { price: false, rating: false, tag: false, }

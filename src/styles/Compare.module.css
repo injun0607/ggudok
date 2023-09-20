@@ -35,6 +35,9 @@
   border-radius: var(--radius-all-xs);
   box-sizing: border-box;
   display: block;
+  background-image: url('../images/expand_more_black.svg');
+  background-repeat: no-repeat;
+  background-position: calc(100% - 0.75rem) center;
 }
 .search .select:focus {border: 1px solid var(--main-color);}
 .search .select:disabled {background: var(--c-black-7); color: var(--c-black-3);}
