@@ -1,7 +1,8 @@
 const initialState = {
-  price: [],
-  rating: [],
-  tag: [],
+  selectedPrice: [],
+  selectedRating: [],
+  selectedTag: [],
+
   hideMenu: { price: false, rating: false, tag: false, }
 };
 
@@ -10,17 +11,17 @@ const filterReducer = (state = initialState, action) => {
     case 'SET_SELECTED_PRICE':
       return {
         ...state,
-        price: [...state.price, action.payload]
+        selectedPrice: action.payload
       };
     case 'SET_SELECTED_RATING':
       return {
         ...state,
-        price: [...state.rating, action.payload]
+        selectedRating: action.payload
       };
     case 'SET_SELECTED_TAG':
       return {
         ...state,
-        price: [...state.tag, action.payload]
+        selectedTag: action.payload
       };
     case 'SET_HIDE_MENU':
       return {

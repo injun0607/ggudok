@@ -7,14 +7,16 @@
 .sideBarTit .resetBtn:hover {color: var(--sub-color-2);}
 .sideBar .filter {padding: 1.5rem 0; border-top: 1px solid var(--c-black-6); color: var(--txt-color);}
 .sideBar .filter .tit {display: flex; justify-content: space-between; align-items: center;}
-.sideBar .filter .tit h3 {font-size: 1.125rem; font-weight: 500;}
+.sideBar .filter .tit h3 {font-size: 1.125rem; font-weight: 500; flex-grow: 1;}
 .sideBar .filter .tit .hideMenuBtn { background: none; }
 .sideBar .filter .tit .hideMenuBtn span {color: var(--sub-color-2); transition: 0.3s; color: var(--txt-color);}
 .sideBar .filter .tit .hideMenuBtnActive span {transform: rotate(180deg);}
 .sideBar .filter .cont {margin-top: 0.25rem; max-height: 2000px; overflow: hidden; transition: ease all 0.2s;}
+.sideBar .filter .cont.contTag {display: flex; gap: 0.25rem 1rem; flex-wrap: wrap;}
 .sideBar .filter .cont.hide {max-height: 0;}
 .sideBar .filter .cont select {width: 100%; border-radius: var(--radius-all-md); border: 1px solid var(--sub-color-5); padding: 0 1rem;}
 .checkInputWrap {margin-top: 10px;}
+.filterMultiTxt {font-size: 0.875rem; color: var(--txt-color-2); padding-right: 0.5rem; font-weight: 300; text-align: right; display: inline-block; float: right;}
 
 @media screen and (max-width:640px) {
   .left {width: 100%; background: var(--bg-color-2); padding: 1.25rem 1.325rem 1rem; border-radius: var(--radius-all-sm);}

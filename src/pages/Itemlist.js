@@ -8,16 +8,22 @@ import style from '../styles/Item.module.css';
 import Filteraside from '../components/Filteraside';
 import ErrorItem from '../components/ErrorItem';
 // redux import
-import { setNoResult, fetchItemsSuccess } from '../redux/actions/itemActions';
+import { setIsLoading, setIsResult, fetchItemsSuccess, filterItem } from '../redux/actions/itemActions';
+import { setSelectedPrice, setSelectedRating, setSelectedTag } from '../redux/actions/filterActions';
 
 const ITEMS_PER_PAGE = 15;
 const NO_IMAGE_URL = '/images/common/noimg.png';
 
 const Itemlist = ({ category, categoryEng }) => {
   let dispatch = useDispatch()
-
+  const selectedPrice = useSelector(state => state.filter.selectedPrice);
+  const selectedRating = useSelector(state => state.filter.selectedRating);
+  const selectedTag = useSelector(state => state.filter.selectedTag);
   const items = useSelector(state => state.item.items);
-  const noResult = useSelector(state => state.item.noResult);
+  const filtereditems = useSelector(state => state.item.filtereditems);
+  const IsResult = useSelector(state => state.item.IsResult);
+  const IsLoading = useSelector(state => state.item.IsLoading);
+  const [filterTag, setFilterTag] = useState([]);
 
   // 아이템 fetch해오기
   useEffect(() => {
@@ -25,33 +31,146 @@ const Itemlist = ({ category, categoryEng }) => {
       try {
         const response = await axios.get(`/subs/${categoryEng}`);
         const data = response.data.items;
+
+        // 아이템 데이터를 받아온 후에 filterTag을 계산하고 상태를 업데이트
+        const tagsAll = data.map(item => item.tags.map(tag => tag.tagName)).flat();
+        setFilterTag(tagsAll.reduce((ac, v) => ac.includes(v) ? ac : [...ac, v], []));
         dispatch(fetchItemsSuccess(data));
+        dispatch(setIsLoading(false));
+        dispatch(setIsResult(true));
       } catch (error) {
         console.error('Error fetching data:', error);
-        dispatch(setNoResult(false));
+        dispatch(setIsResult(false));
       }
     };
-
     fetchData();
   }, [dispatch, categoryEng]);
 
-  // 페이지네이션 구현
+  // 아이템 개수 설정 및 페이지 이동
+  const [IsPager, setIsPager] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [slicedItems, setSlicedItems] = useState(items.slice(0, ITEMS_PER_PAGE));
   const totalPages = Math.ceil(items.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const endIndex = startIndex + ITEMS_PER_PAGE;
-  const slicedItems = items.slice(startIndex, endIndex);
+  useEffect(() => {
+    if (IsLoading) return;
+    if((selectedPrice.length !== 0 || selectedRating.length !== 0 || selectedTag.length !== 0) && filtereditems.length !== 0){ // 태그 O + 아이템 O
+      const newSlicedItems = filtereditems.slice(startIndex, endIndex);
+      console.log(`태그 O + 아이템 O`)
+      if(filtereditems.length > ITEMS_PER_PAGE){
+        setIsPager(true);
+      }
+      setSlicedItems(newSlicedItems);
+      dispatch(setIsResult(true));
+      return;
+    } else if ((selectedPrice.length !== 0 || selectedRating.length !== 0 || selectedTag.length !== 0) && filtereditems.length === 0){ // 태그 O + 아이템 X
+      console.log(`태그 O + 아이템 X`)
+      dispatch(setIsResult(false));
+      return;
+    } else { // 태그 X + 아이템 X || 태그 X + 아이템 O
+      if(items.length === 0){
+        console.log(items)
+        console.log(`태그 X + 아이템 X`)
+        dispatch(setIsResult(false));
+        return;
+      }
+      console.log(`태그 X + 아이템 O`)
+      const newSlicedItems = items.slice(startIndex, endIndex);
+      setSlicedItems(newSlicedItems);
+      dispatch(setIsResult(true));
+      if(filtereditems.length > ITEMS_PER_PAGE){
+        setIsPager(true);
+      }
+    }
+  }, [IsLoading, selectedPrice, selectedRating, selectedTag]);
   const handlePageChange = (newPage) => {
     if (newPage >= 1 && newPage <= totalPages) {
       setCurrentPage(newPage);
     }
   };
+  
+  // 리셋 버튼 핸들러
+  const resetFilters = () => {
+    window.location.reload();
+  };
 
-  // 존재하지 않는 아이템 검사
-  // useEffect(() => {
-  //   if (items.length === 0) { dispatch(setNoResult(false)) }
-  //   else { dispatch(setNoResult(true)) }
-  // }, [dispatch, items])
+  // 각 아이템의 id를 key로 가지는 데이터 매핑 생성
+  const priceMap = {};
+  const ratingMap = {};
+  const tagMap = {};
+  for(let i = 0; i < items.length; i++){
+    const prices = items[i].ranks.map(rank => rank.price);
+    const rating = items[i].ratingAvg;
+    const tags = items[i].tags.map(tag => tag.tagName);
+    priceMap[items[i].id] = prices;
+    ratingMap[items[i].id] = rating;
+    tagMap[items[i].id] = tags;
+  }
+
+  // ******************************** 필터 핸들러 *********************************
+  const handleSelectedPrice = (e) => {
+    // 선택한 필터 reducer에 업데이트
+    let updateSelectedPrice = [];
+    if (selectedPrice.includes(e.target.value)) {
+      updateSelectedPrice = selectedPrice.filter((price) => price !== e.target.value);
+    } else {
+      updateSelectedPrice = [...selectedPrice, e.target.value];
+    }
+    dispatch(setSelectedPrice(updateSelectedPrice));
+    // items 배열을 필터링하여 filteredItems를 업데이트
+    let filteredItem = [];
+    if(updateSelectedPrice.includes('priceRow')){
+      filteredItem = items.filter(item => 
+        item.ranks.some(rank => rank.price < 5900)
+      );
+    } else if(updateSelectedPrice.includes('priceMedium')){
+      filteredItem = items.filter(item => 
+        item.ranks.some(rank => 5900 <= rank.price && rank.price <= 9900)
+      );
+    } else if(updateSelectedPrice.includes('priceHigh')){
+      filteredItem = items.filter(item => 
+        item.ranks.some(rank => rank.price > 9900)
+      );
+    }
+    // 필터링된 아이템 목록 업데이트
+    dispatch(filterItem(filteredItem));
+  };
+  const handleSelectedRating = (e) => {
+    // 선택한 필터 reducer에 업데이트
+    let updateSelectedRating = [];
+    if (selectedRating.includes(e.target.value)) {
+      updateSelectedRating = selectedRating.filter((rating) => rating !== e.target.value);
+    } else {
+      updateSelectedRating = [...selectedRating, e.target.value];
+    }
+    dispatch(setSelectedRating(updateSelectedRating));
+  };
+  const handleSelectedTag = (e) => {
+    // 선택한 필터 reducer에 업데이트
+    let updateSelectedTag = [];
+    if (selectedTag.includes(e.target.value)) {
+      updateSelectedTag = selectedTag.filter((tag) => tag !== e.target.value);
+      if (updateSelectedTag.length === 0){ updateSelectedTag = [] }
+    } else {
+      updateSelectedTag = [...selectedTag, e.target.value];
+    }
+    dispatch(setSelectedTag(updateSelectedTag));
+    // items 배열을 필터링하여 filteredItems를 업데이트
+    const filteredItem = items.filter(item => 
+      updateSelectedTag.every(selectedTag => 
+        item.tags.some(tag => tag.tagName === selectedTag)
+      )
+    );
+    // 필터링된 아이템 목록 업데이트
+    dispatch(filterItem(filteredItem));
+  };
+
+  // 아이템이 있는지 검사
+  // useEffect(()=>{
+  //   if(slicedItems.length === 0){ dispatch(setIsResult(false)); }
+  //   else { dispatch(setIsResult(true)); }
+  // }, [selectedPrice, selectedRating, selectedTag])
 
   return (
     <section className={style.pagewrap}>
@@ -60,34 +179,32 @@ const Itemlist = ({ category, categoryEng }) => {
           <h2>{category}</h2>
         </div>
         <div className={style.categorysection}>
-          <Filteraside />
+          <Filteraside resetFilters={resetFilters} handleSelectedPrice={handleSelectedPrice} handleSelectedRating={handleSelectedRating} handleSelectedTag={handleSelectedTag} filterTag={filterTag} />
           <section className={style.right}>
             <div className={style.section}>
               <div className={style.itemlist}>
-                {noResult ? slicedItems.map((item, index) => (
+                {IsResult ? slicedItems.map((item, index) => (
                   <Link to={`/ItemDetail/${item.id}`} key={index} className={style.item}>
-                    {/* <div className={style.item}> */}
-                      <div className={style.img}>
-                        <img src={`${item.image}`} alt={item.name} onError={(e) => {e.target.src = NO_IMAGE_URL;}}/>
+                    <div className={style.img}>
+                      <img src={`${item.image}`} alt={item.name} onError={(e) => {e.target.src = NO_IMAGE_URL;}}/>
+                    </div>
+                    <div className={style.txt}>
+                      <h3>{item.name}</h3>
+                      <div className={style.tag}>
+                        {/* <p>{item.category}</p> */}
+                        {
+                          item.tags.map((tag, tagindex) => (
+                            <p key={tagindex}>{tag.tagName}</p>
+                          ))
+                        }
                       </div>
-                      <div className={style.txt}>
-                        <h3>{item.name}</h3>
-                        <div className={style.tag}>
-                          <p>{item.category}</p>
-                          {
-                            item.tags.map((tag, tagindex) => (
-                              <p key={tagindex}>{tag.tagName}</p>
-                            ))
-                          }
-                        </div>
-                      </div>
-                    {/* </div> */}
+                    </div>
                   </Link>
                 )) : <ErrorItem />}
               </div>
             </div>
 
-            {noResult && <div className='pagination-wrap'>
+            {IsPager && <div className='pagination-wrap'>
               <div className='pagination'>
                   <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>
                   <span className='material-icons'>chevron_left</span>

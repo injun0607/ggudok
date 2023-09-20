@@ -45,7 +45,7 @@
   z-index: 1;
 }
 .itemlist .item .txt h3 {font-size: 1.125rem; color: var(--txt-color); font-weight: 600;}
-.itemlist .item .tag {display: flex; gap: 0.5rem; margin-top: 1rem;}
+.itemlist .item .tag {display: flex; gap: 0.5rem; margin-top: 1rem; flex-wrap: wrap;}
 .itemlist .item .tag p {
   background: var(--bg-color-2);
   color: var(--txt-color);

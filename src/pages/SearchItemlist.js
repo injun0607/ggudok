@@ -7,7 +7,7 @@ import style from '../styles/Item.module.css';
 import ErrorItem from '../components/ErrorItem';
 import Filteraside from '../components/Filteraside';
 // redux import
-import { setNoResult } from '../redux/actions/itemActions';
+import { setIsResult } from '../redux/actions/itemActions';
 
 const ITEMS_PER_PAGE = 15;
 const NO_IMAGE_URL = '/images/common/noimg.png';
@@ -19,7 +19,7 @@ const SearchItemlist = () => {
   const searchQuery = new URLSearchParams(location.search).get('q');
 
   const items = useSelector(state => state.item.items);
-  const noResult = useSelector(state => state.item.noResult);
+  const IsResult = useSelector(state => state.item.IsResult);
 
   // 아이템 searchQuery로 필터
   const filteredItems = items.filter(item => 
@@ -28,23 +28,26 @@ const SearchItemlist = () => {
 
   // 페이지네이션 구현
   const [currentPage, setCurrentPage] = useState(1);
+  const [IsPager, setIsPager] = useState(false);
 
   const totalPages = Math.ceil(filteredItems.length / ITEMS_PER_PAGE);
 
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const endIndex = startIndex + ITEMS_PER_PAGE;
   const slicedItems = filteredItems.slice(startIndex, endIndex);
-
+  if(filteredItems.length > ITEMS_PER_PAGE){
+    setIsPager(true)
+  }
   const handlePageChange = (newPage) => {
     if (newPage >= 1 && newPage <= totalPages) {
       setCurrentPage(newPage);
     }
   };
 
-  // 존재하지 않는 아이템 검사
+  //아이템이 있는지 검사
   useEffect(() => {
-    if (filteredItems.length === 0) { dispatch(setNoResult(false)) }
-    else { dispatch(setNoResult(true)) }
+    if (filteredItems.length === 0) { dispatch(setIsResult(false)) }
+    else { dispatch(setIsResult(true)) }
   }, [dispatch, searchQuery, filteredItems])
 
   return (
@@ -58,7 +61,7 @@ const SearchItemlist = () => {
           <section className={style.right}>
             <div className={style.section}>
               <div className={style.itemlist}>
-                {noResult ? slicedItems.map((item, index) => (
+                {IsResult ? slicedItems.map((item, index) => (
                   <Link to={`/ItemDetail/${item.id}`} key={index} className={style.item}>
                     {/* <div className={style.item}> */}
                       <div className={style.img}>
@@ -77,7 +80,7 @@ const SearchItemlist = () => {
               </div>
             </div>
 
-            {noResult && <div className='pagination-wrap'>
+            {IsPager && <div className='pagination-wrap'>
               <div className='pagination'>
                   <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>
                   <span className='material-icons'>chevron_left</span>

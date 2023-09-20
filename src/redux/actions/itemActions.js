@@ -1,7 +1,21 @@
+export const setIsLoading = (isLoading) => {
+  return {
+    type: 'SET_IS_LOADING',
+    payload: isLoading,
+  };
+};
+
 export const fetchItemsSuccess = (data) => {
   return {
     type: 'FETCH_ITMES_SUCCESS',
     payload: data,
+  };
+};
+
+export const filterItem = (filtereditem) => {
+  return {
+    type: 'FILTER_ITEM',
+    payload: filtereditem,
   };
 };
 
@@ -11,9 +25,9 @@ export const setLikedItem = (likeditem) => {
     payload: likeditem,
   };
 };
-export const setNoResult = (isresult) => {
+export const setIsResult = (isresult) => {
   return {
-    type: 'SET_NORESULT',
+    type: 'SET_ISRESULT',
     payload: isresult,
   };
 };

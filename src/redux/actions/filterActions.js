@@ -1,3 +1,10 @@
+export const setFilterTag = (filterTag) => {
+  return {
+    type: 'SET_FILTER_TAG',
+    payload: filterTag,
+  };
+};
+
 export const setSelectedPrice = (selectedPrice) => {
   return {
     type: 'SET_SELECTED_PRICE',

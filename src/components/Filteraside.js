@@ -3,54 +3,31 @@ import { useDispatch, useSelector } from 'react-redux';
 // css import
 import style from '../styles/Filter.module.css';
 // redux import
-import { setSelectedPrice, setSelectedRating, setSelectedTag, setHideMenu } from '../redux/actions/filterActions';
+import { setHideMenu } from '../redux/actions/filterActions';
 
-const Filteraside = () => {
+const Filteraside = ({ resetFilters, handleSelectedPrice, handleSelectedRating, handleSelectedTag, filterTag }) => {
   const dispatch = useDispatch();
-  const selectedPrice = useSelector(state => state.filter.price);
-  const selectedRating = useSelector(state => state.filter.rating);
-  const selectedTag = useSelector(state => state.filter.tag);
+  const selectedPrice = useSelector(state => state.filter.selectedPrice);
+  const selectedRating = useSelector(state => state.filter.selectedRating);
+  const selectedTag = useSelector(state => state.filter.selectedTag);
   const hideMenuPrice = useSelector(state => state.filter.hideMenu.price);
   const hideMenuRating = useSelector(state => state.filter.hideMenu.rating);
   const hideMenuTag = useSelector(state => state.filter.hideMenu.tag);
 
+  // 체크박스 단일선택
+  const checkOnlyOne = (checkThis, groupName) => {
+    const checkboxes = document.getElementsByName(groupName);
+    for (let i = 0; i < checkboxes.length; i++) {
+      if (checkboxes[i] !== checkThis) {
+        checkboxes[i].checked = false;
+      }
+    }
+  };  
+
+  // 필터 접기
   const handlehideMenu = (section) => {
     dispatch(setHideMenu(section));
   }
-
-  const handlePriceChange = (e) => {
-    const price = e.target.value;
-    if (selectedPrice.includes(price)) {
-      dispatch(setSelectedRating(selectedPrice.filter(r => r !== price)));
-    } else {
-      dispatch(setSelectedRating([...selectedPrice, price]));
-    }
-  };
-
-  const handleRatingChange = (e) => {
-    const rating = e.target.value;
-    if (selectedRating.includes(rating)) {
-      dispatch(setSelectedRating(selectedRating.filter(r => r !== rating)));
-    } else {
-      dispatch(setSelectedRating([...selectedRating, rating]));
-    }
-  };
-
-  const handleTagChange = (e) => {
-    const tag = e.target.value;
-    if (selectedTag.includes(tag)) {
-      dispatch(setSelectedTag(selectedTag.filter(t => t !== tag)));
-    } else {
-      dispatch(setSelectedTag([...selectedTag, tag]));
-    }
-  };
-
-  // 리셋 버튼 핸들러
-  const resetFilters = () => {
-    setSelectedPrice('');
-    setSelectedRating([]);
-    setSelectedTag([]);
-  };
 
   // 화면 너비에 따라 필터 접기
   const [isResponsive, setIsResponsive] = useState(false);
@@ -62,18 +39,17 @@ const Filteraside = () => {
     handleResize();
     return () => window.removeEventListener('resize', handleResize);
   }, []);
-
   useEffect(() => {
     if (isResponsive) {
       dispatch(setHideMenu('price', false));
       dispatch(setHideMenu('rating', false));
       dispatch(setHideMenu('tag', false));
-    } else {
-      dispatch(setHideMenu('price', false));
-      dispatch(setHideMenu('rating', false));
-      dispatch(setHideMenu('tag', false));
+    } else if (!isResponsive) {
+      dispatch(setHideMenu('price', true));
+      dispatch(setHideMenu('rating', true));
+      dispatch(setHideMenu('tag', true));
     }
-  }, [isResponsive, dispatch]);
+  }, [isResponsive]);
 
   return (
     <aside className={style.left}>
@@ -95,21 +71,40 @@ const Filteraside = () => {
             </div>
             <ul className={`${style.cont} ${hideMenuPrice ? style.hide : ''}`}>
               <li className={style.checkInputWrap}>
-                <input type="checkbox" name='price' className='checkInput' id="priceRow" value="row" checked={selectedPrice.includes("priceRow")} onChange={handlePriceChange} />
+                <input type="checkbox" name='price' className='checkInput'
+                  id="priceRow" value="priceRow"
+                  onChange={(e) => {
+                    checkOnlyOne(e.target, 'price');
+                    handleSelectedPrice(e);
+                  }}
+                  checked={selectedPrice.includes('priceRow')} />
                 <label htmlFor="priceRow" className='checkbox-label'>
                     5,900원 미만
                 </label>
               </li>
               <li className={style.checkInputWrap}>
-                <input type="checkbox" name='price' className='checkInput' id="priceMedium" value="medium" checked={selectedPrice.includes("priceMedium")} onChange={handlePriceChange} />
+                <input type="checkbox" name='price' className='checkInput' 
+                  id="priceMedium" value="priceMedium"
+                  onChange={(e) => {
+                    checkOnlyOne(e.target, 'price');
+                    handleSelectedPrice(e);
+                  }}
+                  checked={selectedPrice.includes('priceMedium')} />
                 <label htmlFor="priceMedium" className='checkbox-label'>
                     5,900원 ~ 9,900원
                 </label>
               </li>
               <li className={style.checkInputWrap}>
-                <input type="checkbox" name='price' className='checkInput' id="priceHigh" value="high" checked={selectedPrice.includes("priceHigh")} onChange={handlePriceChange} />
+                <input type="checkbox" name='price' className='checkInput' 
+                  id="priceHigh" value="priceHigh"
+                  // checked={selectedPrice.includes("priceHigh")}
+                  onChange={(e) => {
+                    checkOnlyOne(e.target, 'price');
+                    handleSelectedPrice(e);
+                  }}
+                  checked={selectedPrice.includes('priceHigh')} />
                 <label htmlFor="priceHigh" className='checkbox-label'>
-                    10,000원 이상
+                    9,900원 이상
                 </label>
               </li>
             </ul>
@@ -123,8 +118,13 @@ const Filteraside = () => {
             </div>
             <ul className={`${style.cont} ${hideMenuRating ? style.hide : ''}`}>
               <li className={style.checkInputWrap}>
-                <input type="checkbox" name='rating' className='checkInput' id="star1" value="star1" checked={selectedRating.includes("star1")} onChange={handleRatingChange} />
-                <label htmlFor="priceRow" className='checkbox-label'>
+                <input type="checkbox" name='rating' className='checkInput' id="star1" value="star1"
+                onChange={(e) => {
+                  checkOnlyOne(e.target, 'rating');
+                  handleSelectedRating(e);
+                }}
+                checked={selectedRating.includes('star1')} />
+                <label htmlFor="star1" className='checkbox-label'>
                   <div className='starrating'>
                     <div className='starrating'>
                       <span className="material-icons starActive">star</span>
@@ -137,8 +137,13 @@ const Filteraside = () => {
                 </label>
               </li>
               <li className={style.checkInputWrap}>
-                <input type="checkbox" name='rating' className='checkInput' id="star2" value="star2" checked={selectedRating.includes("star2")} onChange={handleRatingChange} />
-                <label htmlFor="priceRow" className='checkbox-label'>
+                <input type="checkbox" name='rating' className='checkInput' id="star2" value="star2"
+                onChange={(e) => {
+                  checkOnlyOne(e.target, 'rating');
+                  handleSelectedRating(e);
+                }}
+                checked={selectedRating.includes('star2')} />
+                <label htmlFor="star2" className='checkbox-label'>
                   <div className='starrating'>
                     <div className='starrating'>
                       <span className="material-icons starActive">star</span>
@@ -151,8 +156,13 @@ const Filteraside = () => {
                 </label>
               </li>
               <li className={style.checkInputWrap}>
-                <input type="checkbox" name='rating' className='checkInput' id="star3" value="star3" checked={selectedRating.includes("star3")} onChange={handleRatingChange} />
-                <label htmlFor="priceRow" className='checkbox-label'>
+                <input type="checkbox" name='rating' className='checkInput' id="star3" value="star3"
+                onChange={(e) => {
+                  checkOnlyOne(e.target, 'rating');
+                  handleSelectedRating(e);
+                }}
+                checked={selectedRating.includes('star3')} />
+                <label htmlFor="star3" className='checkbox-label'>
                   <div className='starrating'>
                     <div className='starrating'>
                       <span className="material-icons starActive">star</span>
@@ -165,8 +175,13 @@ const Filteraside = () => {
                 </label>
               </li>
               <li className={style.checkInputWrap}>
-                <input type="checkbox" name='rating' className='checkInput' id="star4" value="star4" checked={selectedRating.includes("star4")} onChange={handleRatingChange} />
-                <label htmlFor="priceRow" className='checkbox-label'>
+                <input type="checkbox" name='rating' className='checkInput' id="star4" value="star4"
+                onChange={(e) => {
+                  checkOnlyOne(e.target, 'rating');
+                  handleSelectedRating(e);
+                }}
+                checked={selectedRating.includes('star4')} />
+                <label htmlFor="star4" className='checkbox-label'>
                   <div className='starrating'>
                     <div className='starrating'>
                       <span className="material-icons starActive">star</span>
@@ -179,8 +194,13 @@ const Filteraside = () => {
                 </label>
               </li>
               <li className={style.checkInputWrap}>
-                <input type="checkbox" name='rating' className='checkInput' id="star5" value="star5" checked={selectedRating.includes("star5")} onChange={ handleRatingChange } />
-                <label htmlFor="priceRow" className='checkbox-label'>
+                <input type="checkbox" name='rating' className='checkInput' id="star5" value="star5"
+                onChange={(e) => {
+                  checkOnlyOne(e.target, 'rating');
+                  handleSelectedRating(e);
+                }}
+                checked={selectedRating.includes('star5')} />
+                <label htmlFor="star5" className='checkbox-label'>
                   <div className='starrating'>
                     <div className='starrating'>
                       <span className="material-icons starActive">star</span>
@@ -196,24 +216,26 @@ const Filteraside = () => {
           </section>
           <section className={style.filter}>
             <div className={style.tit}>
-              <h3>태그</h3>
+              <h3>
+                태그
+                <span className={style.filterMultiTxt}>* 중복선택가능</span>
+              </h3>
               <button className={`${style.hideMenuBtn} ${hideMenuTag ? style.hideMenuBtnActive : ''}`} type='button' onClick={() => handlehideMenu('tag')} data-section={'tag'}>
                 <span className='material-icons'>expand_more</span>
               </button>
             </div>
-            <ul className={`${style.cont} ${hideMenuTag ? style.hide : ''}`}>
-              <li className={style.checkInputWrap}>
-                <input type="checkbox" name='tag' className='checkInput' id="tag1" value="tag1" checked={selectedTag.includes("tag1")} onChange={ handleTagChange } />
-                <label htmlFor="tag1" className='checkbox-label'>
-                    20대
-                </label>
-              </li>
-              <li className={style.checkInputWrap}>
-                <input type="checkbox" name='tag' className='checkInput' id="tag2" value="tag2" checked={selectedTag.includes("tag2")} onChange={ handleTagChange } />
-                <label htmlFor="tag2" className='checkbox-label'>
-                    30대
-                </label>
-              </li>
+            <ul className={`${style.cont} ${style.contTag} ${hideMenuTag ? style.hide : ''}`}>
+              {
+                filterTag.map((filterTag, index) => (
+                  <li className={style.checkInputWrap} key={index}>
+                    <input type="checkbox" name='tag' className='checkInput' id={`tag${index}`} value={`${filterTag}`} onChange={ handleSelectedTag }
+                    checked={selectedTag.includes(`${filterTag}`)} />
+                    <label htmlFor={`tag${index}`} className='checkbox-label'>
+                        {filterTag}
+                    </label>
+                  </li>
+                ))
+              }
             </ul>
           </section>
         </div>

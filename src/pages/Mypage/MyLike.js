@@ -10,18 +10,16 @@ const NO_IMAGE_URL = '/images/common/noimg.png';
 const MyLike = () => {
   const likeditems = useSelector(state => state.item.likeditems);
 
-  // State variables for pagination
+  // 아이템 개수 설정 및 페이지 이동
+  const [IsPager, setIsPager] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-
-  // Calculate the total number of pages
   const totalPages = Math.ceil(likeditems.length / ITEMS_PER_PAGE);
-
-  // Slice data to display items for the current page
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE + 4;
   const endIndex = startIndex + ITEMS_PER_PAGE;
   const slicedItems = likeditems.slice(startIndex, endIndex);
-
-  // Function to handle page change
+  if(likeditems.length > ITEMS_PER_PAGE){
+    setIsPager(true)
+  }
   const handlePageChange = (newPage) => {
     if (newPage >= 1 && newPage <= totalPages) {
       setCurrentPage(newPage);
@@ -49,7 +47,7 @@ const MyLike = () => {
       </div>
     </section>
 
-    <div className='pagination-wrap'>
+    {IsPager && <div className='pagination-wrap'>
       <div className='pagination'>
         <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>
         <span className='material-icons'>chevron_left</span>
@@ -59,7 +57,7 @@ const MyLike = () => {
         <span className='material-icons'>chevron_right</span>
         </button>
       </div>
-    </div>
+    </div>}
     </>
   )
 }

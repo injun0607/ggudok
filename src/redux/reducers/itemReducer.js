@@ -1,5 +1,6 @@
 const initialState = {
   items: [],
+  filtereditems: [],
   // items: [
   //   // Category: 영상
   // { id: '1', name: '스마트비디오', category: '영상', tag: ['20대', '30대', '여성'], icon: '/images/icons/ott.svg', image: '/images/thumbnails/thumb00.png' },
@@ -109,15 +110,31 @@ const initialState = {
   ],
   likeditems: [
   ],
-  noResult: true,
+  IsResult: null,
+  IsLoading: true,
 };
 
 const itemReducer = (state = initialState, action) => {
   switch (action.type) {
+    case 'SET_IS_LOADING':
+      return {
+        ...state,
+        IsLoading: action.payload,
+      }
     case 'FETCH_ITMES_SUCCESS':
       return {
         ...state,
         items: action.payload,
+      }
+    case 'SLICE_ITEM':
+      return {
+        ...state,
+        sliceditems: action.payload,
+      }
+    case 'FILTER_ITEM':
+      return {
+        ...state,
+        filtereditems: action.payload,
       }
     case 'SET_LIKED_ITEM':
       const existingLikedItem = state.likeditems.find(
@@ -138,10 +155,10 @@ const itemReducer = (state = initialState, action) => {
           likeditems: [...state.likeditems, action.payload],
         };
       };
-    case 'SET_NORESULT':
+    case 'SET_ISRESULT':
       return {
         ...state,
-        noResult: action.payload,
+        IsResult: action.payload,
       };
     default:
       return state;
