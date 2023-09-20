@@ -4,13 +4,12 @@ import com.alham.ggudok.controller.subs.member.MemberRegisterDto;
 import com.alham.ggudok.controller.subs.member.MemberUpdateDto;
 import com.alham.ggudok.service.member.MemberService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/member")
+@CrossOrigin(origins = "*")
 public class MemberController {
 
     private final MemberService memberService;
@@ -42,9 +41,14 @@ public class MemberController {
 
     }
 
+//    @GetMapping("/{memberId}")
+//    private String viewMemberInfo() {
+//
+//    }
+
 
     @PostMapping("/update")
-        private String updateMember(MemberUpdateDto updateDto) {
+    private String updateMember(MemberUpdateDto updateDto) {
             memberService.updateMember(updateDto);
         return null;
     }

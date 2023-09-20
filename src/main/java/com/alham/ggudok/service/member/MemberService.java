@@ -19,6 +19,8 @@ import com.alham.ggudok.service.TagService;
 import com.alham.ggudok.util.GgudokUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,6 +35,8 @@ public class MemberService {
     private final MemberRepository memberRepository;
 
     private final TagService tagService;
+
+    private final PasswordEncoder passwordEncoder;
 
 
 
@@ -53,7 +57,7 @@ public class MemberService {
         Member member = new Member(registerDto.getMemberName(),
                 registerDto.getAge(),
                 registerDto.getLoginId(),
-                registerDto.getPassword(),
+                passwordEncoder.encode(registerDto.getPassword()),
                 registerDto.getGender(),
                 registerDto.getPhoneNumber());
         Member savedMember = memberRepository.save(member);
@@ -74,23 +78,24 @@ public class MemberService {
 
     /**
      * 멤버 로그인
-     * @param loginDto
+     * @param
      * @return
      */
-    public boolean memberLoginCheck(MemberLoginDto loginDto) {
+    public Member memberLoginCheck(MemberLoginDto loginDto) {
+
 
         if (memberRepository.findByLoginId(loginDto.getLoginId()).isPresent()) {
 
             Member member = memberRepository.findByLoginId(loginDto.getLoginId()).get();
-            if(member.getPassword().equals(loginDto.getPassword())){
-                return true;
+            if(passwordEncoder.matches(loginDto.getPassword(),member.getPassword())){
+                return member;
             }else{
                 new ErrorMember("비밀번호가 올바르지 않습니다");
-                return false;
+                return null;
             }
         }else{
             new ErrorMember("아이디가 올바르지 않습니다");
-            return false;
+            return null;
         }
 
     }

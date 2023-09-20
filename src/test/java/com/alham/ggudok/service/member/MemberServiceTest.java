@@ -119,11 +119,11 @@ class MemberServiceTest {
 
 
         //when
-        boolean checkInjun = memberService.memberLoginCheck(new MemberLoginDto("injun", "123123"));
-        boolean checkSeohee = memberService.memberLoginCheck(new MemberLoginDto("seohee", "321321"));
+        Member memberInjun = memberService.memberLoginCheck(new MemberLoginDto("injun", "123123"));
+        Member seohee = memberService.memberLoginCheck(new MemberLoginDto("seohee", "321321"));
         //then
-        assertEquals(checkInjun, false);
-        assertEquals(checkSeohee,true);
+        assertEquals(memberInjun.getMemberName(),"injun") ;
+        assertEquals(seohee.getMemberName(),"seohee");
 
     }
 
