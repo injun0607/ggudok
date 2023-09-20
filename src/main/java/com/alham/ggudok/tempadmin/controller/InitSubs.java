@@ -118,12 +118,23 @@ public class InitSubs {
             watchadefP2.addSubsRank(watchaPrime);
             watchadefP3.addSubsRank(watchaPrime);
 
+            Tag age0 = new Tag("10대");
             Tag age1 = new Tag("20대");
             Tag age2 = new Tag("30대");
             Tag age3 = new Tag("40대");
+            Tag age4 = new Tag("50대");
 
             Tag gender1 = new Tag("여성");
             Tag gender2 = new Tag("남성");
+
+            Tag category1 = new Tag("영상");
+            Tag category2 = new Tag("음악");
+            Tag category3 = new Tag("식품");
+            Tag category4 = new Tag("건강");
+            Tag category5 = new Tag("음료");
+            Tag category6 = new Tag("주류");
+            Tag category7 = new Tag("패션잡화");
+            Tag category8 = new Tag("책");
 
             em.persist(age1);
             em.persist(age2);
@@ -131,6 +142,15 @@ public class InitSubs {
 
             em.persist(gender1);
             em.persist(gender2);
+
+            em.persist(category1);
+            em.persist(category2);
+            em.persist(category3);
+            em.persist(category4);
+            em.persist(category5);
+            em.persist(category6);
+            em.persist(category7);
+            em.persist(category8);
 
             netfilx.addTag(age1);
             netfilx.addTag(age2);

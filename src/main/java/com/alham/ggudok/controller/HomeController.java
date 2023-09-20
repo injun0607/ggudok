@@ -1,7 +1,7 @@
 package com.alham.ggudok.controller;
 
 
-import com.alham.ggudok.dto.member.MemberLoginDto;
+import com.alham.ggudok.controller.subs.member.MemberLoginDto;
 import com.alham.ggudok.service.member.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +13,15 @@ public class HomeController {
 
     private MemberService memberService;
 
+    @GetMapping("/")
+    public String main() {
+        //event페이지
+        //알고리즘 맞춤 서비스
+        //기본 추천 서비스(ex. 나이 남성)
+        return "준비중";
+
+    }
+
     @GetMapping("/login")
     public String memberLogin(MemberLoginDto loginDto) {
         boolean isLogin = memberService.memberLoginCheck(loginDto);
@@ -23,9 +32,12 @@ public class HomeController {
         }
     }
 
+
     @GetMapping("/seohee")
     public String seohee() {
         return "서히야 안녕";
     }
+
+
 
 }

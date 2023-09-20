@@ -56,6 +56,7 @@ public class SubsController {
 
             subsDto.setId(subs.getSubsId());
             subsDto.setName(subs.getSubsName());
+            subsDto.setInfo(subs.getInfo());
             subsDto.setIcon(subs.getIcon());
             subsDto.setImage(subs.getImage());
 
@@ -77,6 +78,7 @@ public class SubsController {
         SubsDetailDto subsDetailDto = new SubsDetailDto();
         subsDetailDto.setId(subs.getSubsId());
         subsDetailDto.setName(subs.getSubsName());
+        subsDetailDto.setInfo(subs.getInfo());
         subsDetailDto.setIcon(subs.getIcon());
         subsDetailDto.setImage(subs.getImage());
         subsDetailDto.setCategory(subs.getCategory().getCategoryName());

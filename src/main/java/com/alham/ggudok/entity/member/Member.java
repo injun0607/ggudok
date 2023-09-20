@@ -57,4 +57,9 @@ public class Member {
         this.gender = gender;
         this.phoneNumber = phoneNumber;
     }
+
+    public void updateMember(String password,String phoneNumber) {
+        this.password = password;
+        this.phoneNumber = phoneNumber;
+    }
 }

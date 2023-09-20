@@ -15,6 +15,8 @@ public class SubsDetailDto {
 
     private String name;
 
+    private String info;
+
     private String icon;
 
     private String image;

@@ -28,6 +28,9 @@ public class Subs extends ImageResourceEntity {
 
     private String subsName;
 
+    //구독서비스 설명
+    private String info;
+
     @OneToMany(mappedBy = "subs",cascade = ALL)
     List<SubsRank> subsRanks = new ArrayList<>();
 

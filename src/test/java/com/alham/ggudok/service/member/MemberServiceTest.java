@@ -1,7 +1,8 @@
 package com.alham.ggudok.service.member;
 
-import com.alham.ggudok.dto.member.MemberLoginDto;
-import com.alham.ggudok.dto.member.MemberRegisterDto;
+import com.alham.ggudok.controller.subs.member.MemberLoginDto;
+import com.alham.ggudok.controller.subs.member.MemberRegisterDto;
+import com.alham.ggudok.controller.subs.member.MemberUpdateDto;
 import com.alham.ggudok.entity.member.Gender;
 import com.alham.ggudok.entity.member.Member;
 import com.alham.ggudok.entity.member.MemberHaveSubs;
@@ -40,7 +41,7 @@ class MemberServiceTest {
     @Rollback(value = false)
     public void createMemberHaveSubs()throws Exception{
         //given
-        Member member = new Member("injun", 20);
+        Member member = new Member("injun", 10);
         memberRepository.save(member);
 
         Subs subs = new Subs("subs1");
@@ -125,4 +126,37 @@ class MemberServiceTest {
         assertEquals(checkSeohee,true);
 
     }
+
+    @Test
+    public void updateTest()throws Exception{
+        //given
+        MemberRegisterDto memberRegisterDto = new MemberRegisterDto();
+        memberRegisterDto.setMemberName("injun");
+        memberRegisterDto.setAge(20);
+        memberRegisterDto.setPassword("123123");
+        memberRegisterDto.setGender(Gender.MAN);
+        memberRegisterDto.setLoginId("injun0607");
+
+        memberService.registerMember(memberRegisterDto);
+        em.flush();
+        em.clear();
+        //when
+        MemberUpdateDto updateDto = new MemberUpdateDto();
+        updateDto.setMemberId(1l);
+        updateDto.setPassword("123");
+        updateDto.setPhoneNumber("0101234");
+
+        memberService.updateMember(updateDto);
+
+        em.flush();
+        em.clear();
+
+        Member member = memberRepository.findById(updateDto.getMemberId()).get();
+        //then
+        assertEquals(member.getPassword(), "123");
+        assertEquals(member.getPhoneNumber(), "0101234");
+
+    }
+
+
 }
