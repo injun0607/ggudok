@@ -1,79 +1,116 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 // css import
 import style from '../../styles/Auth.module.css'
 // redux import
-import { join, sendEmail } from '../../redux/actions/userActions';
+import { join, setEmailValNumber, setJoinLoginId, setValidPassword, setJoinMemberName, setJoinAge, setJoinGender, setValidPhoneNymber, setJoinPhoneNumber, setEmailSent, setJoinPassword, setJoinPasswordCheck } from '../../redux/actions/userActions';
 
 const JoinEmail = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const isEmailSent = useSelector(state => state.user.isEmailSent);
+  const isPassval = useSelector(state => state.user.isPassval);
+  const isPhoneval = useSelector(state => state.user.isPhoneval);
+  const emailValNumber = useSelector(state => state.user.emailValNumber);
+  const memberName = useSelector(state => state.user.memberName);
+  const loginId = useSelector(state => state.user.loginId);
+  const password = useSelector(state => state.user.password);
+  const passwordCheck = useSelector(state => state.user.passwordCheck);
+  const gender = useSelector(state => state.user.gender);
+  const age = useSelector(state => state.user.age);
+  const phoneNumber = useSelector(state => state.user.phoneNumber);
   
-  const [password, setPassword] = useState('');
-  const [passwordCheck, setpasswordCheck] = useState('');
+  const [fetchedEmailValNumber, setFetchedEmailValNumber] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const [errorMessageP, seterrorMessageP] = useState('');
 
-  const handleChangePassword = () => {
-    if (password === passwordCheck) {
-      // 비밀번호가 일치할 때 처리
-      setErrorMessage('');
-    } else {
-      // 비밀번호가 일치하지 않을 때 처리
+
+  // 비밀번호 유효성 검사 및 비밀번호 일치 검사
+  const handleChangePassword = (newPassword, newPasswordCheck) => {
+    // 비밀번호 유효성 검사
+    const regPassword = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
+    const isPasswordReg = regPassword.test(newPassword);
+    // 비밀번호 일치 검사
+    const doPasswordsMatch = isPasswordReg && newPassword === newPasswordCheck;
+  
+    // 오류 메시지 설정
+    if (!isPasswordReg) {
+      setErrorMessage('비밀번호는 문자, 숫자, 특수문자의 조합으로 8자 이상으로 입력해주세요. (@ 제외)');
+    } else if (!doPasswordsMatch) {
       setErrorMessage('비밀번호가 일치하지 않습니다.');
+    } else {
+      setErrorMessage('');
     }
+  
+    // Redux 상태 업데이트
+    dispatch(setValidPassword(isPasswordReg && doPasswordsMatch));
   };
 
+  // 휴대폰번호 검사
+  const handleChangePhoneNumber = (newRhoneNumber) => {
+    // 휴대폰번호 유효성 검사
+    const regPhoneNumber = /^[0-9]+$/;
+    const isPhoneNumberReg = regPhoneNumber.test(newRhoneNumber);
 
-  const isEmailSent = useSelector(state => state.user.isEmailSent);
+    // 오류 메시지 설정
+    if (!isPhoneNumberReg){
+      seterrorMessageP('휴대폰번호는 숫자만 입력해주세요.');
+    } else {
+      seterrorMessageP('');
+    }
+  
+    // Redux 상태 업데이트
+    dispatch(setValidPhoneNymber(isPhoneNumberReg));
+  }
 
-  const handleSendEmail = async(emailAddress) => {
+  // 이메일 인증번호 fetch 해오기
+  const fetchEmailValNumber = async() => {
     try {
-      const response = await axios.post('/member/emailCheck', { emailAddress });
+      const response = await axios.get('http://192.168.45.96:8080/member/emailCheck');
+      setFetchedEmailValNumber(response.data.certCode);
+    } catch (error) {
+      console.error('Error fetching email verification number:', error);
+    }
+  }
+  // 입력한 이메일주소로 이메일 전송
+  const handleSendEmail = async(loginId) => {
+    try {
+      const data = { loginId: loginId };
+      const response = await axios.post('http://192.168.45.96:8080/member/emailCheck', data);
       if (response.status === 200) {
-        console.log('Email sent successfully.');
+        dispatch(setEmailSent(true));
+        alert('이메일을 전송했습니다.');
+        
+        // 이메일을 성공적으로 보낸 후에 인증번호를 가져오도록 이동
+        fetchEmailValNumber();
       } else {
-        console.error('Failed to send email.');
+        dispatch(setEmailSent(false));
+        console.error('이메일 전송 실패');
       }
     } catch (error) {
       console.error('Error sending email:', error);
     }
   }
 
+  // 회원가입 검사
   const handleJoin = async(e) => {
     e.preventDefault();
-    const memberName = e.target.memberName.value;
-    const loginId = e.target.loginId.value;
-    const password = e.target.password.value;
-    const gender = e.target.gender.value;
-    const age = e.target.age.value;
-    const phoneNumber = e.target.phoneNumber.value;
-    if (loginId === '') {
-      alert('이메일 아이디를 입력하세요.')
-    } else if (password === '') {
-      alert('비밀번호를 입력하세요.')
-    } else {
-      try{
-        const response = await axios.post('/member/register', {
-          memberName: memberName,
-          loginId: loginId,
-          password: password,
-          passwordCheck: passwordCheck,
-          gender: gender,
-          age: age,
-          phoneNumber: phoneNumber,
-        });
-        if (response.status === 200) {
-          navigate('/Home');
-        } else {
-          alert(`회원가입에 실패하였습니다. 다시 작성해주시기 바랍니다.`)
-        }
-      } catch (error) {
-        console.log('Error Member Register :', error);
-        alert(`회원가입 중 오류가 발생했습니다. 잠시 후 다시 시도해주시기 바랍니다.`)
-      }
-    }
+    const userData = {
+      memberName,
+      loginId,
+      password,
+      passwordCheck,
+      gender,
+      age,
+      phoneNumber,
+      emailValNumber,
+      isPassval,
+      isPhoneval,
+      fetchedEmailValNumber,
+    };
+    dispatch(join(userData, navigate));
   };
 
   return (
@@ -83,40 +120,61 @@ const JoinEmail = () => {
         <div className={style.form}>
           <form onSubmit={ handleJoin }>
             <div className={style.inputwrap}>
-              <input type='text' name='loginId' placeholder='이메일 아이디를 입력하세요.' />
-              <button type='button' onClick={handleSendEmail} className='btn btn_normal_b'>인증 이메일 {isEmailSent && '다시'} 보내기</button>
-              {isEmailSent && <input type='text' name='emailauth' placeholder='이메일로 전송된 인증번호를 입력하세요.' />}
               <input
-                type="password"
-                name="password"
-                autoComplete="off"
+                type='text' name='loginId' placeholder='이메일 아이디를 입력하세요.' autoComplete="off"
+                value={loginId}
+                onChange={(e) => dispatch(setJoinLoginId(e.target.value))} />
+              <button type='button' onClick={() => handleSendEmail(loginId)} className='btn btn_normal_b'>인증 이메일 {isEmailSent && '다시'} 보내기</button>
+              {isEmailSent &&
+                <input
+                type='text' name='emailValNumber' value={emailValNumber} autoComplete="off" placeholder='이메일로 전송된 인증번호를 입력하세요.'
+                onChange={(e) => dispatch(setEmailValNumber(e.target.value))} />              
+              }
+              <input
+                type="password" name="password" autoComplete="off"
                 placeholder="비밀번호를 입력하세요."
                 value={password}
                 onChange={(e) => {
-                  setPassword(e.target.value);
-                  handleChangePassword();
+                  dispatch(setJoinPassword(e.target.value));
+                  handleChangePassword(e.target.value, passwordCheck);
                 }}
               />
               <input
-                type="password"
-                name="passwordCheck"
-                autoComplete="off"
+                type="password" name="passwordCheck" autoComplete="off"
                 placeholder="비밀번호를 한번 더 입력하세요."
                 value={passwordCheck}
                 onChange={(e) => {
-                  setpasswordCheck(e.target.value);
-                  handleChangePassword(); // 비밀번호 확인 변경 시 확인
+                  dispatch(setJoinPasswordCheck(e.target.value));
+                  handleChangePassword(password, e.target.value);
                 }}
               />
               {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
-              <input type='text' name='memberName' placeholder='이름을 입력하세요.' />
-              <input type='number' name='age' placeholder='나이를 숫자만 입력하세요.' />
-              <select className={`${style.select}`} name='gender'>
+              
+              <input type='text' name='memberName' autoComplete="off"
+                placeholder='이름을 입력하세요.'
+                value={memberName}
+                onChange={(e) => { dispatch(setJoinMemberName(e.target.value)) }} />
+              <input type='text' name='age' autoComplete="off"
+                  placeholder='나이를 숫자만 입력하세요.'
+                  value={age}
+                  onChange={(e) => { dispatch(setJoinAge(e.target.value)) }} />
+              <select className={`${style.select}`} name='gender'
+                value={gender}
+                onChange={(e) => dispatch(setJoinGender(e.target.value))}
+              >
                 <option value=''>성별을 선택하세요.</option>
-                <option value='man'>남성</option>
-                <option value='woman'>여성</option>
+                <option value='MAN'>남성</option>
+                <option value='WOMAN'>여성</option>
               </select>
-              <input type='text' name='phoneNumber' placeholder='휴대폰 번호를 숫자만 입력하세요.' />
+              <input
+                type='text' name='phoneNumber' autoComplete="off"
+                placeholder='휴대폰 번호를 숫자만 입력하세요.' 
+                value={phoneNumber}
+                onChange={(e) => {
+                  dispatch(setJoinPhoneNumber(e.target.value))
+                  handleChangePhoneNumber(e.target.value);
+                }} />
+              {errorMessageP && <p style={{ color: 'red' }}>{errorMessageP}</p>}
             </div>
             <button type='submit' className='btn btn_full'>회원가입</button>
           </form>

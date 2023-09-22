@@ -10,16 +10,16 @@ const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const handleLogin = async(e) => {
     e.preventDefault();
-    const emailId = e.target.emailid.value;
+    const loginId = e.target.loginId.value;
     const password = e.target.password.value;
-    if (emailId === '') {
+    if (loginId === '') {
       alert('이메일 아이디를 입력하세요.')
     } else if (password === '') {
       alert('비밀번호를 입력하세요.')
     } else {
-      dispatch(login(emailId, password));
+      dispatch(login(loginId, password));
       navigate('/Home');
     }
   };
@@ -31,7 +31,7 @@ const Login = () => {
         <div className={style.form}>
           <form onSubmit={ handleLogin }>
             <div className={style.inputwrap}>
-              <input type='text' name='emailid' placeholder='이메일 아이디를 입력하세요.' />
+              <input type='text' name='loginId' placeholder='이메일 아이디를 입력하세요.' />
               <input type='text' name='password' autoComplete="off" placeholder='비밀번호를 입력하세요.' />
             </div>
             <button type='submit' className='btn btn_full'>로그인</button>
