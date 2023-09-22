@@ -38,23 +38,6 @@ const Home = () => {
             }
           </nav>
         </section>
-        {isLoggedIn ? (
-          <section className={style.section}>
-            <h2 className={style.tit}>취향저격 카테고리</h2>
-            <nav className={`${style.mycategory} ${style.box}`}>
-              {favoritecategories.map((category, index) => 
-              <Link
-                to={`/Category/${category.categoryEng}`}
-                className={style.category}
-                key={index}
-              >
-                <img src={`${category.icon}`} alt={category.category} />
-                <p>{category.category}</p>
-              </Link>
-              )}
-            </nav>
-          </section>
-        ) : null}
         <section className={style.section}>
           <h2 className={style.tit}>알고리즘 저격! <span className='sub_clr'>맞춤 서비스</span></h2>
           <div className='item-list'>

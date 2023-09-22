@@ -1,26 +1,39 @@
 import axios from 'axios';
 
+export const setLoggedIn = (userData) => {
+  return {
+    type: 'SET_LOGGED_IN',
+    payload: userData,
+  };
+}
 // ***********************로그인*************************
-export const login = (loginId, password) => async(dispatch) => {
+export const login = (userData, navigate) => async (dispatch) => {
+  const { loginId, password } = userData;
   try {
-    const response = await axios.post('/login', {
-      loginId : loginId,
-      password : password,
-    });
+    const response = await axios.post('/login', new URLSearchParams({
+      loginId: loginId,
+      password: password,
+    }));
     if (response.status === 200) {
-      dispatch({ type: 'LOGIN_SUCCESS' });
+      dispatch({ type: 'LOGIN_SUCCESS', payload: { loginId } });
+      navigate('/Home');
     } else {
       dispatch({ type: 'LOGIN_FAILURE' });
     }
   } catch (error) {
-    console.log('Error logging in :', error);
+    console.log('Error logging in:', error);
     dispatch({ type: 'LOGIN_FAILURE' });
   }
 };
-export const logout = () => {
-  return {
-    type: 'LOGOUT'
-  };
+export const logout = () => async (dispatch) => {
+  try {
+      const response = await axios.get('/logout');
+      if (response.status === 200) {
+      dispatch({ type: 'LOGOUT' });
+    }
+  } catch (error) {
+    console.log('Error logging out:', error);
+  }
 };
 
 // *********************** 회원가입 **********************

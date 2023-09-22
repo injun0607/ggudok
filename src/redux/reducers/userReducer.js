@@ -19,24 +19,31 @@ const initialState = {
   
 const userReducer = (state = initialState, action) => {
   switch (action.type) {
+    case 'SET_LOGGED_IN':
+      return {
+        ...state,
+        isLoggedIn: true,
+        loginId: action.payload.loginId,
+        memberName: action.payload.memberName,
+      };
     // ****************************로그인****************************
     case 'LOGIN_SUCCESS':
       return {
         ...state,
         loginId: action.payload.loginId,
         password: action.payload.password,
-        isLoggedIn: true,
+        // isLoggedIn: true,
       };
     case 'LOGIN_FAILURE':
       return {
         ...state,
-        isLoggedIn: false,
+        // isLoggedIn: false,
       };
     case 'LOGOUT':
       return {
         ...state,
-        loginId: null,
-        password: null,
+        loginId: '',
+        password: '',
         isLoggedIn: false,
       };
     // **************************회원가입*****************************

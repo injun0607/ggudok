@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useEffect, lazy, Suspense } from 'react';
-import { Routes, Route, } from 'react-router-dom';
+import React, { useState, useEffect, lazy, Suspense, } from 'react';
+import axios from 'axios';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
 // css import
@@ -32,15 +33,43 @@ import MyLike from '../pages/Mypage/MyLike';
 import AdminHome from '../pages/Admin/AdminHome';
 // redux import
 import { toggleDarkMode } from '../redux/actions/darkModeActions';
+import { setLoggedIn } from '../redux/actions/userActions';
 
 const ItemDetail = lazy( () => import('../pages/ItemDetail') )
 
-
 const Layout = () => {
+	let dispatch = useDispatch();
+  const location = useLocation();
+
 	const categories = useSelector(state => state.category.categories);
   const featuredcategories = useSelector(state => state.category.featuredcategories);
 	const isadminLayout = useSelector(state => state.adminLayout.isadminLayout);
   const isLoggedIn = useSelector(state => state.user.isLoggedIn);
+  const memberName = useSelector(state => state.user.memberName);
+  const loginId = useSelector(state => state.user.loginId);
+
+	
+	// 세션 상태 조회 요청
+	useEffect(() => {
+		const fetchSessionStatus = async () => {
+			console.log('1. 세션 상태 조회 시작...')
+			try {
+				const response = await axios.get('/getSession');
+				const userData = response.data;
+				console.log('2. 세션 상태 조회 성공')
+				console.log('2.5. 세션 데이터 있나?', userData, response.data)
+				if (userData.memberName !== undefined && userData.loginId !== undefined) {
+					console.log('3. 세션 데이터 있음', userData)
+					dispatch(setLoggedIn(userData));
+					console.log('4. 세션 적용 완료')
+					console.log(`isLoggedIn : ${isLoggedIn} \n memberName : ${memberName} \n loginId : ${loginId}`)
+				}
+			} catch (error) {
+				console.error('Error fetch login session :', error);
+			}
+		};
+		fetchSessionStatus();
+	}, [location.pathname])
 
 	// 다크모드 state 감지
   const darkMode = useSelector(state => state.darkMode.darkMode);
