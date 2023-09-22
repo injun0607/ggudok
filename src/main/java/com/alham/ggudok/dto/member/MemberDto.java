@@ -1,5 +1,6 @@
 package com.alham.ggudok.dto.member;
 
+import com.alham.ggudok.entity.member.Gender;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -21,6 +22,9 @@ public class MemberDto implements UserDetails {
     private String loginId;
     private String password;
 
+    private Gender gender;
+
+    private int age;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

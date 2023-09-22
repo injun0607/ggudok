@@ -1,15 +1,21 @@
 package com.alham.ggudok.controller.subs;
 
+import com.alham.ggudok.config.security.SecurityUtils;
+import com.alham.ggudok.dto.member.MemberDto;
 import com.alham.ggudok.dto.subs.*;
+import com.alham.ggudok.entity.member.Member;
 import com.alham.ggudok.entity.subs.Category;
 import com.alham.ggudok.entity.subs.Subs;
 import com.alham.ggudok.entity.subs.SubsRank;
+import com.alham.ggudok.service.TagService;
+import com.alham.ggudok.service.member.MemberService;
 import com.alham.ggudok.service.subs.CategoryService;
 import com.alham.ggudok.service.subs.SubsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +28,9 @@ public class SubsController {
 
     private final CategoryService categoryService;
     private final SubsService subsService;
+    private final TagService tagService;
 
+    private final MemberService memberService;
 
     @GetMapping("/{category_eng}")
     public SubsMainDto showSubsWithCategory(@PathVariable("category_eng") String categoryEng) {
@@ -38,7 +46,7 @@ public class SubsController {
 
             SubsDto subsDto = new SubsDto();
             List<SubsRankDto> subsRankDtos = new ArrayList<>();
-            subsDto.setTags(subsService.findTagsBySubsId(subs.getSubsId()));
+            subsDto.setTags(tagService.findTagsBySubsId(subs.getSubsId()));
 
             //subsRankData 가공
             List<SubsRank> ranksBySubsId = subsService.findRanksBySubsId(subs.getSubsId());
@@ -83,7 +91,7 @@ public class SubsController {
         subsDetailDto.setImage(subs.getImage());
         subsDetailDto.setCategory(subs.getCategory().getCategoryName());
 
-        subsDetailDto.setTags(subsService.findTagsBySubsId(subsId));
+        subsDetailDto.setTags(tagService.findTagsBySubsId(subsId));
 
         List<SubsRank> contentBySubsId = subsService.findContentBySubsId(subsId);
         List<SubsRankDetailDto> subsRankDetailDtoList = new ArrayList<>();
@@ -102,6 +110,17 @@ public class SubsController {
         subsDetailDto.setRanks(subsRankDetailDtoList);
 
         return subsDetailDto;
+    }
+
+    @PostMapping("/like/{susbsId}")
+    public boolean likeSubs(@PathVariable("subsId") Long subsId, Principal principal) {
+        MemberDto memberDto = SecurityUtils.transPrincipal(principal);
+
+        Member loginMember = memberService.findByLoginId(principal.getName());
+        Subs subs = subsService.findSubsById(subsId);
+        subsService.likeSubs(subs);
+        return false;
+
     }
 
 

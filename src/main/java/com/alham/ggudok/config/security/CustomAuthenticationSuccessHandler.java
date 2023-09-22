@@ -3,7 +3,6 @@ package com.alham.ggudok.config.security;
 import com.alham.ggudok.controller.session.SessionConst;
 import com.alham.ggudok.controller.session.SessionMemberDto;
 import com.alham.ggudok.dto.member.MemberDto;
-import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -25,6 +24,5 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
         HttpSession session = request.getSession();
         MemberDto memberDto = (MemberDto) authentication.getPrincipal();
         session.setAttribute(SessionConst.SESSION_MEMBER,new SessionMemberDto(memberDto.getMemberName(), memberDto.getLoginId()));
-
     }
 }

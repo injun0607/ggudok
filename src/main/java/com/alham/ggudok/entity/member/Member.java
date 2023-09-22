@@ -62,4 +62,9 @@ public class Member {
         this.password = password;
         this.phoneNumber = phoneNumber;
     }
+
+
+    public static Member noMember() {
+        return new Member("no-member",0);
+    }
 }

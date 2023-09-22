@@ -9,17 +9,13 @@ import com.alham.ggudok.entity.member.Member;
 import com.alham.ggudok.entity.member.MemberFavorSubs;
 import com.alham.ggudok.entity.member.MemberHaveSubs;
 import com.alham.ggudok.entity.member.MemberRelTag;
-import com.alham.ggudok.entity.subs.Category;
 import com.alham.ggudok.entity.subs.Subs;
 import com.alham.ggudok.error.member.ErrorMember;
-import com.alham.ggudok.repository.TagRepository;
 import com.alham.ggudok.repository.member.MemberRepository;
-import com.alham.ggudok.repository.subs.CategoryRepository;
 import com.alham.ggudok.service.TagService;
 import com.alham.ggudok.util.GgudokUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -73,7 +69,15 @@ public class MemberService {
     }
 
 
-
+    public Member findByLoginId(String loginId) {
+        Optional<Member> optionalMember = memberRepository.findByLoginId(loginId);
+        if (optionalMember.isPresent()) {
+            Member member = optionalMember.get();
+            return member;
+        } else {
+            return Member.noMember();
+        }
+    }
 
 
     /**
@@ -154,10 +158,10 @@ public class MemberService {
 
 
     public String checkEmail(String checkEmail) {
-        String checkString = "";
         if (!GgudokUtil.isValidEmail(checkEmail)) {
             return "fail";
         }
+
         String certCode = GgudokUtil.certEmail(checkEmail);
         if (certCode.equals(GgudokUtil.EMAIL_FAIL)) {
             return "fail";
@@ -166,6 +170,23 @@ public class MemberService {
         }
     }
 
+    public Member viewMemberInfo(String loginId) {
+        memberRepository.findByLoginId(loginId);
 
+        return null;
+    }
 
+    public Member findByLoginIdWithTags(String loginId) {
+        Optional<Member> memberWithTag = memberRepository.findByLoginIdWithTags(loginId);
+        if (memberWithTag.isPresent()) {
+            return memberWithTag.get();
+        } else {
+            return Member.noMember();
+        }
+
+    }
+
+    public void likeSubs(String loginId) {
+
+    }
 }

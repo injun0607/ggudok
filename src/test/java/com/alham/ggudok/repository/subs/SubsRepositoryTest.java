@@ -14,7 +14,6 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -137,7 +136,7 @@ class SubsRepositoryTest {
     }
     
     @Test
-    public void test()throws Exception{
+    public void findSubsByIdWithAllContent()throws Exception{
         //given
         Category movie = adminSubsService.createCategory("movie");
         Category music = adminSubsService.createCategory("music");
@@ -183,6 +182,79 @@ class SubsRepositoryTest {
         List<SubsRank> subsRanks = subsRepository.findSubsByIdWithAllContent(netflix.getSubsId());
         assertEquals(subsRanks.size(),2);
         subsRanks.stream().forEach(subsRank -> subsRank.getContents().stream().forEach(c-> System.out.println(c.getContent())));
+
+    }
+
+    @Test
+    public void findSubsByTag()throws Exception{
+        //given
+        Category category = new Category("cat1");
+        categoryRepository.save(category);
+
+        Subs subs1 = new Subs("subs1");
+        Subs subs2 = new Subs("subs2");
+        Subs subs3 = new Subs("subs3");
+
+        Subs subs4 = new Subs("subs4");
+        Subs subs5 = new Subs("subs5");
+
+
+
+        subsRepository.save(subs1);
+        subsRepository.save(subs2);
+        subsRepository.save(subs3);
+        subsRepository.save(subs4);
+        subsRepository.save(subs5);
+        subs1.addCategory(category);
+        subs2.addCategory(category);
+        subs3.addCategory(category);
+        subs4.addCategory(category);
+        subs5.addCategory(category);
+
+
+        Tag tag1 = new Tag("tag1");
+        Tag tag2 = new Tag("tag2");
+
+        tagRepository.save(tag1);
+        tagRepository.save(tag2);
+
+        em.flush();
+        em.clear();
+
+        Tag savedTag1 = tagRepository.findById(1l).get();
+        Tag savedTag2 = tagRepository.findById(2l).get();
+
+        Subs findSubs1 = subsRepository.findById(1l).get();
+        Subs findSubs2 = subsRepository.findById(2l).get();
+        Subs findSubs3 = subsRepository.findById(3l).get();
+        Subs findSubs4 = subsRepository.findById(4l).get();
+        Subs findSubs5 = subsRepository.findById(5l).get();
+        findSubs1.addTag(savedTag1);
+        findSubs2.addTag(savedTag1);
+        findSubs3.addTag(savedTag1);
+
+        findSubs1.addTag(savedTag2);
+        findSubs4.addTag(savedTag2);
+
+
+
+        em.flush();
+        em.clear();
+
+        //when
+        List<Subs> subsList1 = subsRepository.findSubsListByTag(savedTag1).get();
+        List<Subs> subsList2 = subsRepository.findSubsListByTag(savedTag2).get();
+        //then
+        assertEquals(subsList1.size(),3);
+        assertEquals(subsList2.size(),2);
+
+        for (Subs subs : subsList1) {
+            System.out.println("subs.getSubsName() = " + subs.getSubsName());
+
+        }
+
+
+
 
     }
 

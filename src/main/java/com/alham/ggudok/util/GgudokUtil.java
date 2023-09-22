@@ -12,6 +12,8 @@ public class GgudokUtil {
     private static final String EMAIL_REGEX =
             "^[A-Za-z0-9+_.-]+@(.+)$";
 
+    private static final String AGE_TAG_FORMAT = "\\d+대";
+
     public static final String EMAIL_FAIL = "FAIL";
 
     // 이메일 유효성 검사 메서드
@@ -51,15 +53,15 @@ public class GgudokUtil {
             message.setFrom(new InternetAddress(username));
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toAddress));
             message.setSubject("인증 이메일");
-//            String randomNum = GgudokUtil.randomNum();
-//            message.setText("인증 코드: "+ randomNum); // 본문 내용
-            message.setText("인증 코드: 꽃등심,갈비,돈까스,엽떡...먹고싶다"); // 본문 내용
+            String randomNum = GgudokUtil.randomNum();
+            message.setText("인증 코드: "+ randomNum); // 본문 내용
+//            message.setText("인증 코드: 꽃등심,갈비,돈까스,엽떡...먹고싶다"); // 본문 내용
 
             // 이메일 보내기
             Transport.send(message);
             System.out.println("이메일을 성공적으로 보냈습니다.");
 
-            return null;
+            return randomNum;
         } catch (MessagingException e) {
             e.printStackTrace();
             System.out.println("이메일을 보내는 중 오류가 발생했습니다.");
@@ -78,5 +80,9 @@ public class GgudokUtil {
 
         return sb.toString();
 
+    }
+
+    public static boolean isAgeFormat(String tagName) {
+        return tagName.matches(AGE_TAG_FORMAT);
     }
 }

@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static jakarta.persistence.CascadeType.ALL;
 import static jakarta.persistence.FetchType.LAZY;
@@ -30,6 +31,8 @@ public class Subs extends ImageResourceEntity {
 
     //구독서비스 설명
     private String info;
+
+    private AtomicInteger likeCount = new AtomicInteger(0);
 
     @OneToMany(mappedBy = "subs",cascade = ALL)
     List<SubsRank> subsRanks = new ArrayList<>();
@@ -58,5 +61,13 @@ public class Subs extends ImageResourceEntity {
 
     public void addTag(Tag tag) {
         SubsRelTag subsRelTag = SubsRelTag.createSubsRelTag(this, tag);
+    }
+
+    public void likeSubs() {
+        likeCount.incrementAndGet();
+    }
+
+    public void dislikeSubs() {
+        likeCount.decrementAndGet();
     }
 }

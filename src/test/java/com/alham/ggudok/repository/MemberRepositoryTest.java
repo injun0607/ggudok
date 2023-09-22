@@ -1,13 +1,19 @@
 package com.alham.ggudok.repository;
 
+import com.alham.ggudok.entity.Tag;
+import com.alham.ggudok.entity.member.Gender;
 import com.alham.ggudok.entity.member.Member;
+import com.alham.ggudok.entity.member.MemberRelTag;
 import com.alham.ggudok.repository.member.MemberRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -38,5 +44,58 @@ class MemberRepositoryTest {
 
 
     }
+
+    @Test
+    public void findByLoginId()throws Exception{
+        //given
+        memberRepository.save(new Member("injun0607", 23,"injun0607@naver.com","1234", Gender.MAN,"0101234"));
+        memberRepository.save(new Member("seohee0826", 23,"seohee0826@naver.com","1234", Gender.WOMAN,"0101234"));
+        em.flush();
+        em.clear();
+        //when
+        Member member = memberRepository.findByLoginId("injun0607").get();
+
+        //then
+        assertEquals(member.getAge(),23);
+
+    }
+
+
+    @Test
+    public void findByLoginIdWithTags()throws Exception{
+        //given
+        memberRepository.save(new Member("injun0607", 23,"injun0607@naver.com","1234", Gender.MAN,"0101234"));
+        memberRepository.save(new Member("seohee0826", 23,"seohee0826@naver.com","1234", Gender.WOMAN,"0101234"));
+
+        Tag tag1 = new Tag("tag1");
+        Tag tag2 = new Tag("tag2");
+        Tag tag3 = new Tag("tag3");
+        Tag tag4 = new Tag("tag4");
+
+        em.persist(tag1);
+        em.persist(tag2);
+        em.persist(tag3);
+        em.persist(tag4);
+
+        em.flush();
+        em.clear();
+
+        //when
+        Member member = memberRepository.findByLoginId("injun0607@naver.com").get();
+        MemberRelTag.createRelTag(member, tag1);
+        MemberRelTag.createRelTag(member, tag2);
+        MemberRelTag.createRelTag(member, tag3);
+
+        em.flush();
+        em.clear();
+        //then
+        Member member1 = memberRepository.findByLoginIdWithTags("injun0607@naver.com").get();
+        List<MemberRelTag> memberRelTags = member1.getMemberRelTags();
+        Assertions.assertThat(memberRelTags)
+                .extracting(memberRelTag -> memberRelTag.getTag().getTagName())
+                .containsExactly("tag1", "tag2", "tag3");
+
+    }
+
 
 }

@@ -2,9 +2,14 @@ package com.alham.ggudok.controller.member;
 
 import com.alham.ggudok.controller.subs.member.MemberRegisterDto;
 import com.alham.ggudok.controller.subs.member.MemberUpdateDto;
+import com.alham.ggudok.dto.member.MemberDto;
 import com.alham.ggudok.service.member.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.security.Principal;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -16,12 +21,12 @@ public class MemberController {
 
 
     @PostMapping("/register")
-    private String registerMember(MemberRegisterDto registerDto) {
+    private boolean registerMember(@RequestBody MemberRegisterDto registerDto) {
         boolean isSuccess = memberService.registerMember(registerDto);
         if (isSuccess) {
-            return "성공";
+            return true;
         } else {
-            return "실패";
+            return false;
         }
     }
 
@@ -30,26 +35,30 @@ public class MemberController {
     이메일 인증 버튼누른후 -> 인증번호 입력
      */
     @PostMapping("/emailCheck")
-    private boolean checkEmail(MemberRegisterDto registerDto) {
+    private Map<String, String> checkEmail(@RequestBody MemberRegisterDto registerDto) {
         String checkEmail = registerDto.getLoginId();
-        if (!memberService.checkEmail(checkEmail).equals("fail")) {
-            return true;
-        } else{
-            return false;
-        }
+        String certCode = memberService.checkEmail(checkEmail);
+        Map<String, String> map = new HashMap<>();
+        map.put("certCode", certCode);
+        return map;
 
 
     }
 
-//    @GetMapping("/{memberId}")
-//    private String viewMemberInfo() {
-//
-//    }
+    @GetMapping("/memberInfo")
+    private String viewMemberInfo(Principal principal) {
+        MemberDto memberDto = (MemberDto) principal;
+        String loginId = memberDto.getLoginId();
+        memberService.viewMemberInfo(loginId);
+        return null;
+
+    }
 
 
     @PostMapping("/update")
     private String updateMember(MemberUpdateDto updateDto) {
-            memberService.updateMember(updateDto);
+
+        memberService.updateMember(updateDto);
         return null;
     }
 
