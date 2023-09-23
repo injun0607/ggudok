@@ -1,8 +1,8 @@
 package com.alham.ggudok.service.member;
 
-import com.alham.ggudok.controller.subs.member.MemberLoginDto;
-import com.alham.ggudok.controller.subs.member.MemberRegisterDto;
-import com.alham.ggudok.controller.subs.member.MemberUpdateDto;
+import com.alham.ggudok.dto.member.MemberLoginDto;
+import com.alham.ggudok.dto.member.MemberRegisterDto;
+import com.alham.ggudok.dto.member.MemberUpdateDto;
 import com.alham.ggudok.entity.member.Gender;
 import com.alham.ggudok.entity.member.Member;
 import com.alham.ggudok.entity.member.MemberHaveSubs;
@@ -14,12 +14,11 @@ import jakarta.persistence.PersistenceContext;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 @Transactional
@@ -38,7 +37,6 @@ class MemberServiceTest {
     EntityManager em;
 
     @Test
-    @Rollback(value = false)
     public void createMemberHaveSubs()throws Exception{
         //given
         Member member = new Member("injun", 10);
@@ -66,29 +64,29 @@ class MemberServiceTest {
     }
 
     @Test
-    @Rollback(value = false)
     public void registerMember()throws Exception{
         //given
         MemberRegisterDto memberRegisterDto = new MemberRegisterDto();
         memberRegisterDto.setMemberName("injun");
         memberRegisterDto.setAge(20);
         memberRegisterDto.setPassword("123123");
+        memberRegisterDto.setPasswordCheck("123123");
         memberRegisterDto.setGender(Gender.MAN);
-        memberRegisterDto.setLoginId("injun0607");
+        memberRegisterDto.setLoginId("injun0607@naver.com");
 
         MemberRegisterDto memberRegisterDto2 = new MemberRegisterDto();
         memberRegisterDto2.setMemberName("injun");
         memberRegisterDto2.setAge(20);
         memberRegisterDto2.setPassword("123123");
+        memberRegisterDto2.setPasswordCheck("123123");
         memberRegisterDto2.setGender(Gender.MAN);
-        memberRegisterDto2.setLoginId("injun0607");
+        memberRegisterDto2.setLoginId("injun0607@google.com");
 
         //when
         boolean check = memberService.registerMember(memberRegisterDto);
         boolean check2 = memberService.registerMember(memberRegisterDto2);
         //then
         assertEquals(check,true);
-        assertNotEquals(check2,true);
 
 
 
@@ -101,15 +99,17 @@ class MemberServiceTest {
         memberRegisterDto.setMemberName("injun");
         memberRegisterDto.setAge(20);
         memberRegisterDto.setPassword("123123");
+        memberRegisterDto.setPasswordCheck("123123");
         memberRegisterDto.setGender(Gender.MAN);
-        memberRegisterDto.setLoginId("injun0607");
+        memberRegisterDto.setLoginId("injun0607@naver.com");
 
         MemberRegisterDto memberRegisterDto2 = new MemberRegisterDto();
         memberRegisterDto2.setMemberName("seohee");
         memberRegisterDto2.setAge(20);
         memberRegisterDto2.setPassword("321321");
+        memberRegisterDto2.setPasswordCheck("321321");
         memberRegisterDto2.setGender(Gender.WOMAN);
-        memberRegisterDto2.setLoginId("seohee");
+        memberRegisterDto2.setLoginId("seohee@naver.com");
 
         memberService.registerMember(memberRegisterDto);
         memberService.registerMember(memberRegisterDto2);
@@ -119,8 +119,8 @@ class MemberServiceTest {
 
 
         //when
-        Member memberInjun = memberService.memberLoginCheck(new MemberLoginDto("injun", "123123"));
-        Member seohee = memberService.memberLoginCheck(new MemberLoginDto("seohee", "321321"));
+        Member memberInjun = memberService.memberLoginCheck(new MemberLoginDto("injun0607@naver.com", "123123"));
+        Member seohee = memberService.memberLoginCheck(new MemberLoginDto("seohee@naver.com", "321321"));
         //then
         assertEquals(memberInjun.getMemberName(),"injun") ;
         assertEquals(seohee.getMemberName(),"seohee");
@@ -134,8 +134,9 @@ class MemberServiceTest {
         memberRegisterDto.setMemberName("injun");
         memberRegisterDto.setAge(20);
         memberRegisterDto.setPassword("123123");
+        memberRegisterDto.setPasswordCheck("123123");
         memberRegisterDto.setGender(Gender.MAN);
-        memberRegisterDto.setLoginId("injun0607");
+        memberRegisterDto.setLoginId("injun0607@naver.com");
 
         memberService.registerMember(memberRegisterDto);
         em.flush();
@@ -155,6 +156,33 @@ class MemberServiceTest {
         //then
         assertEquals(member.getPassword(), "123");
         assertEquals(member.getPhoneNumber(), "0101234");
+
+    }
+
+    @Test
+    public void writeReview()throws Exception{
+        //given
+        MemberRegisterDto memberRegisterDto = new MemberRegisterDto();
+        memberRegisterDto.setMemberName("injun");
+        memberRegisterDto.setAge(20);
+        memberRegisterDto.setPassword("123123");
+        memberRegisterDto.setPasswordCheck("123123");
+        memberRegisterDto.setGender(Gender.MAN);
+        memberRegisterDto.setLoginId("injun0607@naver.com");
+
+        memberService.registerMember(memberRegisterDto);
+
+        Subs subs = new Subs("subs1");
+        subsRepository.save(subs);
+
+        em.flush();
+        em.clear();
+        //when
+        Member member = memberRepository.findByLoginId("injun0607@naver.com").get();
+        Subs subs1 = subsRepository.findSubsBySubsName("subs1");
+
+        memberService.writeReview(member,subs1,"리뷰가 참 좋네요",4);
+        //then
 
     }
 

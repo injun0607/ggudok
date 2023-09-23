@@ -13,8 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 
 @Configuration
 @RequiredArgsConstructor
@@ -22,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class SecurityConfig {
 
     private final CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
+
+
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -35,11 +36,13 @@ public class SecurityConfig {
                                 .usernameParameter("loginId")
                                 .passwordParameter("password")
                                 .successHandler(customAuthenticationSuccessHandler)
+                                .failureHandler(new SimpleUrlAuthenticationFailureHandler("/login_fail"))
+
 
                 )
                 .logout((logout) ->
                         logout.logoutUrl("/logout")
-                                .addLogoutHandler(((request, response, authentication) ->{
+                                .addLogoutHandler(((request, response, authentication) -> {
                                     HttpSession session = request.getSession();
                                     if (session != null) {
                                         session.invalidate();

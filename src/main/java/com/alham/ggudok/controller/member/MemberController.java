@@ -1,10 +1,15 @@
 package com.alham.ggudok.controller.member;
 
-import com.alham.ggudok.controller.subs.member.MemberRegisterDto;
-import com.alham.ggudok.controller.subs.member.MemberUpdateDto;
+import com.alham.ggudok.dto.member.MemberRegisterDto;
+import com.alham.ggudok.dto.member.MemberUpdateDto;
 import com.alham.ggudok.dto.member.MemberDto;
+import com.alham.ggudok.exception.ErrorResult;
+import com.alham.ggudok.exception.member.MemberException;
 import com.alham.ggudok.service.member.MemberService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -15,13 +20,21 @@ import java.util.Map;
 @RequiredArgsConstructor
 @RequestMapping("/member")
 @CrossOrigin(origins = "*")
+@Slf4j
 public class MemberController {
 
     private final MemberService memberService;
-
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MemberException.class)
+    public ResponseEntity<ErrorResult> memberExceptionHandler(MemberException e) {
+        log.error(e.getMessage());
+        ErrorResult errorResult = new ErrorResult("BAD", e.getMessage());
+        return new ResponseEntity<>(errorResult, HttpStatus.BAD_REQUEST);
+    }
 
     @PostMapping("/register")
     private boolean registerMember(@RequestBody MemberRegisterDto registerDto) {
+
         boolean isSuccess = memberService.registerMember(registerDto);
         if (isSuccess) {
             return true;

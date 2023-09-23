@@ -1,7 +1,9 @@
 package com.alham.ggudok.tempadmin.controller;
 
+import com.alham.ggudok.dto.member.MemberRegisterDto;
 import com.alham.ggudok.entity.member.Gender;
 import com.alham.ggudok.entity.member.Member;
+import com.alham.ggudok.service.member.MemberService;
 import jakarta.annotation.PostConstruct;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -16,11 +18,21 @@ import org.springframework.transaction.annotation.Transactional;
 public class InitMember {
 
     private final InitMemberService initMemberService;
+    private final MemberService memberService;
 
 
     @PostConstruct
     public void init() {
         initMemberService.init();
+        MemberRegisterDto memberRegisterDto = new MemberRegisterDto();
+        memberRegisterDto.setMemberName("깡깡지");
+        memberRegisterDto.setAge(4);
+        memberRegisterDto.setLoginId("choiseo26@naver.com");
+        memberRegisterDto.setGender(Gender.WOMAN);
+        memberRegisterDto.setPassword("10qp10qp^^");
+        memberRegisterDto.setPhoneNumber("01012345678");
+        memberRegisterDto.setPasswordCheck("10qp10qp^^");
+        memberService.registerMember(memberRegisterDto);
 
     }
     @Component

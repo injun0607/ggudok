@@ -2,6 +2,7 @@ package com.alham.ggudok.controller.subs;
 
 import com.alham.ggudok.config.security.SecurityUtils;
 import com.alham.ggudok.dto.member.MemberDto;
+import com.alham.ggudok.dto.member.MemberSubsDto;
 import com.alham.ggudok.dto.subs.*;
 import com.alham.ggudok.entity.member.Member;
 import com.alham.ggudok.entity.subs.Category;
@@ -80,7 +81,15 @@ public class SubsController {
     }
 
     @GetMapping("/detail/{subsId}")
-    public SubsDetailDto showSubsDetail(@PathVariable("subsId")Long subsId){
+    public SubsMainDetailDto showSubsDetail(@PathVariable("subsId")Long subsId,Principal principal){
+        MemberDto memberDto = SecurityUtils.transPrincipal(principal);
+
+        if (memberDto != null) {
+            Member loginMember = memberService.findByLoginIdWithFavorSubs(memberDto.getLoginId());
+            MemberSubsDto memberSubsDto = new MemberSubsDto();
+//            memberSubsDto.setSubsLike();
+//            memberSubsDto.setReview();
+        }
         Subs subs = subsService.findSubsById(subsId);
 
         SubsDetailDto subsDetailDto = new SubsDetailDto();
@@ -109,16 +118,23 @@ public class SubsController {
         }
         subsDetailDto.setRanks(subsRankDetailDtoList);
 
-        return subsDetailDto;
+        SubsMainDetailDto subsMainDetailDto = new SubsMainDetailDto();
+        subsMainDetailDto.setItemDetail(subsDetailDto);
+
+
+        return subsMainDetailDto;
     }
 
-    @PostMapping("/like/{susbsId}")
+    @PostMapping("/like/{subsId}")
     public boolean likeSubs(@PathVariable("subsId") Long subsId, Principal principal) {
         MemberDto memberDto = SecurityUtils.transPrincipal(principal);
-
-        Member loginMember = memberService.findByLoginId(principal.getName());
-        Subs subs = subsService.findSubsById(subsId);
-        subsService.likeSubs(subs);
+        if (memberDto != null) {
+            Member loginMember = memberService.findByLoginId(principal.getName());
+            Subs subs = subsService.findSubsById(subsId);
+            memberService.createMemberFavorSubs(loginMember, subs);
+            subsService.likeSubs(subs);
+            return true;
+        }
         return false;
 
     }

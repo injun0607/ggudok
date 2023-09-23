@@ -1,4 +1,4 @@
-package com.alham.ggudok.controller.subs.member;
+package com.alham.ggudok.dto.member;
 
 import lombok.Data;
 

@@ -1,6 +1,7 @@
 package com.alham.ggudok.config.security;
 
 import com.alham.ggudok.dto.member.MemberDto;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
 import java.security.Principal;
 
@@ -8,7 +9,7 @@ public class SecurityUtils {
 
     public static MemberDto transPrincipal(Principal principal) {
         if (principal != null) {
-            return (MemberDto) principal;
+            return (MemberDto) ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
         }else{
             return null;
         }

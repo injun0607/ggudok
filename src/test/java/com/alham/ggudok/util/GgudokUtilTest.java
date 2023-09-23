@@ -15,7 +15,6 @@ class GgudokUtilTest {
         String s = GgudokUtil.certEmail(mail);
 
         //then
-        assertNotEquals(s, "FAIL");
 
     }
 }

@@ -15,4 +15,7 @@ public interface SubsRepository extends JpaRepository<Subs,Long>, SubsRepository
 
     @Query("select s from Subs s join fetch s.subsRanks where s.subsId = :subsId")
     Optional<Subs> findSubsByIdWithRank(@Param("subsId") Long subsId);
+
+    Subs findSubsBySubsName(String subsName);
+
 }

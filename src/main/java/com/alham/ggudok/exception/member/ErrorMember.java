@@ -1,4 +1,4 @@
-package com.alham.ggudok.error.member;
+package com.alham.ggudok.exception.member;
 
 import lombok.Data;
 

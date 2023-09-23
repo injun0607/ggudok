@@ -1,6 +1,7 @@
 package com.alham.ggudok.dto.subs;
 
 import com.alham.ggudok.entity.Tag;
+import com.alham.ggudok.entity.member.Review;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -28,5 +29,7 @@ public class SubsDetailDto {
     List<SubsRankDetailDto> ranks = new ArrayList<>();
 
     private List<Tag> tags = new ArrayList<>();
+
+    private List<Review> reviews = new ArrayList<>();
 
 }

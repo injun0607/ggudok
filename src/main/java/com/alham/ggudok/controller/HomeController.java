@@ -7,12 +7,18 @@ import com.alham.ggudok.dto.MainDto;
 import com.alham.ggudok.dto.member.MemberDto;
 import com.alham.ggudok.entity.Tag;
 import com.alham.ggudok.entity.subs.Subs;
+import com.alham.ggudok.exception.ErrorResult;
 import com.alham.ggudok.service.TagService;
 import com.alham.ggudok.service.member.MemberService;
 import com.alham.ggudok.service.subs.SubsService;
 import com.alham.ggudok.util.GgudokUtil;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.web.WebAttributes;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -35,12 +41,13 @@ public class HomeController {
     private final SubsService subsService;
 
 
+
     @GetMapping("/")
     public MainDto main(Principal principal) {
 
-        MainDto mainDto = new MainDto();
         MemberDto memberDto = SecurityUtils.transPrincipal(principal);
         //event페이지
+        MainDto mainDto = new MainDto();
 
 
         if (memberDto != null) {
@@ -133,6 +140,13 @@ public class HomeController {
     public SessionMemberDto getSession(HttpSession session) {
         return (SessionMemberDto) session.getAttribute(SESSION_MEMBER);
 
+    }
+
+    @GetMapping("/login_fail")
+    public ResponseEntity loginFail(HttpServletRequest request) {
+        AuthenticationException exception = (AuthenticationException)request.getSession().getAttribute(WebAttributes.AUTHENTICATION_EXCEPTION);
+        ErrorResult errorResult = new ErrorResult("bad", exception.getMessage());
+        return new ResponseEntity<>(errorResult, HttpStatus.BAD_REQUEST);
     }
 
 }

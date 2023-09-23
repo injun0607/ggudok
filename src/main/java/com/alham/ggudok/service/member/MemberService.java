@@ -1,16 +1,13 @@
 package com.alham.ggudok.service.member;
 
 
-import com.alham.ggudok.controller.subs.member.MemberLoginDto;
-import com.alham.ggudok.controller.subs.member.MemberRegisterDto;
-import com.alham.ggudok.controller.subs.member.MemberUpdateDto;
+import com.alham.ggudok.dto.member.MemberLoginDto;
+import com.alham.ggudok.dto.member.MemberRegisterDto;
+import com.alham.ggudok.dto.member.MemberUpdateDto;
 import com.alham.ggudok.entity.Tag;
-import com.alham.ggudok.entity.member.Member;
-import com.alham.ggudok.entity.member.MemberFavorSubs;
-import com.alham.ggudok.entity.member.MemberHaveSubs;
-import com.alham.ggudok.entity.member.MemberRelTag;
+import com.alham.ggudok.entity.member.*;
 import com.alham.ggudok.entity.subs.Subs;
-import com.alham.ggudok.error.member.ErrorMember;
+import com.alham.ggudok.exception.member.MemberException;
 import com.alham.ggudok.repository.member.MemberRepository;
 import com.alham.ggudok.service.TagService;
 import com.alham.ggudok.util.GgudokUtil;
@@ -69,16 +66,6 @@ public class MemberService {
     }
 
 
-    public Member findByLoginId(String loginId) {
-        Optional<Member> optionalMember = memberRepository.findByLoginId(loginId);
-        if (optionalMember.isPresent()) {
-            Member member = optionalMember.get();
-            return member;
-        } else {
-            return Member.noMember();
-        }
-    }
-
 
     /**
      * 멤버 로그인
@@ -94,16 +81,18 @@ public class MemberService {
             if(passwordEncoder.matches(loginDto.getPassword(),member.getPassword())){
                 return member;
             }else{
-                new ErrorMember("비밀번호가 올바르지 않습니다");
-                return null;
+                throw new MemberException("비밀번호가 올바르지 않습니다");
             }
         }else{
-            new ErrorMember("아이디가 올바르지 않습니다");
-            return null;
+            throw new MemberException("아이디가 올바르지 않습니다");
         }
 
     }
 
+    /**
+     * 멤버 정보 업테이트
+     *
+     */
     @Transactional
     public void updateMember(MemberUpdateDto updateDto) {
         Optional<Member> optionalMember = memberRepository.findById(updateDto.getMemberId());
@@ -114,6 +103,19 @@ public class MemberService {
 
     }
 
+
+    /**
+     * 멤버 리뷰 쓰기
+     *
+     * @param member
+     * @param subs
+     * @return
+     */
+    @Transactional
+    public void writeReview(Member member,Subs subs,String content,int rating) {
+        Review review = Review.createReview(member, subs, content,rating);
+
+    }
 
     @Transactional
     public MemberHaveSubs createMemberHaveSubs(Member member, Subs subs) {
@@ -140,17 +142,17 @@ public class MemberService {
     private boolean validMember(MemberRegisterDto registerDto) {
         //올바른 이메일인지 검사
         if (!GgudokUtil.isValidEmail(registerDto.getLoginId())) {
-            return false;
+            throw new MemberException("이메일 형식이 올바르지 않습니다.");
         }
 
         //로그인 아이디 중복검사
         if(memberRepository.findByLoginId(registerDto.getLoginId()).isPresent()) {
-            return false;
+            throw new MemberException("이미 회원가입 된 아이디입니다.");
         }
 
         //비밀번호 확인 체크
         if(!registerDto.getPassword().equals(registerDto.getPasswordCheck())){
-            return false;
+            throw new MemberException("비밀번호가 다릅니다.");
         }
 
         return true;
@@ -176,6 +178,14 @@ public class MemberService {
         return null;
     }
 
+    /**
+     * 멤버 구독서비스 좋아요
+     */
+    @Transactional
+    public void likeSubs(Member member, Subs subs) {
+        createMemberFavorSubs(member, subs);
+    }
+
     public Member findByLoginIdWithTags(String loginId) {
         Optional<Member> memberWithTag = memberRepository.findByLoginIdWithTags(loginId);
         if (memberWithTag.isPresent()) {
@@ -186,7 +196,23 @@ public class MemberService {
 
     }
 
-    public void likeSubs(String loginId) {
 
+    public Member findByLoginIdWithFavorSubs(String loginId) {
+        Optional<Member> member = memberRepository.findByLoginIdWithFavorSubs(loginId);
+        if(member.isPresent()){
+            return member.get();
+        }
+        else {
+            return new Member("no-member", 0);
+        }
+    }
+
+    public Member findByLoginId(String loginId) {
+        Optional<Member> member = memberRepository.findByLoginId(loginId);
+        if (member.isPresent()) {
+            return member.get();
+        } else {
+            return new Member("no-member", 0);
+        }
     }
 }
