@@ -3,22 +3,29 @@ package com.alham.ggudok.controller.subs;
 import com.alham.ggudok.config.security.SecurityUtils;
 import com.alham.ggudok.dto.member.MemberDto;
 import com.alham.ggudok.dto.member.MemberSubsDto;
+import com.alham.ggudok.dto.member.ReviewDto;
 import com.alham.ggudok.dto.subs.*;
 import com.alham.ggudok.entity.member.Member;
+import com.alham.ggudok.entity.member.Review;
 import com.alham.ggudok.entity.subs.Category;
 import com.alham.ggudok.entity.subs.Subs;
 import com.alham.ggudok.entity.subs.SubsRank;
+import com.alham.ggudok.exception.ErrorResult;
+import com.alham.ggudok.exception.member.MemberException;
 import com.alham.ggudok.service.TagService;
 import com.alham.ggudok.service.member.MemberService;
 import com.alham.ggudok.service.subs.CategoryService;
 import com.alham.ggudok.service.subs.SubsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @Slf4j
@@ -33,6 +40,18 @@ public class SubsController {
 
     private final MemberService memberService;
 
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MemberException.class)
+    public ResponseEntity<ErrorResult> memberExceptionHandler(MemberException e) {
+        log.error(e.getMessage());
+        ErrorResult errorResult = new ErrorResult("BAD", e.getMessage());
+        return new ResponseEntity<>(errorResult, HttpStatus.BAD_REQUEST);
+    }
+
+    /**
+     * @param categoryEng
+     * @return
+     */
     @GetMapping("/{category_eng}")
     public SubsMainDto showSubsWithCategory(@PathVariable("category_eng") String categoryEng) {
 
@@ -80,15 +99,34 @@ public class SubsController {
 
     }
 
+    /**
+     * subs상세페이지
+     *
+     * @param subsId
+     * @param principal
+     * @return
+     */
+    //TODO DTO 만드는부분 리팩터링
     @GetMapping("/detail/{subsId}")
-    public SubsMainDetailDto showSubsDetail(@PathVariable("subsId")Long subsId,Principal principal){
+    public SubsMainDetailDto showSubsDetail(@PathVariable("subsId") Long subsId, Principal principal) {
         MemberDto memberDto = SecurityUtils.transPrincipal(principal);
-
+        MemberSubsDto memberSubsDto = new MemberSubsDto();
+        //로그인이 되어있는 상태라면 memberSubsDto 생성
         if (memberDto != null) {
             Member loginMember = memberService.findByLoginIdWithFavorSubs(memberDto.getLoginId());
-            MemberSubsDto memberSubsDto = new MemberSubsDto();
-//            memberSubsDto.setSubsLike();
-//            memberSubsDto.setReview();
+
+            loginMember.getMemberFavorSubsList()
+                    .stream()
+                    .filter(memberFavorSubs -> memberFavorSubs.getSubs().getSubsId() == subsId)
+                    .findFirst().ifPresent(mfs -> memberSubsDto.setSubsLike(true));
+
+            Optional<Review> memberReview = memberService.findMemberSubsReview(loginMember,subsId);
+
+            ReviewDto reviewDto = new ReviewDto();
+
+
+
+
         }
         Subs subs = subsService.findSubsById(subsId);
 
@@ -111,7 +149,7 @@ public class SubsController {
             subsRankDetailDto.setRankLevel(subsRank.getRankLevel());
             subsRankDetailDto.setContent(subsRank.getContents()
                     .stream()
-                    .map(s->s.getContent()).toList());
+                    .map(s -> s.getContent()).toList());
             subsRankDetailDto.setPrice(subsRank.getPrice());
             subsRankDetailDtoList.add(subsRankDetailDto);
 
@@ -120,6 +158,7 @@ public class SubsController {
 
         SubsMainDetailDto subsMainDetailDto = new SubsMainDetailDto();
         subsMainDetailDto.setItemDetail(subsDetailDto);
+        subsMainDetailDto.setMemberInfo(memberSubsDto);
 
 
         return subsMainDetailDto;
@@ -139,9 +178,29 @@ public class SubsController {
 
     }
 
+    @PostMapping("/dislike/{subsId}")
+    public boolean dislikeSubs(@PathVariable("subsId") Long subsId, Principal principal) {
+        MemberDto memberDto = SecurityUtils.transPrincipal(principal);
+        if (memberDto != null) {
+            Subs subs = subsService.findSubsById(subsId);
+            memberService.removeMemberFavorSubs(memberDto.getLoginId(), subs);
+            subsService.dislike(subs);
+            return true;
+        }
+        return false;
 
+    }
 
+    @PostMapping("/write_review/{subsId}")
+    public boolean writeReview(@PathVariable("subsId") Long subsId, Principal principal, @RequestBody ReviewDto reviewDto) {
+        MemberDto memberDto = SecurityUtils.transPrincipal(principal);
+        if (memberDto == null) {
+            throw new MemberException("로그인한 사용자만 이용이 가능합니다.");
+        }
+        Member member = memberService.findByLoginId(memberDto.getLoginId());
+        Subs subs = subsService.findSubsById(subsId);
+        memberService.writeReview(member, subs, reviewDto.getContents(), reviewDto.getRating());
 
-
-
+        return true;
+    }
 }

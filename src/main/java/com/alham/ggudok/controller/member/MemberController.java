@@ -1,8 +1,10 @@
 package com.alham.ggudok.controller.member;
 
+import com.alham.ggudok.config.security.SecurityUtils;
 import com.alham.ggudok.dto.member.MemberRegisterDto;
 import com.alham.ggudok.dto.member.MemberUpdateDto;
 import com.alham.ggudok.dto.member.MemberDto;
+import com.alham.ggudok.entity.member.Member;
 import com.alham.ggudok.exception.ErrorResult;
 import com.alham.ggudok.exception.member.MemberException;
 import com.alham.ggudok.service.member.MemberService;
@@ -10,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -24,6 +27,9 @@ import java.util.Map;
 public class MemberController {
 
     private final MemberService memberService;
+
+    private final PasswordEncoder passwordEncoder;
+
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MemberException.class)
     public ResponseEntity<ErrorResult> memberExceptionHandler(MemberException e) {
@@ -67,12 +73,45 @@ public class MemberController {
 
     }
 
+    @GetMapping("/update")
+    private MemberUpdateDto updateViewMember(Principal principal) {
+        MemberDto memberDto = SecurityUtils.transPrincipal(principal);
+        if (memberDto == null) {
+            new MemberException("로그인 되지 않은 회원입니다");
+        }
+
+        Member member = memberService.findByLoginId(memberDto.getLoginId());
+        MemberUpdateDto updateDto = new MemberUpdateDto();
+        updateDto.setAge(member.getAge());
+        updateDto.setPhoneNumber(member.getPhoneNumber());
+        updateDto.setGender(member.getGender());
+
+        return updateDto;
+    }
+
 
     @PostMapping("/update")
-    private String updateMember(MemberUpdateDto updateDto) {
+    private boolean updateMember(@RequestBody MemberUpdateDto updateDto,Principal principal) {
+        MemberDto memberDto = SecurityUtils.transPrincipal(principal);
+        if (memberDto == null) {
+            throw new MemberException("로그인 되지 않은 회원입니다!");
+        }
+        Member member = memberService.findByLoginId(memberDto.getLoginId());
 
-        memberService.updateMember(updateDto);
-        return null;
+        if (!passwordEncoder.matches(updateDto.getPassword(),member.getPassword())) {
+            throw new MemberException("현재 비밀번호가 맞지 않습니다!");
+        }
+
+        if (!updateDto.getNewPassword().equals(updateDto.getNewPasswordCheck())) {
+            throw new MemberException("새로운 비밀번호가 맞지 않습니다");
+        }
+
+
+        if (memberService.updateMember(updateDto, member)) {
+            return true;
+        } else {
+            throw new MemberException("회원 정보 수정에 실패했습니다");
+        }
     }
 
 //    @PostMapping("/add/reltag")

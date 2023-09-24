@@ -9,14 +9,19 @@ import com.alham.ggudok.entity.member.*;
 import com.alham.ggudok.entity.subs.Subs;
 import com.alham.ggudok.exception.member.MemberException;
 import com.alham.ggudok.repository.member.MemberRepository;
+import com.alham.ggudok.repository.member.ReviewRepository;
 import com.alham.ggudok.service.TagService;
 import com.alham.ggudok.util.GgudokUtil;
+import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -25,11 +30,14 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 public class MemberService {
 
+    private final EntityManager em;
     private final MemberRepository memberRepository;
 
     private final TagService tagService;
 
     private final PasswordEncoder passwordEncoder;
+
+    private final ReviewRepository reviewRepository;
 
 
 
@@ -94,13 +102,14 @@ public class MemberService {
      *
      */
     @Transactional
-    public void updateMember(MemberUpdateDto updateDto) {
-        Optional<Member> optionalMember = memberRepository.findById(updateDto.getMemberId());
-        if (optionalMember.isPresent()) {
-            Member member = optionalMember.get();
-            member.updateMember(updateDto.getPassword(), updateDto.getPhoneNumber());
+    public boolean updateMember(MemberUpdateDto updateDto,Member member) {
+        if (StringUtils.hasText(updateDto.getNewPassword())) {
+            passwordEncoder.encode(updateDto.getNewPassword());
+            member.updateMember(passwordEncoder.encode(updateDto.getNewPassword()), updateDto.getPhoneNumber(),updateDto.getGender(),updateDto.getAge());
+        }else{
+            member.updateMember(updateDto.getPhoneNumber(),updateDto.getGender(),updateDto.getAge());
         }
-
+        return true;
     }
 
 
@@ -112,8 +121,8 @@ public class MemberService {
      * @return
      */
     @Transactional
-    public void writeReview(Member member,Subs subs,String content,int rating) {
-        Review review = Review.createReview(member, subs, content,rating);
+    public Review writeReview(Member member,Subs subs,String content,int rating) {
+        return Review.createReview(member, subs, content,rating);
 
     }
 
@@ -128,11 +137,30 @@ public class MemberService {
         return MemberFavorSubs.createFavorSubs(member, subs);
     }
     @Transactional
+    public Integer removeMemberFavorSubs(String loginId, Subs subs) {
+        Member member = memberRepository.findByLoginIdWithFavorSubs(loginId).get();
+        List<MemberFavorSubs> memberFavorSubsList = member.getMemberFavorSubsList();
+        memberFavorSubsList.stream().filter(mfs->mfs.getSubs().getSubsId().equals(subs.getSubsId()))
+                        .findFirst().ifPresent(mfs->memberFavorSubsList.remove(mfs));
+        int i = member.updateFavorSubs(memberFavorSubsList);
+        return i;
+
+    }
+    @Transactional
     public MemberRelTag createRelTag(Member member, Tag tag) {
         return MemberRelTag.createRelTag(member, tag);
     }
 
 
+    public List<Review> findMemberReviews(Member member) {
+        Optional<List<Review>> reviewByMember = reviewRepository.findReviewsByMember(member.getMemberId());
+
+        if (reviewByMember.isPresent()) {
+            return reviewByMember.get();
+        }else{
+            return new ArrayList<>();
+        }
+    }
 
 
     /**
@@ -214,5 +242,10 @@ public class MemberService {
         } else {
             return new Member("no-member", 0);
         }
+    }
+
+
+    public Optional<Review> findMemberSubsReview(Member member, Long subsId) {
+        return reviewRepository.findReviewByMemberAndSubs(member.getMemberId(), subsId);
     }
 }

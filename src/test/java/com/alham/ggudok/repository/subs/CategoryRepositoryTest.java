@@ -59,10 +59,10 @@ class CategoryRepositoryTest {
         em.flush();
         em.clear();
 
-        Tag savedTag1 = tagRepository.findById(1l).get();
-        Tag savedTag2 = tagRepository.findById(2l).get();
+        Tag savedTag1 = tagRepository.findById(tag1.getTagId()).get();
+        Tag savedTag2 = tagRepository.findById(tag2.getTagId()).get();
 
-        Subs findSubs = subsRepository.findById(1l).get();
+        Subs findSubs = subsRepository.findById(subs.getSubsId()).get();
         findSubs.addTag(savedTag1);
         findSubs.addTag(savedTag2);
 

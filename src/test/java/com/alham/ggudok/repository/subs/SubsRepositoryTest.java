@@ -7,12 +7,15 @@ import com.alham.ggudok.tempadmin.dto.subs.AdminSubsRankDto;
 import com.alham.ggudok.tempadmin.service.subs.AdminSubsService;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -34,6 +37,12 @@ class SubsRepositoryTest {
 
     @PersistenceContext
     EntityManager em;
+
+    @BeforeEach
+    @Rollback
+    public void beforeEach() {
+
+    }
 
     @Test
     public void save()throws Exception{
@@ -76,10 +85,10 @@ class SubsRepositoryTest {
         em.flush();
         em.clear();
 
-        Tag savedTag1 = tagRepository.findById(1l).get();
-        Tag savedTag2 = tagRepository.findById(2l).get();
+        Tag savedTag1 = tagRepository.findById(tag1.getTagId()).get();
+        Tag savedTag2 = tagRepository.findById(tag2.getTagId()).get();
 
-        Subs findSubs = subsRepository.findById(1l).get();
+        Subs findSubs = subsRepository.findById(subs.getSubsId()).get();
         findSubs.addTag(savedTag1);
         findSubs.addTag(savedTag2);
 
@@ -155,21 +164,26 @@ class SubsRepositoryTest {
         adminSubsService.addSubsRank(melon.getSubsId(), musicDef);
         adminSubsService.addSubsRank(melon.getSubsId(), musicPre);
 
-        em.flush();
-        em.clear();
         //when
+        Subs netfilxSubsRank = subsRepository.findSubsByIdWithRank(netflix.getSubsId()).get();
+        SubsRank subsRank1 = netfilxSubsRank.getSubsRanks().stream().filter(subsRank -> subsRank.getRankName().equals("premium")).findFirst().get();
+        SubsRank subsRank2 = netfilxSubsRank.getSubsRanks().stream().filter(subsRank -> subsRank.getRankName().equals("default")).findFirst().get();
+        Subs melonSubsRank = subsRepository.findSubsByIdWithRank(melon.getSubsId()).get();
+        SubsRank subsRank3 = melonSubsRank.getSubsRanks().stream().filter(subsRank -> subsRank.getRankName().equals("basic")).findFirst().get();
+        SubsRank subsRank4 = melonSubsRank.getSubsRanks().stream().filter(subsRank -> subsRank.getRankName().equals("super")).findFirst().get();
 
-        adminSubsService.addSubsContent(netflix.getSubsId(), 1l, "gift1");
-        adminSubsService.addSubsContent(netflix.getSubsId(), 1l, "gift2");
-        int netfilxPr = adminSubsService.addSubsContent(netflix.getSubsId(), 1l, "gift3");
 
-        adminSubsService.addSubsContent(netflix.getSubsId(), 2l, "gift4");
-        int netfilxDef = adminSubsService.addSubsContent(netflix.getSubsId(), 2l, "gift5");
+        adminSubsService.addSubsContent(netflix.getSubsId(), subsRank1.getRankId(), "gift1");
+        adminSubsService.addSubsContent(netflix.getSubsId(), subsRank1.getRankId(), "gift2");
+        int netfilxPr = adminSubsService.addSubsContent(netflix.getSubsId(), subsRank1.getRankId(), "gift3");
+
+        adminSubsService.addSubsContent(netflix.getSubsId(), subsRank2.getRankId(), "gift4");
+        int netfilxDef = adminSubsService.addSubsContent(netflix.getSubsId(), subsRank2.getRankId(), "gift5");
 
 
-        int memlonBasic = adminSubsService.addSubsContent(melon.getSubsId(), 3l, "gift6");
-        adminSubsService.addSubsContent(melon.getSubsId(), 4l, "gift7");
-        int melonSu = adminSubsService.addSubsContent(melon.getSubsId(), 4l, "gift8");
+        int memlonBasic = adminSubsService.addSubsContent(melon.getSubsId(), subsRank3.getRankId(), "gift6");
+        adminSubsService.addSubsContent(melon.getSubsId(), subsRank4.getRankId(), "gift7");
+        int melonSu = adminSubsService.addSubsContent(melon.getSubsId(), subsRank4.getRankId(), "gift8");
 
 
         em.flush();
@@ -197,12 +211,11 @@ class SubsRepositoryTest {
         Subs subs5 = new Subs("subs5");
 
 
-
-        subsRepository.save(subs1);
-        subsRepository.save(subs2);
-        subsRepository.save(subs3);
-        subsRepository.save(subs4);
-        subsRepository.save(subs5);
+        Subs saveSubs1 = subsRepository.save(subs1);
+        Subs saveSubs2 = subsRepository.save(subs2);
+        Subs saveSubs3 = subsRepository.save(subs3);
+        Subs saveSubs4 = subsRepository.save(subs4);
+        Subs saveSubs5 = subsRepository.save(subs5);
         subs1.addCategory(category);
         subs2.addCategory(category);
         subs3.addCategory(category);
@@ -216,17 +229,17 @@ class SubsRepositoryTest {
         tagRepository.save(tag1);
         tagRepository.save(tag2);
 
-        em.flush();
-        em.clear();
+        Tag tag11 = tagRepository.findTagByTagName("tag1");
+        Tag tag21 = tagRepository.findTagByTagName("tag2");
 
-        Tag savedTag1 = tagRepository.findById(1l).get();
-        Tag savedTag2 = tagRepository.findById(2l).get();
+        Tag savedTag1 = tagRepository.findById(tag11.getTagId()).get();
+        Tag savedTag2 = tagRepository.findById(tag21.getTagId()).get();
 
-        Subs findSubs1 = subsRepository.findById(1l).get();
-        Subs findSubs2 = subsRepository.findById(2l).get();
-        Subs findSubs3 = subsRepository.findById(3l).get();
-        Subs findSubs4 = subsRepository.findById(4l).get();
-        Subs findSubs5 = subsRepository.findById(5l).get();
+        Subs findSubs1 = subsRepository.findById(saveSubs1.getSubsId()).get();
+        Subs findSubs2 = subsRepository.findById(saveSubs2.getSubsId()).get();
+        Subs findSubs3 = subsRepository.findById(saveSubs3.getSubsId()).get();
+        Subs findSubs4 = subsRepository.findById(saveSubs4.getSubsId()).get();
+        Subs findSubs5 = subsRepository.findById(saveSubs5.getSubsId()).get();
         findSubs1.addTag(savedTag1);
         findSubs2.addTag(savedTag1);
         findSubs3.addTag(savedTag1);

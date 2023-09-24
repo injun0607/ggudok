@@ -33,8 +33,9 @@ public class Review {
     public static Review createReview(Member member,Subs subs,String content,int rating) {
         Review review = new Review();
         review.addMember(member);
-        review.setSubs(subs);
+        review.addSubs(subs);
         review.content = content;
+        review.rating = rating;
         return review;
     }
 
@@ -44,8 +45,13 @@ public class Review {
 
     }
 
-    private void setSubs(Subs subs) {
+    private void addSubs(Subs subs) {
         this.subs = subs;
+        this.subs.getReviews().add(this);
+    }
+
+    public Review noReview() {
+        return new Review();
     }
 
 

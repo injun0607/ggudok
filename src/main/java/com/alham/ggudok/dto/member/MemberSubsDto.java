@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class MemberSubsDto {
 
-    private boolean subsLike;
+    private boolean subsLike = false;
     private ReviewDto review;
 }

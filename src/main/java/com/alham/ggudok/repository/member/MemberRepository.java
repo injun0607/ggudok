@@ -1,10 +1,12 @@
 package com.alham.ggudok.repository.member;
 
 import com.alham.ggudok.entity.member.Member;
+import com.alham.ggudok.entity.member.Review;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface MemberRepository extends JpaRepository<Member, Long> {
@@ -17,4 +19,5 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     @Query("select m from Member m join fetch m.memberFavorSubsList mfs join fetch mfs.subs where m.loginId = :loginId")
     Optional<Member> findByLoginIdWithFavorSubs(@Param("loginId")String loginId);
+
 }

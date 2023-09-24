@@ -91,14 +91,8 @@ public class SubsService {
     }
 
     @Transactional
-    public boolean dislikeSubs(Long subsId) {
-        Optional<Subs> byId = subsRepository.findById(subsId);
-        if (byId.isPresent()) {
-            Subs subs = byId.get();
-            subs.dislikeSubs();
-            return true;
-        } else {
-            return false;
-        }
+    public void dislike(Subs subs) {
+        subs.dislikeSubs();
     }
+
 }
