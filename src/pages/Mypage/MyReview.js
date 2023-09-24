@@ -1,21 +1,30 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+// component import
+import ErrorLogin from '../../components/ErrorLogin.js'
 // css import
 import style from '../../styles/Mypage.module.css'
 
 const NO_IMAGE_URL = '/images/common/noimg.png';
 
-const MyReview = () => {
+const MyReview = ({isLoggedIn}) => {
+  const navigate = useNavigate();
+
   const reviews = useSelector(state => state.review.reviews);
 
   return (
-  <section className={`${style.section} ${style.ratingwrap}`}>
-    <div className={style.ratings}>
-      {reviews.map((review, index) => (
-        <ReviewItem key={index} review={review} />
-      ))}
-    </div>
-  </section>
+    isLoggedIn ? (
+      <section className={`${style.section} ${style.ratingwrap}`}>
+        <div className={style.ratings}>
+          {reviews.map((review, index) => (
+            <ReviewItem key={index} review={review} />
+          ))}
+        </div>
+      </section>
+    ) : (
+      <><ErrorLogin /> <div className='modalBg modalBg-cursorIn'></div></>
+    )
   )
 }
 

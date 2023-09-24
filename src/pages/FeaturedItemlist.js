@@ -47,7 +47,7 @@ const FeaturedItemlist = ({ category }) => {
         </div>
         <section className='item-list mb_60'>
           {IsResult ? slicedItems.slice(0, 4).map((item, index) => 
-            <Link to={`/ItemDetail/${item.id}`} key={index} className='item-list-box'>
+            <Link to={`/subs/detail/${item.id}`} key={index} className='item-list-box'>
               <div className='rank'>
                 <p className='rankNum'>{index + 1}</p>
               </div>
@@ -68,7 +68,7 @@ const FeaturedItemlist = ({ category }) => {
         <section className={style.section}>
           <div className={style.itemlist}>
             {slicedItems.map((item, index) => (
-              <Link to={`/ItemDetail/${item.id}`} key={index} className={style.item}>
+              <Link to={`/subs/detail/${item.id}`} key={index} className={style.item}>
                 <div className={style.img}>
                   <img src={`${item.image}`} alt={item.name} onError={(e) => {e.target.src = NO_IMAGE_URL;}}/>
                 </div>

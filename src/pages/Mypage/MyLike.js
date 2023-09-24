@@ -1,13 +1,17 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+// component import
+import ErrorLogin from '../../components/ErrorLogin.js'
 // css import
 import style from '../../styles/Item.module.css';
 
 const ITEMS_PER_PAGE = 12;
 const NO_IMAGE_URL = '/images/common/noimg.png';
 
-const MyLike = () => {
+const MyLike = ({isLoggedIn}) => {
+  const navigate = useNavigate();
+
   const likeditems = useSelector(state => state.item.likeditems);
 
   // 아이템 개수 설정 및 페이지 이동
@@ -27,38 +31,41 @@ const MyLike = () => {
   };
 
   return (
-    <>
-    <section className={style.section}>
-      <div className={style.itemlist}>
-        {slicedItems.map((item, index) => (
-          <Link to={`/ItemDetail/${item.id}`} key={index} className={style.item}>
-            <div className={style.img}>
-              <img src={`${item.image}`} alt={item.name} onError={(e) => {e.target.src = NO_IMAGE_URL;}}/>
-            </div>
-            <div className={style.txt}>
-              <h3>{item.name}</h3>
-              <div className={style.tag}>
-                <p>{item.category}</p>
-                <p>{item.tag}</p>
+    isLoggedIn ? (
+      <>
+      <section className={style.section}>
+        <div className={style.itemlist}>
+          {slicedItems.map((item, index) => (
+            <Link to={`/subs/detail/${item.id}`} key={index} className={style.item}>
+              <div className={style.img}>
+                <img src={`${item.image}`} alt={item.name} onError={(e) => {e.target.src = NO_IMAGE_URL;}}/>
               </div>
-            </div>
-          </Link>
-        ))}
-      </div>
-    </section>
-
-    {IsPager && <div className='pagination-wrap'>
-      <div className='pagination'>
-        <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>
-        <span className='material-icons'>chevron_left</span>
-        </button>
-        <span>{currentPage}</span> / <span>{totalPages}</span>
-        <button onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages}>
-        <span className='material-icons'>chevron_right</span>
-        </button>
-      </div>
-    </div>}
-    </>
+              <div className={style.txt}>
+                <h3>{item.name}</h3>
+                <div className={style.tag}>
+                  <p>{item.category}</p>
+                  <p>{item.tag}</p>
+                </div>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </section>
+      {IsPager && <div className='pagination-wrap'>
+        <div className='pagination'>
+          <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>
+          <span className='material-icons'>chevron_left</span>
+          </button>
+          <span>{currentPage}</span> / <span>{totalPages}</span>
+          <button onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages}>
+          <span className='material-icons'>chevron_right</span>
+          </button>
+        </div>
+      </div>}
+      </>
+    ) : (
+      <><ErrorLogin /> <div className='modalBg modalBg-cursorIn'></div></>
+    )
   )
 }
 

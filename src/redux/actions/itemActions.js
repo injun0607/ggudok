@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 export const setIsLoading = (isLoading) => {
   return {
     type: 'SET_IS_LOADING',
@@ -7,7 +9,14 @@ export const setIsLoading = (isLoading) => {
 
 export const fetchItemsSuccess = (data) => {
   return {
-    type: 'FETCH_ITMES_SUCCESS',
+    type: 'FETCH_ITEMS_SUCCESS',
+    payload: data,
+  };
+};
+
+export const fetchitemDetailSuccess = (data) => {
+  return {
+    type: 'FETCH_ITEMDETAIL_SUCCESS',
     payload: data,
   };
 };
@@ -19,11 +28,18 @@ export const filterItem = (filtereditem) => {
   };
 };
 
-export const setLikedItem = (likeditem) => {
-  return {
-    type: 'SET_LIKED_ITEM',
-    payload: likeditem,
-  };
+export const setLikeItem = (itemId) => async (dispatch) => {
+  const { subsId } = itemId;
+  try {
+    const response = await axios.post(`/subs/like/${subsId}`, new URLSearchParams({ subsId }));
+    if (response.status === 200) {
+      dispatch({type: 'LIKE_ITEM_SUCCESS', payload: itemId,});
+    } else { dispatch({ type: 'LIKE_ITEM_FAILURE' }); }
+  } catch (error) {
+    console.log('Error like item:', error);
+    dispatch({ type: 'LIKE_ITEM_FAILURE' });
+    alert(`관심서비스 등록 중 오류가 발생했습니다. 잠시 후 다시 시도해주시기 바랍니다.`)
+  }
 };
 export const setIsResult = (isresult) => {
   return {

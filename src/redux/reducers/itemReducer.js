@@ -1,6 +1,8 @@
 const initialState = {
   items: [],
   filtereditems: [],
+  itemDetail: {},
+  similarItems: [],
   // items: [
   //   // Category: 영상
   // { id: '1', name: '스마트비디오', category: '영상', tag: ['20대', '30대', '여성'], icon: '/images/icons/ott.svg', image: '/images/thumbnails/thumb00.png' },
@@ -121,10 +123,16 @@ const itemReducer = (state = initialState, action) => {
         ...state,
         IsLoading: action.payload,
       }
-    case 'FETCH_ITMES_SUCCESS':
+    case 'FETCH_ITEMS_SUCCESS':
       return {
         ...state,
         items: action.payload,
+      }
+    case 'FETCH_ITEMDETAIL_SUCCESS':
+      return {
+        ...state,
+        itemDetail: action.payload.itemDetail,
+        similarItems: action.payload.similarItems,
       }
     case 'SLICE_ITEM':
       return {
@@ -136,23 +144,31 @@ const itemReducer = (state = initialState, action) => {
         ...state,
         filtereditems: action.payload,
       }
-    case 'SET_LIKED_ITEM':
-      const existingLikedItem = state.likeditems.find(
-        (likeditem) => likeditem.id === action.payload.id
-      );
-      if (existingLikedItem) {
-        const updatedLikedItem = state.likeditems.filter(
-          (likeditem) => likeditem.id !== action.payload.id
-        );
-        return {
-          ...state,
-          likeditems: updatedLikedItem,
-        };
-      } else {
-        return {
-          ...state,
-          likeditems: [...state.likeditems, action.payload],
-        };
+    case 'LIKE_ITEM_SUCCESS':
+      return {
+        ...state,
+        likeditems: [...state.likeditems, action.payload],
+      }
+      // const existingLikedItem = state.likeditems.find(
+      //   (likeditem) => likeditem.id === action.payload.id
+      // );
+      // if (existingLikedItem) {
+      //   const updatedLikedItem = state.likeditems.filter(
+      //     (likeditem) => likeditem.id !== action.payload.id
+      //   );
+      //   return {
+      //     ...state,
+      //     likeditems: updatedLikedItem,
+      //   };
+      // } else {
+      //   return {
+      //     ...state,
+      //     likeditems: [...state.likeditems, action.payload],
+      //   };
+      // };
+    case 'LIKE_ITEM_FAILURE':
+      return {
+        ...state,
       };
     case 'SET_ISRESULT':
       return {

@@ -23,6 +23,7 @@ export const login = (userData, navigate) => async (dispatch) => {
   } catch (error) {
     console.log('Error logging in:', error);
     dispatch({ type: 'LOGIN_FAILURE' });
+    alert(`로그인 중 오류가 발생했습니다. 잠시 후 다시 시도해주시기 바랍니다.`)
   }
 };
 export const logout = () => async (dispatch) => {
@@ -36,7 +37,7 @@ export const logout = () => async (dispatch) => {
   }
 };
 
-// *********************** 회원가입 **********************
+// *********************** 회원가입 및 회원정보수정 **********************
 export const join = (userData, navigate) => async(dispatch) => {
   const {
     memberName,
@@ -58,14 +59,14 @@ export const join = (userData, navigate) => async(dispatch) => {
     dispatch(setEmailValNumber(''));
   } else if(!isPassval) {
     alert('비밀번호를 올바르게 입력하세요.')
-    dispatch(setJoinPassword(''));
-    dispatch(setJoinPasswordCheck(''));
+    dispatch(setPassword(''));
+    dispatch(setPasswordCheck(''));
   } else if(memberName === ''){ alert('이름을 입력하세요.')
   } else if(age === ''){ alert('나이를 입력하세요.')
   } else if (gender === '성별을 선택하세요.' || gender === ''){ alert('성별을 선택하세요.')
   } else if (!isPhoneval){
     alert('휴대폰 번호를 올바르게 입력하세요.')
-    dispatch(setJoinPhoneNumber(''));
+    dispatch(setPhoneNumber(''));
   } else {
     try{
       const response = await axios.post('/member/register', {
@@ -74,6 +75,7 @@ export const join = (userData, navigate) => async(dispatch) => {
         password: password,
         passwordCheck: passwordCheck,
         gender: gender,
+        
         age: age,
         phoneNumber: phoneNumber,
       });
@@ -87,43 +89,91 @@ export const join = (userData, navigate) => async(dispatch) => {
     } catch (error) {
       console.log('Error Member Register :', error);
       alert(`회원가입 중 오류가 발생했습니다. 잠시 후 다시 시도해주시기 바랍니다.`)
+    }
+  }
+}
+export const setMemberinfo = (userData) => {
+  return {
+    type: 'SET_MEMBERINFO',
+    payload: userData,
+  };
+}
+export const editMemberinfo = (userData, navigate) => async(dispatch) => {
+  const {
+    password,
+    passwordCheck,
+    gender,
+    age,
+    phoneNumber,
+    isPassval,
+    isPhoneval,
+  } = userData;
+  
+  if(!isPassval) {
+    alert('비밀번호를 올바르게 입력하세요.')
+    dispatch(setPassword(''));
+    dispatch(setPasswordCheck(''));
+  } else if(age === ''){ alert('나이를 입력하세요.')
+  } else if (gender === '성별을 선택하세요.' || gender === ''){ alert('성별을 선택하세요.')
+  } else if (!isPhoneval){
+    alert('휴대폰 번호를 올바르게 입력하세요.')
+    dispatch(setPhoneNumber(''));
+  } else {
+    try{
+      const response = await axios.post('/member/update', {
+        gender: gender,
+        age: age,
+        password: password,
+        passwordCheck: passwordCheck,
+        phoneNumber: phoneNumber,
+      });
+      if (response.status === 200) {
+        alert(`회원정보수정이 완료되었습니다.`)
+        navigate('/Home');
+      } else {
+        alert(`회원정보수정에 실패하였습니다. 다시 작성해주시기 바랍니다.`)
+        // window.location.reload();
+      }
+    } catch (error) {
+      console.log('Error Member Register :', error);
+      alert(`회원정보수정 중 오류가 발생했습니다. 잠시 후 다시 시도해주시기 바랍니다.`)
       // window.location.reload();
     }
   }
 }
-export const setJoinLoginId = (loginId) => {
+export const setLoginId = (loginId) => {
   return {
-    type: 'JOIN_LOGINID',
+    type: 'SET_LOGINID',
     payload: loginId,
   };
 }
-export const setJoinMemberName = (memberName) => {
+export const setMemberName = (memberName) => {
   return {
-    type: 'JOIN_MEMBERNAME',
+    type: 'SET_MEMBERNAME',
     payload: memberName,
   };
 }
-export const setJoinAge = (age) => {
+export const setAge = (age) => {
   return {
-    type: 'JOIN_AGE',
+    type: 'SET_AGE',
     payload: age,
   };
 }
-export const setJoinGender = (gender) => {
+export const setGender = (gender) => {
   return {
-    type: 'JOIN_GENDER',
+    type: 'SET_GENDER',
     payload: gender,
   };
 };
-export const setJoinPassword = (password) => {
+export const setPassword = (password) => {
   return {
-    type: 'JOIN_PASSWORD',
+    type: 'SET_PASSWORD',
     payload: password,
   };
 }
-export const setJoinPasswordCheck = (passwordCheck) => {
+export const setPasswordCheck = (passwordCheck) => {
   return {
-    type: 'JOIN_PASSWORDCHECK',
+    type: 'SET_PASSWORDCHECK',
     payload: passwordCheck,
   };
 }
@@ -133,7 +183,7 @@ export const setValidPassword = (isPassval) => {
     payload: isPassval,
   };
 }
-export const setValidPhoneNymber = (isPhoneval) => {
+export const setValidPhoneNumber = (isPhoneval) => {
   return {
     type: 'IS_VALID_PHONENUMBER',
     payload: isPhoneval,
@@ -141,13 +191,13 @@ export const setValidPhoneNymber = (isPhoneval) => {
 }
 export const setEmailValNumber = (emailValNumber) => {
   return {
-    type: 'JOIN_EMAILVALNUMBER',
+    type: 'SET_EMAILVALNUMBER',
     payload: emailValNumber,
   };
 }
-export const setJoinPhoneNumber = (phoneNumber) => {
+export const setPhoneNumber = (phoneNumber) => {
   return {
-    type: 'JOIN_PHONENUMBER',
+    type: 'SET_PHONENUMBER',
     payload: phoneNumber,
   };
 }
@@ -157,3 +207,9 @@ export const setEmailSent = (isEmailSent) => {
     payload: isEmailSent,
   };
 }
+export const setIsLoading = (isLoading) => {
+  return {
+    type: 'SET_IS_LOADING',
+    payload: isLoading,
+  };
+};

@@ -43,7 +43,7 @@ const Home = () => {
           <div className='item-list'>
             {
               items.slice(0, 4).map((item, index) => 
-              <Link to={`/ItemDetail/${item.id}`} key={index} className='item-list-box'>
+              <Link to={`/subs/detail/${item.id}`} key={index} className='item-list-box'>
               {/* <div className='item-list-box' key={index}> */}
                 <div className='img'>
                   <img src={`${item.image}`} alt={item.name} onError={(e) => {e.target.src = NO_IMAGE_URL;}}/>
@@ -66,7 +66,7 @@ const Home = () => {
           <div className='item-list'>
             {
               items.slice(0, 4).map((item, index) => 
-              <Link to={`/ItemDetail/${item.id}`} key={index} className='item-list-box'>
+              <Link to={`/subs/detail/${item.id}`} key={index} className='item-list-box'>
                 <div className='img'>
                   <img src={`${item.image}`} alt={item.name} onError={(e) => {e.target.src = NO_IMAGE_URL;}}/>
                 </div>

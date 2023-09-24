@@ -5,7 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 // css import
 import style from '../../styles/Auth.module.css'
 // redux import
-import { join, setEmailValNumber, setJoinLoginId, setValidPassword, setJoinMemberName, setJoinAge, setJoinGender, setValidPhoneNymber, setJoinPhoneNumber, setEmailSent, setJoinPassword, setJoinPasswordCheck } from '../../redux/actions/userActions';
+import { join, setEmailValNumber, setLoginId, setValidPassword, setMemberName, setAge, setGender, setValidPhoneNumber, setPhoneNumber, setEmailSent, setPassword, setPasswordCheck } from '../../redux/actions/userActions';
 
 const JoinEmail = () => {
   const dispatch = useDispatch();
@@ -62,7 +62,7 @@ const JoinEmail = () => {
     }
   
     // Redux 상태 업데이트
-    dispatch(setValidPhoneNymber(isPhoneNumberReg));
+    dispatch(setValidPhoneNumber(isPhoneNumberReg));
   }
 
   // 이메일 인증번호 fetch 해오기
@@ -123,7 +123,7 @@ const JoinEmail = () => {
               <input
                 type='text' name='loginId' placeholder='이메일 아이디를 입력하세요.' autoComplete="off"
                 value={loginId}
-                onChange={(e) => dispatch(setJoinLoginId(e.target.value))} />
+                onChange={(e) => dispatch(setLoginId(e.target.value))} />
               <button type='button' onClick={() => handleSendEmail(loginId)} className='btn btn_normal_b'>인증 이메일 {isEmailSent && '다시'} 보내기</button>
               {isEmailSent &&
                 <input
@@ -135,7 +135,7 @@ const JoinEmail = () => {
                 placeholder="비밀번호를 입력하세요."
                 value={password}
                 onChange={(e) => {
-                  dispatch(setJoinPassword(e.target.value));
+                  dispatch(setPassword(e.target.value));
                   handleChangePassword(e.target.value, passwordCheck);
                 }}
               />
@@ -144,7 +144,7 @@ const JoinEmail = () => {
                 placeholder="비밀번호를 한번 더 입력하세요."
                 value={passwordCheck}
                 onChange={(e) => {
-                  dispatch(setJoinPasswordCheck(e.target.value));
+                  dispatch(setPasswordCheck(e.target.value));
                   handleChangePassword(password, e.target.value);
                 }}
               />
@@ -153,14 +153,14 @@ const JoinEmail = () => {
               <input type='text' name='memberName' autoComplete="off"
                 placeholder='이름을 입력하세요.'
                 value={memberName}
-                onChange={(e) => { dispatch(setJoinMemberName(e.target.value)) }} />
+                onChange={(e) => { dispatch(setMemberName(e.target.value)) }} />
               <input type='text' name='age' autoComplete="off"
                   placeholder='나이를 숫자만 입력하세요.'
                   value={age}
-                  onChange={(e) => { dispatch(setJoinAge(e.target.value)) }} />
+                  onChange={(e) => { dispatch(setAge(e.target.value)) }} />
               <select className={`${style.select}`} name='gender'
                 value={gender}
-                onChange={(e) => dispatch(setJoinGender(e.target.value))}
+                onChange={(e) => dispatch(setGender(e.target.value))}
               >
                 <option value=''>성별을 선택하세요.</option>
                 <option value='MAN'>남성</option>
@@ -171,7 +171,7 @@ const JoinEmail = () => {
                 placeholder='휴대폰 번호를 숫자만 입력하세요.' 
                 value={phoneNumber}
                 onChange={(e) => {
-                  dispatch(setJoinPhoneNumber(e.target.value))
+                  dispatch(setPhoneNumber(e.target.value))
                   handleChangePhoneNumber(e.target.value);
                 }} />
               {errorMessageP && <p style={{ color: 'red' }}>{errorMessageP}</p>}

@@ -1,0 +1,39 @@
+{
+  "itemDetail": {
+    "id": 1,
+    "name": "netfilx",
+    "info": null,
+    "icon": null,
+    "image": null,
+    "category": "영화",
+    "ratingAvg": 3,
+    "ranks": [{
+      "rankName": "기본",
+      "price": 4500,
+      "rankLevel": "DEFAULT",
+      "content": ["넷플릭스 기본 구독혜택1", "넷플릭스 기본 구독혜택2"]
+    }, {
+      "rankName": "프리미엄",
+      "price": 5500,
+      "rankLevel": "PRIME",
+      "content": ["넷플릭스 프리미엄 구독혜택1", "넷플릭스 프리미엄 구독혜택2", "넷플릭스 프리미엄 구독혜택3"]
+    }],
+    "tags": [{
+      "tagId": 1,
+      "tagName": "20대"
+    }, {
+      "tagId": 2,
+      "tagName": "30대"
+    }, {
+      "tagId": 3,
+      "tagName": "40대"
+    }, {
+      "tagId": 4,
+      "tagName": "여성"
+    }, {
+      "tagId": 5,
+      "tagName": "남성"
+    }]
+  },
+  "similarItems": []
+}

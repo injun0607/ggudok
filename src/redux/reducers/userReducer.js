@@ -15,6 +15,8 @@ const initialState = {
   gender: '',
   age: '',
   phoneNumber: '',
+
+  IsLoading: true,
 };
   
 const userReducer = (state = initialState, action) => {
@@ -46,7 +48,7 @@ const userReducer = (state = initialState, action) => {
         password: '',
         isLoggedIn: false,
       };
-    // **************************회원가입*****************************
+    // *********************회원가입 / 회원정보수정***********************
     case 'JOIN':
       return {
         ...state,
@@ -58,42 +60,58 @@ const userReducer = (state = initialState, action) => {
         age: action.payload.age,
         phoneNumber: action.payload.phoneNumber,
       };
-    case 'JOIN_LOGINID':
+    case 'SET_MEMBERINFO':
+      return {
+        ...state,
+        gender: action.payload.gender,
+        age: action.payload.age,
+        phoneNumber: action.payload.phoneNumber,
+      };
+    case 'EDIT_MEMBERINFO':
+      return {
+        ...state,
+        password: action.payload.password,
+        passwordCheck: action.payload.passwordCheck,
+        gender: action.payload.gender,
+        age: action.payload.age,
+        phoneNumber: action.payload.phoneNumber,
+      };
+    case 'SET_LOGINID':
       return {
         ...state,
         loginId: action.payload,
       };
-    case 'JOIN_AGE':
+    case 'SET_AGE':
       return {
         ...state,
         age: action.payload,
       };
-    case 'JOIN_GENDER':
+    case 'SET_GENDER':
       return {
         ...state,
         gender: action.payload,
       };
-    case 'JOIN_MEMBERNAME':
+    case 'SET_MEMBERNAME':
       return {
         ...state,
         memberName: action.payload,
       };
-    case 'JOIN_PASSWORD':
+    case 'SET_PASSWORD':
       return {
         ...state,
         password: action.payload,
       };
-    case 'JOIN_PASSWORDCHECK':
+    case 'SET_PASSWORDCHECK':
       return {
         ...state,
         passwordCheck: action.payload,
       };
-    case 'JOIN_PHONENUMBER':
+    case 'SET_PHONENUMBER':
       return {
         ...state,
         phoneNumber: action.payload,
       };
-    case 'JOIN_EMAILVALNUMBER':
+    case 'SET_EMAILVALNUMBER':
       return {
         ...state,
         emailValNumber: action.payload,
@@ -114,6 +132,11 @@ const userReducer = (state = initialState, action) => {
         ...state,
         isEmailSent: action.payload,
       };
+    case 'SET_IS_LOADING':
+      return {
+        ...state,
+        IsLoading: action.payload,
+      }
     default:
       return state;
   }

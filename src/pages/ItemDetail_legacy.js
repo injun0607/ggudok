@@ -1,18 +1,17 @@
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams, Link } from 'react-router-dom';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
-import { hover } from '@testing-library/user-event/dist/hover';
 import { Pie } from 'react-chartjs-2';
 // css import
 import style from '../styles/Item.module.css';
 // component import
 import Error from '../components/Error';
 // redux import
-import { setLikeItem, setIsLoading, setIsResult, fetchitemDetailSuccess } from '../redux/actions/itemActions';
+import { setLikeItem, } from '../redux/actions/itemActions';
 import { setReviewModal, } from '../redux/actions/reviewActions';
+import { hover } from '@testing-library/user-event/dist/hover';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -21,131 +20,88 @@ const NO_IMAGE_URL = '/images/common/noimg.png';
 
 
 const ItemDetail = () => {
-  let dispatch = useDispatch();
-  const itemDetail = useSelector(state => state.item.itemDetail);
-  const similarItems = useSelector(state => state.item.similarItems);
+  let dispatch = useDispatch()
+  const items = useSelector(state => state.item.items);
   const likeditems = useSelector(state => state.item.likeditems);
-  const IsResult = useSelector(state => state.item.IsResult);
   const reviewModal = useSelector(state => state.review.reviewModal);
   const reviews = useSelector(state => state.review.reviews);
-  const isLoggedIn = useSelector(state => state.user.isLoggedIn);
 
   const [isLikedOn, setIsLikedOn] = useState(false);
-  const [IsPager, setIsPager] = useState(false);
-  const [slicedItems, setSlicedItems] = useState([]);
-  const [itemStarAvg, setItemStarAvg] = useState([]);
-  const [itemDefaultRank, setItemDefaultRank] = useState({});
-  const [itemOtherRanks, setItemOtherRanks] = useState([]);
   
-  const { subsId } = useParams();
-
-  // ************************** 기본 아이템 fetch ***************************
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(`/subs/detail/${subsId}`);
-        const data = response.data;
-
-        dispatch(fetchitemDetailSuccess(data));
-        dispatch(setIsLoading(false));
-        dispatch(setIsResult(true));
-
-        // 아이템 평균별점
-        const itemRatingAvg = data.itemDetail.ratingAvg;
-        const newItemStarAvg = [];
-        for(let i = 0; i < 5; i++){
-          newItemStarAvg.push(i < itemRatingAvg);
-        }
-        setItemStarAvg(newItemStarAvg);
-        // 아이템 회원등급 Default와 나머지 분리
-        const itemRanks = data.itemDetail.ranks;
-        setItemDefaultRank(itemRanks.find(obj => obj.rankLevel === "DEFAULT"));
-        setItemOtherRanks(itemRanks.filter(obj => obj.rankLevel !== "DEFAULT"));
-        
-      } catch (error) {
-        console.error('Error fetching data:', error);
-        dispatch(setIsResult(false));
-      }
-    };
-    fetchData();
-
-  }, [subsId]);
+  const { itemId } = useParams();
   
-  // 아이템 리뷰 filter
-  const filteredReviews = reviews.filter(review => review.itemid === subsId );
-  // 각 리뷰의 평균별점
-  let filteredRatingMap = {};
-  for(let i = 0; i < filteredReviews.length; i++){
-    const reviewIndex = i;
-    const reviewRating = filteredReviews[i].rating;
-    const newReviewStar = [];
-    for(let i = 0; i < 5; i++){
-      newReviewStar.push(i < reviewRating);
+  // 해당 아이템의 리뷰 filter
+  const filteredReviews = reviews.filter(review => review.itemid === itemId );
+  
+  // 리뷰 페이지네이션 구현
+  const [currentPage, setCurrentPage] = useState(1);
+  const totalPages = Math.ceil(filteredReviews.length / ITEMS_PER_PAGE);
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const endIndex = startIndex + ITEMS_PER_PAGE;
+  const slicedReviews = filteredReviews.slice(startIndex, endIndex);
+  const handlePageChange = (newPage) => {
+    if (newPage >= 1 && newPage <= totalPages) {
+      setCurrentPage(newPage);
     }
-    filteredRatingMap[reviewIndex] = newReviewStar;
-  }
+  };
+
+  // 관련상품
+  const item = items.find(item => item.id === itemId);
+  const similarItems = items.slice(0,4).filter(itemall => item.category === itemall.category);
 
   // 찜하기
   useEffect(() => {
-    const likedItem = likeditems.find(likeditem => likeditem.subsId === subsId);
+    const likedItem = likeditems.find(likeditem => likeditem.id === itemId);
     if (likedItem === undefined) {
       setIsLikedOn(false)
     } else { setIsLikedOn(true) }
-  }, [dispatch, isLikedOn, likeditems, itemDetail, subsId]);
+  }, [dispatch, isLikedOn, likeditems, items, itemId]);
 
-  const handleLikedItem = async() => {
-    const itemId = { subsId, };
-    dispatch(setLikeItem(itemId));
-  };
+  const handleLikedItem = () => { dispatch(setLikeItem(item)) }
 
   // 리뷰모달팝업
   const handleReviewModal = () => { dispatch(setReviewModal()) }
+
+  // item이 undefined인 경우 error 페이지
+  if (!item) { return ( <Error /> ); }
 
   return (
     <>
     { reviewModal ? <><ReviewModal /> <div className='modalBg' onClick={ handleReviewModal }></div></> : null}
     <section className={style.pagewrapPd}>
       <div className='webwidth'>
-        {IsResult ? <div className={style.detailwrap}>
+        <div className={style.detailwrap}>
           <section className={style.left}>
             <div className={style.fixed}>
               <div className={style.box}>
-                <h2 className={style.name}>{itemDetail.name}</h2>
+                <h2 className={style.name}>{item.name}</h2>
                 <div className={style.tag}>
-                  <p>{itemDetail.category}</p>
-                  {
-                    itemDetail.tags.map((tag, tagindex) => (
-                      <p key={tagindex}>{tag.tagName}</p>
-                    ))
-                  }
+                  <p>{item.category}</p>
+                  <p>{item.tag}</p>
                 </div>
                 <div className={style.price}>
-                  {
-                    itemOtherRanks.map((otherRank, otherRankindex) => (
-                      <p className={style.subprice} key={otherRankindex}>
-                      {otherRank.rankName} <span className={style.point}>월 {otherRank.price} 원</span>
-                    </p>
-                    ))
-                  }
+                  <p className={style.subprice}>
+                    프리미엄 <span className={style.point}>월 12,900 원</span>
+                  </p>
                   <p className={style.mainprice}>
-                    {itemDefaultRank.rankName} <span className={style.point}>월 {itemDefaultRank.price} 원</span>
+                    스탠다드 <span className={style.point}>월 8,900 원</span>
                   </p>
                 </div>
                 <div className={style.starrating}>
                   <div className={style.star}>
-                    {
-                      itemStarAvg.map((starAvg, starindex) => (
-                        starAvg ? <span key={starindex} className={`material-icons ${style.starActive}`}>star</span> : <span key={starindex} className="material-icons">star</span>
-                      ))
-                    }
+                    <span className={`material-icons ${style.starActive}`}>star</span>
+                    <span className={`material-icons ${style.starActive}`}>star</span>
+                    <span className={`material-icons ${style.starActive}`}>star</span>
+                    <span className={`material-icons ${style.starActive}`}>star</span>
+                    <span className="material-icons">star</span>
                   </div>
                   <p className='txt_ex'>{filteredReviews.length}명의 사람들이 평가했어요.</p>
                 </div>
               </div>
               <div className={style.btnArea}>
-                {isLoggedIn && <button type='button' className={style.likebtn} onClick={ handleLikedItem }>
+                <button type='button' className={style.likebtn} onClick={ handleLikedItem }>
                   {isLikedOn ? <span className={`material-icons ${style.likeActive}`}>favorite</span> : <span className="material-icons">favorite_border</span>}
-                </button> }
+                </button>
                 <button type='button' className={style.reviewbtn} onClick={ handleReviewModal }>
                   <span className="material-icons">edit</span>
                 </button>
@@ -155,18 +111,20 @@ const ItemDetail = () => {
           <section className={style.right}>
             <article className={`${style.cont} ${style.detailLg}`}>
               <div className={style.img}>
-                <img src={`${itemDetail.image}`} alt={itemDetail.name} onError={(e) => {e.target.src = NO_IMAGE_URL;}}/>
+                <img src={`${item.image}`} alt={item.name} onError={(e) => {e.target.src = NO_IMAGE_URL;}}/>
               </div>
             </article>
             <article className={style.cont}>
-              <p>{itemDetail.info}</p>
+              <p>
+              스마트비디오는 혁신적인 OTT(Over-The-Top) 구독 서비스 기업으로, 최신 영화, 드라마, TV 프로그램, 애니메이션 등 다양한 콘텐츠를 제공하여 고객들에게 풍부한 시청 경험을 선사합니다.<br />우리는 사용자들의 다양한 취향과 관심사를 반영하여 개인 맞춤형 추천 알고리즘을 통해 최적의 콘텐츠를 제공하며, 접근성과 편리성을 추구하여 멀티 플랫폼에서 사용 가능한 통합된 서비스를 제공합니다. 고객의 편의를 최우선으로 생각하여 다양한 결제 옵션과 유연한 요금제를 제공하며, 탁월한 고객 서비스 품질로 항상 사용자들의 만족을 위해 노력하고 있습니다.
+              </p>
             </article>
             <article className={`${style.cont} ${style.ratingwrap}`}>
               <div className={style.tit}>
                 <h3>구독자 한줄평</h3>
               </div>
               {filteredReviews.length > 0 ? <div className={style.ratings}>
-                {filteredReviews.map((filteredReview, index) => (
+                {slicedReviews.map((slicedReview, index) => (
                   <article className={style.rating} key={index}>
                   <div className={style.userImg}>
                     <div className={style.circle}>
@@ -174,23 +132,23 @@ const ItemDetail = () => {
                     </div>
                   </div>
                   <div className={style.txt}>
-                    <h4 className={style.name}>{filteredReview.username}</h4>
+                    <h4 className={style.name}>{slicedReview.username}</h4>
                     <div className={style.starrating}>
                       <div className={style.star}>
-                        {
-                          filteredRatingMap[index].map((filteredRating, starindex) => (
-                            filteredRating ? <span key={starindex} className={`material-icons ${style.starActive}`}>star</span> : <span key={starindex} className="material-icons">star</span>
-                          ))
-                        }
+                        { slicedReview.star.map((isActive, starIndex) => (
+                        <span key={starIndex} className={`material-icons ${isActive ? style.starActive : ''}`}>
+                          star
+                        </span>
+                      )) }
                       </div>
                     </div>
-                    <p className={style.review}>{filteredReview.contents}</p>
+                    <p className={style.review}>{slicedReview.contents}</p>
                   </div>
                 </article>
                 ))}
               </div>
               : <div className='txt_grey txt_center'>등록된 리뷰가 없습니다.</div> }
-              {/* { filteredReviews.length > 5 ? <div className='pagination-wrap'>
+              { filteredReviews.length > 5 ? <div className='pagination-wrap'>
                 <div className='pagination'>
                   <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>
                   <span className='material-icons'>chevron_left</span>
@@ -200,7 +158,7 @@ const ItemDetail = () => {
                   <span className='material-icons'>chevron_right</span>
                   </button>
                 </div>
-              </div> : null } */}
+              </div> : null }
             </article>
             <article className={`${style.cont} ${style.chartwrap}`}>
               <div className={style.tit}>
@@ -215,7 +173,7 @@ const ItemDetail = () => {
             </article>
           </section>
 
-        </div> : <Error />}
+        </div>
 
         
         <section className={style.section}>
@@ -223,8 +181,9 @@ const ItemDetail = () => {
             <h2>비슷한 구독상품</h2>
           </div>
           <div className={style.itemlist}>
-            {/* {similarItems.map((item, index) => (
+            {similarItems.map((item, index) => (
               <Link to={`/subs/detail/${item.id}`} key={index} className={style.item}>
+                {/* <div className={style.item}> */}
                   <div className={style.img}>
                     <img src={`${item.image}`} alt={item.name} onError={(e) => {e.target.src = NO_IMAGE_URL;}}/>
                   </div>
@@ -235,8 +194,9 @@ const ItemDetail = () => {
                       <p>{item.tag}</p>
                     </div>
                   </div>
+                {/* </div> */}
               </Link>
-            ))} */}
+            ))}
           </div>
         </section>
       </div>
@@ -271,7 +231,7 @@ const ReviewModal = () => {
       <div className={style.modalCont}>
         <div className={style.starrating}>
           <div className={style.star}>
-            {/* { editStar.map((EditActive, editstarIndex) => (
+            { editStar.map((EditActive, editstarIndex) => (
               <span
                 key={editstarIndex}
                 className={`material-icons ${style.editStar} ${EditActive ? style.starActive : ''}`}
@@ -280,7 +240,7 @@ const ReviewModal = () => {
               >
                 star
               </span>
-            )) } */}
+            )) }
           </div>
         </div>
         <div className={style.reviewEdit}>

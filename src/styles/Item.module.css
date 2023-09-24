@@ -69,7 +69,7 @@
 .detailwrap .fixed {position: sticky; top: 11rem;}
 .detailwrap .fixed .box {width: 100%; border: 1px solid var(--c-black-6); border-radius: var(--radius-all-md); box-shadow: var(--box-shadow);}
 .detailwrap .fixed .box .name {font-size: 1.75rem; padding: 3.5rem 2.5rem 1rem; font-weight: 400; color: var(--txt-color);}
-.detailwrap .fixed .box .tag {display: flex; gap: 0.5rem; margin-top: 0.25rem; padding: 0 2.5rem;}
+.detailwrap .fixed .box .tag {display: flex; gap: 0.5rem; margin-top: 0.25rem; padding: 0 2.5rem; flex-wrap: wrap;}
 .detailwrap .fixed .box .tag p {
   background: var(--bg-color-2);
   color: var(--txt-color);

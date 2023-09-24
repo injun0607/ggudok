@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect, lazy, Suspense, } from 'react';
 import axios from 'axios';
-import { Routes, Route, useLocation } from 'react-router-dom';
+import { Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
 // css import
@@ -11,6 +11,7 @@ import Header from './Header';
 import Footer from './Footer';
 import Error from './Error.js'
 import ErrorItem from './ErrorItem.js'
+import ErrorLogin from './ErrorLogin.js'
 import AdminHeader from './Admin/AdminHeader';
 import AdminFooter from './Admin/AdminFooter';
 import Loading from './Loading';
@@ -47,22 +48,21 @@ const Layout = () => {
   const isLoggedIn = useSelector(state => state.user.isLoggedIn);
   const memberName = useSelector(state => state.user.memberName);
   const loginId = useSelector(state => state.user.loginId);
-
 	
 	// 세션 상태 조회 요청
 	useEffect(() => {
 		const fetchSessionStatus = async () => {
-			console.log('1. 세션 상태 조회 시작...')
+			// console.log('1. 세션 상태 조회 시작...')
 			try {
 				const response = await axios.get('/getSession');
 				const userData = response.data;
-				console.log('2. 세션 상태 조회 성공')
-				console.log('2.5. 세션 데이터 있나?', userData, response.data)
+				// console.log('2. 세션 상태 조회 성공')
+				// console.log('2.5. 세션 데이터 있나?', userData, response.data)
 				if (userData.memberName !== undefined && userData.loginId !== undefined) {
-					console.log('3. 세션 데이터 있음', userData)
+					// console.log('3. 세션 데이터 있음', userData)
 					dispatch(setLoggedIn(userData));
-					console.log('4. 세션 적용 완료')
-					console.log(`isLoggedIn : ${isLoggedIn} \n memberName : ${memberName} \n loginId : ${loginId}`)
+					// console.log('4. 세션 적용 완료')
+					// console.log(`isLoggedIn : ${isLoggedIn} \n memberName : ${memberName} \n loginId : ${loginId}`)
 				}
 			} catch (error) {
 				console.error('Error fetch login session :', error);
@@ -87,13 +87,13 @@ const Layout = () => {
 
 					<Route path='/Mypage' element={ <Mypage /> }>
 						<Route path="MySubscribe" element={
-          	<Suspense fallback={ <Loading /> }><MySubscribe /></Suspense>
+          	<Suspense fallback={ <Loading /> }><MySubscribe isLoggedIn={isLoggedIn} /></Suspense>
 						} />
 						<Route path="MyReview" element={
-          	<Suspense fallback={ <Loading /> }><MyReview /></Suspense>
+          	<Suspense fallback={ <Loading /> }><MyReview isLoggedIn={isLoggedIn} /></Suspense>
 						} />
 						<Route path="MyLike" element={
-          	<Suspense fallback={ <Loading /> }><MyLike /></Suspense>
+          	<Suspense fallback={ <Loading /> }><MyLike isLoggedIn={isLoggedIn} /></Suspense>
 						} />
 					</Route>
 
@@ -119,7 +119,7 @@ const Layout = () => {
 						/>
 					))}
 
-					<Route path='/ItemDetail/:itemId' element={
+					<Route path='/subs/detail/:subsId' element={
           	<Suspense fallback={ <Loading /> }>
 							<ItemDetail />
 						</Suspense>
@@ -132,6 +132,7 @@ const Layout = () => {
 
 					<Route path='*' element={ <Error /> }></Route>
 					<Route path='*' element={ <ErrorItem /> }></Route>
+					<Route path='*' element={ <ErrorLogin /> }></Route>
 				</Routes>
 			</div>
 			{isadminLayout ? <AdminFooter /> : <Footer />} {}

@@ -1,5 +1,6 @@
-import React from 'react';
-import { Link, Outlet, useLocation } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
+import { Link, Outlet, useLocation, } from 'react-router-dom';
 // css import
 import style from '../../styles/Mypage.module.css'
 // redux import

@@ -62,7 +62,7 @@ const SearchItemlist = () => {
             <div className={style.section}>
               <div className={style.itemlist}>
                 {IsResult ? slicedItems.map((item, index) => (
-                  <Link to={`/ItemDetail/${item.id}`} key={index} className={style.item}>
+                  <Link to={`/subs/detail/${item.id}`} key={index} className={style.item}>
                     {/* <div className={style.item}> */}
                       <div className={style.img}>
                         <img src={`${item.image}`} alt={item.name} onError={(e) => {e.target.src = NO_IMAGE_URL;}}/>

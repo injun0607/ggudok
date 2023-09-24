@@ -758,6 +758,7 @@ table .sub_tit:last-child {
 .modal_tit {width: 100%; text-align: center; margin-bottom: 1.5rem;}
 .modal_tit h2 {font-size: 1.325rem; font-weight: 500;}
 .modalBg {width: 100vw; height: 100vh; -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px); background-color: rgb(25 30 40 / 15%); position: fixed; z-index: 999; top: 0; left: 0; cursor: pointer;}
+.modalBg-cursorIn {cursor: inherit; -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); background-color: rgba(224, 225, 228, 0.5);}
 .modal_conts .btn_close_m {
     display: inline-block;
     text-align: center;
