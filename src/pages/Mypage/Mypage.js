@@ -3,8 +3,6 @@ import { useSelector } from 'react-redux';
 import { Link, Outlet, useLocation, } from 'react-router-dom';
 // css import
 import style from '../../styles/Mypage.module.css'
-// redux import
-// import { join } from '../../redux/actions/userActions';
 
 const NO_IMAGE_URL = '/images/common/noimg.png';
 

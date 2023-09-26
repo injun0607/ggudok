@@ -101,7 +101,8 @@ export const setMemberinfo = (userData) => {
 export const editMemberinfo = (userData, navigate) => async(dispatch) => {
   const {
     password,
-    passwordCheck,
+    newPassword,
+    newPasswordCheck,
     gender,
     age,
     phoneNumber,
@@ -109,10 +110,11 @@ export const editMemberinfo = (userData, navigate) => async(dispatch) => {
     isPhoneval,
   } = userData;
   
-  if(!isPassval) {
-    alert('비밀번호를 올바르게 입력하세요.')
-    dispatch(setPassword(''));
-    dispatch(setPasswordCheck(''));
+  if(password === ''){ alert('비밀번호를 입력하세요.')
+  } else if ((newPassword !== '' || newPasswordCheck !== '') && !isPassval) {
+    alert('변경할 비밀번호를 올바르게 입력하세요.')
+    dispatch(setNewPassword(''));
+    dispatch(setNewPasswordCheck(''));
   } else if(age === ''){ alert('나이를 입력하세요.')
   } else if (gender === '성별을 선택하세요.' || gender === ''){ alert('성별을 선택하세요.')
   } else if (!isPhoneval){
@@ -124,7 +126,8 @@ export const editMemberinfo = (userData, navigate) => async(dispatch) => {
         gender: gender,
         age: age,
         password: password,
-        passwordCheck: passwordCheck,
+        newPassword: newPassword,
+        newPasswordCheck: newPasswordCheck,
         phoneNumber: phoneNumber,
       });
       if (response.status === 200) {
@@ -138,6 +141,10 @@ export const editMemberinfo = (userData, navigate) => async(dispatch) => {
       console.log('Error Member Register :', error);
       alert(`회원정보수정 중 오류가 발생했습니다. 잠시 후 다시 시도해주시기 바랍니다.`)
       // window.location.reload();
+    } finally {
+      dispatch(setPassword(''));
+      dispatch(setNewPassword(''));
+      dispatch(setNewPasswordCheck(''));
     }
   }
 }
@@ -175,6 +182,18 @@ export const setPasswordCheck = (passwordCheck) => {
   return {
     type: 'SET_PASSWORDCHECK',
     payload: passwordCheck,
+  };
+}
+export const setNewPassword = (newPassword) => {
+  return {
+    type: 'SET_NEW_PASSWORD',
+    payload: newPassword,
+  };
+}
+export const setNewPasswordCheck = (newPasswordCheck) => {
+  return {
+    type: 'SET_NEW_PASSWORDCHECK',
+    payload: newPasswordCheck,
   };
 }
 export const setValidPassword = (isPassval) => {

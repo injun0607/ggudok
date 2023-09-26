@@ -47,6 +47,8 @@ const ItemDetail = () => {
         const data = response.data;
 
         dispatch(fetchitemDetailSuccess(data));
+        console.log(data)
+        console.log(data.itemDetail)
         dispatch(setIsLoading(false));
         dispatch(setIsResult(true));
 

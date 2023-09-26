@@ -1,4 +1,8 @@
 {
+  "memberInfo": {
+    "subsLike": false,
+    "review": null
+  },
   "itemDetail": {
     "id": 1,
     "name": "netfilx",
@@ -33,7 +37,8 @@
     }, {
       "tagId": 5,
       "tagName": "남성"
-    }]
+    }],
+    "reviews": []
   },
   "similarItems": []
 }

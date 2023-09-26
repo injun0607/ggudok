@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect, lazy, Suspense, } from 'react';
 import axios from 'axios';
-import { Routes, Route, useLocation, Navigate } from 'react-router-dom';
+import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
 // css import
@@ -40,8 +40,11 @@ const ItemDetail = lazy( () => import('../pages/ItemDetail') )
 
 const Layout = () => {
 	let dispatch = useDispatch();
+  const navigate = useNavigate();
   const location = useLocation();
 
+	const [isCheckingLogin, setIsCheckingLogin] = useState(true);
+	
 	const categories = useSelector(state => state.category.categories);
   const featuredcategories = useSelector(state => state.category.featuredcategories);
 	const isadminLayout = useSelector(state => state.adminLayout.isadminLayout);
@@ -66,7 +69,9 @@ const Layout = () => {
 				}
 			} catch (error) {
 				console.error('Error fetch login session :', error);
-			}
+			} finally {
+        setIsCheckingLogin(false);
+      }
 		};
 		fetchSessionStatus();
 	}, [location.pathname])
@@ -85,22 +90,40 @@ const Layout = () => {
 					<Route path='/Home' element={<Home />}></Route>
 					<Route path="/Admin/AdminHome" element={<AdminHome isadminLayout />} />
 
-					<Route path='/Mypage' element={ <Mypage /> }>
+					<Route path='/Mypage' element={
+						isCheckingLogin ? (<Loading />) : (
+							isLoggedIn ? <Mypage /> : (
+								<>
+									<ErrorLogin />
+									<div className='modalBg modalBg-Blur' onClick={() => { navigate(-1) }}></div>
+								</>
+							)
+						)
+					}>
 						<Route path="MySubscribe" element={
-          	<Suspense fallback={ <Loading /> }><MySubscribe isLoggedIn={isLoggedIn} /></Suspense>
+          	<Suspense fallback={ <Loading /> }><MySubscribe /></Suspense>
 						} />
 						<Route path="MyReview" element={
-          	<Suspense fallback={ <Loading /> }><MyReview isLoggedIn={isLoggedIn} /></Suspense>
+          	<Suspense fallback={ <Loading /> }><MyReview /></Suspense>
 						} />
 						<Route path="MyLike" element={
-          	<Suspense fallback={ <Loading /> }><MyLike isLoggedIn={isLoggedIn} /></Suspense>
+          	<Suspense fallback={ <Loading /> }><MyLike /></Suspense>
 						} />
 					</Route>
 
 					<Route path='/Auth/Login' element={ <Login /> }></Route>
 					<Route path='/Auth/Join' element={ <Join /> }></Route>
 					<Route path='/Auth/JoinEmail' element={ <JoinEmail /> }></Route>
-					<Route path='/Auth/EditProfile' element={ <EditProfile /> }></Route>
+					<Route path='/Auth/EditProfile' element={
+						isCheckingLogin ? (<Loading />) : (
+							isLoggedIn ? <EditProfile /> : (
+								<>
+									<ErrorLogin />
+									<div className='modalBg modalBg-Blur' onClick={() => { navigate(-1) }}></div>
+								</>
+							)
+						)
+					} />
 
 					<Route path='/SearchItemlist' element={ <Suspense fallback={ <Loading /> }><SearchItemlist /></Suspense>} />
 

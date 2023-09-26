@@ -12,6 +12,8 @@ const initialState = {
   loginId: '',
   password: '',
   passwordCheck: '',
+  newPassword: '',
+  newPasswordCheck: '',
   gender: '',
   age: '',
   phoneNumber: '',
@@ -71,7 +73,8 @@ const userReducer = (state = initialState, action) => {
       return {
         ...state,
         password: action.payload.password,
-        passwordCheck: action.payload.passwordCheck,
+        newPassword: action.payload.newPassword,
+        newPasswordCheck: action.payload.newPasswordCheck,
         gender: action.payload.gender,
         age: action.payload.age,
         phoneNumber: action.payload.phoneNumber,
@@ -105,6 +108,16 @@ const userReducer = (state = initialState, action) => {
       return {
         ...state,
         passwordCheck: action.payload,
+      };
+    case 'SET_NEW_PASSWORD':
+      return {
+        ...state,
+        newPassword: action.payload,
+      };
+    case 'SET_NEW_PASSWORDCHECK':
+      return {
+        ...state,
+        newPasswordCheck: action.payload,
       };
     case 'SET_PHONENUMBER':
       return {

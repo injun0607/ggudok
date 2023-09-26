@@ -1,16 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-// component import
-import ErrorLogin from '../../components/ErrorLogin.js'
 // css import
 import style from '../../styles/Mypage.module.css'
 
-const MySubscribe = ({isLoggedIn}) => {
-  // 로그인모달팝업
-
+const MySubscribe = () => {
   return (
-    isLoggedIn ? (
     <section className={`${style.section} ${style.subscribewrap}`}>
       <p className='txt_right main_clr02 mb_10'>* 한 달 기준 구독내역입니다.</p>
       <div className={style.overallprice}>
@@ -144,9 +139,6 @@ const MySubscribe = ({isLoggedIn}) => {
         </div>
       </div>
     </section>
-    ) : (
-      <><ErrorLogin /> <div className='modalBg modalBg-cursorIn'></div></>
-    )
   )
 }
 export default MySubscribe;

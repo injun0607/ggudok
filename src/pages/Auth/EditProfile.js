@@ -5,25 +5,19 @@ import { Link, useNavigate } from 'react-router-dom';
 // css import
 import style from '../../styles/Auth.module.css'
 // redux import
-import { editMemberinfo, setMemberinfo, setValidPassword, setAge, setGender, setValidPhoneNumber, setPhoneNumber, setPassword, setPasswordCheck, setIsLoading } from '../../redux/actions/userActions';
+import { editMemberinfo, setMemberinfo, setValidPassword, setAge, setGender, setValidPhoneNumber, setPhoneNumber, setPassword, setNewPassword, setNewPasswordCheck, setIsLoading } from '../../redux/actions/userActions';
 
 const EditProfile = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  // 로그인 필요
-  const isLoggedIn = useSelector(state => state.user.isLoggedIn);
-  const shouldLoggedIn = () => {
-    if (!isLoggedIn) { alert('로그인이 필요한 페이지입니다.'); navigate('/Auth/Login'); }
-  };
-  useEffect(() => { shouldLoggedIn(); }, []);
 
   const isPassval = useSelector(state => state.user.isPassval);
   const isPhoneval = useSelector(state => state.user.isPhoneval);
   const memberName = useSelector(state => state.user.memberName);
   const loginId = useSelector(state => state.user.loginId);
   const password = useSelector(state => state.user.password);
-  const passwordCheck = useSelector(state => state.user.passwordCheck);
+  const newPassword = useSelector(state => state.user.newPassword);
+  const newPasswordCheck = useSelector(state => state.user.newPasswordCheck);
   const gender = useSelector(state => state.user.gender);
   const age = useSelector(state => state.user.age);
   const phoneNumber = useSelector(state => state.user.phoneNumber);
@@ -35,18 +29,22 @@ const EditProfile = () => {
 	// 회원 정보 조회 요청
 	useEffect(() => {
 		const fetchMemberInfo = async () => {
-			// console.log('1. 세션 상태 조회 시작...')
+			console.log('1. 세션 상태 조회 시작...')
 			try {
 				const response = await axios.get('/member/update');
 				const userData = response.data;
-				// console.log('2. 세션 상태 조회 성공')
-				// console.log('2.5. 세션 데이터 있나?', userData, response.data)
+				console.log('2. 세션 상태 조회 성공')
+				console.log('2.5. 세션 데이터 있나?', userData, response.data)
 				if (userData.gender && userData.age && userData.phoneNumber) {
-					// console.log('3. 세션 데이터 있음', userData)
-					dispatch(setMemberinfo(userData));
+					console.log('3. 세션 데이터 있음', userData)
+					dispatch(setAge(userData.age));
+					dispatch(setGender(userData.gender));
+					dispatch(setPhoneNumber(userData.phoneNumber));
+					// dispatch(setMemberinfo(userData));
           dispatch(setIsLoading(false));
-					// console.log('4. 세션 적용 완료')
-					// console.log(`isLoggedIn : ${isLoggedIn} \n memberName : ${memberName} \n loginId : ${loginId}`)
+          dispatch(setValidPhoneNumber(true))
+					console.log('4. 세션 적용 완료')
+					console.log(`phoneNumber : ${phoneNumber} \n gender : ${gender} \n age : ${age}`)
 				}
 			} catch (error) {
 				console.error('Error fetch set member information :', error);
@@ -96,7 +94,8 @@ const EditProfile = () => {
     e.preventDefault();
     const userData = {
       password,
-      passwordCheck,
+      newPassword,
+      newPasswordCheck,
       gender,
       age,
       phoneNumber,
@@ -107,7 +106,7 @@ const EditProfile = () => {
   };
 
   return (
-    <section className={`${style.join} ${style.auth}`}>
+    !IsLoading && <section className={`${style.join} ${style.auth}`}>
       <div className='webwidth webwidth_pd'>
         <div className='page_tit'><h2>회원정보수정</h2></div>
         <div className={style.form}>
@@ -116,20 +115,28 @@ const EditProfile = () => {
               <input type="text" name='emailid' value={loginId} readOnly />
               <input
                 type="password" name="password" autoComplete="off"
-                placeholder="비밀번호를 입력하세요."
+                placeholder="현재 비밀번호를 입력하세요."
                 value={password}
                 onChange={(e) => {
                   dispatch(setPassword(e.target.value));
-                  handleChangePassword(e.target.value, passwordCheck);
                 }}
               />
               <input
-                type="password" name="passwordCheck" autoComplete="off"
-                placeholder="비밀번호를 한번 더 입력하세요."
-                value={passwordCheck}
+                type="password" name="newPassword" autoComplete="off"
+                placeholder="비밀번호를 변경할 경우에만 입력하세요."
+                value={newPassword}
                 onChange={(e) => {
-                  dispatch(setPasswordCheck(e.target.value));
-                  handleChangePassword(password, e.target.value);
+                  dispatch(setNewPassword(e.target.value));
+                  handleChangePassword(e.target.value, newPasswordCheck);
+                }}
+              />
+              <input
+                type="password" name="newPasswordCheck" autoComplete="off"
+                placeholder="변경할 비밀번호를 한번 더 입력하세요."
+                value={newPasswordCheck}
+                onChange={(e) => {
+                  dispatch(setNewPasswordCheck(e.target.value));
+                  handleChangePassword(newPassword, e.target.value);
                 }}
               />
               {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}

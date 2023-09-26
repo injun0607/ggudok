@@ -7,6 +7,7 @@ const ErrorLogin = () => {
   return (
     <form className='modal_conts'>
       <div className='modal_tit'>
+			<span className='material-icons'>warning</span>
         <h2>로그인이 필요한 페이지입니다.</h2>
       </div>
       <div className={style.modalCont}>
