@@ -7,7 +7,7 @@ import style from '../../styles/Mypage.module.css'
 const NO_IMAGE_URL = '/images/common/noimg.png';
 
 const MyReview = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate(); 
 
   const reviews = useSelector(state => state.review.reviews);
 
