@@ -30,7 +30,6 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 public class MemberService {
 
-    private final EntityManager em;
     private final MemberRepository memberRepository;
 
     private final TagService tagService;

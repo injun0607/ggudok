@@ -14,6 +14,7 @@ import com.alham.ggudok.exception.ErrorResult;
 import com.alham.ggudok.exception.member.MemberException;
 import com.alham.ggudok.service.TagService;
 import com.alham.ggudok.service.member.MemberService;
+import com.alham.ggudok.service.member.ReviewService;
 import com.alham.ggudok.service.subs.CategoryService;
 import com.alham.ggudok.service.subs.SubsService;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,7 @@ import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @Slf4j
@@ -37,6 +39,8 @@ public class SubsController {
     private final CategoryService categoryService;
     private final SubsService subsService;
     private final TagService tagService;
+
+    private final ReviewService reviewService;
 
     private final MemberService memberService;
 
@@ -111,6 +115,8 @@ public class SubsController {
     public SubsMainDetailDto showSubsDetail(@PathVariable("subsId") Long subsId, Principal principal) {
         MemberDto memberDto = SecurityUtils.transPrincipal(principal);
         MemberSubsDto memberSubsDto = new MemberSubsDto();
+        Subs subs = subsService.findSubsById(subsId);
+
         //로그인이 되어있는 상태라면 memberSubsDto 생성
         if (memberDto != null) {
             Member loginMember = memberService.findByLoginIdWithFavorSubs(memberDto.getLoginId());
@@ -120,16 +126,24 @@ public class SubsController {
                     .filter(memberFavorSubs -> memberFavorSubs.getSubs().getSubsId() == subsId)
                     .findFirst().ifPresent(mfs -> memberSubsDto.setSubsLike(true));
 
-            Optional<Review> memberReview = memberService.findMemberSubsReview(loginMember,subsId);
-
             ReviewDto reviewDto = new ReviewDto();
 
+            Optional<Review> optionalMemberReview = reviewService.findMemberSubsReview(loginMember,subsId);
 
+            if (optionalMemberReview.isPresent()) {
+                Review review = optionalMemberReview.get();
+                reviewDto.setSubsName(subs.getSubsName());
+                reviewDto.setSubsId(subsId);
+                reviewDto.setMemberName(loginMember.getMemberName());
+                reviewDto.setRating(review.getRating());
+                reviewDto.setContents(review.getContent());
+                memberSubsDto.setReview(reviewDto);
 
+            }
 
         }
-        Subs subs = subsService.findSubsById(subsId);
 
+        //subsDetail Dto 생성
         SubsDetailDto subsDetailDto = new SubsDetailDto();
         subsDetailDto.setId(subs.getSubsId());
         subsDetailDto.setName(subs.getSubsName());
@@ -143,6 +157,7 @@ public class SubsController {
         List<SubsRank> contentBySubsId = subsService.findContentBySubsId(subsId);
         List<SubsRankDetailDto> subsRankDetailDtoList = new ArrayList<>();
 
+        //subs관련 rank Dto 변환
         for (SubsRank subsRank : contentBySubsId) {
             SubsRankDetailDto subsRankDetailDto = new SubsRankDetailDto();
             subsRankDetailDto.setRankName(subsRank.getRankName());
@@ -156,6 +171,17 @@ public class SubsController {
         }
         subsDetailDto.setRanks(subsRankDetailDtoList);
 
+        //리뷰 Dto 생성
+        Optional<List<Review>> optionalReviews = reviewService.findSubsReviewsBySubsId(subsId);
+        if (optionalReviews.isPresent()) {
+            List<Review> reviews = optionalReviews.get();
+            List<ReviewDto> reviewDtoList = reviews.stream()
+                    .map(r ->  new ReviewDto(r.getContent(), subsId, r.getMember().getMemberName(), subs.getSubsName(), r.getRating()))
+                    .collect(Collectors.toList());
+            subsDetailDto.setReviews(reviewDtoList);
+        }
+
+        //subsMainDetail Dto 생성
         SubsMainDetailDto subsMainDetailDto = new SubsMainDetailDto();
         subsMainDetailDto.setItemDetail(subsDetailDto);
         subsMainDetailDto.setMemberInfo(memberSubsDto);
@@ -168,8 +194,11 @@ public class SubsController {
     public boolean likeSubs(@PathVariable("subsId") Long subsId, Principal principal) {
         MemberDto memberDto = SecurityUtils.transPrincipal(principal);
         if (memberDto != null) {
-            Member loginMember = memberService.findByLoginId(principal.getName());
+            Member loginMember = memberService.findByLoginIdWithFavorSubs(principal.getName());
             Subs subs = subsService.findSubsById(subsId);
+            if (loginMember.getMemberFavorSubsList().stream().filter(mfs -> mfs.getSubs().getSubsId() == subsId).findFirst().isPresent()) {
+                return false;
+            }
             memberService.createMemberFavorSubs(loginMember, subs);
             subsService.likeSubs(subs);
             return true;
@@ -199,7 +228,7 @@ public class SubsController {
         }
         Member member = memberService.findByLoginId(memberDto.getLoginId());
         Subs subs = subsService.findSubsById(subsId);
-        memberService.writeReview(member, subs, reviewDto.getContents(), reviewDto.getRating());
+        reviewService.writeReview(member, subs, reviewDto.getContents(), reviewDto.getRating());
 
         return true;
     }

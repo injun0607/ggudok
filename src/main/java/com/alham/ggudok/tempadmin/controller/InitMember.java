@@ -29,9 +29,30 @@ public class InitMember {
         memberRegisterDto.setAge(4);
         memberRegisterDto.setLoginId("choiseo26@naver.com");
         memberRegisterDto.setGender(Gender.WOMAN);
-        memberRegisterDto.setPassword("10qp10qp^^");
+        memberRegisterDto.setPassword("1234");
         memberRegisterDto.setPhoneNumber("01012345678");
-        memberRegisterDto.setPasswordCheck("10qp10qp^^");
+        memberRegisterDto.setPasswordCheck("1234");
+        memberService.registerMember(memberRegisterDto);
+
+        MemberRegisterDto memberRegisterDto2 = new MemberRegisterDto();
+        memberRegisterDto2.setMemberName("인인준");
+        memberRegisterDto2.setAge(4);
+        memberRegisterDto2.setLoginId("injun0607@naver.com");
+        memberRegisterDto2.setGender(Gender.MAN);
+        memberRegisterDto2.setPassword("1234");
+        memberRegisterDto2.setPhoneNumber("01012345678");
+        memberRegisterDto2.setPasswordCheck("1234");
+        memberService.registerMember(memberRegisterDto2);
+
+
+        MemberRegisterDto memberRegisterDto3 = new MemberRegisterDto();
+        memberRegisterDto3.setMemberName("인인준준");
+        memberRegisterDto3.setAge(4);
+        memberRegisterDto3.setLoginId("yhgu0607@naver.com");
+        memberRegisterDto3.setGender(Gender.WOMAN);
+        memberRegisterDto3.setPassword("1234");
+        memberRegisterDto3.setPhoneNumber("01012345678");
+        memberRegisterDto3.setPasswordCheck("1234");
         memberService.registerMember(memberRegisterDto);
 
     }
