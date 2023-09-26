@@ -10,8 +10,8 @@ import lombok.NoArgsConstructor;
 public class ReviewDto {
 
     private String contents;
-    private Long subsId;
     private String memberName;
+    private Long subsId;
     private String subsName;
     private int rating;
 

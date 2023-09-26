@@ -26,7 +26,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 
         String reqPassword = authentication.getCredentials().toString();
         if (!passwordEncoder.matches(reqPassword, memberDto.getPassword())) {
-            throw new BadCredentialsException("Not Found User");
+            throw new BadCredentialsException("비밀번호가 올바르지 않습니다");
         }
 
         return new UsernamePasswordAuthenticationToken(memberDto,null,memberDto.getAuthorities());

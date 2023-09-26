@@ -133,8 +133,8 @@ public class SubsController {
             if (optionalMemberReview.isPresent()) {
                 Review review = optionalMemberReview.get();
                 reviewDto.setSubsName(subs.getSubsName());
-                reviewDto.setSubsId(subsId);
                 reviewDto.setMemberName(loginMember.getMemberName());
+                reviewDto.setSubsId(subsId);
                 reviewDto.setRating(review.getRating());
                 reviewDto.setContents(review.getContent());
                 memberSubsDto.setReview(reviewDto);
@@ -176,7 +176,7 @@ public class SubsController {
         if (optionalReviews.isPresent()) {
             List<Review> reviews = optionalReviews.get();
             List<ReviewDto> reviewDtoList = reviews.stream()
-                    .map(r ->  new ReviewDto(r.getContent(), subsId, r.getMember().getMemberName(), subs.getSubsName(), r.getRating()))
+                    .map(r ->  new ReviewDto(r.getContent(), r.getMember().getMemberName(), subsId ,subs.getSubsName(), r.getRating()))
                     .collect(Collectors.toList());
             subsDetailDto.setReviews(reviewDtoList);
         }
@@ -226,7 +226,7 @@ public class SubsController {
         if (memberDto == null) {
             throw new MemberException("로그인한 사용자만 이용이 가능합니다.");
         }
-        Member member = memberService.findByLoginId(memberDto.getLoginId());
+        Member member = memberService.findMemberWithReviewsByloginId(memberDto.getLoginId());
         Subs subs = subsService.findSubsById(subsId);
         reviewService.writeReview(member, subs, reviewDto.getContents(), reviewDto.getRating());
 

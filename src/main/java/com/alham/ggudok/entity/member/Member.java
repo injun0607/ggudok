@@ -81,4 +81,11 @@ public class Member {
         this.memberFavorSubsList = memberFavorSubsList;
         return this.memberFavorSubsList.size();
     }
+
+    public int updateReviews(List<Review> reviews) {
+        this.reviews = reviews;
+        return this.memberFavorSubsList.size();
+    }
+
+
 }

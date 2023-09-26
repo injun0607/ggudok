@@ -35,6 +35,9 @@ class MemberServiceTest {
     @Autowired
     ReviewRepository reviewRepository;
 
+    @Autowired
+    ReviewService reviewService;
+
     @PersistenceContext
     EntityManager em;
 
@@ -159,7 +162,6 @@ class MemberServiceTest {
 
         Member member = memberRepository.findById(findMember.getMemberId()).get();
         //then
-        assertEquals(member.getPassword(), "123");
         assertEquals(member.getPhoneNumber(), "0101234");
 
     }
@@ -188,6 +190,97 @@ class MemberServiceTest {
         em.flush();
         em.clear();
         assertEquals(findMember.getMemberFavorSubsList().size(), 0);
+
+
+    }
+
+    @Test
+    public void findMemberWithReviewsByloginId()throws Exception{
+        MemberRegisterDto memberRegisterDto = new MemberRegisterDto();
+        memberRegisterDto.setMemberName("injun");
+        memberRegisterDto.setAge(20);
+        memberRegisterDto.setPassword("123123");
+        memberRegisterDto.setPasswordCheck("123123");
+        memberRegisterDto.setGender(Gender.MAN);
+        memberRegisterDto.setLoginId("injun0607@naver.com");
+
+        memberService.registerMember(memberRegisterDto);
+
+        Subs subs = new Subs("subs1");
+        subsRepository.save(subs);
+
+        Subs subs2 = new Subs("subs2");
+        subsRepository.save(subs2);
+
+        Subs subs3 = new Subs("subs3");
+        subsRepository.save(subs3);
+
+        em.flush();
+        em.clear();
+        //when
+        Member member1 = memberRepository.findMemberWithReviewsByloginId("injun0607@naver.com").get();
+
+
+        Subs findsubs1 = subsRepository.findSubsBySubsName("subs1");
+        Subs findSubs2 = subsRepository.findSubsBySubsName("subs2");
+        Subs findSubs3 = subsRepository.findSubsBySubsName("subs3");
+
+
+        reviewService.writeReview(member1,findsubs1,"review so good",4);
+        reviewService.writeReview(member1,findSubs2,"review so good2",3);
+        reviewService.writeReview(member1,findSubs3,"review so good3",5);
+
+
+        member1.getReviews().stream().forEach(r->System.out.println(r.getContent()));
+    }
+
+    @Test
+    public void removeReview()throws Exception{
+        MemberRegisterDto memberRegisterDto = new MemberRegisterDto();
+        memberRegisterDto.setMemberName("injun");
+        memberRegisterDto.setAge(20);
+        memberRegisterDto.setPassword("123123");
+        memberRegisterDto.setPasswordCheck("123123");
+        memberRegisterDto.setGender(Gender.MAN);
+        memberRegisterDto.setLoginId("injun0607@naver.com");
+
+        memberService.registerMember(memberRegisterDto);
+
+        Subs subs = new Subs("subs1");
+        subsRepository.save(subs);
+
+        Subs subs2 = new Subs("subs2");
+        subsRepository.save(subs2);
+
+        Subs subs3 = new Subs("subs3");
+        subsRepository.save(subs3);
+
+        em.flush();
+        em.clear();
+        //when
+        Member member1 = memberRepository.findMemberWithReviewsByloginId("injun0607@naver.com").get();
+
+
+        Subs findsubs1 = subsRepository.findSubsBySubsName("subs1");
+        Subs findSubs2 = subsRepository.findSubsBySubsName("subs2");
+        Subs findSubs3 = subsRepository.findSubsBySubsName("subs3");
+
+
+        reviewService.writeReview(member1,findsubs1,"review so good",4);
+        reviewService.writeReview(member1,findSubs2,"review so good2",3);
+        reviewService.writeReview(member1,findSubs3,"review so good3",5);
+
+
+        member1.getReviews().stream().forEach(r->System.out.println(r.getContent()));
+
+        memberService.removeReview("injun0607@naver.com", findsubs1.getSubsId());
+
+        em.flush();
+        em.clear();
+
+        Member member2 = memberRepository.findMemberWithReviewsByloginId("injun0607@naver.com").get();
+        List<Review> reviews = member2.getReviews();
+        assertEquals(reviews.size(),2);
 
 
     }

@@ -95,4 +95,8 @@ public class SubsService {
         subs.dislikeSubs();
     }
 
+    public Subs findBySubsName(String subsName) {
+        return subsRepository.findSubsBySubsName(subsName);
+    }
+
 }

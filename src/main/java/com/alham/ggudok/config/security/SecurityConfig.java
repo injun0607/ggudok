@@ -13,7 +13,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 
 @Configuration
 @RequiredArgsConstructor
@@ -21,6 +20,7 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationFa
 public class SecurityConfig {
 
     private final CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
+    private final CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
 
 
 
@@ -36,7 +36,7 @@ public class SecurityConfig {
                                 .usernameParameter("loginId")
                                 .passwordParameter("password")
                                 .successHandler(customAuthenticationSuccessHandler)
-                                .failureHandler(new SimpleUrlAuthenticationFailureHandler("/login_fail"))
+                                .failureHandler(customAuthenticationFailureHandler)
 
 
                 )

@@ -31,7 +31,17 @@ public class ReviewService {
      */
     @Transactional
     public Review writeReview(Member member, Subs subs, String content, int rating) {
-        return Review.createReview(member, subs, content,rating);
+        Optional<Review> optionalReview = member.getReviews().stream()
+                .filter(r -> r.getSubs().getSubsId() == subs.getSubsId())
+                .findAny();
+        if (optionalReview.isPresent()) {
+            Review review = optionalReview.get();
+            review.update(content, rating);
+            return review;
+        }else{
+            return Review.createReview(member, subs, content,rating);
+        }
+
 
     }
 

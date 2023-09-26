@@ -84,8 +84,17 @@ class ReviewServiceTest {
         Review review1 = reviews.stream().filter(review -> review.getSubs().getSubsId().equals(subs1.getSubsId())).findFirst().get();
         assertEquals(review1.getContent(),"리뷰가 참 좋네요");
 
-        Review review2 = reviews.stream().filter(review -> review.getSubs().getSubsId().equals(findSubs2.getSubsId())).findFirst().get();
-        Review review3 = reviews.stream().filter(review -> review.getSubs().getSubsId().equals(findSubs3.getSubsId())).findFirst().get();
+        em.flush();
+        em.clear();
+
+        reviewService.writeReview(member, subs1, "change Review", 3);
+
+        List<Review> reviews1 = member.getReviews();
+        for (Review review : reviews1) {
+
+            System.out.println(review.getContent() +" "+ review.getRating());
+        }
+
 
     }
 
@@ -206,6 +215,7 @@ class ReviewServiceTest {
         assertEquals(findReviews3.size(), 2);
 
     }
+
 
 
 }

@@ -12,7 +12,6 @@ import com.alham.ggudok.repository.member.MemberRepository;
 import com.alham.ggudok.repository.member.ReviewRepository;
 import com.alham.ggudok.service.TagService;
 import com.alham.ggudok.util.GgudokUtil;
-import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,7 +19,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -112,19 +110,6 @@ public class MemberService {
     }
 
 
-    /**
-     * 멤버 리뷰 쓰기
-     *
-     * @param member
-     * @param subs
-     * @return
-     */
-    @Transactional
-    public Review writeReview(Member member,Subs subs,String content,int rating) {
-        return Review.createReview(member, subs, content,rating);
-
-    }
-
     @Transactional
     public MemberHaveSubs createMemberHaveSubs(Member member, Subs subs) {
 
@@ -151,15 +136,6 @@ public class MemberService {
     }
 
 
-    public List<Review> findMemberReviews(Member member) {
-        Optional<List<Review>> reviewByMember = reviewRepository.findReviewsByMember(member.getMemberId());
-
-        if (reviewByMember.isPresent()) {
-            return reviewByMember.get();
-        }else{
-            return new ArrayList<>();
-        }
-    }
 
 
     /**
@@ -239,12 +215,30 @@ public class MemberService {
         if (member.isPresent()) {
             return member.get();
         } else {
-            return new Member("no-member", 0);
+            return Member.noMember();
         }
     }
 
+    public Member findMemberWithReviewsByloginId(String loginId) {
+        Optional<Member> member = memberRepository.findMemberWithReviewsByloginId(loginId);
+        if (member.isPresent()) {
+            return member.get();
+        }else{
+            return Member.noMember();
+        }
+    }
 
-    public Optional<Review> findMemberSubsReview(Member member, Long subsId) {
-        return reviewRepository.findReviewByMemberAndSubs(member.getMemberId(), subsId);
+    @Transactional
+    public boolean removeReview(String loginId, Long subsId) {
+        Optional<Member> optionalMember = memberRepository.findMemberWithReviewsByloginId(loginId);
+        if (optionalMember.isPresent()) {
+            Member member = optionalMember.get();
+            List<Review> reviews = member.getReviews();
+            reviews.stream().filter(r -> r.getSubs().getSubsId() == subsId).findAny().ifPresent(r -> reviews.remove(r));
+            member.updateReviews(reviews);
+            return true;
+        } else {
+            return false;
+        }
     }
 }

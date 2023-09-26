@@ -39,6 +39,7 @@ public class Review {
         return review;
     }
 
+
     private void addMember(Member member) {
         this.member = member;
         this.member.getReviews().add(this);
@@ -50,9 +51,16 @@ public class Review {
         this.subs.getReviews().add(this);
     }
 
+    public void update(String content,int rating) {
+        this.content = content;
+        this.rating = rating;
+    }
+
     public Review noReview() {
         return new Review();
     }
+
+
 
 
 

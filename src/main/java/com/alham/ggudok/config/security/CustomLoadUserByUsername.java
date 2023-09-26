@@ -37,7 +37,7 @@ public class CustomLoadUserByUsername implements UserDetailsService {
             return memberDto;
         }else{
             //실패 메시지 처리
-            throw new UsernameNotFoundException("Not Found User");
+            throw new UsernameNotFoundException("존재하지 않는 아이디입니다");
         }
     }
 }
