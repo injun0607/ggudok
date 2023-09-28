@@ -27,30 +27,30 @@ const EditProfile = () => {
   const [errorMessageP, seterrorMessageP] = useState('');
   
 	// 회원 정보 조회 요청
+  const fetchMemberInfo = async () => {
+    console.log('1. 세션 상태 조회 시작...')
+    try {
+      const response = await axios.get('/member/update');
+      const userData = response.data;
+      console.log('2. 세션 상태 조회 성공')
+      console.log('2.5. 세션 데이터 있나?', userData, response.data)
+      if (userData.gender && userData.age && userData.phoneNumber) {
+        console.log('3. 세션 데이터 있음', userData)
+        dispatch(setAge(userData.age));
+        dispatch(setGender(userData.gender));
+        dispatch(setPhoneNumber(userData.phoneNumber));
+        // dispatch(setMemberinfo(userData));
+        dispatch(setIsLoading(false));
+        dispatch(setValidPhoneNumber(true))
+        console.log('4. 세션 적용 완료')
+        console.log(`phoneNumber : ${phoneNumber} \n gender : ${gender} \n age : ${age}`)
+      }
+    } catch (error) {
+      console.error('Error fetch set member information :', error);
+      dispatch(setIsLoading(true));
+    }
+  };
 	useEffect(() => {
-		const fetchMemberInfo = async () => {
-			console.log('1. 세션 상태 조회 시작...')
-			try {
-				const response = await axios.get('/member/update');
-				const userData = response.data;
-				console.log('2. 세션 상태 조회 성공')
-				console.log('2.5. 세션 데이터 있나?', userData, response.data)
-				if (userData.gender && userData.age && userData.phoneNumber) {
-					console.log('3. 세션 데이터 있음', userData)
-					dispatch(setAge(userData.age));
-					dispatch(setGender(userData.gender));
-					dispatch(setPhoneNumber(userData.phoneNumber));
-					// dispatch(setMemberinfo(userData));
-          dispatch(setIsLoading(false));
-          dispatch(setValidPhoneNumber(true))
-					console.log('4. 세션 적용 완료')
-					console.log(`phoneNumber : ${phoneNumber} \n gender : ${gender} \n age : ${age}`)
-				}
-			} catch (error) {
-				console.error('Error fetch set member information :', error);
-        dispatch(setIsLoading(true));
-			}
-		};
 		fetchMemberInfo();
 	}, [])
 

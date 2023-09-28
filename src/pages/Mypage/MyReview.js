@@ -1,25 +1,59 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 // css import
 import style from '../../styles/Mypage.module.css'
+// component import
+import ErrorItem from '../../components/ErrorItem';
 // redux import
-import { editMemberinfo, setMemberinfo, setValidPassword, setAge, setGender, setValidPhoneNumber, setPhoneNumber, setPassword, setNewPassword, setNewPasswordCheck, setIsLoading } from '../../redux/actions/reviewActions';
+import { setIsLoading, setIsResult } from '../../redux/actions/itemActions';
+import { setReview } from '../../redux/actions/reviewActions';
 
 const NO_IMAGE_URL = '/images/common/noimg.png';
 
-const MyReview = () => {
-  const navigate = useNavigate();
-
+const MyReview = ({isCheckingLogin}) => {
+  let dispatch = useDispatch()
   const reviews = useSelector(state => state.review.reviews);
+  const IsResult = useSelector(state => state.item.IsResult);
+  const IsLoading = useSelector(state => state.item.IsLoading);
+  
+  // ************************** 기본 reviews fetch ***************************
+  const fetchMyReviewData = async () => {
+    try {
+      const response = await axios.get(`/member/reviews`);
+      const data = response.data.reviews;
+
+      dispatch(setReview(data));
+      dispatch(setIsResult(true));
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      dispatch(setIsResult(false));
+    } finally {
+      dispatch(setIsLoading(false));
+    }
+  };
+  useEffect(() => {
+    fetchMyReviewData();
+  }, [isCheckingLogin]);
+  
+  // 각 리뷰의 평균별점
+  let reviewRatingMap = {};
+  for(let i = 0; i < reviews.length; i++){
+    const reviewIndex = i;
+    const reviewRating = reviews[i].rating;
+    const newReviewStar = [];
+    for(let i = 0; i < 5; i++){
+      newReviewStar.push(i < reviewRating);
+    }
+    reviewRatingMap[reviewIndex] = newReviewStar;
+  }
 
   return (
-    <section className={`${style.section} ${style.ratingwrap}`}>
+    !IsLoading && <section className={`${style.section} ${style.ratingwrap}`}>
       <div className={style.ratings}>
-        {reviews.map((review, index) => (
+        {IsResult ? reviews.map((review, index) => (
           <ReviewItem key={index} review={review} />
-        ))}
+        )) : <ErrorItem />}
       </div>
     </section>
   )
@@ -53,7 +87,7 @@ function ReviewItem({ review }) {
           <div className={style.circle}>
             <img src='../images/common/' alt='유저 이미지' onError={(e) => {e.target.src = NO_IMAGE_URL;}}/>
           </div>
-          <h3 className={style.name}>{review.itemname}</h3>
+          <h3 className={style.subsName}>{review.itemsubsName}</h3>
         </div>
         <div className={style.right}>
           <button className={style.edit} type='button' onClick={ handleIsEditing }>{isediting ? '취소' : '수정'}</button>
@@ -74,16 +108,32 @@ function ReviewItem({ review }) {
                 star
               </span>
             ))
+            : 
+            review.rating.map((reviewRating, starindex) => (
+              reviewRating ? <span key={starindex} className={`material-icons ${style.starActive}`}>star</span> : <span key={starindex} className="material-icons">star</span>
+            ))
+          }
+          {/* { isediting ?
+            editStar.map((EditActive, editstarIndex) => (
+              <span
+                key={editstarIndex}
+                className={`material-icons ${style.editStar} ${EditActive ? style.starActive : ''}`}
+                onClick={() => handleEditStar(editstarIndex)}
+                onMouseEnter={() => handleEditStar(editstarIndex)}
+              >
+                star
+              </span>
+            ))
           : review.star.map((isActive, starIndex) => (
             <span key={starIndex} className={`material-icons ${isActive ? style.starActive : ''}`}>
               star
             </span>
-          )) }
+          )) } */}
           </div>
         </div>
         {isediting ?
         <div className={style.reviewEdit}>
-          <textarea type='text' name='content' className={style.editArea} />
+          <textarea type='text' subsName='content' className={style.editArea} />
           <button type='submit' className={style.editBtn}>저장</button>
         </div>
         : <p className={style.review}>{review.contents}</p>}

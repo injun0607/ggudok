@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
@@ -10,9 +9,10 @@ import { Pie } from 'react-chartjs-2';
 import style from '../styles/Item.module.css';
 // component import
 import Error from '../components/Error';
+import Loading from '../components/Loading';
 // redux import
 import { setLikeItem, setIsLoading, setIsResult, fetchitemDetailSuccess } from '../redux/actions/itemActions';
-import { setReviewModal, } from '../redux/actions/reviewActions';
+import { setReview, setReviewModal, } from '../redux/actions/reviewActions';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -23,12 +23,15 @@ const NO_IMAGE_URL = '/images/common/noimg.png';
 const ItemDetail = () => {
   let dispatch = useDispatch();
   const itemDetail = useSelector(state => state.item.itemDetail);
+  const reviews = useSelector(state => state.review.reviews);
   const similarItems = useSelector(state => state.item.similarItems);
   const likeditems = useSelector(state => state.item.likeditems);
-  const IsResult = useSelector(state => state.item.IsResult);
   const reviewModal = useSelector(state => state.review.reviewModal);
-  const reviews = useSelector(state => state.review.reviews);
   const isLoggedIn = useSelector(state => state.user.isLoggedIn);
+  const IsResult = useSelector(state => state.item.IsResult);
+  const IsLoading = useSelector(state => state.item.IsLoading);
+  
+  const { subsId } = useParams();
 
   const [isLikedOn, setIsLikedOn] = useState(false);
   const [IsPager, setIsPager] = useState(false);
@@ -36,56 +39,54 @@ const ItemDetail = () => {
   const [itemStarAvg, setItemStarAvg] = useState([]);
   const [itemDefaultRank, setItemDefaultRank] = useState({});
   const [itemOtherRanks, setItemOtherRanks] = useState([]);
-  
-  const { subsId } = useParams();
+  const [ratingMap, setRatingMap] = useState({});
 
   // ************************** 기본 아이템 fetch ***************************
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(`/subs/detail/${subsId}`);
-        const data = response.data;
+  const fetchItemDetailData = async () => {
+    try {
+      const response = await axios.get(`/subs/detail/${subsId}`);
+      const data = response.data;
 
-        dispatch(fetchitemDetailSuccess(data));
-        console.log(data)
-        console.log(data.itemDetail)
-        dispatch(setIsLoading(false));
-        dispatch(setIsResult(true));
+      dispatch(fetchitemDetailSuccess(data));
+      dispatch(setReview(data.itemDetail.reviews));
 
-        // 아이템 평균별점
-        const itemRatingAvg = data.itemDetail.ratingAvg;
-        const newItemStarAvg = [];
-        for(let i = 0; i < 5; i++){
-          newItemStarAvg.push(i < itemRatingAvg);
-        }
-        setItemStarAvg(newItemStarAvg);
-        // 아이템 회원등급 Default와 나머지 분리
-        const itemRanks = data.itemDetail.ranks;
-        setItemDefaultRank(itemRanks.find(obj => obj.rankLevel === "DEFAULT"));
-        setItemOtherRanks(itemRanks.filter(obj => obj.rankLevel !== "DEFAULT"));
-        
-      } catch (error) {
-        console.error('Error fetching data:', error);
-        dispatch(setIsResult(false));
+      console.log('1')
+      // 아이템 평균별점
+      const itemRatingAvg = data.itemDetail.ratingAvg;
+      const newItemStarAvg = [];
+      for(let i = 0; i < 5; i++){
+        newItemStarAvg.push(i < itemRatingAvg);
       }
-    };
-    fetchData();
+      setItemStarAvg(newItemStarAvg);
+      // 아이템 회원등급 Default와 나머지 분리
+      const itemRanks = data.itemDetail.ranks;
+      setItemDefaultRank(itemRanks.find(obj => obj.rankLevel === "DEFAULT"));
+      setItemOtherRanks(itemRanks.filter(obj => obj.rankLevel !== "DEFAULT"));
 
-  }, [subsId]);
-  
-  // 아이템 리뷰 filter
-  const filteredReviews = reviews.filter(review => review.itemid === subsId );
-  // 각 리뷰의 평균별점
-  let filteredRatingMap = {};
-  for(let i = 0; i < filteredReviews.length; i++){
-    const reviewIndex = i;
-    const reviewRating = filteredReviews[i].rating;
-    const newReviewStar = [];
-    for(let i = 0; i < 5; i++){
-      newReviewStar.push(i < reviewRating);
+      dispatch(setIsResult(true));
+      console.log('2')
+    } catch (error) {
+      dispatch(setIsResult(false));
+    } finally {
+      console.log('3')
+      dispatch(setIsLoading(false));
     }
-    filteredRatingMap[reviewIndex] = newReviewStar;
-  }
+  };
+  useEffect(() => {
+    fetchItemDetailData();
+  }, [])
+
+  useEffect(() => {
+    // 각 리뷰의 평균별점 업데이트
+    const newRatingMap = reviews.map((review) => {
+      const reviewRating = review.rating;
+      const newReviewStar = Array(5).fill(false).map((_, index) => index < reviewRating);
+      return newReviewStar;
+    });
+    
+    setRatingMap(newRatingMap);
+  }, [reviews])
+
 
   // 찜하기
   useEffect(() => {
@@ -93,10 +94,10 @@ const ItemDetail = () => {
     if (likedItem === undefined) {
       setIsLikedOn(false)
     } else { setIsLikedOn(true) }
-  }, [dispatch, isLikedOn, likeditems, itemDetail, subsId]);
+  }, [dispatch, isLikedOn, likeditems, itemDetail]);
 
   const handleLikedItem = async() => {
-    const itemId = { subsId, };
+    const itemId = { subsId };
     dispatch(setLikeItem(itemId));
   };
 
@@ -108,7 +109,8 @@ const ItemDetail = () => {
     { reviewModal ? <><ReviewModal /> <div className='modalBg' onClick={ handleReviewModal }></div></> : null}
     <section className={style.pagewrapPd}>
       <div className='webwidth'>
-        {IsResult ? <div className={style.detailwrap}>
+        {!IsLoading ? (
+        Object.keys(itemDetail).length !== 0 ? <div className={style.detailwrap}>
           <section className={style.left}>
             <div className={style.fixed}>
               <div className={style.box}>
@@ -141,7 +143,7 @@ const ItemDetail = () => {
                       ))
                     }
                   </div>
-                  <p className='txt_ex'>{filteredReviews.length}명의 사람들이 평가했어요.</p>
+                  <p className='txt_ex'>{reviews.length}명의 사람들이 평가했어요.</p>
                 </div>
               </div>
               <div className={style.btnArea}>
@@ -167,32 +169,34 @@ const ItemDetail = () => {
               <div className={style.tit}>
                 <h3>구독자 한줄평</h3>
               </div>
-              {filteredReviews.length > 0 ? <div className={style.ratings}>
-                {filteredReviews.map((filteredReview, index) => (
-                  <article className={style.rating} key={index}>
-                  <div className={style.userImg}>
-                    <div className={style.circle}>
-                      <img src='../images/common/' alt='유저 이미지' onError={(e) => {e.target.src = NO_IMAGE_URL;}}/>
-                    </div>
-                  </div>
-                  <div className={style.txt}>
-                    <h4 className={style.name}>{filteredReview.username}</h4>
-                    <div className={style.starrating}>
-                      <div className={style.star}>
-                        {
-                          filteredRatingMap[index].map((filteredRating, starindex) => (
-                            filteredRating ? <span key={starindex} className={`material-icons ${style.starActive}`}>star</span> : <span key={starindex} className="material-icons">star</span>
-                          ))
-                        }
-                      </div>
-                    </div>
-                    <p className={style.review}>{filteredReview.contents}</p>
-                  </div>
-                </article>
-                ))}
-              </div>
-              : <div className='txt_grey txt_center'>등록된 리뷰가 없습니다.</div> }
-              {/* { filteredReviews.length > 5 ? <div className='pagination-wrap'>
+              { ratingMap && ratingMap.length > 0 ? (
+                <div className={style.ratings}>
+                  { reviews.map((review, index) => (
+                      <article className={style.rating} key={index}>
+                        <div className={style.userImg}>
+                          <div className={style.circle}>
+                            <img src='../images/common/' alt='유저 이미지' onError={(e) => {e.target.src = NO_IMAGE_URL;}}/>
+                          </div>
+                        </div>
+                        <div className={style.txt}>
+                          <h4 className={style.name}>{review.memberName}</h4>
+                          <div className={style.starrating}>
+                            <div className={style.star}>
+                              { ratingMap[index].map((rating, starindex) => (
+                                  rating ? <span key={starindex} className={`material-icons ${style.starActive}`}>star</span> : <span key={starindex} className="material-icons">star</span>
+                                ))
+                              }
+                            </div>
+                          </div>
+                          <p className={style.review}>{review.contents}</p>
+                        </div>
+                      </article>
+                    ))}
+                </div>
+              ) : (
+                <div className='txt_grey txt_center'>등록된 리뷰가 없습니다.</div>
+              )}
+              {/* { reviews.length > 5 ? <div className='pagination-wrap'>
                 <div className='pagination'>
                   <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>
                   <span className='material-icons'>chevron_left</span>
@@ -217,7 +221,7 @@ const ItemDetail = () => {
             </article>
           </section>
 
-        </div> : <Error />}
+        </div> : <Error />) : <Loading />}
 
         
         <section className={style.section}>

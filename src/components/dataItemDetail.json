@@ -38,7 +38,32 @@
       "tagId": 5,
       "tagName": "남성"
     }],
-    "reviews": []
+    "reviews": [
+        {
+            "contents": "서히부인 운동해요",
+            "memberName": "깡깡지",
+            "subsId": 3,
+            "subsName": "healthCare2",
+            "rating": 5,
+            "subsImage": null
+        },
+        {
+            "contents": "인준아저씨 운동해요",
+            "memberName": "인인준",
+            "subsId": 3,
+            "subsName": "healthCare2",
+            "rating": 4,
+            "subsImage": null
+        },
+        {
+            "contents": "껑껑이 리뷰!",
+            "memberName": "인인준준",
+            "subsId": 3,
+            "subsName": "healthCare2",
+            "rating": 4,
+            "subsImage": null
+        }
+    ]
   },
   "similarItems": []
 }

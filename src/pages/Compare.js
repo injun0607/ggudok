@@ -27,27 +27,27 @@ const Compare = () => {
   const [item2OtherRanks, setItem2OtherRanks] = useState([]);
 
   // ************************** 기본 아이템 fetch ***************************
+  const fetchCompareData = async () => {
+    try {
+      const selectedCategory = categories.filter(category => category.category === selectedOneDepth)[0];
+      const selectedCategoryEng = selectedCategory.categoryEng;
+      setCategoryIcon(selectedCategory.icon)
+
+      const response = await axios.get(`/subs/${selectedCategoryEng}`);
+      const data = response.data.items;
+      dispatch(setTwoDepthItems(data));
+
+      dispatch(setIsResult(true));
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      dispatch(setIsResult(false));
+    } finally {
+      dispatch(setIsLoading(false));
+    }
+  };
   useEffect(() => {
     if (selectedOneDepth){
-    const fetchData = async () => {
-      try {
-        const selectedCategory = categories.filter(category => category.category === selectedOneDepth)[0];
-        const selectedCategoryEng = selectedCategory.categoryEng;
-        setCategoryIcon(selectedCategory.icon)
-
-        const response = await axios.get(`/subs/${selectedCategoryEng}`);
-        const data = response.data.items;
-        dispatch(setTwoDepthItems(data));
-
-        dispatch(setIsResult(true));
-      } catch (error) {
-        console.error('Error fetching data:', error);
-        dispatch(setIsResult(false));
-      } finally {
-        dispatch(setIsLoading(false));
-      }
-    };
-    fetchData();}
+    fetchCompareData();}
   }, [selectedOneDepth]);
 
   const handleChangeOneDepth = (e) => {

@@ -28,25 +28,25 @@ const Itemlist = ({ category, categoryEng }) => {
   const [slicedItems, setSlicedItems] = useState([]);
 
   // ************************** 기본 아이템 fetch ***************************
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(`/subs/${categoryEng}`);
-        const data = response.data.items;
+  const fetchItemListData = async () => {
+    try {
+      const response = await axios.get(`/subs/${categoryEng}`);
+      const data = response.data.items;
 
-        // 아이템 데이터를 받아온 후에 filterTag을 계산하고 상태를 업데이트
-        const tagsAll = data.map(item => item.tags.map(tag => tag.tagName)).flat();
-        setFilterTag(tagsAll.reduce((ac, v) => ac.includes(v) ? ac : [...ac, v], []));
-        dispatch(fetchItemsSuccess(data));
-        setSlicedItems([...items]);
-        dispatch(setIsLoading(false));
-        dispatch(setIsResult(true));
-      } catch (error) {
-        console.error('Error fetching data:', error);
-        dispatch(setIsResult(false));
-      }
-    };
-    fetchData();
+      // 아이템 데이터를 받아온 후에 filterTag을 계산하고 상태를 업데이트
+      const tagsAll = data.map(item => item.tags.map(tag => tag.tagName)).flat();
+      setFilterTag(tagsAll.reduce((ac, v) => ac.includes(v) ? ac : [...ac, v], []));
+      dispatch(fetchItemsSuccess(data));
+      setSlicedItems([...items]);
+      dispatch(setIsLoading(false));
+      dispatch(setIsResult(true));
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      dispatch(setIsResult(false));
+    }
+  };
+  useEffect(() => {
+    fetchItemListData();
   }, [categoryEng]);
 
   // ****************************** 필터 버튼 핸들러 *******************************

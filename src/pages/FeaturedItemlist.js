@@ -21,22 +21,23 @@ const FeaturedItemlist = ({ category }) => {
   const [slicedItems, setSlicedItems] = useState([]);
 
   // ************************** 기본 아이템 fetch ***************************
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(`/subs/${category}`);
-        const data = response.data.items;
+  const fetchFeaturedItemData = async () => {
+    try {
+      const response = await axios.get(`/subs/${category}`);
+      const data = response.data.items;
 
-        dispatch(fetchItemsSuccess(data));
-        setSlicedItems([...items]);
-        dispatch(setIsLoading(false));
-        dispatch(setIsResult(true));
-      } catch (error) {
-        console.error('Error fetching data:', error);
-        dispatch(setIsResult(false));
-      }
-    };
-    fetchData();
+      dispatch(fetchItemsSuccess(data));
+      setSlicedItems([...items]);
+      dispatch(setIsResult(true));
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      dispatch(setIsResult(false));
+    } finally {
+      dispatch(setIsLoading(false));
+    }
+  };
+  useEffect(() => {
+    fetchFeaturedItemData();
   }, [category]);
 
   return (

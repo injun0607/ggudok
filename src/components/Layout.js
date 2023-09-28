@@ -53,26 +53,20 @@ const Layout = () => {
   const loginId = useSelector(state => state.user.loginId);
 	
 	// 세션 상태 조회 요청
+	const fetchSessionStatus = async () => {
+		try {
+			const response = await axios.get('/getSession');
+			const userData = response.data;
+			if (userData.memberName !== undefined && userData.loginId !== undefined) {
+				dispatch(setLoggedIn(userData));
+			}
+		} catch (error) {
+			console.error('Error fetch login session :', error);
+		} finally {
+			setIsCheckingLogin(false);
+		}
+	};
 	useEffect(() => {
-		const fetchSessionStatus = async () => {
-			// console.log('1. 세션 상태 조회 시작...')
-			try {
-				const response = await axios.get('/getSession');
-				const userData = response.data;
-				// console.log('2. 세션 상태 조회 성공')
-				// console.log('2.5. 세션 데이터 있나?', userData, response.data)
-				if (userData.memberName !== undefined && userData.loginId !== undefined) {
-					// console.log('3. 세션 데이터 있음', userData)
-					dispatch(setLoggedIn(userData));
-					// console.log('4. 세션 적용 완료')
-					// console.log(`isLoggedIn : ${isLoggedIn} \n memberName : ${memberName} \n loginId : ${loginId}`)
-				}
-			} catch (error) {
-				console.error('Error fetch login session :', error);
-			} finally {
-        setIsCheckingLogin(false);
-      }
-		};
 		fetchSessionStatus();
 	}, [location.pathname])
 
@@ -104,7 +98,7 @@ const Layout = () => {
           	<Suspense fallback={ <Loading /> }><MySubscribe /></Suspense>
 						} />
 						<Route path="MyReview" element={
-          	<Suspense fallback={ <Loading /> }><MyReview /></Suspense>
+          	<Suspense fallback={ <Loading /> }><MyReview isCheckingLogin={isCheckingLogin} /></Suspense>
 						} />
 						<Route path="MyLike" element={
           	<Suspense fallback={ <Loading /> }><MyLike /></Suspense>
@@ -146,7 +140,7 @@ const Layout = () => {
           	<Suspense fallback={ <Loading /> }>
 							<ItemDetail />
 						</Suspense>
-						} />
+					} />
 
 
 					<Route path='Compare' element={ <Compare /> }></Route>
