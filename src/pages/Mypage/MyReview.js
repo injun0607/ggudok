@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 // css import
 import style from '../../styles/Mypage.module.css'
+// redux import
+import { editMemberinfo, setMemberinfo, setValidPassword, setAge, setGender, setValidPhoneNumber, setPhoneNumber, setPassword, setNewPassword, setNewPasswordCheck, setIsLoading } from '../../redux/actions/reviewActions';
 
 const NO_IMAGE_URL = '/images/common/noimg.png';
 

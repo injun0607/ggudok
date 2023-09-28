@@ -58,5 +58,17 @@
 .boxrow .box h3 {font-size: 1.063rem; color: var(--c-black-3); font-weight: 400; margin-top: 1.5rem;}
 .boxrow .box .starrating {width: 100%; display: flex; justify-content: center;}
 .boxrow .box .starrating .star span {font-size: 2rem;}
-.boxrow .box .price {display: flex; justify-content: center; gap: 0.5rem; align-items: baseline; font-size: 1.125rem; color: var(--txt-color-2); margin-top: 0.5rem;}
-.boxrow .box .price .point {font-size: 1.5rem; color: var(--txt-color);}
+.boxrow .box .tag {display: flex; gap: 0.5rem; margin-top: 0.25rem; padding: 0 2.5rem; flex-wrap: wrap; justify-content: center;}
+.boxrow .box .tag p {
+  background: var(--bg-color-2);
+  color: var(--txt-color);
+  padding: 0.125rem 0.5rem;
+  font-size: 0.925rem;
+  border-radius: 6px;
+}
+.boxrow .box .price {padding: 1rem 2.5rem 0.5rem;}
+.boxrow .box .price p {display: flex; justify-content: center; gap: 0.5rem; align-items: baseline; font-size: 1rem; color: var(--txt-color-2); margin-top: 1rem;}
+.boxrow .box .price p:first-child {margin: 0;}
+.boxrow .box .price p .point {font-size: 1.325rem; color: var(--txt-color);}
+.boxrow .box .price .mainprice {font-size: 1.25rem; }
+.boxrow .box .price .mainprice .point {color: var(--main-color); font-size: 1.625rem;}
