@@ -6,6 +6,7 @@ import com.alham.ggudok.dto.member.MemberRegisterDto;
 import com.alham.ggudok.dto.member.MemberUpdateDto;
 import com.alham.ggudok.entity.Tag;
 import com.alham.ggudok.entity.member.*;
+import com.alham.ggudok.entity.subs.RankLevel;
 import com.alham.ggudok.entity.subs.Subs;
 import com.alham.ggudok.exception.member.MemberException;
 import com.alham.ggudok.repository.member.MemberRepository;
@@ -112,10 +113,41 @@ public class MemberService {
 
 
     @Transactional
-    public MemberHaveSubs createMemberHaveSubs(Member member, Subs subs) {
+    public boolean createMemberHaveSubs(Member member, Subs subs, RankLevel rankLevel) {
+        List<MemberHaveSubs> memberHaveSubsList = member.getMemberHaveSubsList();
+        Optional<MemberHaveSubs> optionalMemberHaveSubs =
+                memberHaveSubsList.stream().filter(mfs -> mfs.getSubs().getSubsId() == subs.getSubsId()).findFirst();
 
-        return MemberHaveSubs.createHaveSubs(member, subs);
+        if (optionalMemberHaveSubs.isPresent()) {
+            MemberHaveSubs memberHaveSubs = optionalMemberHaveSubs.get();
+            if (memberHaveSubs.getRankLevel().equals(rankLevel)) {
+                return false;
+            } else {
+                memberHaveSubsList.remove(memberHaveSubs);
+                memberHaveSubs.updateRankLevel(rankLevel);
+                memberHaveSubsList.add(memberHaveSubs);
+                member.updateHaveSubs(memberHaveSubsList);
+                return true;
+            }
+
+        } else {
+            MemberHaveSubs.createHaveSubs(member, subs, rankLevel);
+            return true;
+        }
     }
+
+    @Transactional
+    public Integer removeMemberHaveSubs(String loginId, Subs subs) {
+        Member member = memberRepository.findByLoginIdWithHaveSubs(loginId).get();
+        List<MemberHaveSubs> memberHaveSubsList = member.getMemberHaveSubsList();
+        memberHaveSubsList.stream().filter(mhs->mhs.getSubs().getSubsId().equals(subs.getSubsId()))
+                .findFirst().ifPresent(mhs->memberHaveSubsList.remove(mhs));
+        int i = member.updateHaveSubs(memberHaveSubsList);
+        return i;
+
+    }
+
+
 
     @Transactional
     public boolean createMemberFavorSubs(Member member, Subs subs) {
@@ -229,6 +261,16 @@ public class MemberService {
         }
     }
 
+    public Member findByLoginIdWithHaveSubs(String loginId) {
+        Optional<Member> member = memberRepository.findByLoginIdWithHaveSubs(loginId);
+        if(member.isPresent()){
+            return member.get();
+        }
+        else {
+            return new Member("no-member", 0);
+        }
+    }
+
     public Member findByLoginId(String loginId) {
         Optional<Member> member = memberRepository.findByLoginId(loginId);
         if (member.isPresent()) {
@@ -237,6 +279,8 @@ public class MemberService {
             return Member.noMember();
         }
     }
+
+
 
     public Member findMemberWithReviewsByloginId(String loginId) {
         Optional<Member> member = memberRepository.findMemberWithReviewsByloginId(loginId);
@@ -258,6 +302,18 @@ public class MemberService {
             return true;
         } else {
             return false;
+        }
+    }
+
+    @Transactional
+    public boolean buySubs(String loginId, Subs subs, RankLevel rankLevel) {
+        Optional<Member> optionalMember = memberRepository.findByLoginIdWithHaveSubs(loginId);
+        if (optionalMember.isPresent()) {
+            Member member = optionalMember.get();
+            createMemberHaveSubs(member, subs, rankLevel);
+            return true;
+        }else{
+            throw new MemberException("가입되지 않은 회원입니다!");
         }
     }
 }

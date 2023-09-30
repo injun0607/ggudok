@@ -13,6 +13,7 @@ import com.alham.ggudok.service.member.MemberService;
 import com.alham.ggudok.service.member.ReviewService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -81,10 +82,7 @@ public class MemberController {
 
     @GetMapping("/update")
     private MemberUpdateDto updateViewMember(Principal principal) {
-        MemberDto memberDto = SecurityUtils.transPrincipal(principal);
-        if (memberDto == null) {
-            new MemberException("로그인 되지 않은 회원입니다");
-        }
+        MemberDto memberDto = isLoginUser(principal);
 
         Member member = memberService.findByLoginId(memberDto.getLoginId());
         MemberUpdateDto updateDto = new MemberUpdateDto();
@@ -98,10 +96,7 @@ public class MemberController {
 
     @PostMapping("/update")
     private boolean updateMember(@RequestBody MemberUpdateDto updateDto, Principal principal) {
-        MemberDto memberDto = SecurityUtils.transPrincipal(principal);
-        if (memberDto == null) {
-            throw new MemberException("로그인 되지 않은 회원입니다!");
-        }
+        MemberDto memberDto = isLoginUser(principal);
         Member member = memberService.findByLoginId(memberDto.getLoginId());
 
         if (!passwordEncoder.matches(updateDto.getPassword(), member.getPassword())) {
@@ -127,10 +122,7 @@ public class MemberController {
 
     @GetMapping("/reviews")
     public ResponseEntity memberReview(Principal principal) {
-        MemberDto memberDto = SecurityUtils.transPrincipal(principal);
-        if (memberDto == null) {
-            throw new MemberException("로그인 되지 않은 회원입니다!");
-        }
+        MemberDto memberDto = isLoginUser(principal);
         Member findMember = memberService.findByLoginId(memberDto.getLoginId());
 
         List<Review> memberReviews = reviewService.findMemberReviews(findMember);
@@ -150,12 +142,18 @@ public class MemberController {
 
     @PostMapping("reviews/delete/{subsId}")
     public boolean deleteReview(Principal principal,@PathVariable("subsId")Long subsId) {
+        MemberDto memberDto = isLoginUser(principal);
+
+        memberService.removeReview(memberDto.getLoginId(),subsId);
+        return true;
+    }
+
+    @NotNull
+    private static MemberDto isLoginUser(Principal principal) {
         MemberDto memberDto = SecurityUtils.transPrincipal(principal);
         if (memberDto == null) {
             throw new MemberException("로그인 되지 않은 회원입니다!");
         }
-
-        memberService.removeReview(memberDto.getLoginId(),subsId);
-        return true;
+        return memberDto;
     }
 }

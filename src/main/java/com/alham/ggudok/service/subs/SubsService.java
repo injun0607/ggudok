@@ -1,6 +1,7 @@
 package com.alham.ggudok.service.subs;
 
 import com.alham.ggudok.entity.Tag;
+import com.alham.ggudok.entity.subs.RankLevel;
 import com.alham.ggudok.entity.subs.Subs;
 import com.alham.ggudok.entity.subs.SubsRank;
 import com.alham.ggudok.repository.subs.SubsRepository;
@@ -99,4 +100,8 @@ public class SubsService {
         return subsRepository.findSubsBySubsName(subsName);
     }
 
+    public void buySubs(Long subsId, RankLevel rankLevel) {
+
+
+    }
 }

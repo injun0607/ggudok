@@ -21,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -201,52 +202,62 @@ public class SubsController {
 
     @PostMapping("/like/{subsId}")
     public boolean likeSubs(@PathVariable("subsId") Long subsId, Principal principal) {
-        MemberDto memberDto = SecurityUtils.transPrincipal(principal);
-        if (memberDto != null) {
-            Member loginMember = memberService.findByLoginIdWithFavorSubs(principal.getName());
-            Subs subs = subsService.findSubsById(subsId);
+        MemberDto memberDto = isLoginUser(principal);
 
-            memberService.createMemberFavorSubs(loginMember, subs);
-            subsService.likeSubs(subs);
-            return true;
-        }
-        return false;
+        Member loginMember = memberService.findByLoginIdWithFavorSubs(memberDto.getLoginId());
+        Subs subs = subsService.findSubsById(subsId);
+
+        memberService.createMemberFavorSubs(loginMember, subs);
+        subsService.likeSubs(subs);
+        return true;
+
 
     }
 
     @PostMapping("/dislike/{subsId}")
     public boolean dislikeSubs(@PathVariable("subsId") Long subsId, Principal principal) {
-        MemberDto memberDto = SecurityUtils.transPrincipal(principal);
-        if (memberDto != null) {
-            Subs subs = subsService.findSubsById(subsId);
-            memberService.removeMemberFavorSubs(memberDto.getLoginId(), subs);
-            subsService.dislike(subs);
-            return true;
-        }
-        return false;
+        MemberDto memberDto = isLoginUser(principal);
+        Subs subs = subsService.findSubsById(subsId);
+        memberService.removeMemberFavorSubs(memberDto.getLoginId(), subs);
+        subsService.dislike(subs);
+        return true;
 
     }
 
-    @PostMapping("/write_review/{subsId}")
-    public boolean writeReview(@PathVariable("subsId") Long subsId, Principal principal, @RequestBody ReviewDto reviewDto) {
-        MemberDto memberDto = SecurityUtils.transPrincipal(principal);
-        if (memberDto == null) {
-            throw new MemberException("로그인한 사용자만 이용이 가능합니다.");
-        }
+    @PostMapping("/write_review")
+    public boolean writeReview(Principal principal, @RequestBody ReviewDto reviewDto) {
+        MemberDto memberDto = isLoginUser(principal);
         Member member = memberService.findMemberWithReviewsByloginId(memberDto.getLoginId());
-        Subs subs = subsService.findSubsById(subsId);
+        Subs subs = subsService.findSubsById(reviewDto.getSubsId());
         reviewService.writeReview(member, subs, reviewDto.getContents(), reviewDto.getRating());
 
         return true;
     }
 
     @PostMapping("/buy")
-    public void buySubs(Principal principal ,@RequestBody SubsBuyDto subBuyDto) {
+    public boolean buySubs(Principal principal ,@RequestBody SubsBuyDto subsBuyDto) {
+        MemberDto memberDto = isLoginUser(principal);
+        Subs findSubs = subsService.findSubsById(subsBuyDto.getSubsId());
+
+        return memberService.buySubs(memberDto.getLoginId(),findSubs, subsBuyDto.getRankLevel());
+    }
+
+    @PostMapping("/buy_cancel")
+    public boolean buyCancel(Principal principal, @RequestBody SubsBuyDto subsBuyDto) {
+        MemberDto loginUser = isLoginUser(principal);
+        Subs subs = subsService.findSubsById(subsBuyDto.getSubsId());
+        memberService.removeMemberHaveSubs(loginUser.getLoginId(), subs);
+
+        return true;
+
+    }
+
+    private static MemberDto isLoginUser(Principal principal) {
         MemberDto memberDto = SecurityUtils.transPrincipal(principal);
         if (memberDto == null) {
             throw new MemberException("로그인한 사용자만 이용이 가능합니다.");
+        }else{
+            return memberDto;
         }
-
-
     }
 }

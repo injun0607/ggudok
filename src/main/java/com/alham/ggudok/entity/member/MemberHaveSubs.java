@@ -1,10 +1,12 @@
 package com.alham.ggudok.entity.member;
 
+import com.alham.ggudok.entity.subs.RankLevel;
 import com.alham.ggudok.entity.subs.Subs;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import static jakarta.persistence.EnumType.*;
 import static jakarta.persistence.FetchType.LAZY;
 import static lombok.AccessLevel.PROTECTED;
 
@@ -29,6 +31,8 @@ public class MemberHaveSubs {
     @JoinColumn(name = "subs_id")
     private Subs subs;
 
+    @Enumerated(STRING)
+    private RankLevel rankLevel;
 
     /**
      * 멤버가 구독중인 구독서비스
@@ -36,10 +40,10 @@ public class MemberHaveSubs {
      * @param subs
      * @return
      */
-    public static MemberHaveSubs createHaveSubs(Member member, Subs subs) {
+    public static MemberHaveSubs createHaveSubs(Member member, Subs subs, RankLevel rankLevel) {
         MemberHaveSubs memberHaveSubs = new MemberHaveSubs();
         memberHaveSubs.addMember(member);
-        memberHaveSubs.setSubs(subs);
+        memberHaveSubs.addSubs(subs,rankLevel);
 
         return memberHaveSubs;
     }
@@ -49,8 +53,13 @@ public class MemberHaveSubs {
         member.getMemberHaveSubsList().add(this);
     }
 
-    private void setSubs(Subs subs) {
+    private void addSubs(Subs subs,RankLevel rankLevel) {
         this.subs = subs;
+        updateRankLevel(rankLevel);
+    }
+
+    public void updateRankLevel(RankLevel rankLevel) {
+        this.rankLevel = rankLevel;
     }
 
 

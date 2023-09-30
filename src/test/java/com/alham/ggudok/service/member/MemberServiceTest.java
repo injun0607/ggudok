@@ -4,7 +4,9 @@ import com.alham.ggudok.dto.member.MemberLoginDto;
 import com.alham.ggudok.dto.member.MemberRegisterDto;
 import com.alham.ggudok.dto.member.MemberUpdateDto;
 import com.alham.ggudok.entity.member.*;
+import com.alham.ggudok.entity.subs.RankLevel;
 import com.alham.ggudok.entity.subs.Subs;
+import com.alham.ggudok.entity.subs.SubsRank;
 import com.alham.ggudok.repository.member.MemberRepository;
 import com.alham.ggudok.repository.member.ReviewRepository;
 import com.alham.ggudok.repository.subs.SubsRepository;
@@ -49,7 +51,7 @@ class MemberServiceTest {
 
         Subs subs = new Subs("subs1");
         subsRepository.save(subs);
-        MemberHaveSubs memberHaveSubs = memberService.createMemberHaveSubs(member, subs);
+        memberService.createMemberHaveSubs(member, subs,RankLevel.DEFAULT);
 
         em.flush();
         em.clear();
@@ -64,7 +66,7 @@ class MemberServiceTest {
         //when
 
         //then
-        assertEquals(memberHaveSubs.getMember().getMemberName(),"injun");
+        assertEquals(memberHaveSubsList.size(),1);
 
     }
 
@@ -283,6 +285,41 @@ class MemberServiceTest {
         assertEquals(reviews.size(),2);
 
 
+    }
+
+    @Test
+    public void buySubs()throws Exception{
+        //given
+        MemberRegisterDto memberRegisterDto = new MemberRegisterDto();
+        memberRegisterDto.setMemberName("injun");
+        memberRegisterDto.setAge(20);
+        memberRegisterDto.setPassword("123123");
+        memberRegisterDto.setPasswordCheck("123123");
+        memberRegisterDto.setGender(Gender.MAN);
+        memberRegisterDto.setLoginId("injun0607@naver.com");
+
+        memberService.registerMember(memberRegisterDto);
+
+        Subs subs = new Subs("subs1");
+
+        subsRepository.save(subs);
+
+        em.flush();
+        em.clear();
+
+        Subs findsubs = subsRepository.findSubsBySubsName("subs1");
+
+        memberService.buySubs("injun0607@naver.com", findsubs, RankLevel.DEFAULT);
+        memberService.buySubs("injun0607@naver.com", findsubs, RankLevel.DEFAULT);
+        em.flush();
+        em.clear();
+        //when
+        Member findMember = memberService.findByLoginIdWithHaveSubs("injun0607@naver.com");
+
+
+        //then
+
+        assertEquals(findMember.getMemberHaveSubsList().size(),1);
     }
 
 

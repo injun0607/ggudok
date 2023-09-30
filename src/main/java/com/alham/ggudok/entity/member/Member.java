@@ -88,4 +88,8 @@ public class Member {
     }
 
 
+    public int updateHaveSubs(List<MemberHaveSubs> memberHaveSubsList) {
+        this.memberHaveSubsList = memberHaveSubsList;
+        return this.memberHaveSubsList.size();
+    }
 }

@@ -1,5 +1,6 @@
 package com.alham.ggudok.dto.subs;
 
+import com.alham.ggudok.entity.subs.RankLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -8,6 +9,6 @@ import lombok.NoArgsConstructor;
 public class SubsBuyDto {
 
     private Long subsId;
-    private SubsRankDto rank;
+    private RankLevel rankLevel;
 
 }

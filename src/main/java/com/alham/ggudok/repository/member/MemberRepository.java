@@ -18,6 +18,9 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     @Query("select m from Member m left join fetch m.memberFavorSubsList mfs left join fetch mfs.subs s where m.loginId = :loginId")
     Optional<Member> findByLoginIdWithFavorSubs(@Param("loginId")String loginId);
 
+    @Query("select m from Member m left join fetch m.memberHaveSubsList mhs left join fetch mhs.subs s where m.loginId = :loginId")
+    Optional<Member> findByLoginIdWithHaveSubs(@Param("loginId")String loginId);
+
     @Query("select m from Member m left join fetch m.reviews mr left join fetch mr.subs s where m.loginId = :loginId")
     Optional<Member> findMemberWithReviewsByloginId(@Param("loginId") String loginId);
 
