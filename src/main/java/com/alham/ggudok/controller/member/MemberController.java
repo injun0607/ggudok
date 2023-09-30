@@ -139,7 +139,8 @@ public class MemberController {
                         r.getMember().getMemberName(),
                         r.getSubs().getSubsId(),
                         r.getSubs().getSubsName(),
-                        r.getRating()))
+                        r.getRating(),
+                        r.getSubs().getImage()))
                 .toList();
         HashMap<String, List<ReviewDto>> result = new HashMap<>();
         result.put("reviews", reviews);

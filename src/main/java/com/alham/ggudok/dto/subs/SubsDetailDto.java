@@ -25,7 +25,7 @@ public class SubsDetailDto {
 
     private String category;
 
-    private int ratingAvg = 3;
+    private int ratingAvg;
 
     List<SubsRankDetailDto> ranks = new ArrayList<>();
 

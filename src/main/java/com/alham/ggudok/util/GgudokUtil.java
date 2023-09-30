@@ -27,8 +27,8 @@ public class GgudokUtil {
 
         // SMTP 서버 및 계정 정보 설정
         String smtpHost = "smtp.naver.com"; // SMTP 호스트 주소
-        String username = "injun_office0607@naver.com"; // 보내는 이메일 주소
-        String password = "Dudlswns1!"; // 이메일 비밀번호
+        String username = ""; // 보내는 이메일 주소
+        String password = ""; // 이메일 비밀번호
 
         // 이메일 수신자 정보 설정
         String toAddress = checkEmail; // 수신자 이메일 주소

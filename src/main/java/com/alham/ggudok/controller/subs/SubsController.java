@@ -172,13 +172,22 @@ public class SubsController {
         subsDetailDto.setRanks(subsRankDetailDtoList);
 
         //리뷰 Dto 생성
+        //평균별점 계산
         Optional<List<Review>> optionalReviews = reviewService.findSubsReviewsBySubsId(subsId);
-        if (optionalReviews.isPresent()) {
+        int sumRating = 0;
+        if (optionalReviews.get().size() != 0) {
             List<Review> reviews = optionalReviews.get();
-            List<ReviewDto> reviewDtoList = reviews.stream()
-                    .map(r ->  new ReviewDto(r.getContent(), r.getMember().getMemberName(), subsId ,subs.getSubsName(), r.getRating()))
-                    .collect(Collectors.toList());
+            List<ReviewDto> reviewDtoList = new ArrayList<>();
+            for (Review r : reviews) {
+                sumRating += r.getRating();
+                reviewDtoList.add(new ReviewDto(r.getContent(),
+                        r.getMember().getMemberName(),
+                        subsId ,subs.getSubsName(),
+                        r.getRating(),
+                        subs.getImage()));
+            }
             subsDetailDto.setReviews(reviewDtoList);
+            subsDetailDto.setRatingAvg(sumRating/reviews.size());
         }
 
         //subsMainDetail Dto 생성
@@ -196,9 +205,7 @@ public class SubsController {
         if (memberDto != null) {
             Member loginMember = memberService.findByLoginIdWithFavorSubs(principal.getName());
             Subs subs = subsService.findSubsById(subsId);
-            if (loginMember.getMemberFavorSubsList().stream().filter(mfs -> mfs.getSubs().getSubsId() == subsId).findFirst().isPresent()) {
-                return false;
-            }
+
             memberService.createMemberFavorSubs(loginMember, subs);
             subsService.likeSubs(subs);
             return true;
@@ -231,5 +238,15 @@ public class SubsController {
         reviewService.writeReview(member, subs, reviewDto.getContents(), reviewDto.getRating());
 
         return true;
+    }
+
+    @PostMapping("/buy")
+    public void buySubs(Principal principal ,@RequestBody SubsBuyDto subBuyDto) {
+        MemberDto memberDto = SecurityUtils.transPrincipal(principal);
+        if (memberDto == null) {
+            throw new MemberException("로그인한 사용자만 이용이 가능합니다.");
+        }
+
+
     }
 }

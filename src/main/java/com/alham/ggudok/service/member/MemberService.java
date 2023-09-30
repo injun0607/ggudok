@@ -58,6 +58,7 @@ public class MemberService {
                 passwordEncoder.encode(registerDto.getPassword()),
                 registerDto.getGender(),
                 registerDto.getPhoneNumber());
+
         Member savedMember = memberRepository.save(member);
 
 //      회원 태그 분류 작업
@@ -117,8 +118,13 @@ public class MemberService {
     }
 
     @Transactional
-    public MemberFavorSubs createMemberFavorSubs(Member member, Subs subs) {
-        return MemberFavorSubs.createFavorSubs(member, subs);
+    public boolean createMemberFavorSubs(Member member, Subs subs) {
+        if (member.getMemberFavorSubsList().stream().filter(mfs -> mfs.getSubs().getSubsId() == subs.getSubsId()).findFirst().isPresent()) {
+            return false;
+        } else{
+            MemberFavorSubs.createFavorSubs(member, subs);
+            return true;
+        }
     }
     @Transactional
     public Integer removeMemberFavorSubs(String loginId, Subs subs) {
@@ -131,8 +137,20 @@ public class MemberService {
 
     }
     @Transactional
-    public MemberRelTag createRelTag(Member member, Tag tag) {
-        return MemberRelTag.createRelTag(member, tag);
+    public boolean createRelTag(Member member, Tag tag) {
+        Optional<Member> optionalMember = memberRepository.findByLoginIdWithTags(member.getLoginId());
+        if (optionalMember.isPresent()) {
+            Member findMember = optionalMember.get();
+            if (findMember.getMemberRelTags().stream().filter(mfs -> mfs.getTag().getTagName().equals(tag.getTagName())).findFirst().isPresent()) {
+                return false;
+            }else {
+                MemberRelTag.createRelTag(member, tag);
+                return true;
+            }
+        }else{
+            return false;
+        }
+
     }
 
 
@@ -161,13 +179,14 @@ public class MemberService {
         return true;
     }
 
-
+//TODO cert 코드 비활성화 상태
     public String checkEmail(String checkEmail) {
         if (!GgudokUtil.isValidEmail(checkEmail)) {
             return "fail";
         }
 
-        String certCode = GgudokUtil.certEmail(checkEmail);
+//        String certCode = GgudokUtil.certEmail(checkEmail);
+        String certCode = "1234";
         if (certCode.equals(GgudokUtil.EMAIL_FAIL)) {
             return "fail";
         } else {

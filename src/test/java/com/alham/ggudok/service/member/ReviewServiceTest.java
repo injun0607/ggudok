@@ -203,8 +203,8 @@ class ReviewServiceTest {
         reviewService.writeReview(member2,findSubs2,"review so good5",3);
         reviewService.writeReview(member2,findSubs3,"review so good6",5);
 
-        reviewService.writeReview(member2,findsubs1,"review so good7",4);
-        reviewService.writeReview(member2,findSubs2,"review so good8",3);
+        reviewService.writeReview(member3,findsubs1,"review so good7",4);
+        reviewService.writeReview(member3,findSubs2,"review so good8",3);
         //when
         List<Review> findReviews1 = reviewService.findSubsReviewsBySubsId(findsubs1.getSubsId()).get();
         List<Review> findReviews2 = reviewService.findSubsReviewsBySubsId(findSubs2.getSubsId()).get();
@@ -213,6 +213,10 @@ class ReviewServiceTest {
         assertEquals(findReviews1.size(), 3);
         assertEquals(findReviews2.size(), 3);
         assertEquals(findReviews3.size(), 2);
+
+        for (Review review : findReviews1) {
+            System.out.println(review.getContent());
+        }
 
     }
 

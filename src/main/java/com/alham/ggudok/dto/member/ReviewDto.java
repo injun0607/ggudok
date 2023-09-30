@@ -14,6 +14,7 @@ public class ReviewDto {
     private Long subsId;
     private String subsName;
     private int rating;
+    private String subsImage;
 
 
 

@@ -176,7 +176,7 @@ class MemberServiceTest {
 
         Subs subs = new Subs("subs1");
         subsRepository.save(subs);
-        MemberFavorSubs memberFavorSubs = memberService.createMemberFavorSubs(member, subs);
+        memberService.createMemberFavorSubs(member, subs);
 
         em.flush();
         em.clear();
