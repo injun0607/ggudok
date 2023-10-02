@@ -5,7 +5,6 @@ import com.alham.ggudok.config.security.SecurityUtils;
 import com.alham.ggudok.controller.session.SessionMemberDto;
 import com.alham.ggudok.dto.MainDto;
 import com.alham.ggudok.dto.member.MemberDto;
-import com.alham.ggudok.entity.Tag;
 import com.alham.ggudok.entity.member.Member;
 import com.alham.ggudok.entity.subs.Subs;
 import com.alham.ggudok.exception.ErrorResult;
@@ -13,7 +12,6 @@ import com.alham.ggudok.service.TagService;
 import com.alham.ggudok.service.member.MemberService;
 import com.alham.ggudok.service.member.ReviewService;
 import com.alham.ggudok.service.subs.SubsService;
-import com.alham.ggudok.util.GgudokUtil;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -24,7 +22,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -77,22 +74,26 @@ public class HomeController {
         return defaultSubs;
     }
 
+    /*
+     * 추천 서비스
+     *  - 1순위 : 구매횟수가 많은것(횟수당 4점)
+        - 2순위: 좋아요 횟수가 많은것(좋아요당 3점)
+        - 3순위: 별점이 높은것(별점당 0.4점)
+        - 4순위: 리뷰가 많은것(리뷰당 1점)
+        *
+     */
+
+    //basic서비스는 나이와 성별로 추천
     private Map<String, List<Subs>> recommendSubsBasic(String loginId) {
-        List<Tag> tags = tagService.findTagsByLoginId(loginId);
-        Map<String, List<Subs>> basicSubsListMap = new HashMap<>();
-        List<Subs> genderSubsList = new ArrayList<>();
-        List<Subs> ageSubsList = new ArrayList<>();
-        for (Tag tag : tags) {
-            String tagName = tag.getTagName();
-            if (tagName.equals("남성") || tagName.equals("여성")) {
-                genderSubsList = subsService.findSubsByTag(tag);
-                basicSubsListMap.put(tagName, genderSubsList);
-            } else if (GgudokUtil.isAgeFormat(tagName)) {
-                ageSubsList = subsService.findSubsByTag(tag);
-                basicSubsListMap.put(tagName, ageSubsList);
-            }
-        }
-        return basicSubsListMap;
+        subsService.countHaveSubs();
+        subsService.countFavorSubs();
+        subsService.sumRating();
+        subsService.countReview();
+
+
+
+
+        return null;
     }
 
     private Map<String, List<Subs>> recommendCustomized(String loginId) {

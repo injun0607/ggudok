@@ -1,5 +1,6 @@
 package com.alham.ggudok.repository.subs;
 
+import com.alham.ggudok.dto.subs.SubsRecommendDto;
 import com.alham.ggudok.entity.Tag;
 import com.alham.ggudok.entity.subs.Subs;
 import com.alham.ggudok.entity.subs.SubsRank;
@@ -15,5 +16,14 @@ public interface SubsRepositoryCustom {
     Optional<List<Subs>> findSubsListByTag(Tag tag);
 
     Optional<List<Subs>> findSubsListByTagList(List<Tag> tagList);
+
+    List<SubsRecommendDto> countHaveSubs();
+    List<SubsRecommendDto> countFavorSubs();
+    List<SubsRecommendDto> sumRating();
+    List<SubsRecommendDto> countReview();
+
+
+
+
 
 }

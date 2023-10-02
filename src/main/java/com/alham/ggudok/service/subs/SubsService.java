@@ -5,6 +5,7 @@ import com.alham.ggudok.entity.subs.RankLevel;
 import com.alham.ggudok.entity.subs.Subs;
 import com.alham.ggudok.entity.subs.SubsRank;
 import com.alham.ggudok.repository.subs.SubsRepository;
+import com.querydsl.core.Tuple;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -102,6 +103,21 @@ public class SubsService {
 
     public void buySubs(Long subsId, RankLevel rankLevel) {
 
+
+    }
+
+    public List<Tuple> countHaveSubs() {
+        return null;
+    }
+
+    public void countFavorSubs() {
+    }
+
+    public void sumRating() {
+
+    }
+
+    public void countReview() {
 
     }
 }
