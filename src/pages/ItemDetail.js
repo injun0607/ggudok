@@ -11,8 +11,8 @@ import style from '../styles/Item.module.css';
 import Error from '../components/Error';
 import Loading from '../components/Loading';
 // redux import
-import { setLikeItem, setIsLoading, setIsResult, fetchitemDetailSuccess } from '../redux/actions/itemActions';
-import { setReview, setReviewModal, } from '../redux/actions/reviewActions';
+import { setIsLikedOn, setIsLikedOff, setIsLoading, setIsResult, fetchitemDetailSuccess } from '../redux/actions/itemActions';
+import { setReview, setMyItemReviewRating, setMyItemReviewContents, setMyItemReview, setReviewModal, } from '../redux/actions/reviewActions';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -24,8 +24,10 @@ const ItemDetail = () => {
   let dispatch = useDispatch();
   const itemDetail = useSelector(state => state.item.itemDetail);
   const reviews = useSelector(state => state.review.reviews);
+  const myItemReviewRating = useSelector(state => state.review.myItemReviewRating);
+  const myItemReviewContents = useSelector(state => state.review.myItemReviewContents);
   const similarItems = useSelector(state => state.item.similarItems);
-  const likeditems = useSelector(state => state.item.likeditems);
+  const IsLiked = useSelector(state => state.item.IsLiked);
   const reviewModal = useSelector(state => state.review.reviewModal);
   const isLoggedIn = useSelector(state => state.user.isLoggedIn);
   const IsResult = useSelector(state => state.item.IsResult);
@@ -33,7 +35,6 @@ const ItemDetail = () => {
   
   const { subsId } = useParams();
 
-  const [isLikedOn, setIsLikedOn] = useState(false);
   const [IsPager, setIsPager] = useState(false);
   const [slicedItems, setSlicedItems] = useState([]);
   const [itemStarAvg, setItemStarAvg] = useState([]);
@@ -48,33 +49,37 @@ const ItemDetail = () => {
       const data = response.data;
 
       dispatch(fetchitemDetailSuccess(data));
-      dispatch(setReview(data.itemDetail.reviews));
-
-      console.log('1')
-      // 아이템 평균별점
-      const itemRatingAvg = data.itemDetail.ratingAvg;
-      const newItemStarAvg = [];
-      for(let i = 0; i < 5; i++){
-        newItemStarAvg.push(i < itemRatingAvg);
-      }
-      setItemStarAvg(newItemStarAvg);
+      
       // 아이템 회원등급 Default와 나머지 분리
       const itemRanks = data.itemDetail.ranks;
       setItemDefaultRank(itemRanks.find(obj => obj.rankLevel === "DEFAULT"));
       setItemOtherRanks(itemRanks.filter(obj => obj.rankLevel !== "DEFAULT"));
 
       dispatch(setIsResult(true));
-      console.log('2')
+
+      if(data.itemDetail.reviews.length !== 0){
+        dispatch(setReview(data.itemDetail.reviews));
+        // 아이템 평균별점
+        const itemRatingAvg = data.itemDetail.ratingAvg;
+        const newItemStarAvg = [];
+        for(let i = 0; i < 5; i++){
+          newItemStarAvg.push(i < itemRatingAvg);
+        }
+        setItemStarAvg(newItemStarAvg);
+      }
+      if(isLoggedIn && Object.keys(data.memberInfo.review).length !== 0){
+        dispatch(setMyItemReviewRating(data.memberInfo.review.rating));
+        dispatch(setMyItemReviewContents(data.memberInfo.review.contents));
+      }
     } catch (error) {
       dispatch(setIsResult(false));
     } finally {
-      console.log('3')
       dispatch(setIsLoading(false));
     }
   };
   useEffect(() => {
     fetchItemDetailData();
-  }, [])
+  }, [dispatch, setMyItemReview, reviewModal])
 
   useEffect(() => {
     // 각 리뷰의 평균별점 업데이트
@@ -87,18 +92,13 @@ const ItemDetail = () => {
     setRatingMap(newRatingMap);
   }, [reviews])
 
-
   // 찜하기
-  useEffect(() => {
-    const likedItem = likeditems.find(likeditem => likeditem.subsId === subsId);
-    if (likedItem === undefined) {
-      setIsLikedOn(false)
-    } else { setIsLikedOn(true) }
-  }, [dispatch, isLikedOn, likeditems, itemDetail]);
-
   const handleLikedItem = async() => {
-    const itemId = { subsId };
-    dispatch(setLikeItem(itemId));
+    if(isLoggedIn){
+      const itemId = { subsId };
+      if(IsLiked){dispatch(setIsLikedOn(itemId));}
+      else{dispatch(setIsLikedOff(itemId));}
+    }
   };
 
   // 리뷰모달팝업
@@ -106,7 +106,7 @@ const ItemDetail = () => {
 
   return (
     <>
-    { reviewModal ? <><ReviewModal /> <div className='modalBg' onClick={ handleReviewModal }></div></> : null}
+    { reviewModal ? <><ReviewModal myItemReviewContents={myItemReviewContents} myItemReviewRating={myItemReviewRating} subsId={subsId} /> <div className='modalBg' onClick={ handleReviewModal }></div></> : null}
     <section className={style.pagewrapPd}>
       <div className='webwidth'>
         {!IsLoading ? (
@@ -137,7 +137,15 @@ const ItemDetail = () => {
                 </div>
                 <div className={style.starrating}>
                   <div className={style.star}>
-                    {
+                    { itemStarAvg.length === 0 ?
+                      <>
+                        <span className={`material-icons ${style.starInActive}`}>star</span>
+                        <span className={`material-icons ${style.starInActive}`}>star</span>
+                        <span className={`material-icons ${style.starInActive}`}>star</span>
+                        <span className={`material-icons ${style.starInActive}`}>star</span>
+                        <span className={`material-icons ${style.starInActive}`}>star</span>
+                      </>
+                      :
                       itemStarAvg.map((starAvg, starindex) => (
                         starAvg ? <span key={starindex} className={`material-icons ${style.starActive}`}>star</span> : <span key={starindex} className="material-icons">star</span>
                       ))
@@ -148,11 +156,11 @@ const ItemDetail = () => {
               </div>
               <div className={style.btnArea}>
                 {isLoggedIn && <button type='button' className={style.likebtn} onClick={ handleLikedItem }>
-                  {isLikedOn ? <span className={`material-icons ${style.likeActive}`}>favorite</span> : <span className="material-icons">favorite_border</span>}
+                  {IsLiked ? <span className={`material-icons ${style.likeActive}`}>favorite</span> : <span className="material-icons">favorite_border</span>}
                 </button> }
-                <button type='button' className={style.reviewbtn} onClick={ handleReviewModal }>
+                {isLoggedIn && <button type='button' className={style.reviewbtn} onClick={ handleReviewModal }>
                   <span className="material-icons">edit</span>
-                </button>
+                </button>}
               </div>
             </div>
           </section>
@@ -251,46 +259,81 @@ const ItemDetail = () => {
   );
 }
 
-const ReviewModal = () => {
+const ReviewModal = ({myItemReviewRating, myItemReviewContents, subsId}) => {
   const dispatch = useDispatch();
-  const reviewModal = useSelector(state => state.review.reviewModal);
+  const isLoggedIn = useSelector(state => state.user.isLoggedIn);
 
   // 리뷰모달팝업
   const handleReviewModal = () => { dispatch(setReviewModal()) }
 
-  //별점 수정
-  const [editStar, setEditStar] = useState([false, false, false, false, false]);
+  // 리뷰작성
+  const handleWriteReview = async(e) => {
+    e.preventDefault();
+    if(isLoggedIn){
+      if(myItemReviewContents.length === 0){
+        alert('내용을 작성하세요.');
+      } else if(myItemReviewRating === 0 || myItemReviewRating === undefined){
+        alert('별점을 1점 이상 작성해주세요.');
+      } else {
+        const reviewData = {
+          subsId: subsId,
+          rating: myItemReviewRating,
+          contents: myItemReviewContents,
+        };
+        console.log("reviewData:", reviewData);
+        console.log("subsId:", subsId);
+        console.log("myItemReviewRating:", myItemReviewRating);
+        console.log("myItemReviewContents:", myItemReviewContents);
+
+        dispatch(setMyItemReview(reviewData));
+      }
+    } else {alert('로그인 후 작성하세요.') }
+  };
+  // 기존 별점 가져오기
+  const [editStar, setEditStar] = useState(
+    new Array(5).fill(false).map((_, index) => index < myItemReviewRating)
+  );
+  // 별점 수정
   const handleEditStar = editstarIndex => {
     let clickStates = [...editStar];
     for (let i = 0; i < 5; i++) {
       clickStates[i] = i <= editstarIndex ? true : false;
     }
     setEditStar(clickStates);
+    // 클릭된 별점 인덱스를 평점으로 변환해 전달
+    const rating = editstarIndex + 1;
+    dispatch(setMyItemReviewRating(rating));
   };
   let resultEditStar = editStar.filter(Boolean).length;
 
   return (
-    <form className='modal_conts'>
+    <form className='modal_conts' onSubmit={ handleWriteReview }>
       <div className='modal_tit'>
         <h2>리뷰 작성하기</h2>
       </div>
       <div className={style.modalCont}>
         <div className={style.starrating}>
           <div className={style.star}>
-            {/* { editStar.map((EditActive, editstarIndex) => (
+            {[1, 2, 3, 4, 5].map((rating, starindex) => (
               <span
-                key={editstarIndex}
-                className={`material-icons ${style.editStar} ${EditActive ? style.starActive : ''}`}
-                onClick={() => handleEditStar(editstarIndex)}
-                onMouseEnter={() => handleEditStar(editstarIndex)}
+                key={starindex}
+                className={`material-icons ${style.editStar} ${
+                  rating <= resultEditStar ? style.starActive : ''
+                }`}
+                onClick={() => handleEditStar(rating - 1)}
+                onMouseEnter={() => handleEditStar(rating - 1)}
               >
                 star
               </span>
-            )) } */}
+            ))}
           </div>
         </div>
         <div className={style.reviewEdit}>
-          <textarea type='text' name='content' className={style.editArea} />
+          <textarea
+            type='text' name='content' className={style.editArea}
+            value={myItemReviewContents}
+            onChange={(e) => dispatch(setMyItemReviewContents(e.target.value))}
+          />
         </div>
         <div className={style.doublebutton}>
           <Link className='btn_s btn_normal' onClick={ handleReviewModal }>닫기</Link>

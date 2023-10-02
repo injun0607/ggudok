@@ -4,6 +4,7 @@
 .starrating {display: flex;}
 .starrating span {color: var(--sub-color-5);}
 .starrating .starActive {color: var(--sub-color);}
+.starrating .starInActive {color: var(--sub-color-3);}
 .starrating .editStar {cursor: pointer; transition: 0.3s;}
 .starrating .editStar:hover {color: var(--sub-color);}
 
