@@ -24,7 +24,6 @@ const MyReview = ({isCheckingLogin}) => {
       const data = response.data.reviews;
       console.log('data : ', data)
       dispatch(setMyReview(data));
-      setIsResult(true);
 
       // 각 리뷰의 평균별점 업데이트
       if(data.length !== 0){
@@ -38,15 +37,18 @@ const MyReview = ({isCheckingLogin}) => {
 
     } catch (error) {
       console.error('Error fetching data:', error);
-      setIsResult(false);
-
     } finally {
       setIsLoading(false);
     }
   };
   useEffect(() => {
     fetchMyReviewData();
-  }, [dispatch, setMyReview]);
+  }, [dispatch]);
+
+  // 결과 유무
+  useEffect(() => {
+    setIsResult(reviews.length > 0);
+  }, [dispatch, reviews]);
 
   return (
     !IsLoading && <section className={`${style.section} ${style.ratingwrap}`}>
@@ -122,7 +124,7 @@ function ReviewItem({ review, ratingMap, index }) {
       <div className={style.service}>
         <div className={style.left}>
           <div className={style.circle}>
-            <img src='../images/common/' alt={`${review.subsName}`} onError={(e) => {e.target.src = NO_IMAGE_URL;}}/>
+            <img src={`${review.image}`} alt={`${review.subsName}`} onError={(e) => {e.target.src = NO_IMAGE_URL;}}/>
           </div>
           <h3 className={style.name}>{review.subsName}</h3>
         </div>
@@ -151,22 +153,6 @@ function ReviewItem({ review, ratingMap, index }) {
                 rating ? <span key={starindex} className={`material-icons ${style.starActive}`}>star</span> : <span key={starindex} className="material-icons">star</span>
               ))
             }
-          {/* { isediting ?
-            editStar.map((EditActive, editstarIndex) => (
-              <span
-                key={editstarIndex}
-                className={`material-icons ${style.editStar} ${EditActive ? style.starActive : ''}`}
-                onClick={() => handleEditStar(editstarIndex)}
-                onMouseEnter={() => handleEditStar(editstarIndex)}
-              >
-                star
-              </span>
-            ))
-            : 
-            review.rating.map((reviewRating, starindex) => (
-              reviewRating ? <span key={starindex} className={`material-icons ${style.starActive}`}>star</span> : <span key={starindex} className="material-icons">star</span>
-            ))
-          } */}
           </div>
         </div>
         {isediting ?

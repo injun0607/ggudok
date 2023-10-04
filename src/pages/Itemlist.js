@@ -8,7 +8,7 @@ import style from '../styles/Item.module.css';
 import Filteraside from '../components/Filteraside';
 import ErrorItem from '../components/ErrorItem';
 // redux import
-import { setIsLoading, setIsResult, fetchItemsSuccess, filterItem } from '../redux/actions/itemActions';
+import { fetchItemsSuccess, filterItem } from '../redux/actions/itemActions';
 import { setSelectedPrice, setSelectedRating, setSelectedTag } from '../redux/actions/filterActions';
 
 const ITEMS_PER_PAGE = 15;
@@ -21,8 +21,8 @@ const Itemlist = ({ category, categoryEng }) => {
   const selectedTag = useSelector(state => state.filter.selectedTag);
   const items = useSelector(state => state.item.items);
   const filtereditems = useSelector(state => state.item.filtereditems);
-  const IsResult = useSelector(state => state.item.IsResult);
-  const IsLoading = useSelector(state => state.item.IsLoading);
+  const [IsResult, setIsResult] = useState(false);
+  const [IsLoading, setIsLoading] = useState(true);
   const [filterTag, setFilterTag] = useState([]);
   const [IsPager, setIsPager] = useState(false);
   const [slicedItems, setSlicedItems] = useState([]);
@@ -34,20 +34,37 @@ const Itemlist = ({ category, categoryEng }) => {
       const data = response.data.items;
 
       // 아이템 데이터를 받아온 후에 filterTag을 계산하고 상태를 업데이트
-      const tagsAll = data.map(item => item.tags.map(tag => tag.tagName)).flat();
-      setFilterTag(tagsAll.reduce((ac, v) => ac.includes(v) ? ac : [...ac, v], []));
-      dispatch(fetchItemsSuccess(data));
-      setSlicedItems([...items]);
-      dispatch(setIsLoading(false));
-      dispatch(setIsResult(true));
+      if(response.data.items.length !== 0){
+        const tagsAll = data.map(item => item.tags.map(tag => tag.tagName)).flat();
+        setFilterTag(tagsAll.reduce((ac, v) => ac.includes(v) ? ac : [...ac, v], []));
+        dispatch(fetchItemsSuccess(data));
+        setSlicedItems([...items]);
+      } else {
+        dispatch(fetchItemsSuccess([]));
+        dispatch(filterItem([]));
+        setSlicedItems([]);
+      }
     } catch (error) {
       console.error('Error fetching data:', error);
-      dispatch(setIsResult(false));
+      alert(`서비스를 가져오던 중 오류가 발생했습니다. 잠시 후 다시 시도해주시기 바랍니다.`)
+    } finally {
+      setIsLoading(false);
+      
     }
   };
   useEffect(() => {
     fetchItemListData();
-  }, [categoryEng]);
+  }, [dispatch, categoryEng]);
+
+// 결과 유무
+useEffect(() => {
+  setIsResult(items.length > 0 || filtereditems.length > 0);
+}, [items, filtereditems, categoryEng]);
+
+// IsResult 로그 출력
+useEffect(() => {
+  console.log('IsResult : ', IsResult);
+}, [IsResult]);
 
   // ****************************** 필터 버튼 핸들러 *******************************
   // 리셋 버튼 핸들러
@@ -126,14 +143,13 @@ const Itemlist = ({ category, categoryEng }) => {
     if (!IsLoading) {
       if (selectedPrice || selectedRating || selectedTag.length > 0) {
         if(filtereditems.length !== 0){
-          dispatch(setIsResult(true));
+          setIsResult(true);
           setSlicedItems([...filtereditems]);
         } else if((filtereditems.length === 0)) {
-          dispatch(setIsResult(false));
+          setIsResult(false);
           setSlicedItems([]);
         }
       } else {
-        dispatch(setIsResult(true));
         setSlicedItems([...items]);
       }
     }
@@ -159,7 +175,6 @@ const Itemlist = ({ category, categoryEng }) => {
                     <div className={style.txt}>
                       <h3>{item.name}</h3>
                       <div className={style.tag}>
-                        {/* <p>{item.category}</p> */}
                         {
                           item.tags.map((tag, tagindex) => (
                             <p key={tagindex}>{tag.tagName}</p>

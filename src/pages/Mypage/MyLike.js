@@ -1,38 +1,54 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import axios from 'axios';
+import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 // css import
 import style from '../../styles/Item.module.css';
+// component import
+import ErrorItem from '../../components/ErrorItem';
+import Loading from '../../components/Loading';
+// redux import
+import { fetchLikedItemsSuccess } from '../../redux/actions/userActions';
 
 const ITEMS_PER_PAGE = 12;
 const NO_IMAGE_URL = '/images/common/noimg.png';
 
-const MyLike = () => {
-  const navigate = useNavigate();
+const MyLike = ({ isCheckingLogin }) => {
+  let dispatch = useDispatch();
+  const likedItems = useSelector(state => state.user.likedItems);
+  const [slicedItems, setSlicedItems] = useState([]);
+  const [IsResult, setIsResult] = useState(false);
+  const [IsLoading, setIsLoading] = useState(true);
 
-  const likeditems = useSelector(state => state.item.likeditems);
+  // ************************** 기본 아이템 fetch ***************************
+  const fetchLikedItemData = async () => {
+    try {
+      const response = await axios.get(`/subs/favor_subs`);
+      const data = response.data.items;
 
-  // 아이템 개수 설정 및 페이지 이동
-  const [IsPager, setIsPager] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1);
-  const totalPages = Math.ceil(likeditems.length / ITEMS_PER_PAGE);
-  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE + 4;
-  const endIndex = startIndex + ITEMS_PER_PAGE;
-  const slicedItems = likeditems.slice(startIndex, endIndex);
-  if(likeditems.length > ITEMS_PER_PAGE){
-    setIsPager(true)
-  }
-  const handlePageChange = (newPage) => {
-    if (newPage >= 1 && newPage <= totalPages) {
-      setCurrentPage(newPage);
+      dispatch(fetchLikedItemsSuccess(data));
+      // setSlicedItems([...data]);
+    } catch (error) {
+      console.error('Error fetching item:', error);
+      alert(`서비스를 가져오던 중 오류가 발생했습니다. 잠시 후 다시 시도해주시기 바랍니다.`)
+    } finally {
+      setIsLoading(false);
     }
   };
+  useEffect(() => {
+    fetchLikedItemData();
+  }, [dispatch]);
+  
+  // 결과 유무
+  useEffect(() => {
+    setIsResult(likedItems.length > 0);
+  }, [dispatch, likedItems, isCheckingLogin]);
 
   return (
-    <>
+    !IsLoading ? (IsResult ?
     <section className={style.section}>
       <div className={style.itemlist}>
-        {slicedItems.map((item, index) => (
+        {likedItems.map((item, index) => (
           <Link to={`/subs/detail/${item.id}`} key={index} className={style.item}>
             <div className={style.img}>
               <img src={`${item.image}`} alt={item.name} onError={(e) => {e.target.src = NO_IMAGE_URL;}}/>
@@ -40,26 +56,18 @@ const MyLike = () => {
             <div className={style.txt}>
               <h3>{item.name}</h3>
               <div className={style.tag}>
-                <p>{item.category}</p>
-                <p>{item.tag}</p>
+                {
+                  item.tags.map((tag, tagindex) => (
+                    <p key={tagindex}>{tag.tagName}</p>
+                  ))
+                }
               </div>
             </div>
           </Link>
         ))}
       </div>
     </section>
-    {IsPager && <div className='pagination-wrap'>
-      <div className='pagination'>
-        <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>
-        <span className='material-icons'>chevron_left</span>
-        </button>
-        <span>{currentPage}</span> / <span>{totalPages}</span>
-        <button onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages}>
-        <span className='material-icons'>chevron_right</span>
-        </button>
-      </div>
-    </div>}
-    </>
+    : <ErrorItem />) : <Loading />
   )
 }
 

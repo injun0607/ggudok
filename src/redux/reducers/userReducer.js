@@ -18,6 +18,10 @@ const initialState = {
   age: '',
   phoneNumber: '',
 
+  // ******************** 마이페이지 *******************
+  // 관심서비스
+  likedItems: [],
+
   IsLoading: true,
 };
   
@@ -30,6 +34,14 @@ const userReducer = (state = initialState, action) => {
         loginId: action.payload.loginId,
         memberName: action.payload.memberName,
       };
+
+    // ************************** 마이페이지 ************************
+    case 'FETCH_LIKED_ITEMS_SUCCESS':
+      return {
+        ...state,
+        likedItems: action.payload,
+      };
+
     // ****************************로그인****************************
     case 'LOGIN_SUCCESS':
       return {

@@ -6,6 +6,13 @@ export const setLoggedIn = (userData) => {
     payload: userData,
   };
 }
+// *********************** 관심서비스 *************************
+export const fetchLikedItemsSuccess = (likedItems) => {
+  return {
+    type: 'FETCH_LIKED_ITEMS_SUCCESS',
+    payload: likedItems,
+  };
+}
 // ***********************로그인*************************
 export const login = (userData, navigate) => async (dispatch) => {
   const { loginId, password } = userData;

@@ -101,7 +101,7 @@ const Layout = () => {
           	<Suspense fallback={ <Loading /> }><MyReview isCheckingLogin={isCheckingLogin} /></Suspense>
 						} />
 						<Route path="MyLike" element={
-          	<Suspense fallback={ <Loading /> }><MyLike /></Suspense>
+          	<Suspense fallback={ <Loading /> }><MyLike isCheckingLogin={isCheckingLogin} /></Suspense>
 						} />
 					</Route>
 

@@ -11,7 +11,7 @@ import style from '../styles/Item.module.css';
 import Error from '../components/Error';
 import Loading from '../components/Loading';
 // redux import
-import { likeItemSuccess, likeItemFailure, setIsLoading, setIsResult, fetchitemDetailSuccess } from '../redux/actions/itemActions';
+import { likeItemSuccess, likeItemFailure, fetchitemDetailSuccess } from '../redux/actions/itemActions';
 import { setReview, setMyItemReviewRating, setMyItemReviewContents, setMyItemReview, setReviewModal, } from '../redux/actions/reviewActions';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
@@ -29,8 +29,8 @@ const ItemDetail = () => {
   const similarItems = useSelector(state => state.item.similarItems);
   const reviewModal = useSelector(state => state.review.reviewModal);
   const isLoggedIn = useSelector(state => state.user.isLoggedIn);
-  const IsResult = useSelector(state => state.item.IsResult);
-  const IsLoading = useSelector(state => state.item.IsLoading);
+  const [IsResult, setIsResult] = useState(false);
+  const [IsLoading, setIsLoading] = useState(true);
   
   const { subsId } = useParams();
   
@@ -55,8 +55,6 @@ const ItemDetail = () => {
       const itemRanks = data.itemDetail.ranks;
       setItemDefaultRank(itemRanks.find(obj => obj.rankLevel === "DEFAULT"));
       setItemOtherRanks(itemRanks.filter(obj => obj.rankLevel !== "DEFAULT"));
-
-      dispatch(setIsResult(true));
       
       if(Object.keys(data.memberInfo).length !== 0){
         setIsLiked(data.memberInfo.subsLike);
@@ -71,14 +69,17 @@ const ItemDetail = () => {
         }
         setItemStarAvg(newItemStarAvg);
       }
-      if(isLoggedIn && Object.keys(data.memberInfo.review).length !== 0){
+      if (isLoggedIn && data.memberInfo?.review) {
         dispatch(setMyItemReviewRating(data.memberInfo.review.rating));
         dispatch(setMyItemReviewContents(data.memberInfo.review.contents));
       }
+      // setIsResult(true);
     } catch (error) {
-      dispatch(setIsResult(false));
+      // setIsResult(false);
+      console.log('Error fetching item:', error);
+      alert(`서비스를 가져오던 중 오류가 발생했습니다. 잠시 후 다시 시도해주시기 바랍니다.`)
     } finally {
-      dispatch(setIsLoading(false));
+      setIsLoading(false);
     }
   };
 
@@ -86,8 +87,14 @@ const ItemDetail = () => {
     fetchItemDetailData();
   }, [dispatch, reviewModal, subsId])
 
+  // 결과 유무
   useEffect(() => {
-    // 각 리뷰의 평균별점 업데이트
+    if(Object.keys(itemDetail).length !== 0){setIsResult(true);}
+    else{setIsResult(false);}
+  }, [dispatch, itemDetail])
+
+  // 각 리뷰의 평균별점 업데이트
+  useEffect(() => {
     const newRatingMap = reviews.map((review) => {
       const reviewRating = review.rating;
       const newReviewStar = Array(5).fill(false).map((_, index) => index < reviewRating);
@@ -134,7 +141,7 @@ const ItemDetail = () => {
     <section className={style.pagewrapPd}>
       <div className='webwidth'>
         {!IsLoading ? (
-        Object.keys(itemDetail).length !== 0 ? <div className={style.detailwrap}>
+        IsResult ? <div className={style.detailwrap}>
           <section className={style.left}>
             <div className={style.fixed}>
               <div className={style.box}>
