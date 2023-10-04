@@ -57,7 +57,10 @@ const ItemDetail = () => {
       setItemOtherRanks(itemRanks.filter(obj => obj.rankLevel !== "DEFAULT"));
 
       dispatch(setIsResult(true));
-
+      
+      if(Object.keys(data.memberInfo).length !== 0){
+        setIsLiked(data.memberInfo.subsLike);
+      }
       if(data.itemDetail.reviews.length !== 0){
         dispatch(setReview(data.itemDetail.reviews));
         // 아이템 평균별점
@@ -81,7 +84,7 @@ const ItemDetail = () => {
 
   useEffect(() => {
     fetchItemDetailData();
-  }, [dispatch, setMyItemReview, reviewModal])
+  }, [dispatch, reviewModal, subsId])
 
   useEffect(() => {
     // 각 리뷰의 평균별점 업데이트
@@ -106,13 +109,9 @@ const ItemDetail = () => {
   
         const response = await axios.post(`${endpoint}/${subsId}`, { subsId });
         if (response.status === 200) {
-          dispatch(likeItemSuccess());
+          setIsLiked(!IsLiked);
   
-          const checkLikedResponse = await axios.get(`/subs/detail/${subsId}`);
-          const data = checkLikedResponse.data;
-          if (checkLikedResponse.status === 200) {
-            setIsLiked(data.memberInfo.subsLike);
-          }
+          fetchItemDetailData();
         } else {
           dispatch(likeItemFailure());
   
