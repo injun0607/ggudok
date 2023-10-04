@@ -86,7 +86,7 @@ const Layout = () => {
 
 					<Route path='/Mypage' element={
 						isCheckingLogin ? (<Loading />) : (
-							isLoggedIn ? <Mypage /> : (
+							isLoggedIn ? <Mypage memberName={memberName}/> : (
 								<>
 									<ErrorLogin />
 									<div className='modalBg modalBg-Blur' onClick={() => { navigate(-1) }}></div>

@@ -11,7 +11,7 @@ import style from '../styles/Item.module.css';
 import Error from '../components/Error';
 import Loading from '../components/Loading';
 // redux import
-import { setIsLikedOn, setIsLikedOff, setIsLoading, setIsResult, fetchitemDetailSuccess } from '../redux/actions/itemActions';
+import { likeItemSuccess, likeItemFailure, setIsLoading, setIsResult, fetchitemDetailSuccess } from '../redux/actions/itemActions';
 import { setReview, setMyItemReviewRating, setMyItemReviewContents, setMyItemReview, setReviewModal, } from '../redux/actions/reviewActions';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
@@ -27,20 +27,21 @@ const ItemDetail = () => {
   const myItemReviewRating = useSelector(state => state.review.myItemReviewRating);
   const myItemReviewContents = useSelector(state => state.review.myItemReviewContents);
   const similarItems = useSelector(state => state.item.similarItems);
-  const IsLiked = useSelector(state => state.item.IsLiked);
   const reviewModal = useSelector(state => state.review.reviewModal);
   const isLoggedIn = useSelector(state => state.user.isLoggedIn);
   const IsResult = useSelector(state => state.item.IsResult);
   const IsLoading = useSelector(state => state.item.IsLoading);
   
   const { subsId } = useParams();
-
+  
   const [IsPager, setIsPager] = useState(false);
   const [slicedItems, setSlicedItems] = useState([]);
   const [itemStarAvg, setItemStarAvg] = useState([]);
   const [itemDefaultRank, setItemDefaultRank] = useState({});
   const [itemOtherRanks, setItemOtherRanks] = useState([]);
   const [ratingMap, setRatingMap] = useState({});
+  
+  const [IsLiked, setIsLiked] = useState(false);
 
   // ************************** 기본 아이템 fetch ***************************
   const fetchItemDetailData = async () => {
@@ -77,6 +78,7 @@ const ItemDetail = () => {
       dispatch(setIsLoading(false));
     }
   };
+
   useEffect(() => {
     fetchItemDetailData();
   }, [dispatch, setMyItemReview, reviewModal])
@@ -93,11 +95,34 @@ const ItemDetail = () => {
   }, [reviews])
 
   // 찜하기
-  const handleLikedItem = async() => {
-    if(isLoggedIn){
+  const handleLikedItem = async () => {
+    if (isLoggedIn) {
       const itemId = { subsId };
-      if(IsLiked){dispatch(setIsLikedOn(itemId));}
-      else{dispatch(setIsLikedOff(itemId));}
+      try {
+        let endpoint = '/subs/like'; // 기본 엔드포인트 설정
+        if (IsLiked) {
+          endpoint = '/subs/dislike'; // 이미 좋아요한 경우 해제 엔드포인트로 변경
+        }
+  
+        const response = await axios.post(`${endpoint}/${subsId}`, { subsId });
+        if (response.status === 200) {
+          dispatch(likeItemSuccess());
+  
+          const checkLikedResponse = await axios.get(`/subs/detail/${subsId}`);
+          const data = checkLikedResponse.data;
+          if (checkLikedResponse.status === 200) {
+            setIsLiked(data.memberInfo.subsLike);
+          }
+        } else {
+          dispatch(likeItemFailure());
+  
+          alert(`관심서비스 ${IsLiked ? '해제' : '등록'} 중 오류가 발생했습니다. 잠시 후 다시 시도해주시기 바랍니다.`);
+        }
+      } catch (error) {
+        console.log(`Error ${IsLiked ? 'dislike' : 'like'} item:`, error);
+        dispatch(likeItemFailure());
+        alert(`관심서비스 ${IsLiked ? '해제' : '등록'} 중 오류가 발생했습니다. 잠시 후 다시 시도해주시기 바랍니다.`);
+      }
     }
   };
 
@@ -280,10 +305,6 @@ const ReviewModal = ({myItemReviewRating, myItemReviewContents, subsId}) => {
           rating: myItemReviewRating,
           contents: myItemReviewContents,
         };
-        console.log("reviewData:", reviewData);
-        console.log("subsId:", subsId);
-        console.log("myItemReviewRating:", myItemReviewRating);
-        console.log("myItemReviewContents:", myItemReviewContents);
 
         dispatch(setMyItemReview(reviewData));
       }

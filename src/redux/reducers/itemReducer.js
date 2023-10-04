@@ -4,7 +4,6 @@ const initialState = {
   itemDetail: {},
   similarItems: [],
   bestitems: [],
-  IsLiked: false,
   IsResult: null,
   IsLoading: true,
 };
@@ -40,9 +39,16 @@ const itemReducer = (state = initialState, action) => {
     case 'LIKE_ITEM_SUCCESS':
       return {
         ...state,
-        IsLiked: action.payload,
       }
     case 'LIKE_ITEM_FAILURE':
+      return {
+        ...state,
+      };
+    case 'DISLIKE_ITEM_SUCCESS':
+      return {
+        ...state,
+      }
+    case 'DISLIKE_ITEM_FAILURE':
       return {
         ...state,
       };

@@ -6,7 +6,7 @@ import style from '../../styles/Mypage.module.css'
 
 const NO_IMAGE_URL = '/images/common/noimg.png';
 
-const Mypage = () => {
+const Mypage = ({memberName}) => {
   const location = useLocation();
 
   // 현재 경로에 따라 클래스를 동적으로 설정
@@ -27,7 +27,7 @@ const Mypage = () => {
                     <img src='../images/common/' alt='유저 이미지' onError={(e) => {e.target.src = NO_IMAGE_URL;}}/>
                   </div>
                 </div>
-                <div className={style.userName}><span className={style.name}>최서희</span>님</div>
+                <div className={style.userName}><span className={style.name}>{memberName}</span>님</div>
               </div>
               <nav className={style.category}>
                 <Link to="/Auth/EditProfile">회원정보수정</Link> 
