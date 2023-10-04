@@ -115,21 +115,100 @@ public class InitMember {
         public void init() {
             Category health = new Category("건강","health");
             Category food = new Category("식품","food");
+            Category movie = new Category("영화","ott");
+            Category music = new Category("음악","music");
+
+
 
             em.persist(health);
             em.persist(food);
+            em.persist(movie);
+            em.persist(music);
 
             Subs healthCare = new Subs("healthCare");
             Subs dosirak = new Subs("dosirak");
             Subs healthcare2 = new Subs("healthCare2");
+            Subs netfilx = new Subs("netfilx");
+            Subs melon = new Subs("melon");
+            Subs watcha = new Subs("watcha");
 
+            netfilx.addCategory(movie);
+            melon.addCategory(music);
+            watcha.addCategory(movie);
             healthCare.addCategory(health);
             dosirak.addCategory(food);
             healthcare2.addCategory(health);
 
+            em.persist(netfilx);
+            em.persist(melon);
+            em.persist(watcha);
             em.persist(healthCare);
             em.persist(dosirak);
             em.persist(healthcare2);
+
+            SubsRank netfilxDef = new SubsRank("기본", 4500, RankLevel.DEFAULT);
+            SubsRank netfilxPrime = new SubsRank("프리미엄", 5500, RankLevel.PRIME);
+
+            netfilxDef.addSubs(netfilx);
+            netfilxPrime.addSubs(netfilx);
+
+            SubsRank melonxDef = new SubsRank("스트리밍", 2500, RankLevel.DEFAULT);
+            SubsRank melonPrime = new SubsRank("다운포함", 6500, RankLevel.PRIME);
+
+            melonxDef.addSubs(melon);
+            melonPrime.addSubs(melon);
+
+            SubsRank watchaDef = new SubsRank("왓챠 기본", 6900, RankLevel.DEFAULT);
+            SubsRank watchaPrime = new SubsRank("왓챠 프리미엄", 7500, RankLevel.PRIME);
+
+            watchaDef.addSubs(watcha);
+            watchaPrime.addSubs(watcha);
+
+            SubsContent netdefC1 = new SubsContent("넷플릭스 기본 구독혜택1");
+            SubsContent netdefC2 = new SubsContent("넷플릭스 기본 구독혜택2");
+
+            SubsContent netdefP1 = new SubsContent("넷플릭스 프리미엄 구독혜택1");
+            SubsContent netdefP2 = new SubsContent("넷플릭스 프리미엄 구독혜택2");
+            SubsContent netdefP3 = new SubsContent("넷플릭스 프리미엄 구독혜택3");
+
+
+            netdefC1.addSubsRank(netfilxDef);
+            netdefC2.addSubsRank(netfilxDef);
+
+            netdefP1.addSubsRank(netfilxPrime);
+            netdefP2.addSubsRank(netfilxPrime);
+            netdefP3.addSubsRank(netfilxPrime);
+
+            SubsContent meldefC1 = new SubsContent("멜론 기본 구독혜택1");
+            SubsContent meldefC2 = new SubsContent("멜론 기본 구독혜택2)");
+
+            SubsContent meldefP1 = new SubsContent("멜론 프리미엄 구독혜택1");
+            SubsContent meldefP2 = new SubsContent("멜론 프리미엄 구독혜택2");
+            SubsContent meldefP3 = new SubsContent("멜론 프리미엄 구독혜택3");
+
+
+            meldefC1.addSubsRank(melonxDef);
+            meldefC2.addSubsRank(melonxDef);
+
+            meldefP1.addSubsRank(melonPrime);
+            meldefP2.addSubsRank(melonPrime);
+            meldefP3.addSubsRank(melonPrime);
+
+            SubsContent watchadefC1 = new SubsContent("watcha 기본 구독혜택1");
+            SubsContent watchadefC2 = new SubsContent("watcha 기본 구독혜택2");
+
+            SubsContent watchadefP1 = new SubsContent("watcha 프리미엄 구독혜택1");
+            SubsContent watchadefP2 = new SubsContent("watcha 프리미엄 구독혜택2");
+            SubsContent watchadefP3 = new SubsContent("watcha 프리미엄 구독혜택3");
+
+
+            watchadefC1.addSubsRank(watchaDef);
+            watchadefC2.addSubsRank(watchaDef);
+
+            watchadefP1.addSubsRank(watchaPrime);
+            watchadefP2.addSubsRank(watchaPrime);
+            watchadefP3.addSubsRank(watchaPrime);
+
 
             SubsRank healthCareDef = new SubsRank("기본", 7500, RankLevel.DEFAULT);
             SubsRank healthCarePrime = new SubsRank("프리미엄", 8500, RankLevel.PRIME);
@@ -149,35 +228,35 @@ public class InitMember {
             healthcare2Def.addSubs(healthcare2);
             healthcare2Prime.addSubs(healthcare2);
 
-            SubsContent netdefC1 = new SubsContent("헬스케어 기본 구독혜택1");
-            SubsContent netdefC2 = new SubsContent("헬스케어  기본 구독혜택2");
+            SubsContent healthC1 = new SubsContent("헬스케어 기본 구독혜택1");
+            SubsContent healthC2 = new SubsContent("헬스케어  기본 구독혜택2");
 
-            SubsContent netdefP1 = new SubsContent("헬스케어 프리미엄 구독혜택1");
-            SubsContent netdefP2 = new SubsContent("헬스케어 프리미엄 구독혜택2");
-            SubsContent netdefP3 = new SubsContent("헬스케어 프리미엄 구독혜택3");
-
-
-            netdefC1.addSubsRank(healthCareDef);
-            netdefC2.addSubsRank(healthCareDef);
-
-            netdefP1.addSubsRank(healthCarePrime);
-            netdefP2.addSubsRank(healthCarePrime);
-            netdefP3.addSubsRank(healthCarePrime);
-
-            SubsContent meldefC1 = new SubsContent("도시락 기본 구독혜택1");
-            SubsContent meldefC2 = new SubsContent("도시락 기본 구독혜택2)");
-
-            SubsContent meldefP1 = new SubsContent("도시락 프리미엄 구독혜택1");
-            SubsContent meldefP2 = new SubsContent("도시락 프리미엄 구독혜택2");
-            SubsContent meldefP3 = new SubsContent("도시락 프리미엄 구독혜택3");
+            SubsContent healthP1 = new SubsContent("헬스케어 프리미엄 구독혜택1");
+            SubsContent healthP2 = new SubsContent("헬스케어 프리미엄 구독혜택2");
+            SubsContent healthP3 = new SubsContent("헬스케어 프리미엄 구독혜택3");
 
 
-            meldefC1.addSubsRank(dosirakxDef);
-            meldefC2.addSubsRank(dosirakxDef);
+            healthC1.addSubsRank(healthCareDef);
+            healthC2.addSubsRank(healthCareDef);
 
-            meldefP1.addSubsRank(dosirakPrime);
-            meldefP2.addSubsRank(dosirakPrime);
-            meldefP3.addSubsRank(dosirakPrime);
+            healthP1.addSubsRank(healthCarePrime);
+            healthP2.addSubsRank(healthCarePrime);
+            healthP3.addSubsRank(healthCarePrime);
+
+            SubsContent dosidefC1 = new SubsContent("도시락 기본 구독혜택1");
+            SubsContent dosidefC2 = new SubsContent("도시락 기본 구독혜택2)");
+
+            SubsContent dosidefP1 = new SubsContent("도시락 프리미엄 구독혜택1");
+            SubsContent dosidefP2 = new SubsContent("도시락 프리미엄 구독혜택2");
+            SubsContent dosidefP3 = new SubsContent("도시락 프리미엄 구독혜택3");
+
+
+            dosidefC1.addSubsRank(dosirakxDef);
+            dosidefC2.addSubsRank(dosirakxDef);
+
+            dosidefP1.addSubsRank(dosirakPrime);
+            dosidefP2.addSubsRank(dosirakPrime);
+            dosidefP3.addSubsRank(dosirakPrime);
 
             SubsContent healthcare2defC1 = new SubsContent("healthcare2 기본 구독혜택1");
             SubsContent healthcare2defC2 = new SubsContent("healthcare2 기본 구독혜택2");
@@ -193,6 +272,8 @@ public class InitMember {
             healthcare2defP1.addSubsRank(healthcare2Prime);
             healthcare2defP2.addSubsRank(healthcare2Prime);
             healthcare2defP3.addSubsRank(healthcare2Prime);
+
+
 
             Tag age0 = new Tag("10대");
             Tag age1 = new Tag("20대");
@@ -250,6 +331,19 @@ public class InitMember {
             healthcare2.addTag(gender2);
             healthcare2.addTag(healthTag);
 
+
+            netfilx.addTag(age1);
+            netfilx.addTag(age2);
+            netfilx.addTag(age3);
+
+            netfilx.addTag(gender1);
+            netfilx.addTag(gender2);
+
+            melon.addTag(age1);
+            melon.addTag(age2);
+
+            watcha.addTag(gender1);
+            watcha.addTag(gender2);
 
         }
 

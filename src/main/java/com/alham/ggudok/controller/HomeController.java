@@ -47,22 +47,17 @@ public class HomeController {
         //event페이지
         MainDto mainDto = new MainDto();
 
-
         if (memberDto != null) {
             //알고리즘 맞춤 서비스
             //해당 유저가 좋아요한 구독정보를 위주로
             //좋아요가 없으면 인기순위
-            Map<String, List<Subs>> recommendCustomized = recommendCustomized(memberDto.getLoginId());
-            mainDto.transRecommendCustomized(recommendCustomized);
+            subsService.findRecommendSubsListByTag();
             //기본 추천 서비스(ex. 나이 남성)
             Map<String, List<Subs>> recommendSubsBasic = recommendSubsBasic(memberDto.getLoginId());
             mainDto.transRecommendBasic(recommendSubsBasic);
 
         } else {
-            //로그인 안한 사용자에게 보여주는 기본 subs들
-            //인기순위순으로 보여준다.
-            Map<String, List<Subs>> defaultSubs = defaultSubs();
-            mainDto.transDefaultSubs(defaultSubs);
+            List<Subs> defRecomSubsList = subsService.findRecommendSubsList();
         }
 
         return mainDto;

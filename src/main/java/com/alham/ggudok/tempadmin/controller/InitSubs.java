@@ -20,7 +20,7 @@ public class InitSubs {
 
     @PostConstruct
     public void init() {
-        subsService.init();
+//        subsService.init();
 
     }
 

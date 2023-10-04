@@ -1,19 +1,18 @@
 package com.alham.ggudok.service.subs;
 
+import com.alham.ggudok.dto.subs.SubsRecommendDto;
 import com.alham.ggudok.entity.Tag;
 import com.alham.ggudok.entity.subs.RankLevel;
 import com.alham.ggudok.entity.subs.Subs;
 import com.alham.ggudok.entity.subs.SubsRank;
 import com.alham.ggudok.repository.subs.SubsRepository;
-import com.querydsl.core.Tuple;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -88,6 +87,32 @@ public class SubsService {
     }
 
     @Transactional
+    public List<Subs> updateRecommendSort() {
+        List<Subs> allSubs = subsRepository.findAll();
+
+
+        Map<Long, Double> subsMap = recommendSubs();
+        Set<Long> subsIdList = subsMap.keySet();
+
+        Map<Long, Integer> sortRank = new HashMap<>();
+
+        int sort = 0;
+        for (Long subsId : subsIdList) {
+            sortRank.put(subsId, ++sort);
+        }
+
+        for (Subs subs : allSubs) {
+            if (sortRank.containsKey(subs.getSubsId())) {
+                subs.updateRecommendSort(sortRank.get(subs.getSubsId()));
+            }
+
+        }
+
+        return allSubs;
+
+    }
+
+    @Transactional
     public void likeSubs(Subs subs) {
         subs.likeSubs();
     }
@@ -106,18 +131,77 @@ public class SubsService {
 
     }
 
-    public List<Tuple> countHaveSubs() {
-        return null;
+    public List<SubsRecommendDto> countHaveSubs() {
+        return subsRepository.countHaveSubs();
     }
 
-    public void countFavorSubs() {
+    public List<SubsRecommendDto> countFavorSubs() {
+        return subsRepository.countFavorSubs();
     }
 
-    public void sumRating() {
+    public List<SubsRecommendDto> sumRating() {
+        return subsRepository.sumRating();
 
     }
 
-    public void countReview() {
+    public List<SubsRecommendDto> countReview() {
+        return subsRepository.countReview();
+    }
+    /**
+     * 추천 구독서비스 알고리즘
+     * 1. 구매 횟수 당 4점
+     * 2. 좋아요 횟수 당 3점
+     * 3. 별점이 높은 것 (별점당 0.4점)
+     * 4. 리뷰 개수 당 1점
+     * return Map<Long,Double> key: subsId, value: score
+     */
+    public Map<Long,Double> recommendSubs() {
+        Map<Long, Double> resultMap = new HashMap<>();
 
+        List<SubsRecommendDto> haveSubsScore = countHaveSubs();
+        subsScoreCal(resultMap, haveSubsScore, 4);
+
+        List<SubsRecommendDto> haveFavorScore = countFavorSubs();
+        subsScoreCal(resultMap, haveFavorScore, 3);
+
+        List<SubsRecommendDto> reviewRatingScore = sumRating();
+        subsScoreCal(resultMap, reviewRatingScore, 0.4);
+
+        List<SubsRecommendDto> haveReviewScore = countReview();
+        subsScoreCal(resultMap, haveReviewScore, 1);
+
+        Map<Long, Double> sortedMap = resultMap.entrySet()
+                .stream()
+                .sorted(Collections.reverseOrder(Map.Entry.comparingByValue()))
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        Map.Entry::getValue,
+                        (e1,e2)->e2,
+                        LinkedHashMap::new
+                ));
+
+        return sortedMap;
+    }
+
+    public Map<Long, Double> subsScoreCal(Map<Long, Double> resultMap, List<SubsRecommendDto> recommendDtoList, double calScore) {
+        for (SubsRecommendDto subsRecommendDto : recommendDtoList) {
+            Long subsId = subsRecommendDto.getSubsId();
+            Integer score = subsRecommendDto.getScore();
+            if (resultMap.containsKey(subsId)) {
+                resultMap.put(subsId, resultMap.get(subsId) + score * calScore);
+            }else{
+                resultMap.put(subsId, score * calScore);
+            }
+        }
+
+        return resultMap;
+    }
+
+    public List<Subs> findRecommendSubsList() {
+       return subsRepository.findRecommendSubsList();
+    }
+
+    public List<Subs> findRecommendSubsListByTag() {
+        return subsRepository.findRecommendSubsListByTag();
     }
 }

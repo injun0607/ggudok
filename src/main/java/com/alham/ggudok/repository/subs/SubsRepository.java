@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface SubsRepository extends JpaRepository<Subs,Long>, SubsRepositoryCustom {
@@ -17,5 +18,10 @@ public interface SubsRepository extends JpaRepository<Subs,Long>, SubsRepository
     Optional<Subs> findSubsByIdWithRank(@Param("subsId") Long subsId);
 
     Subs findSubsBySubsName(String subsName);
+
+    @Query("select s from Subs s join fetch s.subsRelTags st join fetch st.tag t order by s.recommendSort")
+    List<Subs> findRecommendSubsList();
+
+
 
 }

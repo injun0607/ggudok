@@ -5,10 +5,15 @@ import com.alham.ggudok.dto.member.MemberDto;
 import com.alham.ggudok.dto.member.MemberRegisterDto;
 import com.alham.ggudok.dto.member.MemberUpdateDto;
 import com.alham.ggudok.dto.member.ReviewDto;
+import com.alham.ggudok.dto.subs.SubsDto;
+import com.alham.ggudok.dto.subs.SubsMainDto;
 import com.alham.ggudok.entity.member.Member;
+import com.alham.ggudok.entity.member.MemberFavorSubs;
 import com.alham.ggudok.entity.member.Review;
+import com.alham.ggudok.entity.subs.Subs;
 import com.alham.ggudok.exception.ErrorResult;
 import com.alham.ggudok.exception.member.MemberException;
+import com.alham.ggudok.service.TagService;
 import com.alham.ggudok.service.member.MemberService;
 import com.alham.ggudok.service.member.ReviewService;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +25,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,6 +42,8 @@ public class MemberController {
     private final PasswordEncoder passwordEncoder;
 
     private final ReviewService reviewService;
+
+    private final TagService tagService;
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MemberException.class)
@@ -148,6 +156,32 @@ public class MemberController {
         return true;
     }
 
+
+    @GetMapping("/favor_subs")
+    public SubsMainDto memberFavorSubsView(Principal principal) {
+        MemberDto memberDto = isLoginUser(principal);
+
+        Member loginMember = memberService.findByLoginIdWithFavorSubs(memberDto.getLoginId());
+        List<MemberFavorSubs> memberFavorSubsList = loginMember.getMemberFavorSubsList();
+
+        SubsMainDto subsMainDto = new SubsMainDto();
+        List<SubsDto> result = new ArrayList<>();
+
+        for (MemberFavorSubs memberFavorSubs : memberFavorSubsList) {
+            Subs subs = memberFavorSubs.getSubs();
+            SubsDto subsDto = new SubsDto();
+            subsDto.setId(subs.getSubsId());
+            subsDto.setIcon(subs.getIcon());
+            subsDto.setName(subs.getSubsName());
+            subsDto.setImage(subs.getImage());
+            subsDto.setTags(tagService.findTagsBySubsId(subs.getSubsId()));
+
+            result.add(subsDto);
+        }
+
+        subsMainDto.setItems(result);
+        return subsMainDto;
+    }
     @NotNull
     private static MemberDto isLoginUser(Principal principal) {
         MemberDto memberDto = SecurityUtils.transPrincipal(principal);

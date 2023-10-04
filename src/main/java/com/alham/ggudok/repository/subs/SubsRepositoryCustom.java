@@ -22,7 +22,7 @@ public interface SubsRepositoryCustom {
     List<SubsRecommendDto> sumRating();
     List<SubsRecommendDto> countReview();
 
-
+    List<Subs> findRecommendSubsListByTag();
 
 
 

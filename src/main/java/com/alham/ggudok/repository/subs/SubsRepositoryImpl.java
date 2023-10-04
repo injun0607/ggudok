@@ -6,6 +6,7 @@ import com.alham.ggudok.dto.subs.SubsRecommendDto;
 import com.alham.ggudok.entity.Tag;
 import com.alham.ggudok.entity.subs.Subs;
 import com.alham.ggudok.entity.subs.SubsRank;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 
@@ -54,59 +55,69 @@ public class SubsRepositoryImpl implements SubsRepositoryCustom{
                 .join(subs.subsRelTags, subsRelTag).fetchJoin()
                 .join(subsRelTag.tag, tag).fetchJoin()
                 .where()
+                .orderBy(subs.recommendSort.asc())
                 .fetch());
     }
 
     @Override
     public List<SubsRecommendDto> countHaveSubs() {
-        List<SubsRecommendDto> tuples = queryFactory
+        List<SubsRecommendDto> subsRecommendDtoList = queryFactory
                 .select(new QSubsRecommendDto(memberHaveSubs.subs.subsId.as("subsId"),
-                        memberHaveSubs.count().as("score").intValue()))
+                        memberHaveSubs.count().intValue()))
                 .from(memberHaveSubs)
                 .groupBy(memberHaveSubs.subs.subsId)
                 .orderBy(memberHaveSubs.count().desc())
                 .fetch();
 
 
-        return tuples;
+        return subsRecommendDtoList;
     }
 
     @Override
     public List<SubsRecommendDto> countFavorSubs() {
-        List<SubsRecommendDto> tuples = queryFactory
+        List<SubsRecommendDto> subsRecommendDtoList = queryFactory
                 .select(new QSubsRecommendDto(memberFavorSubs.subs.subsId.as("subsId"),
-                        memberFavorSubs.count().as("score").intValue()))
+                        memberFavorSubs.count().intValue()))
                 .from(memberFavorSubs)
                 .groupBy(memberFavorSubs.subs.subsId)
                 .orderBy(memberFavorSubs.count().desc())
                 .fetch();
 
-        return tuples;
+        return subsRecommendDtoList;
     }
 
     @Override
     public List<SubsRecommendDto> sumRating() {
-        List<SubsRecommendDto> tuples = queryFactory
+        List<SubsRecommendDto> subsRecommendDtoList = queryFactory
                 .select(new QSubsRecommendDto(review.subs.subsId.as("subsId"),
-                        review.rating.sum().as("score")))
+                        review.rating.sum()))
                 .from(review)
                 .groupBy(review.subs.subsId)
                 .fetch();
 
-        return tuples;
+        return subsRecommendDtoList;
 
     }
 
     @Override
     public List<SubsRecommendDto> countReview() {
-        List<SubsRecommendDto> tuples = queryFactory
+        List<SubsRecommendDto> subsRecommendDtoList = queryFactory
                 .select(new QSubsRecommendDto(review.subs.subsId.as("subsId"),
-                        review.count().as("score").intValue()))
+                        review.count().intValue()))
                 .from(review)
                 .groupBy(review.subs.subsId)
                 .orderBy(review.count().desc())
                 .fetch();
 
-        return tuples;
+        return subsRecommendDtoList;
+    }
+
+    @Override
+    public List<Subs> findRecommendSubsListByTag() {
+        return null;
+    }
+
+    private BooleanExpression tagNameListEq(List<Tag> tagList) {
+        return null;
     }
 }

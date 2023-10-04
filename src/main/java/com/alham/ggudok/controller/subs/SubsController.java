@@ -2,12 +2,15 @@ package com.alham.ggudok.controller.subs;
 
 import com.alham.ggudok.config.security.SecurityUtils;
 import com.alham.ggudok.dto.member.MemberDto;
+import com.alham.ggudok.dto.member.MemberRegisterDto;
 import com.alham.ggudok.dto.member.MemberSubsDto;
 import com.alham.ggudok.dto.member.ReviewDto;
 import com.alham.ggudok.dto.subs.*;
+import com.alham.ggudok.entity.member.Gender;
 import com.alham.ggudok.entity.member.Member;
 import com.alham.ggudok.entity.member.Review;
 import com.alham.ggudok.entity.subs.Category;
+import com.alham.ggudok.entity.subs.RankLevel;
 import com.alham.ggudok.entity.subs.Subs;
 import com.alham.ggudok.entity.subs.SubsRank;
 import com.alham.ggudok.exception.ErrorResult;
@@ -198,6 +201,7 @@ public class SubsController {
         return subsMainDetailDto;
     }
 
+
     @PostMapping("/like/{subsId}")
     public boolean likeSubs(@PathVariable("subsId") Long subsId, Principal principal) {
         MemberDto memberDto = isLoginUser(principal);
@@ -250,13 +254,163 @@ public class SubsController {
 
     }
 
+    @GetMapping("/sort_init")
+    public boolean sortInit() {
+        subsService.updateRecommendSort();
+        return true;
+    }
+
     private static MemberDto isLoginUser(Principal principal) {
+
         MemberDto memberDto = SecurityUtils.transPrincipal(principal);
         if (memberDto == null) {
             throw new MemberException("로그인한 사용자만 이용이 가능합니다.");
-        }else{
+        } else {
             return memberDto;
         }
+    }
+
+
+    //init임시
+    @GetMapping("/init_sort")
+    public void initSort() {
+
+        Subs healthCare = subsService.findBySubsName("healthCare");
+        Subs dosirak = subsService.findBySubsName("dosirak");
+        Subs healthCare2 = subsService.findBySubsName("healthCare2");
+        Subs netfilx = subsService.findBySubsName("netfilx");
+        Subs watcha = subsService.findBySubsName("watcha");
+
+
+        MemberRegisterDto memberRegisterDto = new MemberRegisterDto();
+        memberRegisterDto.setMemberName("injun");
+        memberRegisterDto.setAge(20);
+        memberRegisterDto.setPassword("123123");
+        memberRegisterDto.setPasswordCheck("123123");
+        memberRegisterDto.setGender(Gender.MAN);
+        memberRegisterDto.setLoginId("injun06010@naver.com");
+
+        memberService.registerMember(memberRegisterDto);
+
+        MemberRegisterDto memberRegisterDto2 = new MemberRegisterDto();
+        memberRegisterDto2.setMemberName("injun");
+        memberRegisterDto2.setAge(20);
+        memberRegisterDto2.setPassword("123123");
+        memberRegisterDto2.setPasswordCheck("123123");
+        memberRegisterDto2.setGender(Gender.MAN);
+        memberRegisterDto2.setLoginId("injun0601@naver.com");
+
+        memberService.registerMember(memberRegisterDto2);
+
+        MemberRegisterDto memberRegisterDto3 = new MemberRegisterDto();
+        memberRegisterDto3.setMemberName("injun");
+        memberRegisterDto3.setAge(20);
+        memberRegisterDto3.setPassword("123123");
+        memberRegisterDto3.setPasswordCheck("123123");
+        memberRegisterDto3.setGender(Gender.MAN);
+        memberRegisterDto3.setLoginId("injun0602@naver.com");
+
+        memberService.registerMember(memberRegisterDto3);
+
+        MemberRegisterDto memberRegisterDto4 = new MemberRegisterDto();
+        memberRegisterDto4.setMemberName("injun");
+        memberRegisterDto4.setAge(20);
+        memberRegisterDto4.setPassword("123123");
+        memberRegisterDto4.setPasswordCheck("123123");
+        memberRegisterDto4.setGender(Gender.MAN);
+        memberRegisterDto4.setLoginId("injun0603@naver.com");
+
+        memberService.registerMember(memberRegisterDto4);
+
+        MemberRegisterDto memberRegisterDto5 = new MemberRegisterDto();
+        memberRegisterDto5.setMemberName("injun");
+        memberRegisterDto5.setAge(20);
+        memberRegisterDto5.setPassword("123123");
+        memberRegisterDto5.setPasswordCheck("123123");
+        memberRegisterDto5.setGender(Gender.MAN);
+        memberRegisterDto5.setLoginId("injun0604@naver.com");
+
+        memberService.registerMember(memberRegisterDto5);
+
+        memberService.buySubs("injun06010@naver.com", netfilx, RankLevel.DEFAULT);
+        memberService.buySubs("injun06010@naver.com", watcha, RankLevel.DEFAULT);
+        memberService.buySubs("injun06010@naver.com", healthCare, RankLevel.DEFAULT);
+        memberService.buySubs("injun06010@naver.com", dosirak, RankLevel.DEFAULT);
+        memberService.buySubs("injun06010@naver.com", healthCare2, RankLevel.DEFAULT);
+
+
+        memberService.buySubs("injun0601@naver.com", netfilx, RankLevel.DEFAULT);
+        memberService.buySubs("injun0601@naver.com", watcha, RankLevel.DEFAULT);
+        memberService.buySubs("injun0601@naver.com", healthCare, RankLevel.DEFAULT);
+        memberService.buySubs("injun0601@naver.com", dosirak, RankLevel.DEFAULT);
+
+        memberService.buySubs("injun0602@naver.com", netfilx, RankLevel.DEFAULT);
+        memberService.buySubs("injun0602@naver.com", watcha, RankLevel.DEFAULT);
+        memberService.buySubs("injun0602@naver.com", healthCare, RankLevel.DEFAULT);
+
+        memberService.buySubs("injun0603@naver.com", netfilx, RankLevel.DEFAULT);
+        memberService.buySubs("injun0603@naver.com", watcha, RankLevel.DEFAULT);
+
+        memberService.buySubs("injun0604@naver.com", netfilx, RankLevel.DEFAULT);
+
+        Member injun1 = memberService.findByLoginIdWithFavorSubs("injun06010@naver.com");
+        Member injun2 = memberService.findByLoginIdWithFavorSubs("injun0601@naver.com");
+        Member injun3 = memberService.findByLoginIdWithFavorSubs("injun0602@naver.com");
+        Member injun4 = memberService.findByLoginIdWithFavorSubs("injun0603@naver.com");
+        Member injun5 = memberService.findByLoginIdWithFavorSubs("injun0604@naver.com");
+
+        memberService.likeSubs(injun1, netfilx);
+        memberService.likeSubs(injun2, netfilx);
+
+
+
+        memberService.likeSubs(injun1, healthCare);
+        memberService.likeSubs(injun2, healthCare);
+        memberService.likeSubs(injun3, healthCare);
+        memberService.likeSubs(injun4, healthCare);
+        memberService.likeSubs(injun5, healthCare);
+
+
+        memberService.likeSubs(injun1, watcha);
+        memberService.likeSubs(injun2, watcha);
+        memberService.likeSubs(injun3, watcha);
+        memberService.likeSubs(injun4, watcha);
+        memberService.likeSubs(injun5, watcha);
+
+        memberService.likeSubs(injun1, dosirak);
+        memberService.likeSubs(injun2, dosirak);
+
+        memberService.likeSubs(injun1, healthCare2);
+        memberService.likeSubs(injun2, healthCare2);
+        memberService.likeSubs(injun3, healthCare2);
+
+        reviewService.writeReview(injun1, netfilx, "넷플1", 5);
+        reviewService.writeReview(injun2, netfilx, "넷플1", 4);
+        reviewService.writeReview(injun3, netfilx, "넷플1", 3);
+        reviewService.writeReview(injun4, netfilx, "넷플1", 2);
+        reviewService.writeReview(injun5, netfilx, "넷플1", 1);
+
+        reviewService.writeReview(injun1, watcha, "왓챠1", 5);
+        reviewService.writeReview(injun2, watcha, "왓챠1", 5);
+        reviewService.writeReview(injun3, watcha, "왓챠1", 5);
+        reviewService.writeReview(injun4, watcha, "왓챠1", 4);
+        reviewService.writeReview(injun5, watcha, "왓챠1", 3);
+
+        reviewService.writeReview(injun1, healthCare, "디즈니1", 5);
+        reviewService.writeReview(injun2, healthCare, "디즈니1", 5);
+        reviewService.writeReview(injun3, healthCare, "디즈니1", 5);
+        reviewService.writeReview(injun4, healthCare, "디즈니1", 5);
+
+        reviewService.writeReview(injun1, dosirak, "tving1", 4);
+        reviewService.writeReview(injun2, dosirak, "tving1", 4);
+        reviewService.writeReview(injun3, dosirak, "tving1", 5);
+        reviewService.writeReview(injun4, dosirak, "tving1", 5);
+
+        reviewService.writeReview(injun1, healthCare2, "laftel1", 4);
+        reviewService.writeReview(injun2, healthCare2, "laftel1", 5);
+        reviewService.writeReview(injun3, healthCare2, "laftel1", 5);
+        reviewService.writeReview(injun4, healthCare2, "laftel1", 5);
+        reviewService.writeReview(injun5, healthCare2, "laftel1", 5);
     }
 
 
