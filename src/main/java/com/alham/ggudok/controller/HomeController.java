@@ -5,6 +5,7 @@ import com.alham.ggudok.config.security.SecurityUtils;
 import com.alham.ggudok.controller.session.SessionMemberDto;
 import com.alham.ggudok.dto.MainDto;
 import com.alham.ggudok.dto.member.MemberDto;
+import com.alham.ggudok.entity.Tag;
 import com.alham.ggudok.entity.member.Member;
 import com.alham.ggudok.entity.subs.Subs;
 import com.alham.ggudok.exception.ErrorResult;
@@ -48,13 +49,20 @@ public class HomeController {
         MainDto mainDto = new MainDto();
 
         if (memberDto != null) {
+
+
+            //기본 추천 서비스(ex. 나이 남성)
+            List<Tag> tagList = tagService.findTagsByLoginId(memberDto.getLoginId());
+            List<Tag> genderAndAge = tagService.findGenderAndAge(tagList);
+
+            List<Subs> subsListByTagList = subsService.findSubsListByTagList(genderAndAge);
             //알고리즘 맞춤 서비스
+            mainDto.transRecommendBasic(subsListByTagList);
+
             //해당 유저가 좋아요한 구독정보를 위주로
             //좋아요가 없으면 인기순위
-            subsService.findRecommendSubsListByTag();
-            //기본 추천 서비스(ex. 나이 남성)
-            Map<String, List<Subs>> recommendSubsBasic = recommendSubsBasic(memberDto.getLoginId());
-            mainDto.transRecommendBasic(recommendSubsBasic);
+
+
 
         } else {
             List<Subs> defRecomSubsList = subsService.findRecommendSubsList();
@@ -79,17 +87,6 @@ public class HomeController {
      */
 
     //basic서비스는 나이와 성별로 추천
-    private Map<String, List<Subs>> recommendSubsBasic(String loginId) {
-        subsService.countHaveSubs();
-        subsService.countFavorSubs();
-        subsService.sumRating();
-        subsService.countReview();
-
-
-
-
-        return null;
-    }
 
     private Map<String, List<Subs>> recommendCustomized(String loginId) {
         Map<String, List<Subs>> customizedSubsListMap = new HashMap<>();

@@ -15,14 +15,19 @@ public interface SubsRepositoryCustom {
 
     Optional<List<Subs>> findSubsListByTag(Tag tag);
 
-    Optional<List<Subs>> findSubsListByTagList(List<Tag> tagList);
-
+    /**
+     * 태그리스트에 있는 태그이름으로
+     * 해당 태그리스트에 있는 태그들을 찾는다.
+     * @param tagList
+     * @return
+     */
+    List<Subs> findSubsListByTagList(List<Tag> tagList);
+    List<Subs> findSubsListByTagListOr(List<Tag> tagList);
     List<SubsRecommendDto> countHaveSubs();
     List<SubsRecommendDto> countFavorSubs();
     List<SubsRecommendDto> sumRating();
     List<SubsRecommendDto> countReview();
-
-    List<Subs> findRecommendSubsListByTag();
+    List<Subs> findAllSubsList();
 
 
 

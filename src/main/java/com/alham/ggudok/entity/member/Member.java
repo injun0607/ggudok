@@ -1,6 +1,7 @@
 package com.alham.ggudok.entity.member;
 
 import jakarta.persistence.*;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -16,6 +17,7 @@ import static lombok.AccessLevel.PROTECTED;
 @Getter
 @NoArgsConstructor(access = PROTECTED)
 @ToString(of = {"memberId","memberName","age","loginId"})
+@EqualsAndHashCode(of = {"memberId"})
 public class Member {
 
     @Id

@@ -2,7 +2,6 @@ package com.alham.ggudok.service.subs;
 
 import com.alham.ggudok.dto.subs.SubsRecommendDto;
 import com.alham.ggudok.entity.Tag;
-import com.alham.ggudok.entity.subs.RankLevel;
 import com.alham.ggudok.entity.subs.Subs;
 import com.alham.ggudok.entity.subs.SubsRank;
 import com.alham.ggudok.repository.subs.SubsRepository;
@@ -21,9 +20,6 @@ import java.util.stream.Collectors;
 public class SubsService {
 
     private final SubsRepository subsRepository;
-
-
-
 
     /**
      * 해당 subs 와 관련있는 태그들을 모두 찾아온다.
@@ -122,13 +118,30 @@ public class SubsService {
         subs.dislikeSubs();
     }
 
-    public Subs findBySubsName(String subsName) {
-        return subsRepository.findSubsBySubsName(subsName);
+    public List<Subs> findSubsListByTag(Tag tag) {
+        List<Subs> allSubsList = findAllSubsList();
+        return allSubsList.stream()
+                .filter(subs -> subs.getSubsRelTags().stream().filter(srt -> srt.getTag().equals(tag)).findAny().isPresent())
+                .collect(Collectors.toList());
     }
 
-    public void buySubs(Long subsId, RankLevel rankLevel) {
+    /**
+     * tagList의 tag들이 모두 존재하는 subsList 반환
+     * @param tagList
+     * @return
+     */
+    public List<Subs> findSubsListByTagList(List<Tag> tagList) {
+        List<Subs> allSubsList = findAllSubsList();
+        return allSubsList.stream().filter(
+                subs -> subs.getSubsRelTags().stream()
+                        .map(srt -> srt.getTag())
+                        .collect(Collectors.toList())
+                        .containsAll(tagList)
+        ).collect(Collectors.toList());
+    }
 
-
+    public Subs findBySubsName(String subsName) {
+        return subsRepository.findSubsBySubsName(subsName);
     }
 
     public List<SubsRecommendDto> countHaveSubs() {
@@ -201,7 +214,15 @@ public class SubsService {
        return subsRepository.findRecommendSubsList();
     }
 
-    public List<Subs> findRecommendSubsListByTag() {
-        return subsRepository.findRecommendSubsListByTag();
+//    public List<Subs> findSubsListByTagList(List<Tag> tagList) {
+//       return subsRepository.findSubsListByTagList(tagList);
+//    }
+
+    public List<Subs> findSubsListByTagListOr(List<Tag> tagList) {
+        return subsRepository.findSubsListByTagListOr(tagList);
+    }
+
+    public List<Subs> findAllSubsList() {
+        return subsRepository.findAllSubsList();
     }
 }

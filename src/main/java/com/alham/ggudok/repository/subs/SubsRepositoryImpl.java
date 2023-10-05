@@ -4,6 +4,7 @@ package com.alham.ggudok.repository.subs;
 import com.alham.ggudok.dto.subs.QSubsRecommendDto;
 import com.alham.ggudok.dto.subs.SubsRecommendDto;
 import com.alham.ggudok.entity.Tag;
+import com.alham.ggudok.entity.subs.QSubs;
 import com.alham.ggudok.entity.subs.Subs;
 import com.alham.ggudok.entity.subs.SubsRank;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -49,14 +50,31 @@ public class SubsRepositoryImpl implements SubsRepositoryCustom{
     }
 
     @Override
-    public Optional<List<Subs>> findSubsListByTagList(List<Tag> tagList) {
-        return Optional.of(queryFactory
+    public List<Subs> findSubsListByTagList(List<Tag> tagList) {
+        List<String> tagNameList = tagList.stream().map(t -> t.getTagName()).toList();
+        QSubs subsSc = new QSubs("subSc");
+
+        return queryFactory
+                .selectFrom(subs)
+                .leftJoin(subs.subsRelTags, subsRelTag).fetchJoin()
+                .leftJoin(subsRelTag.tag,tag).fetchJoin()
+                .where()
+                .orderBy(subs.recommendSort.asc())
+                .fetch();
+    }
+
+    @Override
+    public List<Subs> findSubsListByTagListOr(List<Tag> tagList) {
+        List<String> tagNameList = tagList.stream().map(t -> t.getTagName()).toList();
+
+        return queryFactory
                 .selectFrom(subs)
                 .join(subs.subsRelTags, subsRelTag).fetchJoin()
                 .join(subsRelTag.tag, tag).fetchJoin()
-                .where()
+                .where(tagNameListEq(tagNameList))
+                .groupBy(subs.subsId)
                 .orderBy(subs.recommendSort.asc())
-                .fetch());
+                .fetch();
     }
 
     @Override
@@ -113,11 +131,16 @@ public class SubsRepositoryImpl implements SubsRepositoryCustom{
     }
 
     @Override
-    public List<Subs> findRecommendSubsListByTag() {
-        return null;
+    public List<Subs> findAllSubsList() {
+        return queryFactory
+                .selectFrom(subs)
+                .leftJoin(subs.subsRelTags, subsRelTag).fetchJoin()
+                .leftJoin(subsRelTag.tag,tag).fetchJoin()
+                .orderBy(subs.recommendSort.asc())
+                .fetch();
     }
 
-    private BooleanExpression tagNameListEq(List<Tag> tagList) {
-        return null;
+    private BooleanExpression tagNameListEq(List<String> tagNameList) {
+        return !tagNameList.isEmpty() ? tag.tagName.in(tagNameList) : null;
     }
 }

@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * 메인화면에서 사용하는 DTO
@@ -22,17 +23,34 @@ public class MainDto {
     private List<SubsDto> defaultSubs = new ArrayList<>();
 
 
-    public void transRecommendBasic(Map<String,List<Subs>> basicRecommend) {
-        //성별과 나이를 동시에 가지고있는걸 추천해주어야한다.
 
-
-    }
-
-    public void transRecommendCustomized(Map<String,List<Subs>> customizedRecommend) {
+    public void transRecommendCustomized() {
 
     }
 
-    public void transDefaultSubs(Map<String,List<Subs>> defaultSubs) {
+    /**
+     * basic 추천서비스는 나이와 성별 기반
+     * @param subsList - 나이와 성별이 속한 subsList
+     */
+    public void transRecommendBasic(List<Subs> subsList) {
+        List<SubsDto> basicRecommend = new ArrayList<>();
+        for (Subs subs : subsList) {
+            SubsDto subsDto = new SubsDto();
+            subsDto.setId(subs.getSubsId());
+            subsDto.setName(subs.getSubsName());
+            subsDto.setImage(subs.getImage());
+            subsDto.setIcon(subs.getIcon());
+            subsDto.setTags(subs.getSubsRelTags().stream()
+                    .map(srt->srt.getTag())
+                    .collect(Collectors.toList()));
+
+            basicRecommend.add(subsDto);
+        }
+        this.recommendBasic = basicRecommend;
+    }
+
+    public void transDefaultSubs(List<Subs> subsList) {
+
 
     }
 

@@ -7,6 +7,7 @@ import com.alham.ggudok.entity.subs.Subs;
 import com.alham.ggudok.repository.TagRepository;
 import com.alham.ggudok.repository.member.MemberRepository;
 import com.alham.ggudok.repository.subs.SubsRepository;
+import com.alham.ggudok.util.GgudokUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -60,9 +61,23 @@ public class TagService {
 
     public Tag checkGender(Gender gender) {
         if (gender == Gender.MAN) {
-            return tagRepository.findTagByTagName("남성");
+            return tagRepository.findTagByTagName(GgudokUtil.MAN);
         } else {
-            return tagRepository.findTagByTagName("여성");
+            return tagRepository.findTagByTagName(GgudokUtil.WOMAN);
         }
+    }
+
+    public List<Tag> findGenderAndAge(List<Tag> tagList) {
+
+        List<Tag> result = new ArrayList<>();
+
+        for (Tag tag : tagList) {
+            if (GgudokUtil.isAgeFormat(tag.getTagName())) {
+                result.add(tag);
+            } else if (tag.getTagName().equals(GgudokUtil.MAN)||tag.getTagName().equals(GgudokUtil.WOMAN)) {
+                result.add(tag);
+            }
+        }
+        return result;
     }
 }

@@ -13,6 +13,7 @@ import com.alham.ggudok.repository.member.MemberRepository;
 import com.alham.ggudok.repository.member.ReviewRepository;
 import com.alham.ggudok.service.TagService;
 import com.alham.ggudok.util.GgudokUtil;
+import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -35,6 +36,8 @@ public class MemberService {
 
     private final PasswordEncoder passwordEncoder;
 
+    private final EntityManager em;
+
     private final ReviewRepository reviewRepository;
 
 
@@ -46,6 +49,7 @@ public class MemberService {
      * @param registerDto
      * @return
      */
+
     @Transactional
     public boolean registerMember(MemberRegisterDto registerDto) {
 
@@ -66,8 +70,9 @@ public class MemberService {
 //      나이 성별
         Tag ageTag = tagService.checkAgeTag(savedMember.getAge());
         Tag genderTag = tagService.checkGender(savedMember.getGender());
-        createRelTag(savedMember, ageTag);
-        createRelTag(savedMember, genderTag);
+
+        MemberRelTag.createRelTag(savedMember, ageTag);
+        MemberRelTag.createRelTag(savedMember, genderTag);
 
         return true;
     }

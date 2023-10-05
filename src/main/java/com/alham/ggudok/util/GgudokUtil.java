@@ -14,6 +14,10 @@ public class GgudokUtil {
 
     private static final String AGE_TAG_FORMAT = "\\d+대";
 
+    public static final String MAN = "남성";
+
+    public static final String WOMAN = "여성";
+
     public static final String EMAIL_FAIL = "FAIL";
 
     // 이메일 유효성 검사 메서드
