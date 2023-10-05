@@ -52,8 +52,8 @@ const Join = () => {
             </Link>
           </div>
           <div className={style.doublebutton}>
-            <Link to="/Auth/JoinEmail" className="btn btn_full">이메일로 회원가입하기</Link>
             <Link className="btn btn_normal" onClick={ ()=>{ navigate(-1) } }>뒤로 가기</Link>
+            <Link to="/Auth/JoinEmail" className="btn btn_full">이메일로 회원가입하기</Link>
           </div>
         </div>
       </div>

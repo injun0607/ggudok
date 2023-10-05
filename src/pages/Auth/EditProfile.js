@@ -5,7 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 // css import
 import style from '../../styles/Auth.module.css'
 // redux import
-import { editMemberinfo, setMemberinfo, setValidPassword, setAge, setGender, setValidPhoneNumber, setPhoneNumber, setPassword, setNewPassword, setNewPasswordCheck, setIsLoading } from '../../redux/actions/userActions';
+import { editMemberinfo, setValidPassword, setAge, setGender, setValidPhoneNumber, setPhoneNumber, setPassword, setNewPassword, setNewPasswordCheck, setIsLoading } from '../../redux/actions/userActions';
 
 const EditProfile = () => {
   const dispatch = useDispatch();
@@ -166,8 +166,8 @@ const EditProfile = () => {
               {errorMessageP && <p style={{ color: 'red' }}>{errorMessageP}</p>}
             </div>
             <div className={style.doublebutton}>
-              <button type='submit' className='btn btn_full'>수정 완료</button>
               <Link className='btn btn_normal' onClick={ ()=>{ navigate(-1) } }>뒤로 가기</Link>
+              <button type='submit' className='btn btn_full'>수정 완료</button>
             </div>
           </form>
         </div>

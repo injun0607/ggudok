@@ -179,8 +179,8 @@ const JoinEmail = () => {
             <button type='submit' className='btn btn_full'>회원가입</button>
           </form>
           <div className={style.doublebutton}>
-            <Link to="/Auth/Join" className='btn btn_full02'>간편회원가입 하러가기</Link>
             <Link className='btn btn_normal' onClick={ ()=>{ navigate(-1) } }>뒤로 가기</Link>
+            <Link to="/Auth/Join" className='btn btn_full02'>간편회원가입 하러가기</Link>
           </div>
         </div>
       </div>

@@ -17,7 +17,7 @@
 .box .userImg .circle {width: 8rem; border-radius: 100%; aspect-ratio: 1/1; overflow: hidden;}
 .box .userImg .circle img {width: 100%; height: 100%; object-fit: cover;}
 .box .userName {font-size: 1.5rem; width: 100%; text-align: center;}
-.box .userName .name {font-size: 1.75rem; font-weight: 500;}
+.box .userName .name {font-size: 1.75rem; font-weight: 500; vertical-align: baseline; color: var(--txt-color);}
 .box .category {display: flex; justify-content: space-between; align-items: center; width: 100%; padding: 0.75rem 1.5rem 0.5rem;}
 .box .category a {font-size: 0.938rem; display: flex; gap: 0.5rem; align-items: center; font-weight: 500; color: var(--txt-color);}
 .box .category a.sm {color: #999;  font-weight: 300;}
@@ -39,8 +39,8 @@
 .ratingwrap .ratings .service .right button.delete {border-left: 1px solid var(--c-black-5); padding-left: 1rem; margin-left: 0.75rem;}
 .ratingwrap .ratings .service .circle {width: 3rem; border-radius: var(--radius-all-xs); aspect-ratio: 1/1; overflow: hidden;}
 .ratingwrap .ratings .service .circle img {width: 100%; height: 100%; object-fit: cover;}
-.ratingwrap .ratings .service .name {font-size: 1.25rem; font-weight: 500;}
-.ratingwrap .ratings .txt { display: flex; gap: 0.25rem; align-items: center; flex-wrap: wrap; width: 100%;}
+.ratingwrap .ratings .service .name {font-size: 1.25rem; font-weight: 500; color: var(--txt-color);}
+.ratingwrap .ratings .txt { display: flex; gap: 0.25rem; align-items: center; flex-wrap: wrap; width: 100%; color: var(--txt-color-2);}
 .ratingwrap .ratings .txt .starrating .star span {font-size: 1.325rem;}
 .ratingwrap .ratings .txt .review {width: 100%; margin-top: 0.5rem;}
 .ratingwrap .ratings .txt .reviewEdit {width: 100%; margin-top: 0.5rem; display: flex; gap: 1rem; align-items: flex-end;}
@@ -52,7 +52,7 @@
 .subscribewrap .overallprice .md {font-size: 1.25rem;}
 .subscribewrap .overallprice .lg {font-size: 1.75rem; font-weight: 600; display: inline-block; padding: 0 0.25rem; position: relative; z-index: 1; color: var(--txt-color);}
 .subscribewrap .overallprice .lg::before {content: '';  position: absolute; bottom: 2px; width: 100%; height: 0.75rem; background: #fdbf50ad; left: 50%; transform: translateX(-50%); z-index: -1;}
-.subscribewrap .subscribes {display: flex; gap: 3rem; padding: var(--pad-tb-md); border-top: 1px solid var(--c-black-6);}
+.subscribewrap .subscribes {display: flex; gap: 3rem; padding: var(--pad-tb-md); border-top: 1px solid var(--c-black-6); flex-wrap: wrap;}
 /* .subscribewrap .subscribes:nth-child(3) {border: 0;} */
 .subscribewrap .subscribes .tit {display: flex; flex-wrap: wrap; align-content: space-between; justify-content: flex-end; width: 11rem; color: var(--txt-color);}
 .subscribewrap .subscribes .tit .name { width: 100%; display: flex; align-items: center;}
@@ -73,4 +73,35 @@
   padding: 0.125rem 0.5rem;
   font-size: 0.938rem;
   border-radius: 6px;
+}
+
+
+/*----------------------------------------980--------------------------------*/
+@media screen and (max-width:980px) {
+  .both {display: flex; gap: 2rem;}
+  .both .left {width: 14rem;}
+  .both .right {width: calc(100% - 2rem - 14rem);}
+  .box .userImg .circle {width: 6rem;}
+  .box .userName {font-size: 1.25rem;}
+  .box .userName .name {font-size: 1.5rem;}
+  .subscribewrap .subscribes {gap: 0.5rem;}
+  .subscribewrap .subscribes .tit {width: 100%; justify-content: space-between;}
+  .subscribewrap .subscribes .tit .name {width: auto;}
+  .subscribewrap .subscribes .cont {width: 100%; gap: 0.5rem;}
+  .subscribewrap .subscribes .cont .subscribe {padding: 1rem;}
+}
+
+
+/*----------------------------------------640--------------------------------*/
+@media screen and (max-width:640px) {
+  .both {flex-wrap: wrap;}
+  .both .left, .both .right {width: 100%;}
+  .both .left {gap: 1rem; position: relative; top: 0;}
+  .box .category {padding: 0.325rem 1.5rem;}
+  .box .profile {display: flex; padding-bottom: 0;}
+  .box .userImg {padding: 1rem 1rem 1rem 1.5rem;}
+  .box .userImg .circle {width: 3rem;}
+  .box .userName {display: flex; align-items: center;}
+  .subscribewrap .overallprice {padding: 1rem 0;}
+  .subscribewrap .subscribes {padding: 1.5rem 0 1.75rem;}
 }

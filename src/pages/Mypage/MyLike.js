@@ -23,7 +23,7 @@ const MyLike = ({ isCheckingLogin }) => {
   // ************************** 기본 아이템 fetch ***************************
   const fetchLikedItemData = async () => {
     try {
-      const response = await axios.get(`/subs/favor_subs`);
+      const response = await axios.get(`/member/favor_subs`);
       const data = response.data.items;
 
       dispatch(fetchLikedItemsSuccess(data));

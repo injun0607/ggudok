@@ -99,6 +99,15 @@
 .detailwrap .fixed .btnArea button .likeActive {color: var(--main-color);}
 .detailwrap .fixed .btnArea .likebtn:hover {color: var(--main-color);}
 .detailwrap .fixed .btnArea .reviewbtn:hover {color: var(--sub-color);}
+.detailwrap .fixed .btnArea button.subsbtn {
+  flex-grow: 1;
+  background: var(--main-color);
+  color: #fff;
+  border-radius: var(--radius-all-md);
+  font-size: 1.125rem;
+  letter-spacing: 0.5px;
+}
+.detailwrap .fixed .btnArea button.subsbtn:hover {background: var(--main-color-2);}
 
 .detailwrap .right {width: calc(100% - 6rem - 30%);}
 .detailwrap .cont .tit {width: 100%; margin-bottom: 2rem;}
@@ -130,7 +139,6 @@
 .modalCont .reviewEdit .editArea {width: 100%; margin-bottom: 1rem; min-height: 6rem;}
 .modalCont .doublebutton {margin-top: 1rem; display: flex; flex-wrap: wrap; gap: 1rem; width: 100%;}
 .modalCont .doublebutton a, .form .doublebutton button {width: calc((100% - 1rem) / 2);}
-
 
 @media screen and (max-width:1024px) {
   .categorysection {gap: 2rem;}

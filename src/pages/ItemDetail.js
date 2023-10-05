@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { hover } from '@testing-library/user-event/dist/hover';
 import { Pie } from 'react-chartjs-2';
@@ -22,6 +22,7 @@ const NO_IMAGE_URL = '/images/common/noimg.png';
 
 const ItemDetail = () => {
   let dispatch = useDispatch();
+  const navigate = useNavigate();
   const itemDetail = useSelector(state => state.item.itemDetail);
   const reviews = useSelector(state => state.review.reviews);
   const myItemReviewRating = useSelector(state => state.review.myItemReviewRating);
@@ -42,6 +43,7 @@ const ItemDetail = () => {
   const [ratingMap, setRatingMap] = useState({});
   
   const [IsLiked, setIsLiked] = useState(false);
+  const [IsSubed, setIsSubed] = useState(false);
 
   // ************************** 기본 아이템 fetch ***************************
   const fetchItemDetailData = async () => {
@@ -58,6 +60,7 @@ const ItemDetail = () => {
       
       if(Object.keys(data.memberInfo).length !== 0){
         setIsLiked(data.memberInfo.subsLike);
+        setIsSubed(data.memberInfo.subsLike);
       }
       if(data.itemDetail.reviews.length !== 0){
         dispatch(setReview(data.itemDetail.reviews));
@@ -135,6 +138,16 @@ const ItemDetail = () => {
   // 리뷰모달팝업
   const handleReviewModal = () => { dispatch(setReviewModal()) }
 
+  // 구독(해지)버튼
+  const handleSubsItem = () => {
+    const DataSubsId = { subsId };
+    if (!IsSubed) {
+      navigate(`/Subscribe/AddSubs`, { state: DataSubsId });
+    } else {
+      navigate(`/Subscribe/DelSubs`, { state: DataSubsId });
+    }
+  }
+
   return (
     <>
     { reviewModal ? <><ReviewModal myItemReviewContents={myItemReviewContents} myItemReviewRating={myItemReviewRating} subsId={subsId} /> <div className='modalBg' onClick={ handleReviewModal }></div></> : null}
@@ -191,6 +204,9 @@ const ItemDetail = () => {
                 </button> }
                 {isLoggedIn && <button type='button' className={style.reviewbtn} onClick={ handleReviewModal }>
                   <span className="material-icons">edit</span>
+                </button>}
+                {isLoggedIn && <button type='button' className={style.subsbtn} onClick={ handleSubsItem }>
+                  {!IsSubed ? '구독하기' : '구독 변경/해지'}
                 </button>}
               </div>
             </div>

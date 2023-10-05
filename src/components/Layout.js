@@ -27,6 +27,8 @@ import SearchItemlist from '../pages/SearchItemlist';
 import Compare from '../pages/Compare';
 import Event from '../pages/Event';
 import Contactus from '../pages/Contactus';
+import AddSubs from '../pages/Subscribe/AddSubs';
+import DelSubs from '../pages/Subscribe/DelSubs';
 import Mypage from '../pages/Mypage/Mypage';
 import MySubscribe from '../pages/Mypage/MySubscribe';
 import MyReview from '../pages/Mypage/MyReview';
@@ -104,6 +106,27 @@ const Layout = () => {
           	<Suspense fallback={ <Loading /> }><MyLike isCheckingLogin={isCheckingLogin} /></Suspense>
 						} />
 					</Route>
+					
+					<Route path='/Subscribe/AddSubs' element={
+						isCheckingLogin ? (<Loading />) : (
+							isLoggedIn ? <AddSubs /> : (
+								<>
+									<ErrorLogin />
+									<div className='modalBg modalBg-Blur' onClick={() => { navigate(-1) }}></div>
+								</>
+							)
+						)
+					} />
+					<Route path='/Subscribe/DelSubs' element={
+						isCheckingLogin ? (<Loading />) : (
+							isLoggedIn ? <DelSubs /> : (
+								<>
+									<ErrorLogin />
+									<div className='modalBg modalBg-Blur' onClick={() => { navigate(-1) }}></div>
+								</>
+							)
+						)
+					} />
 
 					<Route path='/Auth/Login' element={ <Login /> }></Route>
 					<Route path='/Auth/Join' element={ <Join /> }></Route>

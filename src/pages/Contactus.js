@@ -34,8 +34,8 @@ const Contactus = () => {
               <textarea type='text' name='content' />
             </div>
             <div className={style.doublebutton}>
-              <button type='submit' className='btn btn_full'>메일 보내기</button>
               <Link className='btn btn_normal' onClick={ ()=>{ navigate(-1) } }>뒤로 가기</Link>
+              <button type='submit' className='btn btn_full'>메일 보내기</button>
             </div>
           </form>
         </div>

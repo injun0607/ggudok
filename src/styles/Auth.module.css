@@ -1,5 +1,7 @@
 @charset "utf-8";
 
+.pagewrapPd {padding: 4rem 0;}
+
 .auth {
   min-height: calc(100vh - 17.063rem);
   box-sizing: border-box;
@@ -105,3 +107,22 @@
 .select:disabled {background: var(--c-black-7); color: var(--c-black-3);}
 .select option {line-height: 1.8em;}
 .select option:first-child {display: none;}
+
+
+/* 구독하기 */
+.subscribe .box {width: 100%; border: 1px solid var(--c-black-6); border-radius: var(--radius-all-md); box-shadow: var(--box-shadow); display: flex; padding: 3rem 2.5rem 2.5rem 1.5rem; margin-top: 1.5rem; gap: 2rem;}
+.subscribe .box .radioWrap {width: 3rem; display: flex; align-items: center; justify-content: center;}
+.subscribe .box .left {width: calc(100% - 5rem - 10rem); flex-grow: 1;}
+.subscribe .box .right {width: 10rem; text-align: right; display: flex; justify-content: flex-end; align-items: center;}
+.subscribe .box .name {font-size: 1.75rem; padding-bottom: 1rem; font-weight: 400; color: var(--txt-color);}
+.subscribe .box .detail {font-size: 1rem; font-weight: 400; color: var(--txt-color-2);}
+.subscribe .box .price {display: flex; justify-content: flex-end; gap: 0.5rem; align-items: baseline; font-size: 1.25rem; color: var(--txt-color-2);}
+.subscribe .box .price .point {font-size: 1.5rem; color: var(--txt-color); font-weight: 500;}
+/* 구독 변경/해지 */
+.subscribeCur {width: 100%; border-bottom: 2px solid var(--c-black-4); display: flex; padding: 3rem 0; margin-bottom: 3rem; gap: 2rem;}
+.subscribeCur .left {width: calc(100% - 5rem - 10rem); flex-grow: 1;}
+.subscribeCur .right {width: 10rem; text-align: right; display: flex; justify-content: flex-end; align-items: center;}
+.subscribeCur .name {font-size: 1.75rem; padding-bottom: 1rem; font-weight: 400; color: var(--txt-color);}
+.subscribeCur .detail {font-size: 1rem; font-weight: 400; color: var(--txt-color-2);}
+.subscribeCur .price {display: flex; justify-content: flex-end; gap: 0.5rem; align-items: baseline; font-size: 1.25rem; color: var(--txt-color-2);}
+.subscribeCur .price .point {font-size: 1.5rem; color: var(--txt-color); font-weight: 500;}

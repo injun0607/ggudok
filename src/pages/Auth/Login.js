@@ -40,8 +40,8 @@ const Login = () => {
             <button type='submit' className='btn btn_full'>로그인</button>
           </form>
           <div className={style.doublebutton}>
-            <Link to="/Home" className='btn btn_full02'>간편로그인</Link>
             <Link to="/Auth/Join" className='btn btn_normal'>회원가입</Link>
+            <Link to="/Home" className='btn btn_full02'>간편로그인</Link>
           </div>
         </div>
       </div>
