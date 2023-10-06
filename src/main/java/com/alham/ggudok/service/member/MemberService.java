@@ -21,8 +21,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -319,6 +319,94 @@ public class MemberService {
             return true;
         }else{
             throw new MemberException("가입되지 않은 회원입니다!");
+        }
+    }
+
+    /*
+     * 유저의 태그 추천 시스템
+     * 구독한 subs, 좋아요한 subs들의 태그들을 수집한뒤
+     * 구독한 subs들의 태그들은 개당 2점
+     * 좋아요한 subs들의 태그들은 개당 1점을 부여
+     * 태그들의 전체 나온 횟수로 점수부여
+     */
+    @Transactional
+    public void userRecommendTag() {
+
+        List<Member> all = memberRepository.findAll();
+        //HaveSubs
+        List<Member> allWithHaveSubs = memberRepository.findAllWithHaveSubs();
+        HashMap<Long, Map<Tag,Integer>> result = new HashMap<>();
+
+
+
+        for (Member memberHaveSub : allWithHaveSubs) {
+            //회원들을 subsList를 순회하면서
+            //해당 subs에 있는 태그들을 순서를 매긴다
+            List<Subs> memberSubsList = memberHaveSub.getMemberHaveSubsList().stream().map(srt -> srt.getSubs()).collect(Collectors.toList());
+
+            Map<Tag, Integer> tagScoreMap = new HashMap<>();
+            sumTagScore(tagScoreMap,memberSubsList,2);
+            result.put(memberHaveSub.getMemberId(), tagScoreMap);
+        }
+
+        //FavorSubs
+        List<Member> allWithFavorSubs = memberRepository.findAllWithFavorSubs();
+
+        for (Member memberFavorSubs : allWithFavorSubs) {
+
+            List<Subs> memberSubsList = memberFavorSubs.getMemberHaveSubsList().stream().map(srt -> srt.getSubs()).collect(Collectors.toList());
+            Map<Tag, Integer> tagScoreMap = result.get(memberFavorSubs.getMemberId());
+            sumTagScore(tagScoreMap,memberSubsList,1);
+
+        }
+
+
+        //없는 좋아요와 구독한 서비스가 없는 회원들은 tag sort를 설정하지않는다.
+        List<Member> allWithTag = memberRepository.findAllWithTag();
+
+        for (Member memberWithTag : allWithTag) {
+            if (result.containsKey(memberWithTag.getMemberId())) {
+                Map<Tag, Integer> tagScoreMap = result.get(memberWithTag.getMemberId());
+
+                Map<Tag, Integer> sortedMap = GgudokUtil.mapSortByValueDescending(tagScoreMap);
+
+                HashMap<Tag, Integer> tagRankMap = new HashMap<>();
+                Set<Tag> tags = sortedMap.keySet();
+
+                int sort = 0;
+                for (Tag tagKey : tags) {
+                    tagRankMap.put(tagKey, ++sort);
+                }
+
+                memberWithTag.
+                        getMemberRelTags()
+                        .stream()
+                        .forEach(mrt->mrt.updateTagSort(tagRankMap.get(mrt.getTag())));
+            }
+
+        }
+
+    }
+
+    /**
+     * subsList에 속한 subs들을 순회하면서 tag의 score를 구하는 메서드
+     * @param tagScoreMap
+     * @param subsList
+     * @param score
+     */
+    public void sumTagScore(Map<Tag, Integer> tagScoreMap, List<Subs> subsList, int score) {
+        for (Subs subs : subsList) {
+            List<Tag> tagsBySubsId = tagService.findTagsBySubsId(subs.getSubsId());
+            //subs내의 태그들을 순회하면서
+            //tagScoreMap에 태그들의 점수를 기록한다.
+            for (Tag tag : tagsBySubsId) {
+                if (tagScoreMap.containsKey(tag)) {
+                    tagScoreMap.put(tag, tagScoreMap.get(tag) + score );
+                }else{
+                    tagScoreMap.put(tag, score);
+                }
+            }
+
         }
     }
 }

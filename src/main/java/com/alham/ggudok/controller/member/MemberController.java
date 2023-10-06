@@ -182,8 +182,16 @@ public class MemberController {
         subsMainDto.setItems(result);
         return subsMainDto;
     }
+
+    @GetMapping("/tagsort_init")
+    public void memberTagSortInit() {
+        memberService.userRecommendTag();
+    }
+
+
     @NotNull
     private static MemberDto isLoginUser(Principal principal) {
+
         MemberDto memberDto = SecurityUtils.transPrincipal(principal);
         if (memberDto == null) {
             throw new MemberException("로그인 되지 않은 회원입니다!");

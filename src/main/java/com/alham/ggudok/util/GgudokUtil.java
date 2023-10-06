@@ -1,11 +1,13 @@
 package com.alham.ggudok.util;
 
+import com.alham.ggudok.entity.Tag;
+
 import javax.mail.*;
 import javax.mail.internet.*;
-import java.util.Properties;
-import java.util.Random;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 
 public class GgudokUtil {
@@ -88,5 +90,23 @@ public class GgudokUtil {
 
     public static boolean isAgeFormat(String tagName) {
         return tagName.matches(AGE_TAG_FORMAT);
+    }
+
+
+    public static <K, V extends Comparable<? super V>> Map<K, V> mapSortByValueDescending(Map<K, V> map) {
+        List<Map.Entry<K, V>> sortedEntry = map.entrySet()
+                .stream()
+                .sorted(Collections.reverseOrder(Map.Entry.comparingByValue()))
+                .collect(Collectors.toList());
+        LinkedHashMap<K, V> sortedMap = new LinkedHashMap<>();
+
+        int sort = 0;
+
+        for (Map.Entry<K, V> entry : sortedEntry) {
+            sortedMap.put(entry.getKey(), entry.getValue());
+        }
+
+        return sortedMap;
+
     }
 }

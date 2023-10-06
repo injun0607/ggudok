@@ -5,6 +5,7 @@ import com.alham.ggudok.entity.Tag;
 import com.alham.ggudok.entity.subs.Subs;
 import com.alham.ggudok.entity.subs.SubsRank;
 import com.alham.ggudok.repository.subs.SubsRepository;
+import com.alham.ggudok.util.GgudokUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -118,21 +119,41 @@ public class SubsService {
         subs.dislikeSubs();
     }
 
-    public List<Subs> findSubsListByTag(Tag tag) {
-        List<Subs> allSubsList = findAllSubsList();
-        return allSubsList.stream()
+    /**
+     *
+     * @param subsList(With Tag)
+     * @param tag
+     * @return tag로 걸러진 subsList
+     */
+    public List<Subs> findSubsListByTag(List<Subs> subsList,Tag tag) {
+        return subsList.stream()
                 .filter(subs -> subs.getSubsRelTags().stream().filter(srt -> srt.getTag().equals(tag)).findAny().isPresent())
                 .collect(Collectors.toList());
     }
 
     /**
-     * tagList의 tag들이 모두 존재하는 subsList 반환
+     *
+     * @param subsList(With Tag)
      * @param tagList
-     * @return
+     * @return tagList에 있는 tag들중 한개라도 포함된 subsList 반환
      */
-    public List<Subs> findSubsListByTagList(List<Tag> tagList) {
-        List<Subs> allSubsList = findAllSubsList();
-        return allSubsList.stream().filter(
+    public List<Subs> findSubsListByTag(List<Subs> subsList,List<Tag> tagList) {
+        return subsList.stream()
+                .filter(subs ->
+                        subs.getSubsRelTags().stream()
+                                .filter(srt -> tagList.contains(srt)).findAny().isPresent())
+                .collect(Collectors.toList());
+    }
+
+
+    /**
+     *
+     * @param subsList(With Tag)
+     * @param tagList
+     * @return 태그리스트에 있는 태그들이 모두포함된 subsList
+     */
+    public List<Subs> findSubsListByTagList(List<Subs> subsList ,List<Tag> tagList) {
+        return subsList.stream().filter(
                 subs -> subs.getSubsRelTags().stream()
                         .map(srt -> srt.getTag())
                         .collect(Collectors.toList())
@@ -183,15 +204,7 @@ public class SubsService {
         List<SubsRecommendDto> haveReviewScore = countReview();
         subsScoreCal(resultMap, haveReviewScore, 1);
 
-        Map<Long, Double> sortedMap = resultMap.entrySet()
-                .stream()
-                .sorted(Collections.reverseOrder(Map.Entry.comparingByValue()))
-                .collect(Collectors.toMap(
-                        Map.Entry::getKey,
-                        Map.Entry::getValue,
-                        (e1,e2)->e2,
-                        LinkedHashMap::new
-                ));
+        Map<Long, Double> sortedMap = GgudokUtil.mapSortByValueDescending(resultMap);
 
         return sortedMap;
     }

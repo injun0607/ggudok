@@ -761,16 +761,15 @@ class SubsServiceTest {
         tagList2.add(gender2);
 
 
-        List<Subs> subsListByTagList = subsService.findSubsListByTag(age1);
-        List<Subs> subsListByTagList1 = subsService.findSubsListByTagList(tagList1);
-        assertThat(subsListByTagList1).extracting(subs -> subs.getSubsName()).containsExactly( "watcha","netflix", "tving");
+
 
         //when
-        for (Subs subs : subsListByTagList) {
-
-        }
+        List<Subs> allSubsList = subsService.findAllSubsList();
+        List<Subs> subsListByTagList = subsService.findSubsListByTag(allSubsList,age1);
+        List<Subs> subsListByTagList1 = subsService.findSubsListByTagList(allSubsList,tagList1);
         //then
-
+        assertThat(subsListByTagList1).extracting(subs -> subs.getSubsName()).containsExactly( "watcha","netflix", "tving");
+        assertEquals(subsListByTagList.size(),3);
     }
 
 

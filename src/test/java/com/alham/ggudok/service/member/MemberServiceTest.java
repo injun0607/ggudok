@@ -3,6 +3,7 @@ package com.alham.ggudok.service.member;
 import com.alham.ggudok.dto.member.MemberLoginDto;
 import com.alham.ggudok.dto.member.MemberRegisterDto;
 import com.alham.ggudok.dto.member.MemberUpdateDto;
+import com.alham.ggudok.entity.Tag;
 import com.alham.ggudok.entity.member.*;
 import com.alham.ggudok.entity.subs.RankLevel;
 import com.alham.ggudok.entity.subs.Subs;
@@ -17,7 +18,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -320,6 +323,38 @@ class MemberServiceTest {
         //then
 
         assertEquals(findMember.getMemberHaveSubsList().size(),1);
+    }
+
+    @Test
+    public void userRecommendTag()throws Exception{
+        //given
+        Map<Long, Map<Tag, Integer>> result = new HashMap<>();
+
+        Map<Tag, Integer> tagScore = new HashMap<>();
+        Tag tag1 = new Tag("태그1");
+        Tag tag2 = new Tag("태그2");
+
+        em.persist(tag1);
+        em.persist(tag2);
+
+        //when
+
+        tagScore.put(tag1, 2);
+        tagScore.put(tag2, 4);
+
+        result.put(1l, tagScore);
+        //then
+
+        Map<Tag, Integer> tagScore2 = result.get(1l);
+        tagScore2.put(tag1, 3);
+        tagScore2.put(tag2, 5);
+
+        assertEquals(result.get(1l).get(tag1),3);
+
+        memberRepository.findAllWithFavorSubs();
+        memberRepository.findAllWithTag();
+        memberRepository.findAllWithHaveSubs();
+
     }
 
 

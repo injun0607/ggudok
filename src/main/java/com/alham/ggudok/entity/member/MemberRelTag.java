@@ -27,6 +27,8 @@ public class MemberRelTag {
     @JoinColumn(name = "tag_id")
     private Tag tag;
 
+    private int tagSort = Integer.MAX_VALUE - 10000;
+
     /**
      * 멤버 연관 태그 생성
      * @param member
@@ -48,5 +50,9 @@ public class MemberRelTag {
     private void addMember(Member member) {
         this.member = member;
         member.getMemberRelTags().add(this);
+    }
+
+    public void updateTagSort(int tagSort) {
+        this.tagSort = tagSort;
     }
 }

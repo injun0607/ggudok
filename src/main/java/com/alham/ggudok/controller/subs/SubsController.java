@@ -30,6 +30,7 @@ import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 @RestController
 @Slf4j
@@ -46,6 +47,8 @@ public class SubsController {
 
     private final MemberService memberService;
 
+
+    Random random = new Random();
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MemberException.class)
     public ResponseEntity<ErrorResult> memberExceptionHandler(MemberException e) {
@@ -93,6 +96,9 @@ public class SubsController {
             subsDto.setInfo(subs.getInfo());
             subsDto.setIcon(subs.getIcon());
             subsDto.setImage(subs.getImage());
+
+            //TODO ratingAvg 임시
+            subsDto.setRatingAvg(random.nextInt(5)+1);
 
             subsDtoList.add(subsDto);
 
@@ -207,10 +213,10 @@ public class SubsController {
         MemberDto memberDto = isLoginUser(principal);
 
         Member loginMember = memberService.findByLoginIdWithFavorSubs(memberDto.getLoginId());
-        Subs subs = subsService.findSubsById(subsId);
+        Subs subs = subsService.findSubsByIdWithTag(subsId);
 
         memberService.createMemberFavorSubs(loginMember, subs);
-        subsService.likeSubs(subs);
+
         return true;
 
 
@@ -221,7 +227,6 @@ public class SubsController {
         MemberDto memberDto = isLoginUser(principal);
         Subs subs = subsService.findSubsById(subsId);
         memberService.removeMemberFavorSubs(memberDto.getLoginId(), subs);
-        subsService.dislike(subs);
         return true;
 
     }
@@ -239,7 +244,7 @@ public class SubsController {
     @PostMapping("/buy")
     public boolean buySubs(Principal principal ,@RequestBody SubsBuyDto subsBuyDto) {
         MemberDto memberDto = isLoginUser(principal);
-        Subs findSubs = subsService.findSubsById(subsBuyDto.getSubsId());
+        Subs findSubs = subsService.findSubsByIdWithTag(subsBuyDto.getSubsId());
 
         return memberService.buySubs(memberDto.getLoginId(),findSubs, subsBuyDto.getRankLevel());
     }
@@ -271,7 +276,7 @@ public class SubsController {
     }
 
 
-    //init임시
+    //TODO init임시
     @GetMapping("/init_sort")
     public void initSort() {
 

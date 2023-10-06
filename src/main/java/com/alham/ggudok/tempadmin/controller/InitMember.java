@@ -18,6 +18,10 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 @Profile("local")
 @Component
 @RequiredArgsConstructor
@@ -119,11 +123,12 @@ public class InitMember {
             Category music = new Category("음악","music");
 
 
-
             em.persist(health);
             em.persist(food);
             em.persist(movie);
             em.persist(music);
+
+            List<Subs> subsList = new ArrayList<>();
 
             Subs healthCare = new Subs("healthCare");
             Subs dosirak = new Subs("dosirak");
@@ -132,12 +137,166 @@ public class InitMember {
             Subs melon = new Subs("melon");
             Subs watcha = new Subs("watcha");
 
+
+
+            Subs movie1 = new Subs("스마트비디오");
+            Subs movie2 = new Subs("클립비젼");
+            Subs movie3 = new Subs("월드픽");
+            Subs movie4 = new Subs("무비스톤");
+            Subs movie5 = new Subs("뷰온");
+            Subs movie6 = new Subs("메디앙");
+            Subs movie7 = new Subs("플레이캐스트");
+            Subs movie8 = new Subs("포토랩");
+            Subs movie9 = new Subs("무한티비");
+            Subs movie10 = new Subs("멜로디데이");
+            Subs movie11 = new Subs("뮤직파크");
+            Subs movie12 = new Subs("소울플레이");
+            Subs movie13 = new Subs("하모니스");
+            Subs movie14 = new Subs("힙스테이션");
+            Subs movie15 = new Subs("사운드메이트");
+            Subs movie16 = new Subs("플레이쳐");
+            Subs movie17 = new Subs("소울카페");
+            Subs movie18 = new Subs("헤비볼륨");
+            Subs movie19 = new Subs("올드멜로디");
+            Subs movie20 = new Subs("푸드뱅크");
+            Subs movie21 = new Subs("맛의달인");
+            Subs movie23 = new Subs("크림드벨리");
+            Subs movie24 = new Subs("프레시풋");
+            Subs movie25 = new Subs("고메마켓");
+
+
+            Subs movie26 = new Subs("푸드팜");
+            Subs movie27 = new Subs("푸드샵");
+            Subs movie28 = new Subs("맛나랑");
+            Subs movie29 = new Subs("헬시식품");
+            Subs movie30 = new Subs("알뜰식품");
+            Subs movie31 = new Subs("헬스킹");
+            Subs movie32 = new Subs("웰니스힐");
+            Subs movie33 = new Subs("리커버업");
+            Subs movie34 = new Subs("비타민케어");
+
+
+            Subs movie35 = new Subs("라이프프리");
+            Subs movie36 = new Subs("비건라이프");
+            Subs movie37 = new Subs("스포츠클럽");
+            Subs movie38 = new Subs("피트업");
+            Subs movie39 = new Subs("알로하웰");
+            Subs movie40 = new Subs("포인트웰");
+            Subs movie41 = new Subs("프레쉬브루");
+            Subs movie42 = new Subs("슈퍼스무디");
+            Subs movie43 = new Subs("탄산아트");
+
+            Subs movie44 = new Subs("커피베이");
+            Subs movie45 = new Subs("오가닉티");
+            Subs movie46 = new Subs("프루티칵테일");
+            Subs movie47 = new Subs("힐링티");
+            Subs movie48 = new Subs("밀크오션");
+            Subs movie49 = new Subs("프리미엄스무디");
+            Subs movie50 = new Subs("빙그레이");
+            Subs movie51 = new Subs("우리식물");
+            Subs movie52 = new Subs("그린그레스");
+
+
+            subsList.add(movie1);
+            subsList.add(movie2);
+            subsList.add(movie3);
+            subsList.add(movie4);
+            subsList.add(movie5);
+            subsList.add(movie6);
+            subsList.add(movie7);
+            subsList.add(movie8);
+            subsList.add(movie9);
+            subsList.add(movie10);
+            subsList.add(movie11);
+            subsList.add(movie12);
+            subsList.add(movie13);
+            subsList.add(movie14);
+            subsList.add(movie15);
+            subsList.add(movie16);
+            subsList.add(movie17);
+            subsList.add(movie18);
+            subsList.add(movie19);
+            subsList.add(movie20);
+            subsList.add(movie21);
+            subsList.add(movie23);
+            subsList.add(movie24);
+            subsList.add(movie5);
+            subsList.add(movie26);
+            subsList.add(movie27);
+            subsList.add(movie28);
+            subsList.add(movie29);
+            subsList.add(movie30);
+            subsList.add(movie31);
+            subsList.add(movie32);
+            subsList.add(movie33);
+            subsList.add(movie34);
+            subsList.add(movie35);
+            subsList.add(movie36);
+            subsList.add(movie37);
+            subsList.add(movie38);
+            subsList.add(movie39);
+            subsList.add(movie40);
+            subsList.add(movie41);
+            subsList.add(movie42);
+            subsList.add(movie43);
+            subsList.add(movie44);
+            subsList.add(movie45);
+            subsList.add(movie46);
+            subsList.add(movie47);
+            subsList.add(movie48);
+            subsList.add(movie49);
+            subsList.add(movie50);
+            subsList.add(movie51);
+            subsList.add(movie52);
+
+
             netfilx.addCategory(movie);
             melon.addCategory(music);
             watcha.addCategory(movie);
             healthCare.addCategory(health);
             dosirak.addCategory(food);
             healthcare2.addCategory(health);
+
+            for (Subs subs : subsList) {
+                em.persist(subs);
+            }
+
+            for (int i = 0; i < subsList.size(); i++) {
+                Subs subs = subsList.get(i);
+                SubsRank subsRankDef = new SubsRank("기본",  (i+1)* 400, RankLevel.DEFAULT);
+                SubsRank subsRankPrime = new SubsRank("프라임", (i+2) * 600, RankLevel.PRIME);
+                SubsRank subsRankPremium = new SubsRank("프리미엄", (i+2) * 900, RankLevel.PREMIUM);
+
+                subsRankDef.addSubs(subs);
+                subsRankPrime.addSubs(subs);
+                subsRankPremium.addSubs(subs);
+
+                SubsContent defCon1 = new SubsContent(subs.getSubsName() + " 기본 구독혜택 1");
+                SubsContent defCon2 = new SubsContent(subs.getSubsName() + " 기본 구독혜택 2");
+
+                SubsContent primeCon1 = new SubsContent(subs.getSubsName() + " 프라임 구독혜택 1");
+                SubsContent primeCon2 = new SubsContent(subs.getSubsName() + " 프라임 구독혜택 2");
+                SubsContent primeCon3 = new SubsContent(subs.getSubsName() + " 프라임 구독혜택 3");
+
+                SubsContent primiumCon1 = new SubsContent(subs.getSubsName() + " 프리미엄 구독혜택 1");
+                SubsContent primiumCon2 = new SubsContent(subs.getSubsName() + " 프리미엄 구독혜택 2");
+                SubsContent primiumCon3 = new SubsContent(subs.getSubsName() + " 프리미엄 구독혜택 3");
+
+
+                subs.addCategory(movie);
+
+                defCon1.addSubsRank(subsRankDef);
+                defCon2.addSubsRank(subsRankDef);
+
+                primeCon1.addSubsRank(subsRankPrime);
+                primeCon2.addSubsRank(subsRankPrime);
+                primeCon3.addSubsRank(subsRankPrime);
+
+                primiumCon1.addSubsRank(subsRankPremium);
+                primiumCon2.addSubsRank(subsRankPremium);
+                primiumCon3.addSubsRank(subsRankPremium);
+
+            }
 
             em.persist(netfilx);
             em.persist(melon);
@@ -314,6 +473,30 @@ public class InitMember {
             em.persist(category6);
             em.persist(category7);
             em.persist(category8);
+
+            List<Tag> tagList = new ArrayList<>();
+            tagList.add(age1);
+            tagList.add(age2);
+            tagList.add(age3);
+            tagList.add(gender1);
+            tagList.add(gender2);
+            tagList.add(foodTag);
+            tagList.add(healthTag);
+            tagList.add(category1);
+            tagList.add(category2);
+            tagList.add(category3);
+            tagList.add(category4);
+            tagList.add(category5);
+            tagList.add(category6);
+            tagList.add(category7);
+            tagList.add(category8);
+            Random random = new Random();
+
+            for (Subs subs : subsList) {
+                subs.addTag(tagList.get(random.nextInt(13)));
+                subs.addTag(tagList.get(random.nextInt(13)));
+
+            }
 
             healthCare.addTag(age1);
             healthCare.addTag(age2);

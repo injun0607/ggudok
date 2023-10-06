@@ -50,17 +50,20 @@ public class HomeController {
 
         if (memberDto != null) {
 
-
-            //기본 추천 서비스(ex. 나이 남성)
+            List<Subs> allSubsList = subsService.findAllSubsList();
             List<Tag> tagList = tagService.findTagsByLoginId(memberDto.getLoginId());
+            //기본 추천 서비스(ex. 나이 남성)
             List<Tag> genderAndAge = tagService.findGenderAndAge(tagList);
-
-            List<Subs> subsListByTagList = subsService.findSubsListByTagList(genderAndAge);
-            //알고리즘 맞춤 서비스
+            List<Subs> subsListByTagList = subsService.findSubsListByTagList(allSubsList,genderAndAge);
             mainDto.transRecommendBasic(subsListByTagList);
-
+            //알고리즘 맞춤 서비스
             //해당 유저가 좋아요한 구독정보를 위주로
             //좋아요가 없으면 인기순위
+
+
+
+
+
 
 
 
