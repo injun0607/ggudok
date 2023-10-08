@@ -140,7 +140,20 @@ public class SubsRepositoryImpl implements SubsRepositoryCustom{
                 .fetch();
     }
 
+    @Override
+    public List<Subs> findSubsBySubsIdListWithTag(List<Long> subsIdList) {
+        return queryFactory
+                .selectFrom(subs)
+                .leftJoin(subs.subsRelTags, subsRelTag).fetchJoin()
+                .leftJoin(subsRelTag.tag, tag).fetchJoin()
+                .where(subs.subsId.in(subsIdList))
+                .orderBy(subs.recommendSort.asc())
+                .fetch();
+    }
+
     private BooleanExpression tagNameListEq(List<String> tagNameList) {
         return !tagNameList.isEmpty() ? tag.tagName.in(tagNameList) : null;
     }
+
+
 }

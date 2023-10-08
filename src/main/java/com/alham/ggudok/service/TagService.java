@@ -52,6 +52,21 @@ public class TagService {
 
     }
 
+    /**
+     * subsIdList를 받아서 해당 subs에 있는 태그들을 모두
+     * List로 반환한다. (중복 허용 - 추천태그를 위한 메서드)
+     * @param subsIdList
+     * @return
+     */
+    public List<Tag> findTagsBySubIdList(List<Long> subsIdList) {
+        List<Subs> subsList = subsRepository.findSubsBySubsIdListWithTag(subsIdList);
+        List<Tag> tagList = new ArrayList<>();
+        subsList.stream()
+                .forEach(s->s.getSubsRelTags().stream().forEach(srt->tagList.add(srt.getTag())));
+
+        return tagList;
+    }
+
 
     public Tag checkAgeTag(int age) {
         String transAge = String.valueOf(age).substring(0, 1) + "0";

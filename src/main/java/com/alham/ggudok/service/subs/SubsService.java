@@ -83,6 +83,11 @@ public class SubsService {
         }
     }
 
+    /**
+     * subs들의 추천순위를 업데이트 하는 메소드
+     * @return
+     */
+
     @Transactional
     public List<Subs> updateRecommendSort() {
         List<Subs> allSubs = subsRepository.findAll();
@@ -181,6 +186,7 @@ public class SubsService {
     public List<SubsRecommendDto> countReview() {
         return subsRepository.countReview();
     }
+
     /**
      * 추천 구독서비스 알고리즘
      * 1. 구매 횟수 당 4점
@@ -238,4 +244,6 @@ public class SubsService {
     public List<Subs> findAllSubsList() {
         return subsRepository.findAllSubsList();
     }
+
+
 }

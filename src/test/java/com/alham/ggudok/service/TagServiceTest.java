@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -106,6 +107,61 @@ class TagServiceTest {
 
         assertEquals(tagsBySubsId.size(), 3);
         org.assertj.core.api.Assertions.assertThat(tagsBySubsId).extracting("tagName").containsExactly("tag1", "tag2", "tag3");
+    }
+
+    @Test
+    public void findTagBySubsIdList()throws Exception {
+        //given
+        Category movie = adminSubsService.createCategory("movie");
+        categoryRepository.save(movie);
+
+        //when
+        Subs netflix = adminSubsService.createSubs("netflix", movie.getCategoryId());
+        Subs watch = adminSubsService.createSubs("watch", movie.getCategoryId());
+        Subs laftel = adminSubsService.createSubs("laftel", movie.getCategoryId());
+        netflix.addCategory(movie);
+        watch.addCategory(movie);
+        laftel.addCategory(movie);
+        em.persist(netflix);
+        em.persist(watch);
+        em.persist(laftel);
+
+        Tag tag1 = new Tag("tag1");
+        Tag tag2 = new Tag("tag2");
+        Tag tag3 = new Tag("tag3");
+        Tag tag4 = new Tag("tag4");
+
+        em.persist(tag1);
+        em.persist(tag2);
+        em.persist(tag3);
+        em.persist(tag4);
+
+        netflix.addTag(tag1);
+        netflix.addTag(tag2);
+        netflix.addTag(tag3);
+
+
+        watch.addTag(tag1);
+        watch.addTag(tag2);
+        watch.addTag(tag4);
+
+        laftel.addTag(tag1);
+        laftel.addTag(tag2);
+        laftel.addTag(tag3);
+        laftel.addTag(tag4);
+
+        List<Long> subsIdLIst = new ArrayList<>();
+        subsIdLIst.add(netflix.getSubsId());
+        subsIdLIst.add(watch.getSubsId());
+        subsIdLIst.add(laftel.getSubsId());
+
+        em.flush();
+        em.clear();
+        //when
+        List<Tag> tagsBySubsId = tagService.findTagsBySubIdList(subsIdLIst);
+        // then
+
+        assertEquals(tagsBySubsId.size(), 10);
     }
 
 

@@ -29,6 +29,7 @@ public interface SubsRepositoryCustom {
     List<SubsRecommendDto> countReview();
     List<Subs> findAllSubsList();
 
+    List<Subs> findSubsBySubsIdListWithTag(List<Long> subsIdList);
 
 
 }

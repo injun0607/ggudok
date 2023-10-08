@@ -88,6 +88,87 @@ class SubsServiceTest {
     }
 
     @Test
+    public void buySubs()throws Exception{
+        //given
+        Category movie = adminSubsService.createCategory("movie");
+        categoryRepository.save(movie);
+
+        //when
+        Subs netflix = adminSubsService.createSubs("netflix", movie.getCategoryId());
+        Subs watcha = adminSubsService.createSubs("watcha", movie.getCategoryId());
+        Subs disney = adminSubsService.createSubs("disney", movie.getCategoryId());
+        Subs tving = adminSubsService.createSubs("tving", movie.getCategoryId());
+        Subs laftel = adminSubsService.createSubs("laftel", movie.getCategoryId());
+        netflix.addCategory(movie);
+        watcha.addCategory(movie);
+        disney.addCategory(movie);
+        tving.addCategory(movie);
+        laftel.addCategory(movie);
+
+
+        Tag age0 = new Tag("10대");
+        Tag age1 = new Tag("20대");
+        Tag age2 = new Tag("30대");
+        Tag age3 = new Tag("40대");
+        Tag age4 = new Tag("50대");
+
+        Tag gender1 = new Tag("여성");
+        Tag gender2 = new Tag("남성");
+
+        Tag category1 = new Tag("영상");
+        Tag category2 = new Tag("음악");
+        Tag category3 = new Tag("식품");
+        Tag category4 = new Tag("건강");
+        Tag category5 = new Tag("음료");
+        Tag category6 = new Tag("주류");
+        Tag category7 = new Tag("패션잡화");
+        Tag category8 = new Tag("책");
+
+        em.persist(age0);
+        em.persist(age1);
+        em.persist(age2);
+        em.persist(age3);
+        em.persist(age4);
+
+        em.persist(gender1);
+        em.persist(gender2);
+
+        em.persist(category1);
+        em.persist(category2);
+        em.persist(category3);
+        em.persist(category4);
+        em.persist(category5);
+        em.persist(category6);
+        em.persist(category7);
+        em.persist(category8);
+
+        MemberRegisterDto memberRegisterDto = new MemberRegisterDto();
+        memberRegisterDto.setMemberName("injun");
+        memberRegisterDto.setAge(20);
+        memberRegisterDto.setPassword("123123");
+        memberRegisterDto.setPasswordCheck("123123");
+        memberRegisterDto.setGender(Gender.MAN);
+        memberRegisterDto.setLoginId("injun0607@naver.com");
+
+        memberService.registerMember(memberRegisterDto);
+
+        netflix.addTag(age1);
+        netflix.addTag(age2);
+        netflix.addTag(age3);
+
+        netflix.addTag(gender1);
+        netflix.addTag(gender2);
+
+        //when
+        memberService.buySubs("injun0607@naver.com", netflix, RankLevel.DEFAULT);
+        //then
+
+        Member byLoginIdWithTags = memberService.findByLoginIdWithTags("injun0607@naver.com");
+        assertEquals(byLoginIdWithTags.getMemberRelTags().size(),5);
+
+    }
+
+    @Test
     public void countHaveSubs()throws Exception{
         //given
         Category movie = adminSubsService.createCategory("movie");
@@ -521,7 +602,6 @@ class SubsServiceTest {
 
     @Test
     public void findSubsListByTagList()throws Exception{
-        //given
         //given
         Category movie = adminSubsService.createCategory("movie");
         categoryRepository.save(movie);

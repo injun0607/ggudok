@@ -29,6 +29,13 @@ public class MemberRelTag {
 
     private int tagSort = Integer.MAX_VALUE - 10000;
 
+    //0 0
+    private int haveCnt = 0;
+
+    private int favorCnt = 0;
+
+    private boolean isBasic = false;
+
     /**
      * 멤버 연관 태그 생성
      * @param member
@@ -39,6 +46,22 @@ public class MemberRelTag {
         MemberRelTag memberRelTag = new MemberRelTag();
         memberRelTag.addMember(member);
         memberRelTag.setTag(tag);
+
+        return memberRelTag;
+    }
+
+    /**
+     * basic 태그로 태그생성
+     * @param member
+     * @param tag
+     * @param isBasic
+     * @return
+     */
+    public static MemberRelTag createRelTag(Member member, Tag tag, boolean isBasic) {
+        MemberRelTag memberRelTag = new MemberRelTag();
+        memberRelTag.addMember(member);
+        memberRelTag.setTag(tag);
+        memberRelTag.basicCheck(isBasic);
 
         return memberRelTag;
     }
@@ -54,5 +77,18 @@ public class MemberRelTag {
 
     public void updateTagSort(int tagSort) {
         this.tagSort = tagSort;
+    }
+
+    public void updateHaveCnt(int cnt) {
+        this.haveCnt = cnt;
+    }
+
+    public void updateFavorCnt(int cnt) {
+        this.favorCnt = cnt;
+    }
+
+    //basic tag들은 해당 메서드를 사용해 true check
+    public void basicCheck(boolean check) {
+        this.isBasic = check;
     }
 }

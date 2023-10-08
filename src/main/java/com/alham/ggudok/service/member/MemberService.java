@@ -71,8 +71,8 @@ public class MemberService {
         Tag ageTag = tagService.checkAgeTag(savedMember.getAge());
         Tag genderTag = tagService.checkGender(savedMember.getGender());
 
-        MemberRelTag.createRelTag(savedMember, ageTag);
-        MemberRelTag.createRelTag(savedMember, genderTag);
+        MemberRelTag.createRelTag(savedMember, ageTag,true);
+        MemberRelTag.createRelTag(savedMember, genderTag,true);
 
         return true;
     }
@@ -175,7 +175,12 @@ public class MemberService {
     }
     @Transactional
     public boolean createRelTag(Member member, Tag tag) {
-        Optional<Member> optionalMember = memberRepository.findByLoginIdWithTags(member.getLoginId());
+        Optional<Member> optionalMember = Optional.of(member);
+
+        if (member.getMemberRelTags().size() == 0) {
+            optionalMember = memberRepository.findByLoginIdWithTags(member.getLoginId());
+        }
+
         if (optionalMember.isPresent()) {
             Member findMember = optionalMember.get();
             if (findMember.getMemberRelTags().stream().filter(mfs -> mfs.getTag().getTagName().equals(tag.getTagName())).findFirst().isPresent()) {
@@ -243,6 +248,9 @@ public class MemberService {
     @Transactional
     public void likeSubs(Member member, Subs subs) {
         createMemberFavorSubs(member, subs);
+        //subs와 연관된 태그 생성
+        subs.getSubsRelTags().stream().forEach(srt->createRelTag(member,srt.getTag()));
+
     }
 
     public Member findByLoginIdWithTags(String loginId) {
@@ -316,6 +324,8 @@ public class MemberService {
         if (optionalMember.isPresent()) {
             Member member = optionalMember.get();
             createMemberHaveSubs(member, subs, rankLevel);
+            //subs와 연관된 태그 생성
+            subs.getSubsRelTags().stream().forEach(srt->createRelTag(member,srt.getTag()));
             return true;
         }else{
             throw new MemberException("가입되지 않은 회원입니다!");
@@ -336,6 +346,8 @@ public class MemberService {
         //HaveSubs
         List<Member> allWithHaveSubs = memberRepository.findAllWithHaveSubs();
         HashMap<Long, Map<Tag,Integer>> result = new HashMap<>();
+        HashMap<Long, Map<Tag, Integer>> resultHaveCntMap = new HashMap<>();
+        HashMap<Long, Map<Tag, Integer>> resultFavorCntMap = new HashMap<>();
 
 
 
@@ -345,8 +357,10 @@ public class MemberService {
             List<Subs> memberSubsList = memberHaveSub.getMemberHaveSubsList().stream().map(srt -> srt.getSubs()).collect(Collectors.toList());
 
             Map<Tag, Integer> tagScoreMap = new HashMap<>();
-            sumTagScore(tagScoreMap,memberSubsList,2);
+            Map<Tag, Integer> tagHaveCntMap = new HashMap<>();
+            sumTagScore(tagScoreMap,tagHaveCntMap,memberSubsList,2);
             result.put(memberHaveSub.getMemberId(), tagScoreMap);
+            resultHaveCntMap.put(memberHaveSub.getMemberId(), tagHaveCntMap);
         }
 
         //FavorSubs
@@ -354,38 +368,67 @@ public class MemberService {
 
         for (Member memberFavorSubs : allWithFavorSubs) {
 
-            List<Subs> memberSubsList = memberFavorSubs.getMemberHaveSubsList().stream().map(srt -> srt.getSubs()).collect(Collectors.toList());
+            List<Subs> memberSubsList = memberFavorSubs.getMemberFavorSubsList().stream().map(srt -> srt.getSubs()).collect(Collectors.toList());
             Map<Tag, Integer> tagScoreMap = result.get(memberFavorSubs.getMemberId());
-            sumTagScore(tagScoreMap,memberSubsList,1);
+            Map<Tag, Integer> tagFavorCntMap = new HashMap<>();
+            sumTagScore(tagScoreMap,tagFavorCntMap,memberSubsList,1);
+            resultFavorCntMap.put(memberFavorSubs.getMemberId(), tagFavorCntMap);
 
         }
 
 
-        //없는 좋아요와 구독한 서비스가 없는 회원들은 tag sort를 설정하지않는다.
+        //좋아요와 구독한게 없는 사람은 신규회원이거나 모두지운 회원
         List<Member> allWithTag = memberRepository.findAllWithTag();
 
         for (Member memberWithTag : allWithTag) {
-            if (result.containsKey(memberWithTag.getMemberId())) {
+            List<MemberRelTag> memberRelTags = memberWithTag.getMemberRelTags();
+            if (result.get(memberWithTag.getMemberId()) != null) {
                 Map<Tag, Integer> tagScoreMap = result.get(memberWithTag.getMemberId());
+                Map<Tag, Integer> tagFavorCntMap = resultFavorCntMap.get(memberWithTag.getMemberId());
+                Map<Tag, Integer> tagHaveCntMap = resultHaveCntMap.get(memberWithTag.getMemberId());
 
                 Map<Tag, Integer> sortedMap = GgudokUtil.mapSortByValueDescending(tagScoreMap);
+                memberTagSortUpdate(sortedMap.keySet(), tagFavorCntMap, tagHaveCntMap, memberWithTag);
 
-                HashMap<Tag, Integer> tagRankMap = new HashMap<>();
-                Set<Tag> tags = sortedMap.keySet();
-
-                int sort = 0;
-                for (Tag tagKey : tags) {
-                    tagRankMap.put(tagKey, ++sort);
-                }
-
-                memberWithTag.
-                        getMemberRelTags()
-                        .stream()
-                        .forEach(mrt->mrt.updateTagSort(tagRankMap.get(mrt.getTag())));
+            } else{
+                deleteMemberRelTag(memberWithTag);
             }
+
 
         }
 
+    }
+
+    /**
+     * 멤버들의 subs들을 확인한다음
+     * subs에 해당하는 태그의 횟수들을 업데이트
+     * @param loginId
+     */
+    @Transactional
+    public void updateMemberTagRecommend(String loginId,Subs subs) {
+        //멤버들의 tag
+        Optional<Member> optionalMember = memberRepository.findByLoginIdWithHaveSubs(loginId);
+        if (optionalMember.isPresent()) {
+            Member member = optionalMember.get();
+
+            Map<Tag, Integer> tagScoreMap = new HashMap<>();
+            Map<Tag, Integer> tagHaveCntMap = new HashMap<>();
+
+            //회원들을 subsList를 순회하면서
+            //해당 subs에 있는 태그들을 순서를 매긴다
+            List<Subs> memberHaveSbusList = member.getMemberHaveSubsList().stream().map(srt -> srt.getSubs()).collect(Collectors.toList());
+
+            sumTagScore(tagScoreMap, tagHaveCntMap, memberHaveSbusList, 2);
+
+            List<Subs> memberFavorSubsList = member.getMemberFavorSubsList().stream().map(srt -> srt.getSubs()).collect(Collectors.toList());
+            Map<Tag, Integer> tagFavorCntMap = new HashMap<>();
+            sumTagScore(tagScoreMap, tagFavorCntMap, memberFavorSubsList, 1);
+
+            //좋아요와 구독한 서비스가 없는 회원들은 tag sort를 설정하지않는다.
+            Map<Tag, Integer> sortedMap = GgudokUtil.mapSortByValueDescending(tagScoreMap);
+            memberTagSortUpdate(sortedMap.keySet(), tagFavorCntMap, tagHaveCntMap, member);
+
+        }
     }
 
     /**
@@ -394,19 +437,66 @@ public class MemberService {
      * @param subsList
      * @param score
      */
-    public void sumTagScore(Map<Tag, Integer> tagScoreMap, List<Subs> subsList, int score) {
-        for (Subs subs : subsList) {
-            List<Tag> tagsBySubsId = tagService.findTagsBySubsId(subs.getSubsId());
-            //subs내의 태그들을 순회하면서
-            //tagScoreMap에 태그들의 점수를 기록한다.
-            for (Tag tag : tagsBySubsId) {
-                if (tagScoreMap.containsKey(tag)) {
-                    tagScoreMap.put(tag, tagScoreMap.get(tag) + score );
-                }else{
-                    tagScoreMap.put(tag, score);
+    public void sumTagScore(Map<Tag, Integer> tagScoreMap, Map<Tag,Integer> tagCountMap, List<Subs> subsList, int score) {
+
+        List<Long> subsIdList = subsList.stream().map(s -> s.getSubsId()).collect(Collectors.toList());
+        List<Tag> tagsBySubsId = tagService.findTagsBySubIdList(subsIdList);
+        //subs내의 태그들을 순회하면서
+        //tagScoreMap에 태그들의 점수를 기록한다.
+        for (Tag tag : tagsBySubsId) {
+            //태그 count체크
+            if (tagCountMap.containsKey(tag)) {
+                tagCountMap.put(tag, tagCountMap.get(tag) + 1);
+            }else{
+                tagCountMap.put(tag, 1);
+            }
+
+            //tagScore체크
+            if (tagScoreMap.containsKey(tag)) {
+                tagScoreMap.put(tag, tagScoreMap.get(tag) + score);
+            }else{
+                tagScoreMap.put(tag, score);
+            }
+        }
+
+
+    }
+
+    /**
+     * 정렬된 tag들을 순위에 맞게
+     * memberRelTag에 업데이트 해준다.
+     * @param tagSet
+     * @param member
+     */
+    private void memberTagSortUpdate(Set<Tag> tagSet,Map<Tag, Integer>tagFavorCntMap,Map<Tag, Integer>tagHaveCntMap, Member member) {
+        HashMap<Tag, Integer> tagRankMap = new HashMap<>();
+        Set<Tag> tags = tagSet;
+
+        int sort = 0;
+        for (Tag tagKey : tags) {
+            tagRankMap.put(tagKey, ++sort);
+        }
+
+        List<MemberRelTag> memberRelTags = member.getMemberRelTags();
+        for (MemberRelTag mrt : memberRelTags) {
+            if (tagFavorCntMap != null) {
+                if (tagFavorCntMap.containsKey(mrt.getTag())) {
+                    mrt.updateFavorCnt(tagFavorCntMap.get(mrt.getTag()));
                 }
             }
 
+            if (tagHaveCntMap != null) {
+                if (tagHaveCntMap.containsKey(mrt.getTag())) {
+                    mrt.updateHaveCnt(tagHaveCntMap.get(mrt.getTag()));
+                }
+            }
+
+            mrt.updateTagSort(tagRankMap.get(mrt.getTag()));
+
         }
+    }
+
+    public void deleteMemberRelTag(Member member) {
+
     }
 }

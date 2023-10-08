@@ -134,6 +134,11 @@ public class SubsController {
                     .filter(memberFavorSubs -> memberFavorSubs.getSubs().getSubsId() == subsId)
                     .findFirst().ifPresent(mfs -> memberSubsDto.setSubsLike(true));
 
+            loginMember.getMemberHaveSubsList()
+                    .stream()
+                    .filter(memberHaveSubs -> memberHaveSubs.getSubs().getSubsId() == subsId)
+                    .findFirst().ifPresent(mfs -> memberSubsDto.setSubsHave(true));
+
             ReviewDto reviewDto = new ReviewDto();
 
             Optional<Review> optionalMemberReview = reviewService.findMemberSubsReview(loginMember,subsId);
@@ -213,10 +218,9 @@ public class SubsController {
         MemberDto memberDto = isLoginUser(principal);
 
         Member loginMember = memberService.findByLoginIdWithFavorSubs(memberDto.getLoginId());
-        Subs subs = subsService.findSubsByIdWithTag(subsId);
-
-        memberService.createMemberFavorSubs(loginMember, subs);
-
+        Subs findSubs = subsService.findSubsByIdWithTag(subsId);
+        memberService.likeSubs(loginMember,findSubs);
+        memberService.updateMemberTagRecommend(memberDto.getLoginId(), findSubs);
         return true;
 
 
@@ -227,6 +231,7 @@ public class SubsController {
         MemberDto memberDto = isLoginUser(principal);
         Subs subs = subsService.findSubsById(subsId);
         memberService.removeMemberFavorSubs(memberDto.getLoginId(), subs);
+
         return true;
 
     }
@@ -245,8 +250,12 @@ public class SubsController {
     public boolean buySubs(Principal principal ,@RequestBody SubsBuyDto subsBuyDto) {
         MemberDto memberDto = isLoginUser(principal);
         Subs findSubs = subsService.findSubsByIdWithTag(subsBuyDto.getSubsId());
+        if (memberService.buySubs(memberDto.getLoginId(), findSubs, subsBuyDto.getRankLevel())) {
+            memberService.updateMemberTagRecommend(memberDto.getLoginId(), findSubs);
 
-        return memberService.buySubs(memberDto.getLoginId(),findSubs, subsBuyDto.getRankLevel());
+        }
+
+        return true;
     }
 
     @PostMapping("/buy_cancel")
@@ -285,6 +294,8 @@ public class SubsController {
         Subs healthCare2 = subsService.findBySubsName("healthCare2");
         Subs netfilx = subsService.findBySubsName("netfilx");
         Subs watcha = subsService.findBySubsName("watcha");
+        Subs randomSubs = subsService.findSubsById(2l);
+
 
 
         MemberRegisterDto memberRegisterDto = new MemberRegisterDto();
@@ -358,11 +369,16 @@ public class SubsController {
 
         memberService.buySubs("injun0604@naver.com", netfilx, RankLevel.DEFAULT);
 
+        memberService.buySubs("choiseo26@naver.com", healthCare, RankLevel.DEFAULT);
+        memberService.buySubs("choiseo26@naver.com", healthCare2, RankLevel.DEFAULT);
+        memberService.buySubs("choiseo26@naver.com", dosirak, RankLevel.DEFAULT);
+
         Member injun1 = memberService.findByLoginIdWithFavorSubs("injun06010@naver.com");
         Member injun2 = memberService.findByLoginIdWithFavorSubs("injun0601@naver.com");
         Member injun3 = memberService.findByLoginIdWithFavorSubs("injun0602@naver.com");
         Member injun4 = memberService.findByLoginIdWithFavorSubs("injun0603@naver.com");
         Member injun5 = memberService.findByLoginIdWithFavorSubs("injun0604@naver.com");
+        Member seohee = memberService.findByLoginIdWithFavorSubs("choiseo26@naver.com");
 
         memberService.likeSubs(injun1, netfilx);
         memberService.likeSubs(injun2, netfilx);
@@ -374,6 +390,10 @@ public class SubsController {
         memberService.likeSubs(injun3, healthCare);
         memberService.likeSubs(injun4, healthCare);
         memberService.likeSubs(injun5, healthCare);
+
+        memberService.likeSubs(seohee,healthCare);
+        memberService.likeSubs(seohee,healthCare2);
+        memberService.likeSubs(seohee,dosirak);
 
 
         memberService.likeSubs(injun1, watcha);
@@ -394,12 +414,15 @@ public class SubsController {
         reviewService.writeReview(injun3, netfilx, "넷플1", 3);
         reviewService.writeReview(injun4, netfilx, "넷플1", 2);
         reviewService.writeReview(injun5, netfilx, "넷플1", 1);
+        reviewService.writeReview(seohee, netfilx, "넷플은 너무 자극적이야", 1);
+        reviewService.writeReview(seohee, randomSubs, "랜덤 리뷰지롱", 4);
 
         reviewService.writeReview(injun1, watcha, "왓챠1", 5);
         reviewService.writeReview(injun2, watcha, "왓챠1", 5);
         reviewService.writeReview(injun3, watcha, "왓챠1", 5);
         reviewService.writeReview(injun4, watcha, "왓챠1", 4);
         reviewService.writeReview(injun5, watcha, "왓챠1", 3);
+        reviewService.writeReview(seohee, watcha, "왓챠는 이제 끊을거야", 3);
 
         reviewService.writeReview(injun1, healthCare, "디즈니1", 5);
         reviewService.writeReview(injun2, healthCare, "디즈니1", 5);

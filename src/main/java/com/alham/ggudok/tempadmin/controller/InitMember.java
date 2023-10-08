@@ -3,7 +3,6 @@ package com.alham.ggudok.tempadmin.controller;
 import com.alham.ggudok.dto.member.MemberRegisterDto;
 import com.alham.ggudok.entity.Tag;
 import com.alham.ggudok.entity.member.Gender;
-import com.alham.ggudok.entity.member.Member;
 import com.alham.ggudok.entity.subs.*;
 import com.alham.ggudok.repository.subs.SubsRepository;
 import com.alham.ggudok.service.member.MemberService;
@@ -56,6 +55,7 @@ public class InitMember {
         memberRegisterDto.setPasswordCheck("1234");
         memberService.registerMember(memberRegisterDto);
 
+
         MemberRegisterDto memberRegisterDto2 = new MemberRegisterDto();
         memberRegisterDto2.setMemberName("인인준");
         memberRegisterDto2.setAge(4);
@@ -91,12 +91,7 @@ public class InitMember {
         @Transactional
         public void init() {
 
-            Member injun = new Member("injun12", 23, "injun@naver.com", "1234", Gender.MAN, "01012345678");
-            Member seohee = new Member("seohee", 23, "seohee@naver.com", "1234", Gender.WOMAN, "0101234");
 
-
-            em.persist(injun);
-            em.persist(seohee);
 
         }
     }

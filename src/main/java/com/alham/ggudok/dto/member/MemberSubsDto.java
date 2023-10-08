@@ -11,5 +11,6 @@ import lombok.NoArgsConstructor;
 public class MemberSubsDto {
 
     private boolean subsLike = false;
+    private boolean subsHave = false;
     private ReviewDto review;
 }
