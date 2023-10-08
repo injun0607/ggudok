@@ -38,8 +38,6 @@ const ItemDetail = () => {
   
   const { subsId } = useParams();
   
-  // const [IsPager, setIsPager] = useState(false);
-  // const [slicedItems, setSlicedItems] = useState([]);
   const [itemStarAvg, setItemStarAvg] = useState([]);
   const [itemDefaultRank, setItemDefaultRank] = useState({});
   const [itemOtherRanks, setItemOtherRanks] = useState([]);
@@ -86,6 +84,9 @@ const ItemDetail = () => {
           newItemStarAvg.push(i < itemRatingAvg);
         }
         setItemStarAvg(newItemStarAvg);
+      } else {
+        dispatch(setReview([]));
+        dispatch(pagingReview([]))
       }
       if (isLoggedIn && data.memberInfo?.review) {
         dispatch(setMyItemReviewRating(data.memberInfo.review.rating));
@@ -237,7 +238,7 @@ const ItemDetail = () => {
                 {isLoggedIn && <button type='button' className={style.likebtn} onClick={ handleLikedItem }>
                   {IsLiked ? <span className={`material-icons ${style.likeActive}`}>favorite</span> : <span className="material-icons">favorite_border</span>}
                 </button> }
-                {isLoggedIn && <button type='button' className={style.reviewbtn} onClick={ handleReviewModal }>
+                {isLoggedIn && <button type='button' className={style.reviewbtn}  onClick={ () => { IsSubed ? handleReviewModal() : alert('구독중인 서비스만 리뷰를 작성할 수 있습니다.') } }>
                   <span className="material-icons">edit</span>
                 </button>}
                 <button type='button' className={style.subsbtn} onClick={ handleSubsItem }>

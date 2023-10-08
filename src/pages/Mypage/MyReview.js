@@ -5,9 +5,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import style from '../../styles/Mypage.module.css'
 // component import
 import ErrorItem from '../../components/ErrorItem';
+import Paging from '../../components/Paging';
 // redux import
-import { setMyReview, editMyReview, editMyReviewRating, editMyReviewContents, deleteMyReview } from '../../redux/actions/reviewActions';
+import { setMyReview, pagingMyReview, editMyReview, editMyReviewRating, editMyReviewContents, deleteMyReview } from '../../redux/actions/reviewActions';
 
+const ITEMS_PER_PAGE = 5;
 const NO_IMAGE_URL = '/images/common/noimg.png';
 
 const MyReview = ({isCheckingLogin}) => {
@@ -17,13 +19,30 @@ const MyReview = ({isCheckingLogin}) => {
   const [IsLoading, setIsLoading] = useState(true);
   const [ratingMap, setRatingMap] = useState({});
   
+  const pagedMyReviews = useSelector(state => state.review.pagedMyReviews);
+  const [page, setPage] = useState(1);
+  const [startIndex, setStartIndex] = useState(0);
+  const endIndex = startIndex + ITEMS_PER_PAGE;
+  
   // ************************** 기본 reviews fetch ***************************
   const fetchMyReviewData = async () => {
     try {
       const response = await axios.get(`/member/reviews`);
       const data = response.data.reviews;
       console.log('data : ', data)
-      dispatch(setMyReview(data));
+
+      if(data !== 0){
+        dispatch(setMyReview(data));
+
+        // 페이지 리뷰 계산
+        const pagedReview = data.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+        dispatch(pagingMyReview(pagedReview))
+        setStartIndex(0);
+        setPage(1);
+      } else {
+        dispatch(setMyReview([]));
+        dispatch(pagingMyReview([]))
+      }
 
       // 각 리뷰의 평균별점 업데이트
       if(data.length !== 0){
@@ -50,12 +69,32 @@ const MyReview = ({isCheckingLogin}) => {
     setIsResult(reviews.length > 0);
   }, [dispatch, reviews]);
 
+  // 페이지 리뷰 슬라이스
+  useEffect(() => {
+    const pagedReviews = reviews.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+    dispatch(pagingMyReview(pagedReviews))
+  }, [dispatch, reviews, startIndex, page])
+
+  // 페이지 변경 핸들러
+  const handlePageChange = (pageNumber) => {
+    setPage(pageNumber);
+  };
+  useEffect(() => {
+    const newStartIndex = (page - 1) * ITEMS_PER_PAGE;
+    setStartIndex(newStartIndex);
+  }, [page]);
+
   return (
     !IsLoading && <section className={`${style.section} ${style.ratingwrap}`}>
       <div className={style.ratings}>
-        {IsResult ? reviews.map((review, index) => (
-          <ReviewItem key={index} review={review} ratingMap={ratingMap} index={index} />
-        )) : <ErrorItem />}
+        {IsResult && reviews.length > 0 ? 
+          <>
+          {pagedMyReviews.map((review, index) => (
+            <ReviewItem key={index} review={review} ratingMap={ratingMap} index={index} />
+          ))}
+          <Paging handlePageChange={handlePageChange} page={page} count={reviews.length} ITEMS_PER_PAGE={ITEMS_PER_PAGE} />
+          </>
+        : <ErrorItem />}
       </div>
     </section>
   )
