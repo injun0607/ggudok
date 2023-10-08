@@ -5,7 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 // css import
 import style from '../../styles/Auth.module.css'
 // redux import
-import { editMemberinfo, setValidPassword, setAge, setGender, setValidPhoneNumber, setPhoneNumber, setPassword, setNewPassword, setNewPasswordCheck, setIsLoading } from '../../redux/actions/userActions';
+import { editMemberinfo, setValidPassword, setMemberImg, setAge, setGender, setValidPhoneNumber, setPhoneNumber, setPassword, setNewPassword, setNewPasswordCheck, setIsLoading } from '../../redux/actions/userActions';
 
 const EditProfile = () => {
   const dispatch = useDispatch();
@@ -13,6 +13,7 @@ const EditProfile = () => {
 
   const isPassval = useSelector(state => state.user.isPassval);
   const isPhoneval = useSelector(state => state.user.isPhoneval);
+  const memberImg = useSelector(state => state.user.memberImg);
   const memberName = useSelector(state => state.user.memberName);
   const loginId = useSelector(state => state.user.loginId);
   const password = useSelector(state => state.user.password);
@@ -90,8 +91,24 @@ const EditProfile = () => {
     dispatch(setValidPhoneNumber(isPhoneNumberReg));
   }
 
-  const handleEdit = (e) => {
+  // const handleImageUpload = async () => {
+  //   try {
+  //     if (memberImg) {
+  //       const formData = new FormData();
+  //       formData.append('profileImage', memberImg);
+  
+  //       await axios.post('/upload-profile-image', formData);
+  
+  //       console.log('이미지 업로드 성공');
+  //     }
+  //   } catch (error) {
+  //     console.error('이미지 업로드 오류:', error);
+  //   }
+  // };
+
+  const handleEdit = async(e) => {
     e.preventDefault();
+    // await handleImageUpload();
     const userData = {
       password,
       newPassword,
@@ -105,12 +122,30 @@ const EditProfile = () => {
     dispatch(editMemberinfo(userData, navigate));
   };
 
+  const NO_IMAGE_URL = '/images/common/noimg.png';
+
   return (
     !IsLoading && <section className={`${style.join} ${style.auth}`}>
       <div className='webwidth webwidth_pd'>
         <div className='page_tit'><h2>회원정보수정</h2></div>
         <div className={style.form}>
           <form onSubmit={ handleEdit }>
+            
+            {/* <div className={style.userImg}>
+              <div className={style.circle}>
+                { memberImg
+                ? <img src={URL.createObjectURL(memberImg)} alt='유저 이미지' onError={(e) => {e.target.src = NO_IMAGE_URL;}}/>
+                : <img src={`${NO_IMAGE_URL}`} alt='유저 이미지' />
+                }
+              </div>
+              <input type="file" id="file" accept="image/*" className='inputFile'
+                onChange={(e) => {
+                  const imageFile = e.target.files[0];
+                  dispatch(setMemberImg(imageFile));
+                }}
+              />
+              <label htmlFor="file">프로필 사진 선택하기</label>
+            </div> */}
             <div className={style.inputwrap}>
               <input type="text" name='emailid' value={loginId} readOnly />
               <input

@@ -7,6 +7,12 @@ export const setReview = (review) => {
     payload: review,
   };
 };
+export const pagingReview = (pagedReviews) => {
+  return {
+    type: 'PAGING_REVIEW',
+    payload: pagedReviews,
+  };
+};
 // 아이템페이지 리뷰 수정
 export const setMyItemReviewRating = (myItemReviewRating) => {
   return {
@@ -57,6 +63,12 @@ export const setMyReview = (myReviews) => {
   return {
     type: 'SET_MYREVIEW',
     payload: myReviews,
+  };
+};
+export const pagingMyReview = (pagedMyReviews) => {
+  return {
+    type: 'PAGING_MYREVIEW',
+    payload: pagedMyReviews,
   };
 };
 // 마이페이지 리뷰 수정

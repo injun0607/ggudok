@@ -36,6 +36,12 @@
   background: var(--c-black-7);
   color: var(--c-black-3);
 }
+
+.auth .userImg {margin: 0 auto; margin-bottom: 1rem;}
+.auth .userImg .circle {width: 10rem; border-radius: 100%; aspect-ratio: 1/1; overflow: hidden; margin: 0 auto; margin-bottom: 1rem;}
+.auth .userImg .circle img {width: 100%; height: 100%; object-fit: cover;}
+.auth .userName {font-size: 1.5rem; width: 100%; text-align: center;}
+.auth .userName .name {font-size: 1.75rem; font-weight: 500; vertical-align: baseline; color: var(--txt-color);}
 .form button {width: 100%;}
 .form .doublebutton {margin-top: 1rem; display: flex; flex-wrap: wrap; gap: 1rem; width: 100%;}
 .form .doublebutton a, .form .doublebutton button {width: calc((100% - 1rem) / 2);}

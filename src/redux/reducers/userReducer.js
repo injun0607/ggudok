@@ -8,6 +8,7 @@ const initialState = {
   isPhoneval: false,
   // 회원가입시 작성 사용자정보
   emailValNumber: '',
+  memberImg: '',
   memberName: '',
   loginId: '',
   password: '',
@@ -18,6 +19,9 @@ const initialState = {
   age: '',
   phoneNumber: '',
 
+  // ******************** 회원탈퇴 *******************
+  quitModal: false,
+  
   // ******************** 마이페이지 *******************
   // 관심서비스
   likedItems: [],
@@ -40,6 +44,13 @@ const userReducer = (state = initialState, action) => {
       return {
         ...state,
         likedItems: action.payload,
+      };
+
+    // 회원탈퇴 모달 제어
+    case 'SET_QUITMODAL':
+      return {
+        ...state,
+        quitModal: !state.quitModal,
       };
 
     // ****************************로그인****************************
@@ -105,6 +116,11 @@ const userReducer = (state = initialState, action) => {
       return {
         ...state,
         gender: action.payload,
+      };
+    case 'SET_MEMBERIMG':
+      return {
+        ...state,
+        memberImg: action.payload,
       };
     case 'SET_MEMBERNAME':
       return {

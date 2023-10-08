@@ -1,13 +1,22 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, Outlet, useLocation, } from 'react-router-dom';
+// component import
+import Quit from '../../components/Quit';
 // css import
 import style from '../../styles/Mypage.module.css'
+// redux import
+import { setQuitModal } from '../../redux/actions/userActions';
 
 const NO_IMAGE_URL = '/images/common/noimg.png';
 
 const Mypage = ({memberName}) => {
+  const dispatch = useDispatch();
   const location = useLocation();
+  const quitModal = useSelector(state => state.user.quitModal);
+
+  // 탈퇴모달팝업
+  const handleQuitModal = () => { dispatch(setQuitModal()) }
 
   // 현재 경로에 따라 클래스를 동적으로 설정
   const mySubscribeActiveClass = location.pathname.includes('MySubscribe') ? `${style.navOn}` : '';
@@ -15,6 +24,8 @@ const Mypage = ({memberName}) => {
   const myLikeActiveClass = location.pathname.includes('MyLike') ? `${style.navOn}` : '';
 
   return (
+    <>
+    { quitModal ? <><Quit /> <div className='modalBg' onClick={ handleQuitModal }></div></> : null}
     <section className={style.pagewrapPd}>
       <div className='webwidth'>
         <div className='page_tit'><h2>마이페이지</h2></div>
@@ -30,8 +41,8 @@ const Mypage = ({memberName}) => {
                 <div className={style.userName}><span className={style.name}>{memberName}</span>님</div>
               </div>
               <nav className={style.category}>
-                <Link to="/Auth/EditProfile">회원정보수정</Link> 
-                <Link to="/Auth/Login" className={style.sm}>회원탈퇴</Link> 
+                <Link to="/Auth/EditProfile">회원정보수정</Link>
+                <button type='button' className={style.sm} onClick={ handleQuitModal }>회원탈퇴</button>
               </nav>
             </div>
             <nav className={style.nav}>
@@ -55,6 +66,7 @@ const Mypage = ({memberName}) => {
         </section>
       </div>
     </section>
+    </>
   )
 }
 

@@ -1,8 +1,10 @@
 const initialState = {
   reviews: [],
+  pagedReviews: [],
   myItemReviewRating: 0,
   myItemReviewContents: '',
   myReviews: [],
+  pagedMyReviews: [],
   editReviewRating: 0,
   editReviewContents: '',
   reviewModal: false,
@@ -16,6 +18,11 @@ const reviewReducer = (state = initialState, action) => {
         ...state,
         reviews: action.payload,
       };
+    case 'PAGING_REVIEW':
+      return {
+        ...state,
+        pagedReviews: action.payload,
+      }
     // 아이템페이지 리뷰 수정
     case 'SET_MYITEMREVIEW_CONTENTS':
       return {
@@ -49,6 +56,11 @@ const reviewReducer = (state = initialState, action) => {
         ...state,
         myReviews: action.payload,
       };
+    case 'PAGING_MYREVIEW':
+      return {
+        ...state,
+        pagedMyReviews: action.payload,
+      }
     case 'EDIT_MYREVIEW_RATING':
       return {
         ...state,

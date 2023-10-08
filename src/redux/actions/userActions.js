@@ -161,6 +161,12 @@ export const setLoginId = (loginId) => {
     payload: loginId,
   };
 }
+export const setMemberImg = (memberImg) => {
+  return {
+    type: 'SET_MEMBERIMG',
+    payload: memberImg,
+  };
+}
 export const setMemberName = (memberName) => {
   return {
     type: 'SET_MEMBERNAME',
@@ -237,5 +243,13 @@ export const setIsLoading = (isLoading) => {
   return {
     type: 'SET_IS_LOADING',
     payload: isLoading,
+  };
+};
+
+// 회원탈퇴 모달 제어
+export const setQuitModal = (modal) => {
+  return {
+    type: 'SET_QUITMODAL',
+    payload: modal,
   };
 };

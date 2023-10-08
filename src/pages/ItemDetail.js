@@ -9,10 +9,12 @@ import { Pie } from 'react-chartjs-2';
 import style from '../styles/Item.module.css';
 // component import
 import Error from '../components/Error';
+import ErrorLogin from '../components/ErrorLogin';
 import Loading from '../components/Loading';
+import Paging from '../components/Paging';
 // redux import
-import { likeItemSuccess, likeItemFailure, fetchitemDetailSuccess } from '../redux/actions/itemActions';
-import { setReview, setMyItemReviewRating, setMyItemReviewContents, setMyItemReview, setReviewModal, } from '../redux/actions/reviewActions';
+import { likeItemSuccess, likeItemFailure, fetchitemDetailSuccess, setLoginModal } from '../redux/actions/itemActions';
+import { setReview, pagingReview, setMyItemReviewRating, setMyItemReviewContents, setMyItemReview, setReviewModal, } from '../redux/actions/reviewActions';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -29,14 +31,15 @@ const ItemDetail = () => {
   const myItemReviewContents = useSelector(state => state.review.myItemReviewContents);
   const similarItems = useSelector(state => state.item.similarItems);
   const reviewModal = useSelector(state => state.review.reviewModal);
+  const loginModal = useSelector(state => state.item.loginModal);
   const isLoggedIn = useSelector(state => state.user.isLoggedIn);
   const [IsResult, setIsResult] = useState(false);
   const [IsLoading, setIsLoading] = useState(true);
   
   const { subsId } = useParams();
   
-  const [IsPager, setIsPager] = useState(false);
-  const [slicedItems, setSlicedItems] = useState([]);
+  // const [IsPager, setIsPager] = useState(false);
+  // const [slicedItems, setSlicedItems] = useState([]);
   const [itemStarAvg, setItemStarAvg] = useState([]);
   const [itemDefaultRank, setItemDefaultRank] = useState({});
   const [itemOtherRanks, setItemOtherRanks] = useState([]);
@@ -44,6 +47,11 @@ const ItemDetail = () => {
   
   const [IsLiked, setIsLiked] = useState(false);
   const [IsSubed, setIsSubed] = useState(false);
+  
+  const pagedReviews = useSelector(state => state.review.pagedReviews);
+  const [page, setPage] = useState(1);
+  const [startIndex, setStartIndex] = useState(0);
+  const endIndex = startIndex + ITEMS_PER_PAGE;
 
   // ************************** 기본 아이템 fetch ***************************
   const fetchItemDetailData = async () => {
@@ -60,10 +68,17 @@ const ItemDetail = () => {
       
       if(Object.keys(data.memberInfo).length !== 0){
         setIsLiked(data.memberInfo.subsLike);
-        setIsSubed(data.memberInfo.subsLike);
+        setIsSubed(data.memberInfo.subsHave);
       }
       if(data.itemDetail.reviews.length !== 0){
         dispatch(setReview(data.itemDetail.reviews));
+
+        // 페이지 리뷰 계산
+        const pagedReview = data.itemDetail.reviews.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+        dispatch(pagingReview(pagedReview))
+        setStartIndex(0);
+        setPage(1);
+
         // 아이템 평균별점
         const itemRatingAvg = data.itemDetail.ratingAvg;
         const newItemStarAvg = [];
@@ -76,9 +91,7 @@ const ItemDetail = () => {
         dispatch(setMyItemReviewRating(data.memberInfo.review.rating));
         dispatch(setMyItemReviewContents(data.memberInfo.review.contents));
       }
-      // setIsResult(true);
     } catch (error) {
-      // setIsResult(false);
       console.log('Error fetching item:', error);
       alert(`서비스를 가져오던 중 오류가 발생했습니다. 잠시 후 다시 시도해주시기 바랍니다.`)
     } finally {
@@ -95,6 +108,21 @@ const ItemDetail = () => {
     if(Object.keys(itemDetail).length !== 0){setIsResult(true);}
     else{setIsResult(false);}
   }, [dispatch, itemDetail])
+
+  // 페이지 리뷰 슬라이스
+  useEffect(() => {
+    const pagedReviews = reviews.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+    dispatch(pagingReview(pagedReviews))
+  }, [dispatch, reviews, startIndex, page])
+
+  // 페이지 변경 핸들러
+  const handlePageChange = (pageNumber) => {
+    setPage(pageNumber);
+  };
+  useEffect(() => {
+    const newStartIndex = (page - 1) * ITEMS_PER_PAGE;
+    setStartIndex(newStartIndex);
+  }, [page]);
 
   // 각 리뷰의 평균별점 업데이트
   useEffect(() => {
@@ -120,7 +148,7 @@ const ItemDetail = () => {
         const response = await axios.post(`${endpoint}/${subsId}`, { subsId });
         if (response.status === 200) {
           setIsLiked(!IsLiked);
-  
+          dispatch(likeItemSuccess());
           fetchItemDetailData();
         } else {
           dispatch(likeItemFailure());
@@ -135,21 +163,28 @@ const ItemDetail = () => {
     }
   };
 
-  // 리뷰모달팝업
+  // 모달팝업
   const handleReviewModal = () => { dispatch(setReviewModal()) }
+  const handleLoginModal = () => { dispatch(setLoginModal()) }
 
   // 구독(해지)버튼
   const handleSubsItem = () => {
-    const DataSubsId = { subsId };
-    if (!IsSubed) {
-      navigate(`/Subscribe/AddSubs`, { state: DataSubsId });
-    } else {
-      navigate(`/Subscribe/DelSubs`, { state: DataSubsId });
+    if(!isLoggedIn){
+      handleLoginModal();
+    }
+    else{
+      const DataSubsId = { subsId };
+      if (!IsSubed) {
+        navigate(`/Subscribe/AddSubs`, { state: DataSubsId });
+      } else {
+        navigate(`/Subscribe/DelSubs`, { state: DataSubsId });
+      }
     }
   }
 
   return (
     <>
+    { !isLoggedIn && (loginModal ? <><ErrorLogin /> <div className='modalBg' onClick={ handleLoginModal }></div></> : null)}
     { reviewModal ? <><ReviewModal myItemReviewContents={myItemReviewContents} myItemReviewRating={myItemReviewRating} subsId={subsId} /> <div className='modalBg' onClick={ handleReviewModal }></div></> : null}
     <section className={style.pagewrapPd}>
       <div className='webwidth'>
@@ -205,9 +240,9 @@ const ItemDetail = () => {
                 {isLoggedIn && <button type='button' className={style.reviewbtn} onClick={ handleReviewModal }>
                   <span className="material-icons">edit</span>
                 </button>}
-                {isLoggedIn && <button type='button' className={style.subsbtn} onClick={ handleSubsItem }>
+                <button type='button' className={style.subsbtn} onClick={ handleSubsItem }>
                   {!IsSubed ? '구독하기' : '구독 변경/해지'}
-                </button>}
+                </button>
               </div>
             </div>
           </section>
@@ -225,8 +260,9 @@ const ItemDetail = () => {
                 <h3>구독자 한줄평</h3>
               </div>
               { ratingMap && ratingMap.length > 0 ? (
+                <>
                 <div className={style.ratings}>
-                  { reviews.map((review, index) => (
+                  { pagedReviews.map((review, index) => (
                       <article className={style.rating} key={index}>
                         <div className={style.userImg}>
                           <div className={style.circle}>
@@ -248,6 +284,8 @@ const ItemDetail = () => {
                       </article>
                     ))}
                 </div>
+                <Paging handlePageChange={handlePageChange} page={page} count={reviews.length} ITEMS_PER_PAGE={ITEMS_PER_PAGE} />
+                </>
               ) : (
                 <div className='txt_grey txt_center'>등록된 리뷰가 없습니다.</div>
               )}

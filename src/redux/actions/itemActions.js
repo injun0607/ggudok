@@ -28,6 +28,13 @@ export const filterItem = (filtereditem) => {
   };
 };
 
+export const pagingItem = (pageditems) => {
+  return {
+    type: 'PAGING_ITEM',
+    payload: pageditems,
+  };
+};
+
 // export const setIsLikedOn = (itemId) => async (dispatch) => {
 //   const { subsId } = itemId;
 //   try {
@@ -78,5 +85,13 @@ export const setIsResult = (isresult) => {
   return {
     type: 'SET_ISRESULT',
     payload: isresult,
+  };
+};
+
+// 로그인 모달 제어
+export const setLoginModal = (modal) => {
+  return {
+    type: 'SET_LOGINMODAL',
+    payload: modal,
   };
 };

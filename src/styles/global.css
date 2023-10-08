@@ -598,6 +598,43 @@ cursor: not-allowed;
 /* -------------------- textarea setting --------------------*/
 textarea {border-radius: var(--radius-all-xs); border: 1px solid var(--c-black-6);}
 
+/* -------------------- input type file setting --------------------*/
+.inputfile {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+.inputfile + label {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    width: 160px;
+    height: 36px;
+    font-size: 1rem;
+    font-weight: 500;
+    color: white;
+    background-color: var(--sub-color-2);
+    display: inline-block;
+    transition: 0.3s;
+    border-radius: var(--radius-all-min);
+}
+.inputfile:focus + label,
+.inputfile + label:hover {
+    background-color: var(--main-color);
+}
+.inputfile + label {
+	cursor: pointer;
+}
+.inputfile:focus + label {
+	outline: 1px dotted var(--main-color-2);
+	outline: -webkit-focus-ring-color auto 5px;
+}
+.inputfile + label * {
+	pointer-events: none;
+}
 /* ---------------------- box setting -----------------------*/
 .box_basic {
     border: 1px solid var(--c-black-5);
@@ -1036,11 +1073,20 @@ table .sub_tit:last-child {
     border-radius: 6px;
 }
 
+
+/* ------------------- Paging 페이징 페이지네이션 ---------------------*/
+/* 버전 1 */
 .pagination-wrap {margin-top: 3rem; width: 100%;}
 .pagination { width: 100%; display: flex; justify-content: center; align-items: center; gap: 1.5rem; color: var(--c-black-5);}
 .pagination button {background: none;}
-.pagination button:disabled span {color: var(--c-black-5) !important;}
+.pagination button:disabled span {color: var(--c-black-5);}
 .pagination span {color: var(--txt-color);}
+/* 버전 2 */
+.pagination-wrap {margin-top: 3rem; width: 100%;}
+.pagination { width: 100%; display: flex; justify-content: center; align-items: center; gap: 1.5rem; color: var(--c-black-5);}
+.pagination li a {background: none; color: #babfc4; font-size: 1.125rem; font-weight: 400;}
+.pagination li.active a {color: var(--sub-color-2); font-weight: 500;}
+.pagination li.disabled a {color: rgb(204, 209, 214); font-size: 1.325rem; font-weight: 300;}
 
 
 /* ---------------------- Error 에러페이지 ------------------------*/

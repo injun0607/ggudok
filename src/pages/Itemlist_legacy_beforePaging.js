@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -7,12 +7,11 @@ import style from '../styles/Item.module.css';
 // component import
 import Filteraside from '../components/Filteraside';
 import ErrorItem from '../components/ErrorItem';
-import Paging from '../components/Paging';
 // redux import
-import { fetchItemsSuccess, filterItem, pagingItem } from '../redux/actions/itemActions';
+import { fetchItemsSuccess, filterItem } from '../redux/actions/itemActions';
 import { setSelectedPrice, setSelectedRating, setSelectedTag } from '../redux/actions/filterActions';
 
-const ITEMS_PER_PAGE = 12;
+const ITEMS_PER_PAGE = 15;
 const NO_IMAGE_URL = '/images/common/noimg.png';
 
 const Itemlist = ({ category, categoryEng }) => {
@@ -22,14 +21,12 @@ const Itemlist = ({ category, categoryEng }) => {
   const selectedTag = useSelector(state => state.filter.selectedTag);
   const items = useSelector(state => state.item.items);
   const filtereditems = useSelector(state => state.item.filtereditems);
-  const pageditems = useSelector(state => state.item.pageditems);
   const [IsResult, setIsResult] = useState(false);
   const [IsLoading, setIsLoading] = useState(true);
   const [filterTag, setFilterTag] = useState([]);
-  const [page, setPage] = useState(1);
-  const [startIndex, setStartIndex] = useState(0);
-  const endIndex = startIndex + ITEMS_PER_PAGE;
-  
+  const [IsPager, setIsPager] = useState(false);
+  const [slicedItems, setSlicedItems] = useState([]);
+
   // ************************** 기본 아이템 fetch ***************************
   const fetchItemListData = async () => {
     try {
@@ -41,13 +38,11 @@ const Itemlist = ({ category, categoryEng }) => {
         const tagsAll = data.map(item => item.tags.map(tag => tag.tagName)).flat();
         setFilterTag(tagsAll.reduce((ac, v) => ac.includes(v) ? ac : [...ac, v], []));
         dispatch(fetchItemsSuccess(data));
-
-        setStartIndex(0);
-        setPage(1);
+        setSlicedItems([...items]);
       } else {
         dispatch(fetchItemsSuccess([]));
         dispatch(filterItem([]));
-        dispatch(pagingItem([]));
+        setSlicedItems([]);
       }
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -66,15 +61,10 @@ useEffect(() => {
   setIsResult(items.length > 0 || filtereditems.length > 0);
 }, [items, filtereditems, categoryEng]);
 
-// 페이지 변경 핸들러
-const handlePageChange = (pageNumber) => {
-  setPage(pageNumber);
-};
+// IsResult 로그 출력
 useEffect(() => {
-  const newStartIndex = (page - 1) * ITEMS_PER_PAGE;
-  setStartIndex(newStartIndex);
-}, [page]);
-
+  console.log('IsResult : ', IsResult);
+}, [IsResult]);
 
   // ****************************** 필터 버튼 핸들러 *******************************
   // 리셋 버튼 핸들러
@@ -118,9 +108,8 @@ useEffect(() => {
   };
 
   // 필터적용 핸들러
-  const handleFilteredItems = useMemo(() => {
+  const handleFilteredItems = async() => {
     let updateditems = items;
-    
     if(selectedPrice !== null){
       updateditems = updateditems.filter(item => {
         if (selectedPrice === 'priceRow') {
@@ -143,27 +132,25 @@ useEffect(() => {
         )
       );
     };
-
-    setIsResult(updateditems.length > 0);
-    if(updateditems.length < 13){
-      setStartIndex(0);
-      setPage(1);
-    }
-
-    // 페이지 아이템 계산
-    const pagedItems = updateditems.slice(startIndex, startIndex + ITEMS_PER_PAGE);
-
-    // Redux 상태 업데이트
     dispatch(filterItem(updateditems));
-    dispatch(pagingItem(pagedItems));
-
-    return updateditems;
-  }, [items, selectedPrice, selectedRating, selectedTag, startIndex, page]);
+    setSlicedItems(updateditems);
+  }
+  useEffect(() => {
+    handleFilteredItems();
+  }, [selectedPrice, selectedRating, selectedTag]);
 
   useEffect(() => {
     if (!IsLoading) {
       if (selectedPrice || selectedRating || selectedTag.length > 0) {
-        setIsResult(filtereditems.length > 0);
+        if(filtereditems.length !== 0){
+          setIsResult(true);
+          setSlicedItems([...filtereditems]);
+        } else if((filtereditems.length === 0)) {
+          setIsResult(false);
+          setSlicedItems([]);
+        }
+      } else {
+        setSlicedItems([...items]);
       }
     }
   }, [IsLoading, filtereditems, items, selectedPrice, selectedRating, selectedTag]);
@@ -180,7 +167,7 @@ useEffect(() => {
           <section className={style.right}>
             <div className={style.section}>
               <div className={style.itemlist}>
-                {IsResult ? pageditems.map((item, index) => (
+                {IsResult ? slicedItems.map((item, index) => (
                   <Link to={`/subs/detail/${item.id}`} key={index} className={style.item}>
                     <div className={style.img}>
                       <img src={`${item.image}`} alt={item.name} onError={(e) => {e.target.src = NO_IMAGE_URL;}}/>
@@ -200,7 +187,17 @@ useEffect(() => {
               </div>
             </div>
 
-            <Paging handlePageChange={handlePageChange} page={page} count={selectedPrice || selectedRating || selectedTag.length > 0 ? filtereditems.length : items.length} ITEMS_PER_PAGE={ITEMS_PER_PAGE} />
+            {/* {IsPager && <div className='pagination-wrap'>
+              <div className='pagination'>
+                  <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>
+                  <span className='material-icons'>chevron_left</span>
+                  </button>
+                  <span>{currentPage}</span> / <span>{totalPages}</span>
+                  <button onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages}>
+                  <span className='material-icons'>chevron_right</span>
+                  </button>
+                </div>
+            </div>} */}
           </section>
         </div>
       </div>

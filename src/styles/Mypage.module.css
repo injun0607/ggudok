@@ -19,8 +19,8 @@
 .box .userName {font-size: 1.5rem; width: 100%; text-align: center;}
 .box .userName .name {font-size: 1.75rem; font-weight: 500; vertical-align: baseline; color: var(--txt-color);}
 .box .category {display: flex; justify-content: space-between; align-items: center; width: 100%; padding: 0.75rem 1.5rem 0.5rem;}
-.box .category a {font-size: 0.938rem; display: flex; gap: 0.5rem; align-items: center; font-weight: 500; color: var(--txt-color);}
-.box .category a.sm {color: #999;  font-weight: 300;}
+.box .category a, .box .category button {font-size: 0.938rem; display: flex; gap: 0.5rem; align-items: center; font-weight: 500; color: var(--txt-color);}
+.box .category button.sm {color: #999;  font-weight: 300; background: none;}
 .box .category a img {max-width: 1.325rem;}
 
 .nav {border: 1px solid var(--c-black-6); border-radius: var(--radius-all-sm);box-sizing: border-box; width: 100%; background: var(--bg-color-2); overflow: hidden;}
