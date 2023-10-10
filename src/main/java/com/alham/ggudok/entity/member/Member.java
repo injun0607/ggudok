@@ -94,4 +94,9 @@ public class Member {
         this.memberHaveSubsList = memberHaveSubsList;
         return this.memberHaveSubsList.size();
     }
+
+    public int updateMemberRelTag(List<MemberRelTag> changeMemberRelTags) {
+        this.memberRelTags = changeMemberRelTags;
+        return memberRelTags.size();
+    }
 }

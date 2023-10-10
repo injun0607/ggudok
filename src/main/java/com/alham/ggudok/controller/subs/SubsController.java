@@ -231,7 +231,7 @@ public class SubsController {
         MemberDto memberDto = isLoginUser(principal);
         Subs subs = subsService.findSubsById(subsId);
         memberService.removeMemberFavorSubs(memberDto.getLoginId(), subs);
-
+        memberService.updateMemberTagRecommend(memberDto.getLoginId(),subs);
         return true;
 
     }
@@ -252,7 +252,6 @@ public class SubsController {
         Subs findSubs = subsService.findSubsByIdWithTag(subsBuyDto.getSubsId());
         if (memberService.buySubs(memberDto.getLoginId(), findSubs, subsBuyDto.getRankLevel())) {
             memberService.updateMemberTagRecommend(memberDto.getLoginId(), findSubs);
-
         }
 
         return true;
@@ -263,6 +262,7 @@ public class SubsController {
         MemberDto loginUser = isLoginUser(principal);
         Subs subs = subsService.findSubsById(subsBuyDto.getSubsId());
         memberService.removeMemberHaveSubs(loginUser.getLoginId(), subs);
+        memberService.updateMemberTagRecommend(loginUser.getLoginId(),subs);
 
         return true;
 

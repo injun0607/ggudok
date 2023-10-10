@@ -2,6 +2,7 @@ package com.alham.ggudok.entity.member;
 
 import com.alham.ggudok.entity.Tag;
 import jakarta.persistence.*;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

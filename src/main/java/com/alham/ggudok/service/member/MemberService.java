@@ -382,17 +382,18 @@ public class MemberService {
 
         for (Member memberWithTag : allWithTag) {
             List<MemberRelTag> memberRelTags = memberWithTag.getMemberRelTags();
-            if (result.get(memberWithTag.getMemberId()) != null) {
+            if (memberWithTag.getMemberHaveSubsList().size() == 0 && memberWithTag.getMemberFavorSubsList().size() == 0) {
+                deleteMemberRelTag(memberWithTag);
+            } else {
                 Map<Tag, Integer> tagScoreMap = result.get(memberWithTag.getMemberId());
                 Map<Tag, Integer> tagFavorCntMap = resultFavorCntMap.get(memberWithTag.getMemberId());
                 Map<Tag, Integer> tagHaveCntMap = resultHaveCntMap.get(memberWithTag.getMemberId());
 
+
                 Map<Tag, Integer> sortedMap = GgudokUtil.mapSortByValueDescending(tagScoreMap);
                 memberTagSortUpdate(sortedMap.keySet(), tagFavorCntMap, tagHaveCntMap, memberWithTag);
-
-            } else{
-                deleteMemberRelTag(memberWithTag);
             }
+
 
 
         }
@@ -416,13 +417,18 @@ public class MemberService {
 
             //회원들을 subsList를 순회하면서
             //해당 subs에 있는 태그들을 순서를 매긴다
-            List<Subs> memberHaveSbusList = member.getMemberHaveSubsList().stream().map(srt -> srt.getSubs()).collect(Collectors.toList());
+            List<Subs> memberHaveSubsList = member.getMemberHaveSubsList().stream().map(srt -> srt.getSubs()).collect(Collectors.toList());
 
-            sumTagScore(tagScoreMap, tagHaveCntMap, memberHaveSbusList, 2);
+            sumTagScore(tagScoreMap, tagHaveCntMap, memberHaveSubsList, 2);
 
             List<Subs> memberFavorSubsList = member.getMemberFavorSubsList().stream().map(srt -> srt.getSubs()).collect(Collectors.toList());
             Map<Tag, Integer> tagFavorCntMap = new HashMap<>();
+
             sumTagScore(tagScoreMap, tagFavorCntMap, memberFavorSubsList, 1);
+
+            if (memberHaveSubsList.size() == 0 && memberFavorSubsList.size() == 0) {
+                deleteMemberRelTag(member);
+            }
 
             //좋아요와 구독한 서비스가 없는 회원들은 tag sort를 설정하지않는다.
             Map<Tag, Integer> sortedMap = GgudokUtil.mapSortByValueDescending(tagScoreMap);
@@ -468,6 +474,7 @@ public class MemberService {
      * @param tagSet
      * @param member
      */
+
     private void memberTagSortUpdate(Set<Tag> tagSet,Map<Tag, Integer>tagFavorCntMap,Map<Tag, Integer>tagHaveCntMap, Member member) {
         HashMap<Tag, Integer> tagRankMap = new HashMap<>();
         Set<Tag> tags = tagSet;
@@ -479,24 +486,53 @@ public class MemberService {
 
         List<MemberRelTag> memberRelTags = member.getMemberRelTags();
         for (MemberRelTag mrt : memberRelTags) {
-            if (tagFavorCntMap != null) {
+            if (tagFavorCntMap.size()!=0) {
                 if (tagFavorCntMap.containsKey(mrt.getTag())) {
                     mrt.updateFavorCnt(tagFavorCntMap.get(mrt.getTag()));
                 }
+            }else{
+                mrt.updateFavorCnt(0);
             }
 
-            if (tagHaveCntMap != null) {
+            if (tagHaveCntMap.size()!=0) {
                 if (tagHaveCntMap.containsKey(mrt.getTag())) {
                     mrt.updateHaveCnt(tagHaveCntMap.get(mrt.getTag()));
                 }
+            }else{
+                mrt.updateHaveCnt(0);
             }
 
-            mrt.updateTagSort(tagRankMap.get(mrt.getTag()));
+            if (tagRankMap.containsKey(mrt.getTag())) {
+                mrt.updateTagSort(tagRankMap.get(mrt.getTag()));
+            }
 
         }
     }
 
+    /**
+     * 해당 member의 favorSubsList, HaveSubsList가 없을때
+     * member의 memberRelTag 를 순회하면서 기본태그이외의 태그를 지워준다.
+     * @param member
+     */
+    @Transactional
     public void deleteMemberRelTag(Member member) {
+        List<MemberRelTag> memberRelTags = member.getMemberRelTags();
+
+
+        for (int i = memberRelTags.size() - 1; i >= 0; i--) {
+            if (memberRelTags.get(i).isBasic()) {
+                MemberRelTag memberRelTag = memberRelTags.get(i);
+                memberRelTag.updateHaveCnt(0);
+                memberRelTag.updateFavorCnt(0);
+
+            }else{
+                MemberRelTag memberRelTag = memberRelTags.get(i);
+                memberRelTags.remove(memberRelTag);
+            }
+
+        }
+
+
 
     }
 }
