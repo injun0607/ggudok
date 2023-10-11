@@ -5,6 +5,7 @@ import com.alham.ggudok.entity.subs.Category;
 import com.alham.ggudok.entity.subs.Subs;
 import com.alham.ggudok.entity.subs.SubsContent;
 import com.alham.ggudok.entity.subs.SubsRank;
+import com.alham.ggudok.service.TagService;
 import com.alham.ggudok.tempadmin.dto.TagForm;
 import com.alham.ggudok.tempadmin.dto.subs.AdminSubsRankDto;
 import com.alham.ggudok.tempadmin.dto.subs.CategoryRegisterDto;
@@ -32,6 +33,7 @@ public class TempAdminController {
     private final AdminSubsService adminSubsService;
 
     private final AdminTagService tagService;
+
 
 
     @PostMapping("/category/register")
@@ -146,6 +148,28 @@ public class TempAdminController {
         return "redirect:/admin/subs/{subsId}/{subsRankId}/contents";
     }
 
+    @PostMapping("subs/{subsId}/tag")
+    public String addSubsTag(@PathVariable("subsId") Long subsId ,TagForm tagForm) {
+        adminSubsService.addSubsTag(subsId, tagForm);
+
+        return "redirect:/admin/subs/{subsId}/tag";
+    }
+
+    @GetMapping("subs/{subsId}/tag")
+    public String showSubsTag(@PathVariable("subsId")Long subsId,Model model) {
+
+        List<Tag> allTag = tagService.findAllTag();
+        List<Tag> tagsBySubsId = tagService.findTagsBySubsId(subsId);
+        model.addAttribute("subsId",subsId);
+        model.addAttribute("form", new TagForm());
+        model.addAttribute("tags", allTag);
+        model.addAttribute("subsTags", tagsBySubsId);
+
+        return "/admin/subs/subsTagAddForm";
+
+    }
+
+
     @GetMapping("tag/add")
     public String showTagForm(Model model) {
 
@@ -169,6 +193,8 @@ public class TempAdminController {
 
         return "redirect:/admin/tag";
     }
+
+
 
 
 }

@@ -114,16 +114,6 @@ public class SubsService {
 
     }
 
-    @Transactional
-    public void likeSubs(Subs subs) {
-        subs.likeSubs();
-    }
-
-    @Transactional
-    public void dislike(Subs subs) {
-        subs.dislikeSubs();
-    }
-
     /**
      *
      * @param subsList(With Tag)
@@ -246,4 +236,8 @@ public class SubsService {
     }
 
 
+    @Transactional
+    public void updateRatingAvg(Subs subs,int ratingAvg) {
+        subs.updateRatingAvg(ratingAvg);
+    }
 }

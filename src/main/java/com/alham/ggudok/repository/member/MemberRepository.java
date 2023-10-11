@@ -12,7 +12,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     Optional<Member> findByLoginId(String loginId);
 
-    @Query("select m from Member m join fetch m.memberRelTags mt join fetch mt.tag where m.loginId = :loginId")
+    @Query("select m from Member m join fetch m.memberRelTags mt join fetch mt.tag where m.loginId = :loginId order by mt.tagSort asc")
     Optional<Member> findByLoginIdWithTags(@Param("loginId") String loginId);
 
 

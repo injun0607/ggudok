@@ -4,6 +4,7 @@ package com.alham.ggudok.dto.subs;
 import com.alham.ggudok.entity.Tag;
 import com.alham.ggudok.entity.subs.SubsRank;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
@@ -14,6 +15,7 @@ import java.util.List;
  */
 @Data
 @NoArgsConstructor
+@EqualsAndHashCode(of = {"id"})
 public class SubsDto {
 
     private Long id;

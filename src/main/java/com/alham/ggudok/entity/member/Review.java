@@ -1,5 +1,6 @@
 package com.alham.ggudok.entity.member;
 
+import com.alham.ggudok.entity.BaseTimeEntity;
 import com.alham.ggudok.entity.subs.Subs;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -10,7 +11,7 @@ import static jakarta.persistence.FetchType.*;
 @Entity
 @Getter
 @NoArgsConstructor
-public class Review {
+public class Review extends BaseTimeEntity {
 
     @Id
     @GeneratedValue
@@ -59,11 +60,6 @@ public class Review {
     public Review noReview() {
         return new Review();
     }
-
-
-
-
-
 
 
 }

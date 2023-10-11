@@ -62,4 +62,8 @@ public class ReviewService {
     public Optional<List<Review>> findSubsReviewsBySubsId(Long subsId) {
         return reviewRepository.findSubsReviewsBySubsId(subsId);
     }
+
+    public Integer updateRatingAvg(Long subsId) {
+        return reviewRepository.findRatingAvgById(subsId);
+    }
 }

@@ -7,6 +7,8 @@ import com.alham.ggudok.dto.MainDto;
 import com.alham.ggudok.dto.member.MemberDto;
 import com.alham.ggudok.entity.Tag;
 import com.alham.ggudok.entity.member.Member;
+import com.alham.ggudok.entity.member.MemberFavorSubs;
+import com.alham.ggudok.entity.member.MemberHaveSubs;
 import com.alham.ggudok.entity.subs.Subs;
 import com.alham.ggudok.exception.ErrorResult;
 import com.alham.ggudok.service.TagService;
@@ -23,9 +25,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static com.alham.ggudok.controller.session.SessionConst.SESSION_MEMBER;
 
@@ -47,28 +51,61 @@ public class HomeController {
         MemberDto memberDto = SecurityUtils.transPrincipal(principal);
         //event페이지
         MainDto mainDto = new MainDto();
+        List<Subs> allSubsList = subsService.findAllSubsList();
 
         if (memberDto != null) {
 
-            List<Subs> allSubsList = subsService.findAllSubsList();
             List<Tag> tagList = tagService.findTagsByLoginId(memberDto.getLoginId());
             //기본 추천 서비스(ex. 나이 남성)
-            List<Tag> genderAndAge = tagService.findGenderAndAge(tagList);
-            List<Subs> subsListByTagList = subsService.findSubsListByTagList(allSubsList,genderAndAge);
-            mainDto.transRecommendBasic(subsListByTagList);
+            Member member = memberService.findByLoginIdWithTags(memberDto.getLoginId());
+
+            List<Subs> memberHaveSubsList = member.getMemberHaveSubsList()
+                    .stream().map(mhs -> mhs.getSubs())
+                    .collect(Collectors.toList());
+            List<Subs> memberFavorSubsList = member.getMemberFavorSubsList()
+                    .stream()
+                    .map(mfs -> mfs.getSubs())
+                    .collect(Collectors.toList());
+
+            allSubsList.removeAll(memberHaveSubsList);
+            allSubsList.removeAll(memberFavorSubsList);
+
+            List<Tag> basicTag = member.getMemberRelTags().stream()
+                    .filter(mrt -> mrt.isBasic())
+                    .map(mrt -> mrt.getTag())
+                    .collect(Collectors.toList());
+
+            List<Subs> subsListRecommendBasic = subsService.findSubsListByTagList(allSubsList,basicTag);
+            mainDto.transRecommendBasic(subsListRecommendBasic);
             //알고리즘 맞춤 서비스
             //해당 유저가 좋아요한 구독정보를 위주로
             //좋아요가 없으면 인기순위
+            //추천태그는 7개만
+            List<Tag> recommendTagList = new ArrayList<>();
+            for (int i = 0; i < tagList.size(); i++) {
+                if (tagList.get(i) != null) {
+                    //태그는 최대 7개까지
+                    if (i > 7) {
+                        break;
+                    }
+                    recommendTagList.add(tagList.get(i));
 
+                }else{
+                    break;
+                }
+            }
 
-
-
-
-
-
+            List<Subs> subsListRecommendCustom = subsService.findSubsListByTag(allSubsList, recommendTagList);
+            if (subsListRecommendCustom.size() != 0) {
+                mainDto.transRecommendCustomized(subsListRecommendCustom);
+            }else{
+                mainDto.transDefaultSubs(allSubsList);
+            }
 
         } else {
-            List<Subs> defRecomSubsList = subsService.findRecommendSubsList();
+            mainDto.transRecommendBasic(allSubsList);
+            mainDto.transDefaultSubs(allSubsList);
+
         }
 
         return mainDto;

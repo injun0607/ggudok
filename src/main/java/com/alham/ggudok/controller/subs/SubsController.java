@@ -187,12 +187,10 @@ public class SubsController {
         //리뷰 Dto 생성
         //평균별점 계산
         Optional<List<Review>> optionalReviews = reviewService.findSubsReviewsBySubsId(subsId);
-        int sumRating = 0;
         if (optionalReviews.get().size() != 0) {
             List<Review> reviews = optionalReviews.get();
             List<ReviewDto> reviewDtoList = new ArrayList<>();
             for (Review r : reviews) {
-                sumRating += r.getRating();
                 reviewDtoList.add(new ReviewDto(r.getContent(),
                         r.getMember().getMemberName(),
                         subsId ,subs.getSubsName(),
@@ -200,7 +198,7 @@ public class SubsController {
                         subs.getImage()));
             }
             subsDetailDto.setReviews(reviewDtoList);
-            subsDetailDto.setRatingAvg(sumRating/reviews.size());
+            subsDetailDto.setRatingAvg(subs.getRatingAvg());
         }
 
         //subsMainDetail Dto 생성
@@ -242,6 +240,8 @@ public class SubsController {
         Member member = memberService.findMemberWithReviewsByloginId(memberDto.getLoginId());
         Subs subs = subsService.findSubsById(reviewDto.getSubsId());
         reviewService.writeReview(member, subs, reviewDto.getContents(), reviewDto.getRating());
+        Integer ratingAvg = reviewService.updateRatingAvg(subs.getSubsId());
+        subsService.updateRatingAvg(subs,ratingAvg);
 
         return true;
     }
@@ -439,6 +439,18 @@ public class SubsController {
         reviewService.writeReview(injun3, healthCare2, "laftel1", 5);
         reviewService.writeReview(injun4, healthCare2, "laftel1", 5);
         reviewService.writeReview(injun5, healthCare2, "laftel1", 5);
+
+        Integer netRating = reviewService.updateRatingAvg(netfilx.getSubsId());
+        Integer watRating = reviewService.updateRatingAvg(watcha.getSubsId());
+        Integer hel2Rating = reviewService.updateRatingAvg(healthCare2.getSubsId());
+        Integer helRating = reviewService.updateRatingAvg(healthCare.getSubsId());
+        Integer doRating = reviewService.updateRatingAvg(dosirak.getSubsId());
+
+        subsService.updateRatingAvg(netfilx,netRating);
+        subsService.updateRatingAvg(watcha,watRating);
+        subsService.updateRatingAvg(healthCare2,hel2Rating);
+        subsService.updateRatingAvg(healthCare,helRating);
+        subsService.updateRatingAvg(dosirak,doRating);
     }
 
 

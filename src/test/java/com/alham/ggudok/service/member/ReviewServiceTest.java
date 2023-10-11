@@ -220,6 +220,79 @@ class ReviewServiceTest {
 
     }
 
+    @Test
+    public void updateRatingAvg()throws Exception{
+        MemberRegisterDto memberRegisterDto = new MemberRegisterDto();
+        memberRegisterDto.setMemberName("injun");
+        memberRegisterDto.setAge(20);
+        memberRegisterDto.setPassword("123123");
+        memberRegisterDto.setPasswordCheck("123123");
+        memberRegisterDto.setGender(Gender.MAN);
+        memberRegisterDto.setLoginId("injun0607@naver.com");
+
+        memberService.registerMember(memberRegisterDto);
+
+        MemberRegisterDto memberRegisterDto2 = new MemberRegisterDto();
+        memberRegisterDto2.setMemberName("injun");
+        memberRegisterDto2.setAge(20);
+        memberRegisterDto2.setPassword("123123");
+        memberRegisterDto2.setPasswordCheck("123123");
+        memberRegisterDto2.setGender(Gender.MAN);
+        memberRegisterDto2.setLoginId("yinjun0607@naver.com");
+
+        memberService.registerMember(memberRegisterDto2);
+
+        MemberRegisterDto memberRegisterDto3 = new MemberRegisterDto();
+        memberRegisterDto3.setMemberName("injun");
+        memberRegisterDto3.setAge(20);
+        memberRegisterDto3.setPassword("123123");
+        memberRegisterDto3.setPasswordCheck("123123");
+        memberRegisterDto3.setGender(Gender.MAN);
+        memberRegisterDto3.setLoginId("yhgu0607@naver.com");
+
+        memberService.registerMember(memberRegisterDto3);
+
+        Subs subs = new Subs("subs1");
+        subsRepository.save(subs);
+
+        Subs subs2 = new Subs("subs2");
+        subsRepository.save(subs2);
+
+        Subs subs3 = new Subs("subs3");
+        subsRepository.save(subs3);
+
+        em.flush();
+        em.clear();
+        //when
+        Member member1 = memberRepository.findByLoginId("injun0607@naver.com").get();
+        Member member2 = memberRepository.findByLoginId("yinjun0607@naver.com").get();
+        Member member3 = memberRepository.findByLoginId("yhgu0607@naver.com").get();
+
+        Subs findsubs1 = subsRepository.findSubsBySubsName("subs1");
+        Subs findSubs2 = subsRepository.findSubsBySubsName("subs2");
+        Subs findSubs3 = subsRepository.findSubsBySubsName("subs3");
+
+
+        reviewService.writeReview(member1,findsubs1,"review so good",5);
+        reviewService.writeReview(member1,findSubs2,"review so good2",3);
+        reviewService.writeReview(member1,findSubs3,"review so good3",5);
+
+        reviewService.writeReview(member2,findsubs1,"review so good4",5);
+        reviewService.writeReview(member2,findSubs2,"review so good5",3);
+        reviewService.writeReview(member2,findSubs3,"review so good6",5);
+
+        reviewService.writeReview(member3,findsubs1,"review so good7",5);
+        reviewService.writeReview(member3,findSubs2,"review so good8",3);
+        //when
+        Integer subs1rating = reviewService.updateRatingAvg(findsubs1.getSubsId());
+        //then
+        assertEquals(subs1rating,5);
+
+
+
+
+    }
+
 
 
 }

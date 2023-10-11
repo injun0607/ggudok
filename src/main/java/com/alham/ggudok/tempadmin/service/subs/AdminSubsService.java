@@ -1,11 +1,14 @@
 package com.alham.ggudok.tempadmin.service.subs;
 
+import com.alham.ggudok.entity.Tag;
 import com.alham.ggudok.entity.subs.Category;
 import com.alham.ggudok.entity.subs.Subs;
 import com.alham.ggudok.entity.subs.SubsContent;
 import com.alham.ggudok.entity.subs.SubsRank;
+import com.alham.ggudok.repository.TagRepository;
 import com.alham.ggudok.repository.subs.CategoryRepository;
 import com.alham.ggudok.repository.subs.SubsRepository;
+import com.alham.ggudok.tempadmin.dto.TagForm;
 import com.alham.ggudok.tempadmin.dto.subs.AdminSubsRankDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,6 +27,8 @@ public class AdminSubsService {
 
     private final CategoryRepository categoryRepository;
     private final SubsRepository subsRepository;
+
+    private final TagRepository tagRepository;
 
     public Category createCategory(String categoryName) {
 
@@ -76,6 +81,8 @@ public class AdminSubsService {
     }
 
 
+
+
     public void deleteSubsContent(Long subsId,Long ContentId) {
 
 
@@ -98,4 +105,10 @@ public class AdminSubsService {
     }
 
 
+    @Transactional
+    public void addSubsTag(Long subsId, TagForm tagForm) {
+        Subs subs = subsRepository.findSubsByIdWithTag(subsId).get();
+        Tag tag = tagRepository.findTagByTagName(tagForm.getTagName());
+        subs.addTag(tag);
+    }
 }

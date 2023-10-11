@@ -31,9 +31,9 @@ public class Subs extends ImageResourceEntity {
     //구독서비스 설명
     private String info;
 
-    private Integer likeCount = 0;
-
     private Integer recommendSort = Integer.MAX_VALUE -10000;
+
+    private int ratingAvg;
 
     @OneToMany(mappedBy = "subs",cascade = ALL)
     List<SubsRank> subsRanks = new ArrayList<>();
@@ -64,15 +64,12 @@ public class Subs extends ImageResourceEntity {
         SubsRelTag subsRelTag = SubsRelTag.createSubsRelTag(this, tag);
     }
 
-    public void likeSubs() {
-        this.likeCount++;
-    }
-
-    public void dislikeSubs() {
-        this.likeCount--;
-    }
 
     public void updateRecommendSort(int sort) {
         this.recommendSort = sort;
+    }
+
+    public void updateRatingAvg(int ratingAvg) {
+        this.ratingAvg = ratingAvg;
     }
 }
