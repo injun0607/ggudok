@@ -1085,7 +1085,7 @@ table .sub_tit:last-child {
 .pagination-wrap {margin-top: 3rem; width: 100%;}
 .pagination { width: 100%; display: flex; justify-content: center; align-items: center; gap: 1.5rem; color: var(--c-black-5);}
 .pagination li a {background: none; color: #babfc4; font-size: 1.125rem; font-weight: 400;}
-.pagination li.active a {color: var(--sub-color-2); font-weight: 500;}
+.pagination li.active a {color: var(--txt-color); font-weight: 500;}
 .pagination li.disabled a {color: rgb(204, 209, 214); font-size: 1.325rem; font-weight: 300;}
 
 

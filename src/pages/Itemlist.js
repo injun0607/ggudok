@@ -143,8 +143,13 @@ useEffect(() => {
         )
       );
     };
+    // 필터조작 후 1페이지로 이동
+    if (selectedPrice !== null || selectedRating !== null || selectedTag.length !== 0) {
+      setPage(1);
+    }
 
     setIsResult(updateditems.length > 0);
+
     if(updateditems.length < 13){
       setStartIndex(0);
       setPage(1);
