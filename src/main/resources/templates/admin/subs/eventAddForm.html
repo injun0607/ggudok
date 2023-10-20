@@ -1,0 +1,38 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header" />
+<body>
+<div class="container">
+    <div th:replace="fragments/bodyHeader :: bodyHeader"/>
+    <form th:action="@{/admin/event/{eventId} (eventId = ${eventSubs.eventId})}" th:object="${form}" method="post">
+
+        <div class="form-group">
+            <label >이벤트 태그</label>
+            <input type="text" th:field="*{infoTag}" class="form-control"
+                   placeholder="이벤트 태그를 입력하세요">
+        </div>
+        <div class="form-group">
+            <label >이벤트 설명</label>
+            <input type="text" th:field="*{info}" class="form-control"
+                   placeholder="이벤트 설명을 입력하세요">
+        </div>
+        <div>
+            <label th:for="price">시작 날짜</label>
+            <input type="text" th:field="*{startDate}" placeholder="yyyymmdd의 형식으로 입력해주세요">
+        </div>
+        <div>
+            <label th:for="price">종료 날짜</label>
+            <input type="text" th:field="*{endDate}" placeholder="yyyymmdd의 형식으로 입력해주세요">
+        </div>
+        <div>
+            <input type="checkbox" id="valid" th:field="*{valid}" class="form-checkinput">
+            <label for="valid" class="form-check-label">활성화</label>
+        </div>
+
+        <button type="submit" class="btn btn-primary">수정</button>
+    </form>
+    <br/>
+    <div th:replace="fragments/footer :: footer" />
+</div> <!-- /container -->
+</body>
+</html>

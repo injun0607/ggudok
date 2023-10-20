@@ -6,6 +6,7 @@ import com.alham.ggudok.dto.member.MemberRegisterDto;
 import com.alham.ggudok.dto.member.MemberSubsDto;
 import com.alham.ggudok.dto.member.ReviewDto;
 import com.alham.ggudok.dto.subs.*;
+import com.alham.ggudok.entity.Tag;
 import com.alham.ggudok.entity.member.Gender;
 import com.alham.ggudok.entity.member.Member;
 import com.alham.ggudok.entity.member.Review;
@@ -46,6 +47,7 @@ public class SubsController {
     private final ReviewService reviewService;
 
     private final MemberService memberService;
+
 
 
     Random random = new Random();
@@ -164,8 +166,8 @@ public class SubsController {
         subsDetailDto.setIcon(subs.getIcon());
         subsDetailDto.setImage(subs.getImage());
         subsDetailDto.setCategory(subs.getCategory().getCategoryName());
-
-        subsDetailDto.setTags(tagService.findTagsBySubsId(subsId));
+        List<Tag> tagList = tagService.findTagsBySubsId(subsId);
+        subsDetailDto.setTags(tagList);
 
         List<SubsRank> contentBySubsId = subsService.findContentBySubsId(subsId);
         List<SubsRankDetailDto> subsRankDetailDtoList = new ArrayList<>();
@@ -201,11 +203,17 @@ public class SubsController {
             subsDetailDto.setRatingAvg(subs.getRatingAvg());
         }
 
+        //비슷한 아이템 생성
+        //태그를 통해서 비슷한 아이템 생성?
+        //두가지 이상의 태그가 있는 아이템을 추천
+        List<SubsDto> similarItems = new ArrayList<>();
+
+
         //subsMainDetail Dto 생성
         SubsMainDetailDto subsMainDetailDto = new SubsMainDetailDto();
         subsMainDetailDto.setItemDetail(subsDetailDto);
         subsMainDetailDto.setMemberInfo(memberSubsDto);
-
+        subsMainDetailDto.setSimilarItems(similarItems);
 
         return subsMainDetailDto;
     }
@@ -265,7 +273,6 @@ public class SubsController {
         memberService.updateMemberTagRecommend(loginUser.getLoginId(),subs);
 
         return true;
-
     }
 
     @GetMapping("/sort_init")

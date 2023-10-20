@@ -1,14 +1,13 @@
 package com.alham.ggudok.dto;
 
+import com.alham.ggudok.dto.subs.EventSubsDto;
 import com.alham.ggudok.dto.subs.SubsDto;
 import com.alham.ggudok.entity.subs.Subs;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -18,7 +17,7 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 public class MainDto {
 
-    private List<String> eventSubs = new ArrayList<>();
+    private List<EventSubsDto> eventSubs = new ArrayList<>();
     private List<SubsDto> recommendBasic = new ArrayList<>();
     private List<SubsDto> recommendCustomized = new ArrayList<>();
     private List<SubsDto> defaultSubs = new ArrayList<>();

@@ -5,16 +5,18 @@ import com.alham.ggudok.config.security.SecurityUtils;
 import com.alham.ggudok.controller.session.SessionMemberDto;
 import com.alham.ggudok.dto.MainDto;
 import com.alham.ggudok.dto.member.MemberDto;
+import com.alham.ggudok.dto.subs.EventPageDto;
+import com.alham.ggudok.dto.subs.EventSubsDto;
 import com.alham.ggudok.entity.Tag;
 import com.alham.ggudok.entity.member.Member;
-import com.alham.ggudok.entity.member.MemberFavorSubs;
-import com.alham.ggudok.entity.member.MemberHaveSubs;
+import com.alham.ggudok.entity.subs.EventSubs;
 import com.alham.ggudok.entity.subs.Subs;
 import com.alham.ggudok.exception.ErrorResult;
 import com.alham.ggudok.service.TagService;
 import com.alham.ggudok.service.member.MemberService;
 import com.alham.ggudok.service.member.ReviewService;
 import com.alham.ggudok.service.subs.SubsService;
+import com.alham.ggudok.util.GgudokUtil;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -26,9 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import static com.alham.ggudok.controller.session.SessionConst.SESSION_MEMBER;
@@ -45,6 +45,7 @@ public class HomeController {
     private final ReviewService reviewService;
 
 
+
     @GetMapping("/")
     public MainDto main(Principal principal) {
 
@@ -52,6 +53,27 @@ public class HomeController {
         //event페이지
         MainDto mainDto = new MainDto();
         List<Subs> allSubsList = subsService.findAllSubsList();
+        List<EventSubs> allEventSubs = subsService.findAllEventSubs();
+        List<EventSubsDto> eventSubsDtoList = new ArrayList<>();
+
+        for (EventSubs eventSub : allEventSubs) {
+            EventSubsDto eventSubsDto = new EventSubsDto();
+            eventSubsDto.setSubsId(eventSub.getSubs().getSubsId());
+            eventSubsDto.setInfo(eventSub.getInfo());
+            eventSubsDto.setInfoTag(eventSub.getInfoTag());
+            eventSubsDto.setCategoryName(eventSub.getSubs().getCategory().getCategoryName());
+            eventSubsDto.setSubsName(eventSub.getSubs().getSubsName());
+
+            String startDate = GgudokUtil.transferDateTime(eventSub.getStartDate());
+            String endDate = GgudokUtil.transferDateTime(eventSub.getEndDate());
+
+            eventSubsDto.setStartDate(startDate);
+            eventSubsDto.setEndDate(endDate);
+
+            eventSubsDtoList.add(eventSubsDto);
+        }
+
+        mainDto.setEventSubs(eventSubsDtoList);
 
         if (memberDto != null) {
 
@@ -112,25 +134,32 @@ public class HomeController {
 
     }
 
-    private Map<String, List<Subs>> defaultSubs() {
-        Map<String, List<Subs>> defaultSubs = new HashMap<>();
-        return defaultSubs;
-    }
+    @GetMapping("/event")
+    public EventPageDto showEvent() {
 
-    /*
-     * 추천 서비스
-     *  - 1순위 : 구매횟수가 많은것(횟수당 4점)
-        - 2순위: 좋아요 횟수가 많은것(좋아요당 3점)
-        - 3순위: 별점이 높은것(별점당 0.4점)
-        - 4순위: 리뷰가 많은것(리뷰당 1점)
-        *
-     */
+        List<EventSubs> allEventSubs = subsService.findAllEventSubs();
+        List<EventSubsDto> eventSubsDtoList = new ArrayList<>();
 
-    //basic서비스는 나이와 성별로 추천
+        for (EventSubs eventSub : allEventSubs) {
+            EventSubsDto eventSubsDto = new EventSubsDto();
+            eventSubsDto.setSubsId(eventSub.getSubs().getSubsId());
+            eventSubsDto.setInfo(eventSub.getInfo());
+            eventSubsDto.setInfoTag(eventSub.getInfoTag());
+            eventSubsDto.setCategoryName(eventSub.getSubs().getCategory().getCategoryName());
+            eventSubsDto.setSubsName(eventSub.getSubs().getSubsName());
 
-    private Map<String, List<Subs>> recommendCustomized(String loginId) {
-        Map<String, List<Subs>> customizedSubsListMap = new HashMap<>();
-        return customizedSubsListMap;
+            String startDate = GgudokUtil.transferDateTime(eventSub.getStartDate());
+            String endDate = GgudokUtil.transferDateTime(eventSub.getEndDate());
+
+            eventSubsDto.setStartDate(startDate);
+            eventSubsDto.setEndDate(endDate);
+
+            eventSubsDtoList.add(eventSubsDto);
+        }
+        EventPageDto eventPageDto = new EventPageDto();
+        eventPageDto.setEventSubs(eventSubsDtoList);
+
+        return eventPageDto;
     }
 
 //    @PostMapping("/login")
@@ -218,4 +247,5 @@ public class HomeController {
         reviewService.writeReview(yh, healthCare2, "껑껑이 리뷰!", 4);
 
     }
+
 }

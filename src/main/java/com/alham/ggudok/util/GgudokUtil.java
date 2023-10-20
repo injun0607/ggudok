@@ -1,9 +1,9 @@
 package com.alham.ggudok.util;
 
-import com.alham.ggudok.entity.Tag;
-
 import javax.mail.*;
-import javax.mail.internet.*;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -108,5 +108,16 @@ public class GgudokUtil {
 
         return sortedMap;
 
+    }
+
+    public static String transferDateTime(LocalDateTime localDateTime) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(localDateTime.getYear());
+        sb.append(".");
+        sb.append(localDateTime.getMonthValue());
+        sb.append(".");
+        sb.append(localDateTime.getDayOfMonth());
+
+        return sb.toString();
     }
 }

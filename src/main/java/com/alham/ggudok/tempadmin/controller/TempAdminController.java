@@ -1,16 +1,10 @@
 package com.alham.ggudok.tempadmin.controller;
 
 import com.alham.ggudok.entity.Tag;
-import com.alham.ggudok.entity.subs.Category;
-import com.alham.ggudok.entity.subs.Subs;
-import com.alham.ggudok.entity.subs.SubsContent;
-import com.alham.ggudok.entity.subs.SubsRank;
-import com.alham.ggudok.service.TagService;
+import com.alham.ggudok.entity.subs.*;
+import com.alham.ggudok.repository.subs.EventRepository;
 import com.alham.ggudok.tempadmin.dto.TagForm;
-import com.alham.ggudok.tempadmin.dto.subs.AdminSubsRankDto;
-import com.alham.ggudok.tempadmin.dto.subs.CategoryRegisterDto;
-import com.alham.ggudok.tempadmin.dto.subs.SubsContentForm;
-import com.alham.ggudok.tempadmin.dto.subs.SubsRegisterDto;
+import com.alham.ggudok.tempadmin.dto.subs.*;
 import com.alham.ggudok.tempadmin.service.AdminTagService;
 import com.alham.ggudok.tempadmin.service.subs.AdminSubsService;
 import lombok.RequiredArgsConstructor;
@@ -34,6 +28,7 @@ public class TempAdminController {
 
     private final AdminTagService tagService;
 
+    private final EventRepository eventRepository;
 
 
     @PostMapping("/category/register")
@@ -85,7 +80,7 @@ public class TempAdminController {
     }
 
     @GetMapping("subs/{subsId}/subsRank")
-    public String showSubsRankForm(@PathVariable("subsId") Long subsId,Model model) {
+    public String showSubsRankForm(@PathVariable("subsId") Long subsId, Model model) {
         Subs subs = adminSubsService.findSubsById(subsId);
 
         model.addAttribute("subs", subs);
@@ -95,7 +90,7 @@ public class TempAdminController {
     }
 
     @PostMapping("subs/{subsId}/subsRank")
-    public String addSubsRankForm(@PathVariable("subsId") Long subsId,AdminSubsRankDto adminSubsRankDto) {
+    public String addSubsRankForm(@PathVariable("subsId") Long subsId, AdminSubsRankDto adminSubsRankDto) {
 
         adminSubsService.addSubsRank(subsId, adminSubsRankDto);
 
@@ -120,8 +115,8 @@ public class TempAdminController {
 
     @GetMapping("subs/{subsId}/{subsRankId}/contents/add")
     public String showSubsContentForm(@PathVariable("subsId") Long subsId,
-                                  @PathVariable("subsRankId") Long subsRankId,
-                                  Model model) {
+                                      @PathVariable("subsRankId") Long subsRankId,
+                                      Model model) {
 
         Subs subs = adminSubsService.findSubsById(subsId);
         SubsRank subsRank = subs.getSubsRanks().stream().filter(rank -> rank.getRankId() == subsRankId).findFirst().get();
@@ -135,12 +130,10 @@ public class TempAdminController {
     }
 
 
-
-
     @PostMapping("subs/{subsId}/{subsRankId}/contents")
     public String addSubsContent(@PathVariable("subsId") Long subsId,
-                                  @PathVariable("subsRankId") Long subsRankId,
-                                  SubsContentForm subsContentForm) {
+                                 @PathVariable("subsRankId") Long subsRankId,
+                                 SubsContentForm subsContentForm) {
 
         adminSubsService.addSubsContent(subsId, subsRankId, subsContentForm.getContent());
 
@@ -149,18 +142,18 @@ public class TempAdminController {
     }
 
     @PostMapping("subs/{subsId}/tag")
-    public String addSubsTag(@PathVariable("subsId") Long subsId ,TagForm tagForm) {
+    public String addSubsTag(@PathVariable("subsId") Long subsId, TagForm tagForm) {
         adminSubsService.addSubsTag(subsId, tagForm);
 
         return "redirect:/admin/subs/{subsId}/tag";
     }
 
     @GetMapping("subs/{subsId}/tag")
-    public String showSubsTag(@PathVariable("subsId")Long subsId,Model model) {
+    public String showSubsTag(@PathVariable("subsId") Long subsId, Model model) {
 
         List<Tag> allTag = tagService.findAllTag();
         List<Tag> tagsBySubsId = tagService.findTagsBySubsId(subsId);
-        model.addAttribute("subsId",subsId);
+        model.addAttribute("subsId", subsId);
         model.addAttribute("form", new TagForm());
         model.addAttribute("tags", allTag);
         model.addAttribute("subsTags", tagsBySubsId);
@@ -194,7 +187,47 @@ public class TempAdminController {
         return "redirect:/admin/tag";
     }
 
+    @GetMapping("event")
+    public String showEvent(Model model) {
+        List<EventSubs> eventSubsList = eventRepository.findAllWithSubs();
 
+        model.addAttribute("eventList", eventSubsList);
 
+        return "/admin/subs/eventList";
+    }
 
+    @PostMapping("event/add/{subsId}")
+    public String addEvent(@PathVariable("subsId") Long subsId) {
+
+        adminSubsService.addEvent(subsId);
+
+        return "redirect:/admin/event";
+    }
+
+    @GetMapping("event/{eventId}")
+    public String showEventDetail(Model model, @PathVariable("eventId") Long eventId) {
+        EventSubs eventSubs = eventRepository.findByIdWithSubs(eventId);
+        EventRegisterForm registerForm = new EventRegisterForm();
+
+        registerForm.setInfo(eventSubs.getInfo());
+        registerForm.setInfoTag(eventSubs.getInfoTag());
+        String startTime = "" + eventSubs.getStartDate().getYear() + eventSubs.getStartDate().getMonthValue() + eventSubs.getStartDate().getDayOfMonth();
+        String endTime = "" + eventSubs.getEndDate().getYear() + eventSubs.getEndDate().getMonthValue() + eventSubs.getEndDate().getDayOfMonth();
+        registerForm.setStartDate(startTime);
+        registerForm.setEndDate(endTime);
+        registerForm.setValid(eventSubs.getIsValid());
+
+        model.addAttribute("eventSubs", eventSubs);
+        model.addAttribute("form", registerForm);
+
+        return "/admin/subs/eventAddForm";
+
+    }
+
+    @PostMapping("event/{eventId}")
+    public String addEventDetail(@PathVariable("eventId") Long eventId,EventRegisterForm registerForm) {
+        adminSubsService.updateEvent(eventId,registerForm);
+
+        return "redirect:/admin/event/"+eventId;
+    }
 }

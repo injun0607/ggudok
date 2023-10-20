@@ -2,8 +2,10 @@ package com.alham.ggudok.service.subs;
 
 import com.alham.ggudok.dto.subs.SubsRecommendDto;
 import com.alham.ggudok.entity.Tag;
+import com.alham.ggudok.entity.subs.EventSubs;
 import com.alham.ggudok.entity.subs.Subs;
 import com.alham.ggudok.entity.subs.SubsRank;
+import com.alham.ggudok.repository.subs.EventRepository;
 import com.alham.ggudok.repository.subs.SubsRepository;
 import com.alham.ggudok.util.GgudokUtil;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +23,8 @@ import java.util.stream.Collectors;
 public class SubsService {
 
     private final SubsRepository subsRepository;
+
+    private final EventRepository eventRepository;
 
     /**
      * 해당 subs 와 관련있는 태그들을 모두 찾아온다.
@@ -240,4 +244,14 @@ public class SubsService {
     public void updateRatingAvg(Subs subs,int ratingAvg) {
         subs.updateRatingAvg(ratingAvg);
     }
+
+    /*
+    등록된 이벤트 불러오기
+     */
+    public List<EventSubs> findAllEventSubs() {
+
+
+        return eventRepository.findAllWithSubsValid();
+    }
+
 }

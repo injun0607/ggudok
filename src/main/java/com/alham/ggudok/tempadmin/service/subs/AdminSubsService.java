@@ -1,19 +1,19 @@
 package com.alham.ggudok.tempadmin.service.subs;
 
 import com.alham.ggudok.entity.Tag;
-import com.alham.ggudok.entity.subs.Category;
-import com.alham.ggudok.entity.subs.Subs;
-import com.alham.ggudok.entity.subs.SubsContent;
-import com.alham.ggudok.entity.subs.SubsRank;
+import com.alham.ggudok.entity.subs.*;
 import com.alham.ggudok.repository.TagRepository;
 import com.alham.ggudok.repository.subs.CategoryRepository;
+import com.alham.ggudok.repository.subs.EventRepository;
 import com.alham.ggudok.repository.subs.SubsRepository;
 import com.alham.ggudok.tempadmin.dto.TagForm;
 import com.alham.ggudok.tempadmin.dto.subs.AdminSubsRankDto;
+import com.alham.ggudok.tempadmin.dto.subs.EventRegisterForm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -29,6 +29,8 @@ public class AdminSubsService {
     private final SubsRepository subsRepository;
 
     private final TagRepository tagRepository;
+
+    private final EventRepository eventRepository;
 
     public Category createCategory(String categoryName) {
 
@@ -79,6 +81,32 @@ public class AdminSubsService {
         return subsRank.getContents().size();
 
     }
+    @Transactional
+    public void addEvent(Long subsId) {
+        Subs subs = subsRepository.findById(subsId).get();
+        List<EventSubs> subsList = eventRepository.findAllWithSubs();
+
+        //이미 Subs가 이벤트에 등록되어있다면
+        if (subsList.stream().filter(eventSubs -> eventSubs.getSubs().equals(subs)).findAny().isPresent()) {
+            return;
+        }
+
+        EventSubs eventSubs = new EventSubs(subs);
+        eventRepository.save(eventSubs);
+
+    }
+
+    @Transactional
+    public void updateEvent(Long eventId, EventRegisterForm registerForm) {
+
+        EventSubs eventSubs = eventRepository.findByIdWithSubs(eventId);
+
+        LocalDateTime startDate = transferDateTime(registerForm.getStartDate());
+        LocalDateTime endDate = transferDateTime(registerForm.getEndDate());
+
+        eventSubs.updateEventSubs(registerForm.getInfoTag(), registerForm.getInfo(), startDate,endDate, registerForm.isValid());
+
+    }
 
 
 
@@ -110,5 +138,13 @@ public class AdminSubsService {
         Subs subs = subsRepository.findSubsByIdWithTag(subsId).get();
         Tag tag = tagRepository.findTagByTagName(tagForm.getTagName());
         subs.addTag(tag);
+    }
+
+    public LocalDateTime transferDateTime(String stringDateTime) {
+        String year = stringDateTime.substring(0, 4);
+        String month = stringDateTime.substring(4, 6);
+        String day = stringDateTime.substring(6);
+
+        return LocalDateTime.of(Integer.parseInt(year), Integer.parseInt(month), Integer.parseInt(day),0,0);
     }
 }

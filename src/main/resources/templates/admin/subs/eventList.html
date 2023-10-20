@@ -1,0 +1,31 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header" />
+<body>
+<div class="container">
+    <div th:replace="fragments/bodyHeader :: bodyHeader"/>
+    <div>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>서비스 이름</th>
+            </tr>
+
+            </thead>
+            <tbody>
+            <tr th:each="event : ${eventList}">
+                <td th:text="${event.eventId}"></td>
+                <td th:text="${event.subs.subsName}"></td>
+                <td>
+                    <a href="#" th:href="@{/admin/event/{subsId} (subsId =${event.eventId})}"
+                        class="btn btn-primary" role="button">이벤트 관리</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div th:replace="fragments/footer :: footer"/>
+</div> <!-- /container -->
+</body>
+</html>

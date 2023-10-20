@@ -35,6 +35,11 @@
                     <a href="#" th:href="@{/admin/subs/{subsId}/tag (subsId =${subs.subsId})}"
                        class="btn btn-primary" role="button">태그 관리</a>
                 </td>
+                <td>
+                    <form th:action="@{/admin/event/add/{subsId} (subsId =${subs.subsId})}" method="post">
+                        <button type="submit" class="btn btn-primary">이벤트 등록</button>
+                    </form>
+                </td>
             </tr>
             </tbody>
         </table>
