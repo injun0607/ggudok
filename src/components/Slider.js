@@ -1,43 +1,71 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
 import { Fade } from 'react-slideshow-image';
 import 'react-slideshow-image/dist/styles.css'
+// component import
+import Error from '../components/Error';
+import Loading from '../components/Loading';
+// redux import
+import { setEvent } from '../redux/actions/eventActions';
 
-// const fadeImages = [
-//   {
-//     url: '/images/slide/mainslide02.png',
-//     caption: '매일 마시는 커피, 더 저렴하게 즐기기'
-//   },
-//   {
-//     url: '/images/slide/mainslide03.png',
-//     caption: '한 달 간 고생한 나를 위한 먼슬리 생화 구독'
-//   },
-//   {
-//     url: '/images/slide/mainslide01.png',
-//     caption: '건강한 식사를 손쉽게, 샐러드 구독으로 더 즐겁게'
-//   },
-// ];
+const NO_IMAGE_URL = '/images/common/noimg.png';
 
 const Bannerslider = () => {
+  let dispatch = useDispatch();
   const events = useSelector(state => state.event.events);
+  const [IsResult, setIsResult] = useState(false);
+  const [IsLoading, setIsLoading] = useState(true);
+  
+  // ************************** 기본 events fetch ***************************
+  const fetchEventData = async () => {
+    try {
+      const response = await axios.get(`/event`);
+      const data = response.data.eventSubs;
+      console.log('data : ', data)
+
+      if(data !== 0){
+        dispatch(setEvent(data));
+      } else {
+        dispatch(setEvent([]));
+      }
+
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  useEffect(() => {
+    fetchEventData();
+  }, [dispatch]);
+
+  // 결과 유무
+  useEffect(() => {
+    setIsResult(events.length > 0);
+  }, [dispatch, events]);
 
     return (
+      !IsLoading ? (IsResult ?
       <section className="slide-container">
         <Fade>
-        {events.map((event, index) => (
-          <div key={index} className='bannerslider'>
-            <img style={{ width: '100%' }} src={event.image} alt={event.name}/>
-            <div className='tag'>
-              <p>{event.category}</p>
-              <p>{event.discount}</p>
-            </div>
-            <h3>{event.name}</h3>
-            <h4>{event.copy}</h4>
-            <p>{event.date}</p>
-          </div>
-        ))}
+        {
+          events.map((event, index) => (
+            <section key={index} className='bannerslider'>
+              <img style={{ width: '100%' }} src={event.image} alt={event.subsName}onError={(e) => {e.target.src = NO_IMAGE_URL;}}/>
+              <div className='tag'>
+                <p>{event.categoryName}</p>
+                <p>{event.infoTag}</p>
+              </div>
+              <h3>{event.subsName}</h3>
+              <h4>{event.info}</h4>
+              <p>{event.startDate} - {event.endDate}</p>
+            </section>
+          ))
+        }
         </Fade>
       </section>
+      : <Error />) : <Loading />
     )
 }
 
