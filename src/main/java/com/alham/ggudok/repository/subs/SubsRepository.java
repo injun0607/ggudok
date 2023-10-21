@@ -22,6 +22,6 @@ public interface SubsRepository extends JpaRepository<Subs,Long>, SubsRepository
     @Query("select s from Subs s join fetch s.subsRelTags st join fetch st.tag t order by s.recommendSort")
     List<Subs> findRecommendSubsList();
 
-
-
+    @Query("select s from Subs s join fetch s.category c where s.subsId =:subsId")
+    Subs findByIdWithCategory(@Param("subsId") Long subsId);
 }

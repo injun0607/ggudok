@@ -15,10 +15,14 @@ public class EventSubsDto {
 
     private String info;
 
+    private String image;
+
     private String categoryName;
 
     private String startDate;
 
     private String endDate;
+
+
 
 }

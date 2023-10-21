@@ -46,6 +46,7 @@ public class SubsRepositoryImpl implements SubsRepositoryCustom{
                 .join(subs.subsRelTags, subsRelTag).fetchJoin()
                 .join(subsRelTag.tag, tag).fetchJoin()
                 .where(tag.tagName.eq(tagHint.getTagName()))
+                .orderBy(subs.recommendSort.asc())
                 .fetch());
     }
 

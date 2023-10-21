@@ -211,11 +211,17 @@ public class TempAdminController {
 
         registerForm.setInfo(eventSubs.getInfo());
         registerForm.setInfoTag(eventSubs.getInfoTag());
-        String startTime = "" + eventSubs.getStartDate().getYear() + eventSubs.getStartDate().getMonthValue() + eventSubs.getStartDate().getDayOfMonth();
-        String endTime = "" + eventSubs.getEndDate().getYear() + eventSubs.getEndDate().getMonthValue() + eventSubs.getEndDate().getDayOfMonth();
+
+        String startTime = "" + eventSubs.getStartDate().getYear() + eventSubs.getStartDate().getMonthValue()
+                + transferStringDay(eventSubs.getStartDate().getDayOfMonth());
+
+        String endTime = "" + eventSubs.getEndDate().getYear() + eventSubs.getEndDate().getMonthValue()
+                + transferStringDay(eventSubs.getEndDate().getDayOfMonth());
+
         registerForm.setStartDate(startTime);
         registerForm.setEndDate(endTime);
         registerForm.setValid(eventSubs.getIsValid());
+        registerForm.setImage(eventSubs.getEventImage());
 
         model.addAttribute("eventSubs", eventSubs);
         model.addAttribute("form", registerForm);
@@ -229,5 +235,15 @@ public class TempAdminController {
         adminSubsService.updateEvent(eventId,registerForm);
 
         return "redirect:/admin/event/"+eventId;
+    }
+
+
+    public String transferStringDay(int day) {
+        String result = String.valueOf(day);
+        if (result.length() == 1) {
+            result = "0" + result;
+        }
+
+        return result;
     }
 }

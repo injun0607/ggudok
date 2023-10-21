@@ -25,6 +25,8 @@ public class EventSubs {
     //이벤트 간략정보
     private String info = "";
 
+    private String eventImage = "";
+
     //시작일
     private LocalDateTime startDate = LocalDateTime.now();
 

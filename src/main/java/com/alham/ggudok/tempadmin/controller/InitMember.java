@@ -114,14 +114,35 @@ public class InitMember {
         public void init() {
             Category health = new Category("건강","health");
             Category food = new Category("식품","food");
-            Category movie = new Category("영화","ott");
+            Category movie = new Category("영상","ott");
             Category music = new Category("음악","music");
+            Category drink = new Category("음료","drink");
+            Category alcohol = new Category("주류","alcohol");
+            Category extra = new Category("패션잡화","extra");
+            Category book = new Category("책","book");
+            Random random = new Random();
+            List<Category> categories = new ArrayList<>();
+
+            categories.add(health);
+            categories.add(food);
+            categories.add(movie);
+            categories.add(music);
+            categories.add(drink);
+            categories.add(alcohol);
+            categories.add(extra);
+            categories.add(book);
+
+
 
 
             em.persist(health);
             em.persist(food);
             em.persist(movie);
             em.persist(music);
+            em.persist(drink);
+            em.persist(alcohol);
+            em.persist(extra);
+            em.persist(book);
 
             List<Subs> subsList = new ArrayList<>();
 
@@ -190,6 +211,7 @@ public class InitMember {
             Subs movie50 = new Subs("빙그레이");
             Subs movie51 = new Subs("우리식물");
             Subs movie52 = new Subs("그린그레스");
+
 
 
             subsList.add(movie1);
@@ -278,7 +300,7 @@ public class InitMember {
                 SubsContent primiumCon3 = new SubsContent(subs.getSubsName() + " 프리미엄 구독혜택 3");
 
 
-                subs.addCategory(movie);
+                subs.addCategory(categories.get(random.nextInt(categories.size())));
 
                 defCon1.addSubsRank(subsRankDef);
                 defCon2.addSubsRank(subsRankDef);
@@ -450,6 +472,16 @@ public class InitMember {
             Tag category7 = new Tag("패션잡화");
             Tag category8 = new Tag("책");
 
+            List<Tag> categoryTag = new ArrayList<>();
+            categoryTag.add(category1);
+            categoryTag.add(category2);
+            categoryTag.add(category3);
+            categoryTag.add(category4);
+            categoryTag.add(category5);
+            categoryTag.add(category6);
+            categoryTag.add(category7);
+            categoryTag.add(category8);
+
             em.persist(age1);
             em.persist(age2);
             em.persist(age3);
@@ -485,11 +517,14 @@ public class InitMember {
             tagList.add(category6);
             tagList.add(category7);
             tagList.add(category8);
-            Random random = new Random();
+
 
             for (Subs subs : subsList) {
                 subs.addTag(tagList.get(random.nextInt(13)));
                 subs.addTag(tagList.get(random.nextInt(13)));
+                String categoryName = subs.getCategory().getCategoryName();
+                Tag tag = categoryTag.stream().filter(t -> t.getTagName().equals(categoryName)).findAny().get();
+                subs.addTag(tag);
 
             }
 

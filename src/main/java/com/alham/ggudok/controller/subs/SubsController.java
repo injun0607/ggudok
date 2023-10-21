@@ -125,7 +125,7 @@ public class SubsController {
     public SubsMainDetailDto showSubsDetail(@PathVariable("subsId") Long subsId, Principal principal) {
         MemberDto memberDto = SecurityUtils.transPrincipal(principal);
         MemberSubsDto memberSubsDto = new MemberSubsDto();
-        Subs subs = subsService.findSubsById(subsId);
+        Subs subs = subsService.findSubsByIdWithCategory(subsId);
 
         //로그인이 되어있는 상태라면 memberSubsDto 생성
         if (memberDto != null) {
@@ -166,6 +166,7 @@ public class SubsController {
         subsDetailDto.setIcon(subs.getIcon());
         subsDetailDto.setImage(subs.getImage());
         subsDetailDto.setCategory(subs.getCategory().getCategoryName());
+        //태그리스트 가져오기
         List<Tag> tagList = tagService.findTagsBySubsId(subsId);
         subsDetailDto.setTags(tagList);
 
@@ -204,9 +205,27 @@ public class SubsController {
         }
 
         //비슷한 아이템 생성
-        //태그를 통해서 비슷한 아이템 생성?
-        //두가지 이상의 태그가 있는 아이템을 추천
+        //카테고리가 똑같은 곳에서 찾아 추천
         List<SubsDto> similarItems = new ArrayList<>();
+        String categoryName = subs.getCategory().getCategoryName();
+        Tag category = tagList.stream().filter(c -> c.getTagName().equals(categoryName)).findFirst().get();
+        List<Subs> similarTagSubsList = subsService.findSubsByTag(category);
+        similarTagSubsList.remove(subs);
+        for (int i = 0; i < similarTagSubsList.size(); i++) {
+
+            if (i > 9) {
+                break;
+            }
+            Subs similarTagSubs = similarTagSubsList.get(i);
+            SubsDto subsDto = new SubsDto();
+            subsDto.setId(similarTagSubs.getSubsId());
+            subsDto.setName(similarTagSubs.getSubsName());
+            subsDto.setImage(similarTagSubs.getImage());
+            subsDto.setIcon(similarTagSubs.getIcon());
+
+            similarItems.add(subsDto);
+
+        }
 
 
         //subsMainDetail Dto 생성

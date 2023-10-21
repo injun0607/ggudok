@@ -63,6 +63,7 @@ public class HomeController {
             eventSubsDto.setInfoTag(eventSub.getInfoTag());
             eventSubsDto.setCategoryName(eventSub.getSubs().getCategory().getCategoryName());
             eventSubsDto.setSubsName(eventSub.getSubs().getSubsName());
+            eventSubsDto.setImage(eventSub.getEventImage());
 
             String startDate = GgudokUtil.transferDateTime(eventSub.getStartDate());
             String endDate = GgudokUtil.transferDateTime(eventSub.getEndDate());

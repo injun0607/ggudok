@@ -254,4 +254,8 @@ public class SubsService {
         return eventRepository.findAllWithSubsValid();
     }
 
+    public Subs findSubsByIdWithCategory(Long subsId) {
+
+        return subsRepository.findByIdWithCategory(subsId);
+    }
 }

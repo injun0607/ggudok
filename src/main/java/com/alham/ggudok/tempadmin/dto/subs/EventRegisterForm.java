@@ -13,6 +13,8 @@ public class EventRegisterForm {
     //이벤트 간략정보
     private String info = "";
 
+    private String image = "";
+
     //시작일
     private String startDate;
 
