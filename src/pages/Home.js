@@ -1,19 +1,61 @@
-import React from 'react'
-import { useSelector } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 // component import
 import Bannerslider from '../components/Slider';
+import ErrorItem from '../components/ErrorItem';
+import Loading from '../components/Loading';
 // css import
 import style from '../styles/Home.module.css'
 // redux import
+import { setRecomBasic, setRecomCustom } from '../redux/actions/itemActions';
 
 const NO_IMAGE_URL = '/images/common/noimg.png';
 
 const Home = () => {
+  let dispatch = useDispatch();
+  const isLoggedIn = useSelector(state => state.user.isLoggedIn);
+
   const categories = useSelector(state => state.category.categories);
   const items = useSelector(state => state.item.items);
-  const favoritecategories = useSelector(state => state.category.favoritecategories);
-  const isLoggedIn = useSelector(state => state.user.isLoggedIn);
+  const recommendBasic = useSelector(state => state.item.recommendBasic);
+  const recommendCustomized = useSelector(state => state.item.recommendCustomized);
+  const [IsResult, setIsResult] = useState(false);
+  const [IsLoading, setIsLoading] = useState(true);
+
+  // ************************** 추천 아이템 fetch ***************************
+  const fetchRecomItemData = async () => {
+    try {
+      const response = await axios.get(`/home`);
+      const data = response.data;
+      if(data !== 0){
+        dispatch(setRecomBasic(data.recommendBasic))
+        if(data.recommendCustomized.length){
+          dispatch(setRecomCustom(data.recommendCustomized))
+        } else {
+          dispatch(setRecomCustom(data.defaultSubs))
+        }
+      } else {
+        dispatch(setRecomBasic([]));
+        dispatch(setRecomCustom([]))
+      }
+      
+    } catch (error) {
+      console.error('Error fetching item:', error);
+      alert(`서비스를 가져오던 중 오류가 발생했습니다. 잠시 후 다시 시도해주시기 바랍니다.`)
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  useEffect(() => {
+    fetchRecomItemData();
+  }, [dispatch]);
+  
+  // 결과 유무
+  useEffect(() => {
+    setIsResult(recommendBasic.length > 0 && recommendCustomized.length > 0);
+  }, [dispatch, recommendBasic, isLoggedIn]);
 
   return (
     <section className={style.home}>
@@ -42,17 +84,19 @@ const Home = () => {
           <h2 className={style.tit}>알고리즘 저격! <span className='sub_clr'>맞춤 서비스</span></h2>
           <div className='item-list'>
             {
-              items.slice(0, 4).map((item, index) => 
+              recommendCustomized.slice(0, 8).map((item, index) => 
               <Link to={`/subs/detail/${item.id}`} key={index} className='item-list-box'>
-              {/* <div className='item-list-box' key={index}> */}
                 <div className='img'>
                   <img src={`${item.image}`} alt={item.name} onError={(e) => {e.target.src = NO_IMAGE_URL;}}/>
                 </div>
                 <div className='txt'>
                   <h3>{item.name}</h3>
                   <div className='tag'>
-                    <p>{item.category}</p>
-                    <p>{item.tag}</p>
+                    {
+                      item.tags.map((tag, tagindex) => (
+                        <p key={tagindex}>{tag.tagName}</p>
+                      ))
+                    }
                   </div>
                 </div>
               {/* </div> */}
@@ -65,7 +109,7 @@ const Home = () => {
           <h2 className={style.tit}>나와 같은 <span className='main_clr'>20대 남성</span>이 가장 많이 구독한 서비스</h2>
           <div className='item-list'>
             {
-              items.slice(0, 4).map((item, index) => 
+              recommendBasic.slice(0, 8).map((item, index) => 
               <Link to={`/subs/detail/${item.id}`} key={index} className='item-list-box'>
                 <div className='img'>
                   <img src={`${item.image}`} alt={item.name} onError={(e) => {e.target.src = NO_IMAGE_URL;}}/>
@@ -73,9 +117,12 @@ const Home = () => {
                 <div className='txt'>
                   <h3>{item.name}</h3>
                   <div className='tag'>
-                    <p>{item.category}</p>
-                    <p>{item.tag}</p>
-                  </div>
+                  {
+                    item.tags.map((tag, tagindex) => (
+                      <p key={tagindex}>{tag.tagName}</p>
+                    ))
+                  }
+                </div>
                 </div>
               </Link>
               )

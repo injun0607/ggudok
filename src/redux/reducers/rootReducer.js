@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 import userReducer from './userReducer';
-import subscriptionReducer from './subscriptionReducer';
+import subscribeReducer from './subscribeReducer';
 import paymentReducer from './paymentReducer';
 import searchReducer from './searchReducer';
 import { categoryReducer } from './categoryReducer';
@@ -14,7 +14,7 @@ import adminLayoutReducer from './adminLayoutReducer';
 
 const rootReducer = combineReducers({
   user: userReducer,
-  subscription: subscriptionReducer,
+  subscribe: subscribeReducer,
   payment: paymentReducer,
   search: searchReducer,
   category: categoryReducer,

@@ -7,6 +7,18 @@ export const setIsLoading = (isLoading) => {
   };
 };
 
+export const setRecomBasic = (data) => {
+  return {
+    type: 'SET_RECOM_BASIC',
+    payload: data,
+  };
+};
+export const setRecomCustom = (data) => {
+  return {
+    type: 'SET_RECOM_CUSTOM',
+    payload: data,
+  };
+};
 export const fetchItemsSuccess = (data) => {
   return {
     type: 'FETCH_ITEMS_SUCCESS',

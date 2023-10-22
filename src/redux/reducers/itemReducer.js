@@ -1,4 +1,7 @@
 const initialState = {
+  recommendBasic: [],
+  recommendCustomized: [],
+
   items: [],
   filtereditems: [],
   pageditems: [],
@@ -18,6 +21,16 @@ const itemReducer = (state = initialState, action) => {
       return {
         ...state,
         IsLoading: action.payload,
+      }
+    case 'SET_RECOM_BASIC':
+      return {
+        ...state,
+        recommendBasic: action.payload,
+      }
+    case 'SET_RECOM_CUSTOM':
+      return {
+        ...state,
+        recommendCustomized: action.payload,
       }
     case 'FETCH_ITEMS_SUCCESS':
       return {

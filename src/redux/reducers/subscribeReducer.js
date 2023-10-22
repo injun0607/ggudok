@@ -1,9 +1,20 @@
 const initialState = {
-  
+  mySubscribe: [],
+  myTotalAvg: '',
 };
   
 const subscribeReducer = (state = initialState, action) => {
   switch (action.type) {
+    case 'SET_MY_SUBS':
+      return {
+        ...state,
+        mySubscribe: action.payload,
+      }
+    case 'SET_MY_TOTAL':
+      return {
+        ...state,
+        myTotalAvg: action.payload,
+      }
     // **************************** 구독하기 ****************************
     case 'ADD_SUBS_SUCCESS':
       return {

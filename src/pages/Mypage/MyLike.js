@@ -18,7 +18,6 @@ const NO_IMAGE_URL = '/images/common/noimg.png';
 const MyLike = ({ isCheckingLogin }) => {
   let dispatch = useDispatch();
   const likedItems = useSelector(state => state.user.likedItems);
-  const filtereditems = useSelector(state => state.item.filtereditems);
   const [IsResult, setIsResult] = useState(false);
   const [IsLoading, setIsLoading] = useState(true);
 

@@ -1,5 +1,16 @@
 import axios from 'axios';
-
+export const setMySubscribe = (data) => {
+  return {
+    type: 'SET_MY_SUBS',
+    payload: data,
+  };
+};
+export const setMyTotal = (data) => {
+  return {
+    type: 'SET_MY_TOTAL',
+    payload: data,
+  };
+};
 // *************************** 구독하기 ****************************
 export const addSubscribe = (userData, navigate) => async (dispatch) => {
   const { subsId, rankLevel } = userData;

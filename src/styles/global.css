@@ -962,16 +962,16 @@ table .sub_tit:last-child {
     transform: translateY(-5px);
     box-shadow: 0px 8px 10px 0px rgba(0,0,0,.15);
 }
-.react-slideshow-fadezoom-wrapper {
+.section .bannerslider .react-slideshow-fadezoom-wrapper {
     box-shadow: 4px 12px 30px 6px rgba(0,0,0,.09);
     transition: all .3s ease;
     border-radius: var(--radius-all-md);
 }
-.react-slideshow-fadezoom-wrapper:hover {
+.section .bannerslider .react-slideshow-fadezoom-wrapper:hover {
     transform: translateY(-5px);
     box-shadow: 4px 12px 20px 6px rgba(0,0,0,.18);
 }
-.react-slideshow-fadezoom-wrapper .react-slideshow-fadezoom-images-wrap>div {
+.section .bannerslider .react-slideshow-fadezoom-wrapper .react-slideshow-fadezoom-images-wrap>div {
     cursor: pointer;
 }
 .bannerslider img {

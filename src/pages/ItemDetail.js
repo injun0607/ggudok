@@ -322,21 +322,24 @@ const ItemDetail = () => {
           <div className='cont_tit_m'>
             <h2>비슷한 구독상품</h2>
           </div>
-          <div className={style.itemlist}>
-            {/* {similarItems.map((item, index) => (
-              <Link to={`/subs/detail/${item.id}`} key={index} className={style.item}>
-                  <div className={style.img}>
-                    <img src={`${item.image}`} alt={item.name} onError={(e) => {e.target.src = NO_IMAGE_URL;}}/>
+          <div className='item-list'>
+            {similarItems.slice(0,4).map((item, index) => (
+              <Link to={`/subs/detail/${item.id}`} key={index}className='item-list-box'>
+                <div className='img'>
+                  <img src={`${item.image}`} alt={item.name} onError={(e) => {e.target.src = NO_IMAGE_URL;}}/>
+                </div>
+                <div className='txt'>
+                  <h3>{item.name}</h3>
+                  <div className='tag'>
+                    {
+                      item.tags.map((tag, tagindex) => (
+                        <p key={tagindex}>{tag.tagName}</p>
+                      ))
+                    }
                   </div>
-                  <div className={style.txt}>
-                    <h3>{item.name}</h3>
-                    <div className={style.tag}>
-                      <p>{item.category}</p>
-                      <p>{item.tag}</p>
-                    </div>
-                  </div>
+                </div>
               </Link>
-            ))} */}
+            ))}
           </div>
         </section>
       </div>
