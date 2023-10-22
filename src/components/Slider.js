@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Fade } from 'react-slideshow-image';
 import 'react-slideshow-image/dist/styles.css'
 // component import
-import Error from '../components/Error';
 import Loading from '../components/Loading';
 // redux import
 import { setEvent } from '../redux/actions/eventActions';
@@ -46,7 +45,7 @@ const Bannerslider = () => {
   }, [dispatch, events]);
 
     return (
-      !IsLoading ? (IsResult ?
+      !IsLoading ? (IsResult &&
       <section className="slide-container">
         <Fade>
         {
@@ -65,7 +64,7 @@ const Bannerslider = () => {
         }
         </Fade>
       </section>
-      : <Error />) : <Loading />
+      ) : <Loading />
     )
 }
 
