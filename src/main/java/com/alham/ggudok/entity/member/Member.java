@@ -33,6 +33,8 @@ public class Member {
     private Gender gender;
     private String phoneNumber;
 
+    private String profileImage;
+
 
     @OneToMany(mappedBy = "member", cascade = ALL, orphanRemoval = true)
     private List<MemberRelTag> memberRelTags = new ArrayList<>();
@@ -60,14 +62,15 @@ public class Member {
         this.phoneNumber = phoneNumber;
     }
 
-    public void updateMember(String newPassword,String phoneNumber,Gender gender,int age ) {
+    public void updateMember(String newPassword,String phoneNumber,Gender gender,int age,String profileImage ) {
         this.password = newPassword;
         this.phoneNumber = phoneNumber;
         this.gender = gender;
         this.age = age;
+        this.profileImage = profileImage;
     }
 
-    public void updateMember(String phoneNumber,Gender gender,int age ) {
+    public void updateMember(String phoneNumber,Gender gender,int age,String profileImage ) {
         this.password = password;
         this.phoneNumber = phoneNumber;
         this.gender = gender;

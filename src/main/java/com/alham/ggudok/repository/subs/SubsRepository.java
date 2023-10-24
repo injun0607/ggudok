@@ -10,7 +10,7 @@ import java.util.Optional;
 
 public interface SubsRepository extends JpaRepository<Subs,Long>, SubsRepositoryCustom {
 
-    @Query("select s from Subs s join fetch s.subsRelTags st join fetch st.tag t where s.subsId = :subsId")
+    @Query("select s from Subs s left join fetch s.subsRelTags st left join fetch st.tag t where s.subsId = :subsId")
     Optional<Subs> findSubsByIdWithTag(@Param("subsId") Long subsId);
 
 

@@ -55,6 +55,27 @@ public class SubsService {
         return subsRanks;
     }
 
+    public Map<Long, List<SubsRank>> findSubsRankMap(List<Long> subsIdList) {
+        List<SubsRank> subsRankList = subsRepository.findSubsRankByIdListWithAllContent(subsIdList);
+        Map<Long, List<SubsRank>> resultMap = new HashMap<>();
+
+        for (SubsRank subsRank : subsRankList) {
+            Long subsId = subsRank.getSubs().getSubsId();
+            if (resultMap.containsKey(subsId)) {
+                resultMap.get(subsId).add(subsRank);
+
+            } else {
+                List<SubsRank> subsRanks = new ArrayList<>();
+                subsRanks.add(subsRank);
+
+                resultMap.put(subsId, subsRanks);
+            }
+
+        }
+
+        return resultMap;
+    }
+
     public List<SubsRank> findContentBySubsId(Long subsId) {
         return subsRepository.findSubsByIdWithAllContent(subsId);
     }
@@ -257,5 +278,27 @@ public class SubsService {
     public Subs findSubsByIdWithCategory(Long subsId) {
 
         return subsRepository.findByIdWithCategory(subsId);
+    }
+
+    public List<SubsRank> findSubsRankBySubsListWithAllContent(List<Long> subsIdList) {
+
+        return subsRepository.findSubsRankBySubsListWithAllContent(subsIdList);
+    }
+
+    /**
+     * subsList에 있는 subs들의 category들을 일괄적으로 가져옴
+     * @param subsList
+     * @return List<Subs>
+     */
+    public List<Subs> findBySubsListWithCategory(List<Subs> subsList) {
+
+        return subsRepository.findBySubsListWithCategory(subsList);
+    }
+
+
+    public List<Subs> findSubsListByQuery(String searchQuery) {
+
+        return subsRepository.findSubsListByQuery(searchQuery);
+
     }
 }

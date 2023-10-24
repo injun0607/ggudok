@@ -4,6 +4,12 @@
 <body>
 <div class="container">
     <div th:replace="fragments/bodyHeader :: bodyHeader"/>
+
+    <form method="post" th:action="@{/admin/subs/{subsId}/upload (subsId =${subsId})}" enctype="multipart/form-data">
+        <input type="file" name="file" accept="image/*" />
+        <button type="submit">이미지 등록</button>
+    </form>
+
     <div>
         <table class="table table-striped">
             <thead>

@@ -1,8 +1,8 @@
 package com.alham.ggudok.dto.subs;
 
 
+import com.alham.ggudok.dto.TagDto;
 import com.alham.ggudok.entity.Tag;
-import com.alham.ggudok.entity.subs.SubsRank;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -34,7 +34,22 @@ public class SubsDto {
 
     List<SubsRankDto> ranks = new ArrayList<>();
 
-    private List<Tag> tags = new ArrayList<>();
+    private List<TagDto> tags = new ArrayList<>();
+
+
+    public void setTags(List<Tag> tagList) {
+        List<TagDto> tagDtoList = new ArrayList<>();
+        for (Tag tag : tagList) {
+            TagDto tagDto = new TagDto();
+            tagDto.setTagId(tag.getTagId());
+            tagDto.setTagName(tag.getTagName());
+
+            tagDtoList.add(tagDto);
+        }
+
+        this.tags = tagDtoList;
+
+    }
 
 
 

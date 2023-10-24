@@ -28,10 +28,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 @Slf4j
@@ -68,43 +66,42 @@ public class SubsController {
 
         Category category = categoryService.findCateByEngWithSubs(categoryEng);
         List<Subs> subsList = category.getSubsList();
+        List<Long> subsIdList = subsList.stream().map(s -> s.getSubsId()).collect(Collectors.toList());
+        Map<Long, List<Tag>> subsTagMap = tagService.findTagListBySubsIdList(subsIdList);
+        Map<Long, List<SubsRank>> subsRankMap = subsService.findSubsRankMap(subsIdList);
 
-        List<SubsDto> subsDtoList = new ArrayList<>();
+        List<SubsDto> subsDtoList = setSubsDto(subsList,subsTagMap,subsRankMap);
 
+        SubsMainDto subsMainDto = new SubsMainDto();
+        subsMainDto.setItems(subsDtoList);
 
-        //subs 관련 데이터 가공
-        for (Subs subs : subsList) {
+        return subsMainDto;
 
-            SubsDto subsDto = new SubsDto();
-            List<SubsRankDto> subsRankDtos = new ArrayList<>();
-            subsDto.setTags(tagService.findTagsBySubsId(subs.getSubsId()));
+    }
 
-            //subsRankData 가공
-            List<SubsRank> ranksBySubsId = subsService.findRanksBySubsId(subs.getSubsId());
+    @GetMapping("/search")
+    public SubsMainDto search(@RequestParam(defaultValue = "") String q) {
 
-            for (SubsRank subsRank : ranksBySubsId) {
-                SubsRankDto subsRankDto = new SubsRankDto();
-                subsRankDto.setRankName(subsRank.getRankName());
-                subsRankDto.setPrice(subsRank.getPrice());
-                subsRankDto.setRankLevel(subsRank.getRankLevel());
-                subsRankDtos.add(subsRankDto);
-            }
-
-            subsDto.setRanks(subsRankDtos);
-            subsDto.setCategory(subs.getCategory().getCategoryName());
-
-            subsDto.setId(subs.getSubsId());
-            subsDto.setName(subs.getSubsName());
-            subsDto.setInfo(subs.getInfo());
-            subsDto.setIcon(subs.getIcon());
-            subsDto.setImage(subs.getImage());
-
-            //TODO ratingAvg 임시
-            subsDto.setRatingAvg(random.nextInt(5)+1);
-
-            subsDtoList.add(subsDto);
-
+        //빈 검색어가 들어왔을때 방어코드
+        if (q.isEmpty()) {
+            return new SubsMainDto();
         }
+
+        //검색조건은 태그또는 구독서비스 이름
+
+        List<Subs> subsListByQuery = subsService.findSubsListByQuery(q);
+        List<Long> subsIdList = subsListByQuery.stream().map(s -> s.getSubsId()).collect(Collectors.toList());
+        Map<Long,List<Tag>> subsTagMap = subsListByQuery
+                .stream()
+                .collect(Collectors
+                        .toMap(Subs::getSubsId
+                                , subs -> subs.getSubsRelTags().stream().map(srt->srt.getTag()).collect(Collectors.toList()))
+                );
+        Map<Long, List<SubsRank>> subsRankMap = subsService.findSubsRankMap(subsIdList);
+
+
+        List<SubsDto> subsDtoList = setSubsDto(subsListByQuery, subsTagMap, subsRankMap);
+
 
         SubsMainDto subsMainDto = new SubsMainDto();
         subsMainDto.setItems(subsDtoList);
@@ -210,6 +207,9 @@ public class SubsController {
         String categoryName = subs.getCategory().getCategoryName();
         Tag category = tagList.stream().filter(c -> c.getTagName().equals(categoryName)).findFirst().get();
         List<Subs> similarTagSubsList = subsService.findSubsByTag(category);
+        List<Long> similarSubsIdList = similarTagSubsList.stream().map(s -> s.getSubsId()).collect(Collectors.toList());
+
+        Map<Long, List<Tag>> tagListBySubsIdMap = tagService.findTagListBySubsIdList(similarSubsIdList);
         similarTagSubsList.remove(subs);
         for (int i = 0; i < similarTagSubsList.size(); i++) {
 
@@ -222,8 +222,11 @@ public class SubsController {
             subsDto.setName(similarTagSubs.getSubsName());
             subsDto.setImage(similarTagSubs.getImage());
             subsDto.setIcon(similarTagSubs.getIcon());
+            subsDto.setTags(tagListBySubsIdMap.get(similarTagSubs.getSubsId()));
+
 
             similarItems.add(subsDto);
+
 
         }
 
@@ -479,5 +482,41 @@ public class SubsController {
         subsService.updateRatingAvg(dosirak,doRating);
     }
 
+    private List<SubsDto> setSubsDto(List<Subs>subsList,Map<Long,List<Tag>>subsTagMap, Map<Long,List<SubsRank>> subsRankMap) {
 
+        List<SubsDto> subsDtoList = new ArrayList<>();
+
+        for (Subs subs : subsList) {
+            SubsDto subsDto = new SubsDto();
+            List<SubsRankDto> subsRankDtos = new ArrayList<>();
+            subsDto.setTags(subsTagMap.get(subs.getSubsId()));
+
+            //subsRankData 가공
+            List<SubsRank> ranksBySubsId = subsRankMap.get(subs.getSubsId());
+
+            for (SubsRank subsRank : ranksBySubsId) {
+                SubsRankDto subsRankDto = new SubsRankDto();
+                subsRankDto.setRankName(subsRank.getRankName());
+                subsRankDto.setPrice(subsRank.getPrice());
+                subsRankDto.setRankLevel(subsRank.getRankLevel());
+                subsRankDtos.add(subsRankDto);
+            }
+
+            subsDto.setRanks(subsRankDtos);
+            subsDto.setCategory(subs.getCategory().getCategoryName());
+
+            subsDto.setId(subs.getSubsId());
+            subsDto.setName(subs.getSubsName());
+            subsDto.setInfo(subs.getInfo());
+            subsDto.setIcon(subs.getIcon());
+            subsDto.setImage(subs.getImage());
+
+            subsDto.setRatingAvg(subs.getRatingAvg());
+
+            subsDtoList.add(subsDto);
+
+        }
+
+        return subsDtoList;
+    }
 }

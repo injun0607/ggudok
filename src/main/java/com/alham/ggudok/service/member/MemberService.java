@@ -109,9 +109,9 @@ public class MemberService {
     public boolean updateMember(MemberUpdateDto updateDto,Member member) {
         if (StringUtils.hasText(updateDto.getNewPassword())) {
             passwordEncoder.encode(updateDto.getNewPassword());
-            member.updateMember(passwordEncoder.encode(updateDto.getNewPassword()), updateDto.getPhoneNumber(),updateDto.getGender(),updateDto.getAge());
+            member.updateMember(passwordEncoder.encode(updateDto.getNewPassword()), updateDto.getPhoneNumber(),updateDto.getGender(),updateDto.getAge(), updateDto.getMemberImg());
         }else{
-            member.updateMember(updateDto.getPhoneNumber(),updateDto.getGender(),updateDto.getAge());
+            member.updateMember(updateDto.getPhoneNumber(),updateDto.getGender(),updateDto.getAge(),updateDto.getMemberImg());
         }
         return true;
     }

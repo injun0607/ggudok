@@ -9,14 +9,16 @@ import com.alham.ggudok.tempadmin.service.AdminTagService;
 import com.alham.ggudok.tempadmin.service.subs.AdminSubsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 
 @Controller
 @RequiredArgsConstructor
@@ -77,6 +79,30 @@ public class TempAdminController {
 
 
         return "/admin/subs/subsRankList";
+    }
+
+    @Value("${upload.dir}")
+    private String uploadDir;
+
+
+    @PostMapping("subs/{subsId}/upload")
+    public String uploadSubsImage(@RequestParam("file") MultipartFile file,Model model) {
+        String imgUrl = "";
+        if (file.isEmpty()) {
+            return "/admin/subs/subsRankList";
+        }
+
+        try {
+            String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
+            File dest = new File(uploadDir + "/" + fileName);
+            file.transferTo(dest);
+            imgUrl = dest.getAbsolutePath();
+
+            return "/admin/subs/subsRankList";
+        } catch (IOException e) {
+            return "/admin/subs/subsRankList";
+        }
+
     }
 
     @GetMapping("subs/{subsId}/subsRank")

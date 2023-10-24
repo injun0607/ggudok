@@ -4,6 +4,7 @@ import com.alham.ggudok.entity.ImageResourceEntity;
 import com.alham.ggudok.entity.Tag;
 import com.alham.ggudok.entity.member.Review;
 import jakarta.persistence.*;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -20,6 +21,7 @@ import static lombok.AccessLevel.PROTECTED;
 @Entity
 @Getter
 @NoArgsConstructor(access = PROTECTED)
+@EqualsAndHashCode(of = "subsId")
 public class Subs extends ImageResourceEntity {
     @Id
     @GeneratedValue
@@ -31,11 +33,11 @@ public class Subs extends ImageResourceEntity {
     //구독서비스 설명
     private String info;
 
-    private Integer recommendSort = Integer.MAX_VALUE -10000;
+    private Integer recommendSort = Integer.MAX_VALUE - 10000;
 
     private int ratingAvg;
 
-    @OneToMany(mappedBy = "subs",cascade = ALL)
+    @OneToMany(mappedBy = "subs", cascade = ALL)
     List<SubsRank> subsRanks = new ArrayList<>();
 
     @ManyToOne(fetch = LAZY)
@@ -43,8 +45,7 @@ public class Subs extends ImageResourceEntity {
     private Category category;
 
 
-
-    @OneToMany(mappedBy = "subs",cascade = ALL)
+    @OneToMany(mappedBy = "subs", cascade = ALL)
     private List<SubsRelTag> subsRelTags = new ArrayList<>();
 
     @OneToMany(mappedBy = "subs")

@@ -4,6 +4,7 @@ import com.alham.ggudok.entity.Tag;
 import com.alham.ggudok.entity.member.Gender;
 import com.alham.ggudok.entity.member.Member;
 import com.alham.ggudok.entity.subs.Subs;
+import com.alham.ggudok.entity.subs.SubsRelTag;
 import com.alham.ggudok.repository.TagRepository;
 import com.alham.ggudok.repository.member.MemberRepository;
 import com.alham.ggudok.repository.subs.SubsRepository;
@@ -13,9 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -53,8 +52,58 @@ public class TagService {
     }
 
     /**
+     * 성능 최적화
+     * subsRelTagList 를 불러와 Map에 subsId 에해당하는 Tag들을 모두 넣어 반환
+     * @return Map<Long,List<Tag>> resultMap
+     */
+    public Map<Long,List<Tag>> findAllSubsTag() {
+        List<SubsRelTag> subsRelTagList = subsRepository.findAllSubsRelTag();
+        Map<Long, List<Tag>> resultMap = new HashMap<>();
+
+        for (SubsRelTag subsRelTag : subsRelTagList) {
+            Long subsId = subsRelTag.getSubs().getSubsId();
+            Tag tag = subsRelTag.getTag();
+            if (resultMap.containsKey(subsId)) {
+                resultMap.get(subsId).add(tag);
+            }else{
+                List<Tag> tagList = new ArrayList<>();
+                tagList.add(tag);
+                resultMap.put(subsId, tagList);
+            }
+        }
+
+        return resultMap;
+    }
+
+    /**
+     * subsRelTagList 를 불러와 Map에 subsId 에해당하는 Tag들을 모두 넣어 반환
+     *
+     * @param subsIdList
+     * @return
+     */
+    public Map<Long,List<Tag>> findTagListBySubsIdList(List<Long> subsIdList) {
+        List<SubsRelTag> subsRelTagList = subsRepository.findSubRelTagBySubsIdList(subsIdList);
+        Map<Long, List<Tag>> resultMap = new HashMap<>();
+
+        for (SubsRelTag subsRelTag : subsRelTagList) {
+            Long subsId = subsRelTag.getSubs().getSubsId();
+            Tag tag = subsRelTag.getTag();
+            if (resultMap.containsKey(subsId)) {
+                resultMap.get(subsId).add(tag);
+            }else{
+                List<Tag> tagList = new ArrayList<>();
+                tagList.add(tag);
+                resultMap.put(subsId, tagList);
+            }
+        }
+
+        return resultMap;
+
+    }
+
+    /**
      * subsIdList를 받아서 해당 subs에 있는 태그들을 모두
-     * List로 반환한다. (중복 허용 - 추천태그를 위한 메서드)
+     * List로 반환한다. (리스트내 동일한 태그 중복 허용 - 추천태그를 위한 메서드)
      * @param subsIdList
      * @return
      */

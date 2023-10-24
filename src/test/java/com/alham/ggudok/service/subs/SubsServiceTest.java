@@ -8,6 +8,7 @@ import com.alham.ggudok.entity.member.Member;
 import com.alham.ggudok.entity.subs.Category;
 import com.alham.ggudok.entity.subs.RankLevel;
 import com.alham.ggudok.entity.subs.Subs;
+import com.alham.ggudok.entity.subs.SubsRelTag;
 import com.alham.ggudok.repository.TagRepository;
 import com.alham.ggudok.repository.subs.CategoryRepository;
 import com.alham.ggudok.repository.subs.SubsRepository;
@@ -850,6 +851,122 @@ class SubsServiceTest {
         //then
         assertThat(subsListByTagList1).extracting(subs -> subs.getSubsName()).containsExactly( "watcha","netflix", "tving");
         assertEquals(subsListByTagList.size(),3);
+    }
+
+    @Test
+    public void findSubsListByQuery()throws Exception{
+        //given
+        Category movie = adminSubsService.createCategory("movie");
+        categoryRepository.save(movie);
+
+        //when
+        Subs netflix = adminSubsService.createSubs("netflix", movie.getCategoryId());
+        Subs watcha = adminSubsService.createSubs("watcha", movie.getCategoryId());
+        Subs disney = adminSubsService.createSubs("disney", movie.getCategoryId());
+        Subs tving = adminSubsService.createSubs("tving", movie.getCategoryId());
+        Subs laftel = adminSubsService.createSubs("laftel", movie.getCategoryId());
+
+        Tag age0 = new Tag("10대");
+        Tag age1 = new Tag("20대");
+        Tag age2 = new Tag("30대");
+        Tag age3 = new Tag("40대");
+        Tag age4 = new Tag("50대");
+
+        Tag gender1 = new Tag("여성");
+        Tag gender2 = new Tag("남성");
+
+        Tag category1 = new Tag("영상");
+        Tag category2 = new Tag("음악");
+        Tag category3 = new Tag("식품");
+        Tag category4 = new Tag("건강");
+        Tag category5 = new Tag("음료");
+        Tag category6 = new Tag("주류");
+        Tag category7 = new Tag("패션잡화");
+        Tag category8 = new Tag("책");
+
+        em.persist(age0);
+        em.persist(age1);
+        em.persist(age2);
+        em.persist(age3);
+        em.persist(age4);
+
+        em.persist(gender1);
+        em.persist(gender2);
+
+        em.persist(category1);
+        em.persist(category2);
+        em.persist(category3);
+        em.persist(category4);
+        em.persist(category5);
+        em.persist(category6);
+        em.persist(category7);
+        em.persist(category8);
+
+        netflix.addTag(age1);
+        netflix.addTag(age2);
+        netflix.addTag(age3);
+        netflix.addTag(category1);
+
+        netflix.addTag(gender1);
+        netflix.addTag(gender2);
+
+        watcha.addTag(age1);
+        watcha.addTag(age2);
+        watcha.addTag(category2);
+
+        watcha.addTag(gender1);
+        watcha.addTag(gender2);
+
+
+        disney.addTag(age0);
+        disney.addTag(age3);
+        disney.addTag(age4);
+        disney.addTag(category3);
+
+        disney.addTag(gender1);
+        disney.addTag(gender2);
+
+        tving.addTag(age1);
+        tving.addTag(age2);
+        tving.addTag(category4);
+
+        tving.addTag(gender1);
+        tving.addTag(gender2);
+
+        laftel.addTag(age0);
+        laftel.addTag(age3);
+        laftel.addTag(age4);
+        laftel.addTag(category5);
+
+        laftel.addTag(gender1);
+        laftel.addTag(gender2);
+
+
+        netflix.addCategory(movie);
+        watcha.addCategory(movie);
+        disney.addCategory(movie);
+        tving.addCategory(movie);
+        laftel.addCategory(movie);
+
+
+        //then
+        String query = "watch";
+        List<Subs> subsListByQuery1 = subsService.findSubsListByQuery(query);
+
+        query = "20대";
+        List<Subs> subsListByQuery2 = subsService.findSubsListByQuery(query);
+
+        for (Subs subs : subsListByQuery1) {
+            List<SubsRelTag> subsRelTags = subs.getSubsRelTags();
+            for (SubsRelTag subsRelTag : subsRelTags) {
+                System.out.println(subsRelTag.getTag().getTagName());
+            }
+        }
+
+        assertEquals(subsListByQuery1.size(), 1);
+        assertEquals(subsListByQuery2.size(),3);
+
+
     }
 
 

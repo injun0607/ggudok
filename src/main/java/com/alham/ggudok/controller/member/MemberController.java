@@ -1,34 +1,39 @@
 package com.alham.ggudok.controller.member;
 
 import com.alham.ggudok.config.security.SecurityUtils;
-import com.alham.ggudok.dto.member.MemberDto;
-import com.alham.ggudok.dto.member.MemberRegisterDto;
-import com.alham.ggudok.dto.member.MemberUpdateDto;
-import com.alham.ggudok.dto.member.ReviewDto;
+import com.alham.ggudok.dto.member.*;
 import com.alham.ggudok.dto.subs.SubsDto;
 import com.alham.ggudok.dto.subs.SubsMainDto;
+import com.alham.ggudok.entity.Tag;
 import com.alham.ggudok.entity.member.Member;
 import com.alham.ggudok.entity.member.MemberFavorSubs;
+import com.alham.ggudok.entity.member.MemberHaveSubs;
 import com.alham.ggudok.entity.member.Review;
+import com.alham.ggudok.entity.subs.RankLevel;
 import com.alham.ggudok.entity.subs.Subs;
+import com.alham.ggudok.entity.subs.SubsContent;
+import com.alham.ggudok.entity.subs.SubsRank;
 import com.alham.ggudok.exception.ErrorResult;
 import com.alham.ggudok.exception.member.MemberException;
 import com.alham.ggudok.service.TagService;
 import com.alham.ggudok.service.member.MemberService;
 import com.alham.ggudok.service.member.ReviewService;
+import com.alham.ggudok.service.subs.SubsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.security.Principal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -44,6 +49,8 @@ public class MemberController {
     private final ReviewService reviewService;
 
     private final TagService tagService;
+
+    private final SubsService subsService;
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MemberException.class)
@@ -97,6 +104,7 @@ public class MemberController {
         updateDto.setAge(member.getAge());
         updateDto.setPhoneNumber(member.getPhoneNumber());
         updateDto.setGender(member.getGender());
+        updateDto.setMemberImg(member.getProfileImage());
 
         return updateDto;
     }
@@ -121,6 +129,31 @@ public class MemberController {
         } else {
             throw new MemberException("회원 정보 수정에 실패했습니다");
         }
+    }
+
+    @Value("${upload.dir}")
+    private String uploadDir;
+
+    //서버로 requestParam으로 파일을 받음
+    @PostMapping("update/image")
+    public ResponseEntity<String> memberImageUpdate(@RequestParam("file")MultipartFile file) {
+        String imgUrl = "";
+        if (file.isEmpty()) {
+            return new ResponseEntity<>("no-file", HttpStatus.BAD_REQUEST);
+        }
+
+        try {
+            String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
+            File dest = new File(uploadDir + "/" + fileName);
+            file.transferTo(dest);
+            imgUrl = dest.getAbsolutePath();
+
+            return new ResponseEntity<>(imgUrl, HttpStatus.OK);
+        } catch (IOException e) {
+            return new ResponseEntity<>("File upload failed", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+
     }
 
 
@@ -163,7 +196,8 @@ public class MemberController {
 
         Member loginMember = memberService.findByLoginIdWithFavorSubs(memberDto.getLoginId());
         List<MemberFavorSubs> memberFavorSubsList = loginMember.getMemberFavorSubsList();
-
+        List<Long> subsIdList = memberFavorSubsList.stream().map(mfs -> mfs.getSubs().getSubsId()).collect(Collectors.toList());
+        Map<Long, List<Tag>> subsTagMap = tagService.findTagListBySubsIdList(subsIdList);
         SubsMainDto subsMainDto = new SubsMainDto();
         List<SubsDto> result = new ArrayList<>();
 
@@ -174,7 +208,7 @@ public class MemberController {
             subsDto.setIcon(subs.getIcon());
             subsDto.setName(subs.getSubsName());
             subsDto.setImage(subs.getImage());
-            subsDto.setTags(tagService.findTagsBySubsId(subs.getSubsId()));
+            subsDto.setTags(subsTagMap.get(subs.getSubsId()));
 
             result.add(subsDto);
         }
@@ -183,10 +217,108 @@ public class MemberController {
         return subsMainDto;
     }
 
+    /**
+     * 구독중인 서비스
+     */
+    @GetMapping("/have_subs")
+    public MemberHaveSubsDto memberHaveSubsView(Principal principal) {
+        MemberDto loginUser = isLoginUser(principal);
+
+        //1.가지고있는 subs들을 가져와서 category별로 분류
+        //2.category별로 있는 가격을 체크
+        //3.모든 가격을 체크
+
+        Member loginMember = memberService.findByLoginIdWithHaveSubs(loginUser.getLoginId());
+
+        //멤버들이 구매한 subs들의 rankLevel을 분류함
+        Map<Long, RankLevel> memberRankLevelMap = new HashMap<>();
+        List<MemberHaveSubs> memberHaveSubsList = loginMember.getMemberHaveSubsList();
+        List<Subs> subsList = new ArrayList<>();
+        List<Long> subsIdList = new ArrayList<>();
+
+        for (MemberHaveSubs memberHaveSubs : memberHaveSubsList) {
+            memberRankLevelMap.put(memberHaveSubs.getSubs().getSubsId(),memberHaveSubs.getRankLevel());
+            subsList.add(memberHaveSubs.getSubs());
+            subsIdList.add(memberHaveSubs.getSubs().getSubsId());
+        }
+
+        MemberHaveSubsDto memberHaveSubsDto = new MemberHaveSubsDto();
+
+
+        List<Subs> subsListWithCategory = subsService.findBySubsListWithCategory(subsList);
+
+        //멤버가 가지고있는 subsRank들을 불러온다.
+        //subsRank는 subsId와 memberHaveSubs에있는 rankRevel 이필요함
+        List<SubsRank> memberHaveSubsRank = subsService.findSubsRankBySubsListWithAllContent(subsIdList);
+
+
+        List<MemberHaveSubsWithCatDto> items = new ArrayList<>();
+
+        for (Subs subs : subsListWithCategory) {
+            String categoryName = subs.getCategory().getCategoryName();
+            String categoryEng = subs.getCategory().getCategoryEng();
+
+            MemberHaveSubsDetail memberHaveSubsDetail = new MemberHaveSubsDetail();
+            memberHaveSubsDetail.setSubsName(subs.getSubsName());
+            //subsRankList에서 해당 subs에 해당하는 subsRank를 모두가져온다.
+            List<SubsRank> subsRankList = memberHaveSubsRank.stream().filter(mhs -> mhs.getSubs().getSubsId()
+                    .equals(subs.getSubsId())).collect(Collectors.toList());
+
+            //가져온 subsRank들에서 revel에 알맞는 contents들을 모두가져온다.
+            for (SubsRank subsRank : subsRankList) {
+                if (subsRank.getRankLevel().equals(memberRankLevelMap.get(subs.getSubsId()))) {
+                    List<SubsContent> contents = subsRank.getContents();
+                    List<String> contentList = contents.stream().map(c -> c.getContent()).collect(Collectors.toList());
+
+                    memberHaveSubsDetail.setContent(contentList);
+                    memberHaveSubsDetail.setPrice(subsRank.getPrice());
+                }
+
+            }
+
+            MemberHaveSubsWithCatDto memberHaveSubsWithCatDto = new MemberHaveSubsWithCatDto();
+
+            memberHaveSubsWithCatDto.setCategoryName(categoryName);
+
+            if (items.contains(memberHaveSubsWithCatDto)) {
+
+                memberHaveSubsWithCatDto = items.get(items.indexOf(memberHaveSubsWithCatDto));
+                memberHaveSubsWithCatDto.getSubsList().add(memberHaveSubsDetail);
+
+                int price = memberHaveSubsWithCatDto.getTotalPrice() + memberHaveSubsDetail.getPrice();
+                memberHaveSubsWithCatDto.setTotalPrice(price);
+
+
+            }else{
+                memberHaveSubsWithCatDto.setCategoryEng(categoryEng);
+
+                List<MemberHaveSubsDetail> memberHaveSubsDetails = new ArrayList<>();
+                memberHaveSubsDetails.add(memberHaveSubsDetail);
+                memberHaveSubsWithCatDto.setSubsList(memberHaveSubsDetails);
+
+                memberHaveSubsWithCatDto.setTotalPrice(memberHaveSubsDetail.getPrice());
+
+                items.add(memberHaveSubsWithCatDto);
+
+            }
+
+        }
+        int totalPrice = items.stream().mapToInt(item -> item.getTotalPrice()).sum();
+
+        memberHaveSubsDto.setItems(items);
+        memberHaveSubsDto.setTotalAvg(totalPrice);
+
+        return memberHaveSubsDto;
+
+    }
+
+
+
     @GetMapping("/tagsort_init")
     public void memberTagSortInit() {
         memberService.userRecommendTag();
     }
+
 
 
     @NotNull

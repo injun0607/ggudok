@@ -544,19 +544,22 @@ public class InitMember {
             healthcare2.addTag(gender2);
             healthcare2.addTag(healthTag);
 
-
             netfilx.addTag(age1);
             netfilx.addTag(age2);
             netfilx.addTag(age3);
+            netfilx.addTag(category1);
 
             netfilx.addTag(gender1);
             netfilx.addTag(gender2);
 
             melon.addTag(age1);
             melon.addTag(age2);
+            melon.addTag(category2);
+
 
             watcha.addTag(gender1);
             watcha.addTag(gender2);
+            watcha.addTag(category1);
 
         }
 

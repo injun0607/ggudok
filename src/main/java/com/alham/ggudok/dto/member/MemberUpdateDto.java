@@ -12,5 +12,6 @@ public class MemberUpdateDto {
     private String newPassword;
     private String newPasswordCheck;
     private String phoneNumber;
+    private String memberImg;
 
 }

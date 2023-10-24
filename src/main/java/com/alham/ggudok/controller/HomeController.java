@@ -7,6 +7,8 @@ import com.alham.ggudok.dto.MainDto;
 import com.alham.ggudok.dto.member.MemberDto;
 import com.alham.ggudok.dto.subs.EventPageDto;
 import com.alham.ggudok.dto.subs.EventSubsDto;
+import com.alham.ggudok.dto.subs.SubsDto;
+import com.alham.ggudok.dto.subs.SubsMainDto;
 import com.alham.ggudok.entity.Tag;
 import com.alham.ggudok.entity.member.Member;
 import com.alham.ggudok.entity.subs.EventSubs;
@@ -29,6 +31,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static com.alham.ggudok.controller.session.SessionConst.SESSION_MEMBER;
@@ -46,7 +49,7 @@ public class HomeController {
 
 
 
-    @GetMapping("/")
+    @GetMapping("/home")
     public MainDto main(Principal principal) {
 
         MemberDto memberDto = SecurityUtils.transPrincipal(principal);
@@ -57,6 +60,7 @@ public class HomeController {
         List<EventSubsDto> eventSubsDtoList = new ArrayList<>();
 
         for (EventSubs eventSub : allEventSubs) {
+
             EventSubsDto eventSubsDto = new EventSubsDto();
             eventSubsDto.setSubsId(eventSub.getSubs().getSubsId());
             eventSubsDto.setInfo(eventSub.getInfo());
@@ -161,6 +165,34 @@ public class HomeController {
         eventPageDto.setEventSubs(eventSubsDtoList);
 
         return eventPageDto;
+    }
+
+
+    @GetMapping("/best_items")
+    public SubsMainDto bestItems() {
+        List<Subs> allSubsList = subsService.findAllSubsList();
+        Map<Long, List<Tag>> allSubsTag = tagService.findAllSubsTag();
+        SubsMainDto subsMainDto = new SubsMainDto();
+        List<SubsDto> subsDtoList = new ArrayList<>();
+
+
+        for (int i = 0; i < 20; i++) {
+            Subs subs = allSubsList.get(i);
+
+            SubsDto subsDto = new SubsDto();
+
+            subsDto.setId(subs.getSubsId());
+            subsDto.setName(subs.getSubsName());
+            subsDto.setIcon(subsDto.getIcon());
+            subsDto.setImage(subs.getImage());
+            subsDto.setRatingAvg(subs.getRatingAvg());
+            subsDto.setTags(allSubsTag.get(subs.getSubsId()));
+
+            subsDtoList.add(subsDto);
+
+        }
+        subsMainDto.setItems(subsDtoList);
+        return subsMainDto;
     }
 
 //    @PostMapping("/login")
