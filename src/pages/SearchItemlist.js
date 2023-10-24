@@ -35,11 +35,9 @@ const Itemlist = () => {
   const endIndex = startIndex + ITEMS_PER_PAGE;
   
   // ************************** 기본 아이템 fetch ***************************
-  const fetchItemListData = async () => {
+  const fetchItemListData = async() => {
     try {
-      const response = await axios.get(`/subs/search`, {
-        searchQuery: searchQuery,
-      });
+      const response = await axios.get(`/subs/search?q=${searchQuery}`);
       const data = response.data.items;
 
       // 아이템 데이터를 받아온 후에 filterTag을 계산하고 상태를 업데이트
@@ -64,7 +62,7 @@ const Itemlist = () => {
     }
   };
   useEffect(() => {
-    fetchItemListData();
+    if(searchQuery.length !== 0){fetchItemListData();}
   }, [dispatch, searchQuery]);
 
 // 결과 유무

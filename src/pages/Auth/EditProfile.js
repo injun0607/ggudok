@@ -91,20 +91,20 @@ const EditProfile = () => {
     dispatch(setValidPhoneNumber(isPhoneNumberReg));
   }
 
-  // const handleImageUpload = async () => {
-  //   try {
-  //     if (memberImg) {
-  //       const formData = new FormData();
-  //       formData.append('profileImage', memberImg);
+  const handleImageUpload = async () => {
+    try {
+      if (memberImg) {
+        const formData = new FormData();
+        formData.append('profileImage', memberImg);
   
-  //       await axios.post('/upload-profile-image', formData);
+        await axios.post('/upload-profile-image', formData);
   
-  //       console.log('이미지 업로드 성공');
-  //     }
-  //   } catch (error) {
-  //     console.error('이미지 업로드 오류:', error);
-  //   }
-  // };
+        console.log('이미지 업로드 성공');
+      }
+    } catch (error) {
+      console.error('이미지 업로드 오류:', error);
+    }
+  };
 
   const handleEdit = async(e) => {
     e.preventDefault();
@@ -131,7 +131,7 @@ const EditProfile = () => {
         <div className={style.form}>
           <form onSubmit={ handleEdit }>
             
-            {/* <div className={style.userImg}>
+            <div className={style.userImg}>
               <div className={style.circle}>
                 { memberImg
                 ? <img src={URL.createObjectURL(memberImg)} alt='유저 이미지' onError={(e) => {e.target.src = NO_IMAGE_URL;}}/>
@@ -145,7 +145,7 @@ const EditProfile = () => {
                 }}
               />
               <label htmlFor="file">프로필 사진 선택하기</label>
-            </div> */}
+            </div>
             <div className={style.inputwrap}>
               <input type="text" name='emailid' value={loginId} readOnly />
               <input

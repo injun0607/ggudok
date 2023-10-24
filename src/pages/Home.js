@@ -2,12 +2,16 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation } from 'swiper/modules';
 // component import
 import Bannerslider from '../components/Slider';
 import ErrorItem from '../components/ErrorItem';
 import Loading from '../components/Loading';
 // css import
-import style from '../styles/Home.module.css'
+import style from '../styles/Home.module.css';
+import 'swiper/css';
+import 'swiper/css/navigation';
 // redux import
 import { setRecomBasic, setRecomCustom } from '../redux/actions/itemActions';
 
@@ -16,11 +20,12 @@ const NO_IMAGE_URL = '/images/common/noimg.png';
 const Home = () => {
   let dispatch = useDispatch();
   const isLoggedIn = useSelector(state => state.user.isLoggedIn);
-
   const categories = useSelector(state => state.category.categories);
+
   const items = useSelector(state => state.item.items);
   const recommendBasic = useSelector(state => state.item.recommendBasic);
   const recommendCustomized = useSelector(state => state.item.recommendCustomized);
+
   const [IsResult, setIsResult] = useState(false);
   const [IsLoading, setIsLoading] = useState(true);
 
@@ -61,7 +66,7 @@ const Home = () => {
     <section className={style.home}>
       <div className='webwidth'>
         <section className={style.bannerslider}>
-            <Bannerslider />
+          <Bannerslider />
         </section>
         <section className={style.section}>
           <h2 className={style.tit}>전체 카테고리</h2>
@@ -82,52 +87,81 @@ const Home = () => {
         </section>
         <section className={style.section}>
           <h2 className={style.tit}>알고리즘 저격! <span className='sub_clr'>맞춤 서비스</span></h2>
-          <div className='item-list'>
+          <Swiper
+            cssMode={true}
+            navigation={true}
+            pagination={false}
+            spaceBetween={24}
+            slidesPerView={2}
+            modules={[Navigation]}
+            className="item-list_carousel"
+            breakpoints={{
+              800: {
+                slidesPerView: 4,
+              },
+            }}
+          >
             {
-              recommendCustomized.slice(0, 8).map((item, index) => 
-              <Link to={`/subs/detail/${item.id}`} key={index} className='item-list-box'>
-                <div className='img'>
-                  <img src={`${item.image}`} alt={item.name} onError={(e) => {e.target.src = NO_IMAGE_URL;}}/>
-                </div>
-                <div className='txt'>
-                  <h3>{item.name}</h3>
-                  <div className='tag'>
+              recommendCustomized.map((item, index) => 
+                <SwiperSlide key={index} className='item-list-box'>
+                  <Link to={`/subs/detail/${item.id}`}>
+                    <div className='img'>
+                      <img src={`${item.image}`} alt={item.name} onError={(e) => {e.target.src = NO_IMAGE_URL;}}/>
+                    </div>
+                    <div className='txt'>
+                      <h3>{item.name}</h3>
+                      <div className='tag'>
+                        {
+                          item.tags.map((tag, tagindex) => (
+                            <p key={tagindex}>{tag.tagName}</p>
+                          ))
+                        }
+                      </div>
+                    </div>
+                  </Link>
+                </SwiperSlide>
+              )
+            }
+          </Swiper>
+        </section>
+        <section className={style.section}>
+          <h2 className={style.tit}>나와 같은 <span className='main_clr'>20대 남성</span>이 가장 많이 구독한 서비스</h2>
+          <Swiper
+            cssMode={true}
+            navigation={true}
+            pagination={false}
+            spaceBetween={24}
+            slidesPerView={2}
+            modules={[Navigation]}
+            className="item-list_carousel"
+            breakpoints={{
+              800: {
+                slidesPerView: 4,
+              },
+            }}
+          >
+            {
+              recommendBasic.map((item, index) => 
+              <SwiperSlide key={index} className='item-list-box'>
+                <Link to={`/subs/detail/${item.id}`}>
+                  <div className='img'>
+                    <img src={`${item.image}`} alt={item.name} onError={(e) => {e.target.src = NO_IMAGE_URL;}}/>
+                  </div>
+                  <div className='txt'>
+                    <h3>{item.name}</h3>
+                    <div className='tag'>
                     {
                       item.tags.map((tag, tagindex) => (
                         <p key={tagindex}>{tag.tagName}</p>
                       ))
                     }
                   </div>
-                </div>
-              {/* </div> */}
-              </Link>
+                  </div>
+                </Link>
+              </SwiperSlide>
               )
             }
-          </div>
-        </section>
-        <section className={style.section}>
-          <h2 className={style.tit}>나와 같은 <span className='main_clr'>20대 남성</span>이 가장 많이 구독한 서비스</h2>
-          <div className='item-list'>
-            {
-              recommendBasic.slice(0, 8).map((item, index) => 
-              <Link to={`/subs/detail/${item.id}`} key={index} className='item-list-box'>
-                <div className='img'>
-                  <img src={`${item.image}`} alt={item.name} onError={(e) => {e.target.src = NO_IMAGE_URL;}}/>
-                </div>
-                <div className='txt'>
-                  <h3>{item.name}</h3>
-                  <div className='tag'>
-                  {
-                    item.tags.map((tag, tagindex) => (
-                      <p key={tagindex}>{tag.tagName}</p>
-                    ))
-                  }
-                </div>
-                </div>
-              </Link>
-              )
-            }
-          </div>
+          </Swiper>
         </section>
       </div>
     </section>

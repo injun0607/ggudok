@@ -1073,6 +1073,31 @@ table .sub_tit:last-child {
     border-radius: 6px;
 }
 
+/* ------------------- SwiperJs 캐러셀 스와이퍼 ---------------------*/
+.swiper {overflow: inherit !important;}
+.swiper-wrapper {height: inherit !important;}
+.item-list_carousel {margin-top: 2rem;}
+.item-list_carousel .swiper-slide {
+    background: #fff;
+    /* box-shadow: 4px 12px 30px 6px rgba(0,0,0,.09); */
+    box-shadow: none;
+    transition: all .3s ease;
+    border-radius: 0;
+    cursor: pointer;
+    position: relative;
+    height: fit-content !important;
+}
+.item-list_carousel .swiper-slide:hover {box-shadow: none; transform: none;}
+.item-list_carousel .swiper-slide .img {border-radius: var(--radius-all-sm); overflow: hidden;}
+.swiper-button-prev, .swiper-button-next {
+    color: var(--txt-color) !important;
+    margin-top: -4rem;
+}
+.swiper-button-prev:after, .swiper-button-next:after {
+    font-size: 2rem !important;
+}
+.swiper-button-prev {left: -60px;}
+.swiper-button-next {right: -60px;}
 
 /* ------------------- Paging 페이징 페이지네이션 ---------------------*/
 /* 버전 1 */

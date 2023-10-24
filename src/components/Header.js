@@ -38,7 +38,9 @@ const Topheader = () => {
 	}
 	const handleSearchSubmit = (e) => {
 		e.preventDefault();
-		navigate(`/SearchItemlist?q=${searchQuery}`);
+		
+		if(searchQuery.length === 0){alert('검색어를 한 글자 이상 입력하세요.')}
+		else {navigate(`/SearchItemlist?q=${searchQuery}`);}
 	}
 
 	return (
