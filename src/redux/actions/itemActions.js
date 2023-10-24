@@ -19,6 +19,12 @@ export const setRecomCustom = (data) => {
     payload: data,
   };
 };
+export const setBestItems = (data) => {
+  return {
+    type: 'SET_BEST_ITEMS',
+    payload: data,
+  };
+};
 export const fetchItemsSuccess = (data) => {
   return {
     type: 'FETCH_ITEMS_SUCCESS',

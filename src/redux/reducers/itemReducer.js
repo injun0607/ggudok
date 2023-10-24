@@ -32,6 +32,11 @@ const itemReducer = (state = initialState, action) => {
         ...state,
         recommendCustomized: action.payload,
       }
+    case 'SET_BEST_ITEMS':
+      return {
+        ...state,
+        bestitems: action.payload,
+      }
     case 'FETCH_ITEMS_SUCCESS':
       return {
         ...state,
