@@ -201,7 +201,7 @@ useEffect(() => {
                       </div>
                     </div>
                   </Link>
-                )) : <ErrorItem />}
+                )) : <ErrorItem message="이런! 해당하는 구독서비스가 없습니다." />}
               </div>
             </div>
 

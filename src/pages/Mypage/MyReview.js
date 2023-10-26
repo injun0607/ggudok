@@ -94,7 +94,7 @@ const MyReview = ({isCheckingLogin}) => {
           ))}
           <Paging handlePageChange={handlePageChange} page={page} count={reviews.length} ITEMS_PER_PAGE={ITEMS_PER_PAGE} />
           </>
-        : <ErrorItem />}
+        : <ErrorItem message="작성한 리뷰가 없습니다." />}
       </div>
     </section>
   )

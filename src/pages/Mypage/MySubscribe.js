@@ -85,7 +85,7 @@ const MySubscribe = () => {
         </div>
       ))}
     </section>
-        : <ErrorItem />) : <Loading />
+        : <ErrorItem message="구독 중인 서비스가 없습니다." />) : <Loading />
   )
 }
 export default MySubscribe;

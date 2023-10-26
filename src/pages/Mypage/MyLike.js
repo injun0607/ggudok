@@ -102,7 +102,7 @@ const MyLike = ({ isCheckingLogin }) => {
     </section>
     <Paging handlePageChange={handlePageChange} page={page} count={likedItems.length} ITEMS_PER_PAGE={ITEMS_PER_PAGE} />
     </>
-    : <ErrorItem />) : <Loading />
+    : <ErrorItem message="아직 관심있는 구독서비스가 없습니다." />) : <Loading />
   )
 }
 

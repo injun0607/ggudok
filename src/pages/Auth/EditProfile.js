@@ -5,7 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 // css import
 import style from '../../styles/Auth.module.css'
 // redux import
-import { editMemberinfo, setValidPassword, setMemberImg, setAge, setGender, setValidPhoneNumber, setPhoneNumber, setPassword, setNewPassword, setNewPasswordCheck, setIsLoading } from '../../redux/actions/userActions';
+import { editMemberinfo, setValidPassword, setAge, setGender, setValidPhoneNumber, setPhoneNumber, setPassword, setNewPassword, setNewPasswordCheck, setIsLoading } from '../../redux/actions/userActions';
 
 const EditProfile = () => {
   const dispatch = useDispatch();
@@ -13,7 +13,10 @@ const EditProfile = () => {
 
   const isPassval = useSelector(state => state.user.isPassval);
   const isPhoneval = useSelector(state => state.user.isPhoneval);
-  const memberImg = useSelector(state => state.user.memberImg);
+
+  // const memberImg = useSelector(state => state.user.memberImg);
+  const [memberImg, setMemberImg] = useState(null);
+
   const memberName = useSelector(state => state.user.memberName);
   const loginId = useSelector(state => state.user.loginId);
   const password = useSelector(state => state.user.password);
@@ -96,8 +99,15 @@ const EditProfile = () => {
       if (memberImg) {
         const formData = new FormData();
         formData.append('profileImage', memberImg);
+        console.log(memberImg)
   
-        await axios.post('/upload-profile-image', formData);
+        // 서버로 이미지 업로드 요청
+        const response = await axios.post('/upload-profile-image', formData);
+        // 업로드 성공 시 서버에서 이미지 URL을 받아옴
+        const imageUrl = response.data.imageUrl;
+        // 이미지 URL을 저장
+        // dispatch(setMemberImg(imageUrl));
+        setMemberImg(imageUrl);
   
         console.log('이미지 업로드 성공');
       }
@@ -108,7 +118,7 @@ const EditProfile = () => {
 
   const handleEdit = async(e) => {
     e.preventDefault();
-    // await handleImageUpload();
+    await handleImageUpload();
     const userData = {
       password,
       newPassword,
@@ -118,6 +128,7 @@ const EditProfile = () => {
       phoneNumber,
       isPassval,
       isPhoneval,
+      memberImg,
     };
     dispatch(editMemberinfo(userData, navigate));
   };
@@ -133,15 +144,25 @@ const EditProfile = () => {
             
             <div className={style.userImg}>
               <div className={style.circle}>
-                { memberImg
+                {/* { memberImg
                 ? <img src={URL.createObjectURL(memberImg)} alt='유저 이미지' onError={(e) => {e.target.src = NO_IMAGE_URL;}}/>
+                : <img src={`${NO_IMAGE_URL}`} alt='유저 이미지' />
+                } */}
+                { memberImg
+                ? <img src={memberImg} alt='유저 이미지' onError={(e) => {e.target.src = NO_IMAGE_URL;}}/>
                 : <img src={`${NO_IMAGE_URL}`} alt='유저 이미지' />
                 }
               </div>
-              <input type="file" id="file" accept="image/*" className='inputFile'
+              {/* <input type="file" id="file" accept="image/*" className='inputFile'
                 onChange={(e) => {
                   const imageFile = e.target.files[0];
                   dispatch(setMemberImg(imageFile));
+                }}
+              /> */}
+              <input type="file" id="file" accept="image/*" className='inputFile'
+                onChange={(e) => {
+                  const imageFile = e.target.files[0];
+                  setMemberImg(URL.createObjectURL(imageFile));
                 }}
               />
               <label htmlFor="file">프로필 사진 선택하기</label>

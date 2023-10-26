@@ -98,7 +98,7 @@ const FeaturedItemlist = () => {
 
       </div>
     </section>
-    : <ErrorItem />) : <Loading />
+    : <ErrorItem message="이런! 베스트 구독서비스가 없습니다." />) : <Loading />
   );
 };
 

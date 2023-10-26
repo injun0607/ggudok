@@ -76,7 +76,7 @@ const SearchItemlist = () => {
                       </div>
                     {/* </div> */}
                   </Link>
-                )) : <ErrorItem />}
+                )) : <ErrorItem message={`${searchQuery}에 대한 검색결과가 없습니다.`} />}
               </div>
             </div>
 
