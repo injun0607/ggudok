@@ -75,7 +75,7 @@ const Topheader = () => {
 								<Link to="/Auth/Join" className={style.point}>회원가입</Link>
 							</>
 						)}
-						<Link to="/Admin/AdminHome" className={style.pointAdmin}><span className='material-icons'>settings</span><p>Admin</p></Link>
+						<Link to="/Admin/AdminHome" className={style.pointAdmin} target='_blank'><span className='material-icons'>settings</span><p>Admin</p></Link>
 					</div>
 				</div>
 			</div>

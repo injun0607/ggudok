@@ -11,6 +11,7 @@ import reviewReducer from './reviewReducer';
 import eventReducer from './eventReducer';
 import darkModeReducer from './darkModeReducer';
 import adminLayoutReducer from './adminLayoutReducer';
+import adminCategoryReducer from './admin/adminCategoryReducer';
 
 const rootReducer = combineReducers({
   user: userReducer,
@@ -23,8 +24,9 @@ const rootReducer = combineReducers({
   compare: compareReducer,
   event: eventReducer,
   darkMode: darkModeReducer,
-  adminLayout: adminLayoutReducer,
   review: reviewReducer,
+  adminLayout: adminLayoutReducer,
+  adminCategory: adminLayoutReducer,
 });
 
 export default rootReducer;

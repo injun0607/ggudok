@@ -14,6 +14,7 @@ import ErrorItem from './ErrorItem.js'
 import ErrorLogin from './ErrorLogin.js'
 import AdminHeader from './Admin/AdminHeader';
 import AdminFooter from './Admin/AdminFooter';
+import AdminLayout from './Admin/AdminLayout';
 import Loading from './Loading';
 // page import
 import Home from '../pages/Home';
@@ -37,6 +38,7 @@ import AdminHome from '../pages/Admin/AdminHome';
 // redux import
 import { toggleDarkMode } from '../redux/actions/darkModeActions';
 import { setLoggedIn } from '../redux/actions/userActions';
+import { setAdminLayout } from '../redux/actions/adminLayoutActions';
 
 const ItemDetail = lazy( () => import('../pages/ItemDetail') )
 
@@ -77,14 +79,12 @@ const Layout = () => {
 
 	return (
 		<div className={`${darkMode ? 'dark' : ''}`}>
-		<div className={`${isadminLayout ? `adminLayout` : `${style.layout}` }`}>
-			{/* {isadminLayout ? <div className={style.adminLayout}> : <div className={style.layout}>} */}
-			{isadminLayout ? <AdminHeader /> : <Header />} 
+		<div className={style.layout}>
+			{!isadminLayout && <Header />} 
 			<div className={style.body}>
 				<Routes>
 					<Route path='/' element={<Home />} />
 					<Route path='/Home' element={<Home />}></Route>
-					<Route path="/Admin/AdminHome" element={<AdminHome isadminLayout />} />
 
 					<Route path='/Mypage' element={
 						isCheckingLogin ? (<Loading />) : (
@@ -170,20 +170,33 @@ const Layout = () => {
 					<Route path='Event' element={ <Event /> }></Route>
 					<Route path='Contactus' element={ <Contactus /> }></Route>
 
+					{/* <Route path='/Admin' element={
+					isCheckingLogin ? (<Loading />) : (
+							isLoggedIn ? (
+								(() => {
+									dispatch(setAdminLayout(true));
+									return <AdminLayout memberName={memberName} />;
+								})()
+							) : (
+								<>
+									<ErrorLogin />
+									<div className='modalBg modalBg-Blur' onClick={() => { navigate(-1) }}></div>
+								</>
+							)
+						)
+					}>
+						<Route path="/Admin/AdminHome" element={<AdminHome isadminLayout />} />
+					</Route> */}
+
 					<Route path='*' element={ <Error /> }></Route>
 					<Route path='*' element={ <ErrorItem /> }></Route>
 					<Route path='*' element={ <ErrorLogin /> }></Route>
 				</Routes>
 			</div>
-			{isadminLayout ? <AdminFooter /> : <Footer />} {}
+			{!isadminLayout && <Footer />}
 
 			{isadminLayout ? null : <Darkmodebtn />}
 			<Topbtn />
-			{/* <div className={style.ani}>
-				<span className={style.ani06}><img src='/images/common/animateBG-01.svg' alt='animate'/></span>
-				<span className={style.ani08}><img src='/images/common/animateBG-02.svg' alt='animate'/></span>
-				<span className={style.ani00}><img src='/images/common/animateBG-03.svg' alt='animate'/></span>
-			</div> */}
 		</div>
 		</div>
 	)

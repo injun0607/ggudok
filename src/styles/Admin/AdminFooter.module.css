@@ -1,7 +1,7 @@
 @charset "utf-8";
 
 .footer {
-    padding: var(--pad-tb-lg);
+    padding: var(--pad-md);
     border-top: 1px solid var(--c-black-admin);
     line-height: 1.7em;
     color: #757575;

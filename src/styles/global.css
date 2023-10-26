@@ -97,9 +97,11 @@ accent-color: #FF724C;
 --accent-color: #FF724C;
 }
 }
-.dark {
+.adminLayout, .dark {
     --bg-color: #37394d;
     --bg-color-2: #2A2C41;
+    --bg-color-3: #47495f;
+    --bg-color-4: #5c5e79;
     --bg-color-blk: #f4f4f8;
     --txt-color : #fafafa;
     --txt-color-2 : #efefef;
@@ -338,8 +340,13 @@ accent-color: #FF724C;
     border: none;
 }
 .btn_full02 {
-    color:#fff;
+    color:#333;
     background: var(--sub-color);
+    border: none;
+}
+.btn_full03 {
+    color:#333;
+    background: var(--c-black-4);
     border: none;
 }
 .btn_normal {
@@ -433,6 +440,8 @@ accent-color: #FF724C;
     font-weight: 500;
     color: var(--c-black-1);
 }
+
+.adminLayout .cont_tit_m h2 {margin-top: 2rem; margin-bottom: 2rem;}
 
 /* ------------------서브페이지 두번째 제목 (bullet 버전)------------------*/
 /* .cont_tit_m h5 {
@@ -773,9 +782,6 @@ table th {
 table tr {
     border-bottom: 1px var(--c-black-5) solid;
 }
-/* table tr:last-child {
-    border-bottom: 0;
-} */
 table tr th {
     padding: 14px;
 }

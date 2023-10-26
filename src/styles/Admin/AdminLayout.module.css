@@ -1,6 +1,16 @@
 @charset "utf-8";
-
 .errorpage p {color: #fff;}
+.body {
+  min-height: calc(100vh - 6.957rem);
+  padding-top: 5rem;
+}
+.dashboxWrap {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(calc((100% - 1.125rem) / 2), auto));
+  grid-auto-rows: minmax(100px, auto);
+  gap: 1.125rem;
+  padding: var(--pad-sm);
+}
 
 /* 위로가기 버튼 */
 .topbtn {
@@ -23,42 +33,90 @@
 /********************** basic box setting *********************/
 /**************************************************************/
 /**************************************************************/
-.home {
-  min-height: calc(100vh - 17.063rem);
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(20%, auto));
-  grid-auto-rows: minmax(100px, auto);
-  gap: 1.125rem;
-  padding: var(--pad-sm);
-}
-.home .dashbox {
+.dashbox {
   background: #ffffff22;
   border-radius: var(--radius-all-sm);
 }
-.home .dashbox .dashtit {
-  padding: var(--pad-md);
+.dashbox .dashtit {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 1.25rem 1.25rem 1.05rem 1.75rem;
   border-bottom: 1px solid #ffffff22;
-  margin-bottom: 1rem;
-  padding-bottom: 1.25rem;
+  color: #fff;
 }
-.home .dashbox .dashtit h2 {
+.dashbox .dashtit h2 {
   font-size: 1.15rem;
   font-weight: 400;
+  flex-grow: 1;
 }
-.home .dashbox .dashcont {
-  padding: var(--pad-md);
+.dashbox .dashtit .moreBtn { background: none; }
+.dashbox .dashtit .moreBtn span { color: #fff; }
+.dashbox .dashcont {
+  padding: var(--pad-sm);
 }
 
-
+/**************************************************************/
+/**************************************************************/
+/********************* basic table setting ********************/
+/**************************************************************/
+/**************************************************************/
+.tableWrap {padding: var(--pad-sm);}
+.tableWrap>a {max-width: 180px; float: right; margin-bottom: 1rem; font-weight: 500;}
+.tbScroll {
+  overflow-x: auto;
+  width: 100%;
+}
+.table {
+  width: 100%;
+  min-width: 480px; 
+  border-collapse: collapse;
+  line-height: 1.5em;
+  text-align: center;
+  color: var(--txt-color-wht);
+  width: 100%;
+  overflow: hidden;
+  border-radius: var(--radius-all-sm);
+}
+.table_min {
+  min-width: 280px;
+}
+.table th {
+  background: var(--sub-color-2);
+  color: #fff;
+  padding: 20px;
+  font-weight: 400;
+}
+.table tbody tr {
+  background: var(--bg-color-3);
+}
+.table tbody tr:nth-child(odd) {
+  background: var(--bg-color-4);
+}
+.table td {
+  padding: 14px;
+  color: var(--txt-color);
+  vertical-align: middle;
+  background: none;
+}
+.table tr, .table th, .table td {
+  border-bottom: 0 !important;
+}
+.table th:last-child, .table td:last-child {
+  border-right: 0;
+}
+.table .cont {
+  text-align: left;
+  word-break: keep-all;
+}
+.table .tdIcon img {max-width: 2rem; max-height: 2rem;}
+.table .tdBtn button {margin-right: 0.75rem; min-width: 5rem;}
+.table .tdBtn button:last-child {margin: 0;}
+.tbSm .table th {padding: 14px; font-size: 0.938rem;}
+.tbSm .table td {padding: 10px; font-size: 0.875rem;}
 /**************************************************************/
 /**************************************************************/
 /************************animate setting **********************/
 /**************************************************************/
 /**************************************************************/
-.body {
-  z-index: 1;
-  color: #fff;
-}
 .adminLayout .ani {
   /* z-index: -1; */
   position: fixed;

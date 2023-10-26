@@ -1,8 +1,7 @@
 @charset "utf-8";
 
-/* .header {background: var(--bg-color);} */
+.header {padding: var(--pad-sm); display: flex; justify-content: space-between; gap: 3rem;}
 .header.fixed {position: fixed; top: 0;}
-.header .link {padding: var(--pad-sm); display: flex; justify-content: space-between; gap: 3rem;}
 .header .logo {display: flex; justify-content: center; align-items: center;}
 .header .logo a {font-family: var(--main-font); color: #fff;font-size: 2.125rem; transition: 0.15s; display: flex;}
 .header .logo a span {font-family: var(--main-font); color: #fff;font-size: 2.125rem; transition: 0.2s;margin-top: -3px; display: inline-block;}
@@ -12,25 +11,13 @@
 .header .search .searchbar {float: right; width: 24rem; border: 1px solid var(--c-black-5); overflow: hidden; border-radius: var(--radius-all-lg); padding: 0 0.25rem 0 0.5rem; display: flex; align-items: center; background: var(--bg-color-2);}
 .header .search .searchbar input {width: calc(100% - 2rem); border: none; background: var(--bg-color-2);}
 .header .search .searchbar span {cursor: pointer; color: #fff;}
-.header .link .nav {display: flex; gap: 1.5rem; align-items: center; font-size: 0.925rem;}
-.header .link .nav a, .header .link .nav button {color: #fff; font-size: 0.925rem; background: none;}
-.header .link .nav a.point {color: #fff; display: inline-block; background-color: var(--main-color); padding: 0.25rem 0.5rem; border-radius: var(--radius-all-min);}
-.header .link .nav a.pointAdmin {color: #fff; display: inline-block; background-color: var(--sub-color-4); padding: 0.25rem 0.5rem; border-radius: var(--radius-all-min); display: flex; gap: 0.25rem; align-items: center;}
-.header .link .nav a.pointAdmin span {font-size: 0.938rem; color: #fff;}
+.header .nav {width: calc(var(--web-width) / 2); display: flex; justify-content: space-between; align-items: center;}
+.header .nav a, .header .nav button {color: #fff; font-size: 1.063rem; background: none; font-weight: 300; letter-spacing: -0.0125em;}
+.header a.point {color: #fff; display: inline-block; background-color: var(--main-color); padding: 0.25rem 0.5rem; border-radius: var(--radius-all-min);}
 
-.category>div {display: flex; justify-content: space-between; align-items: center; gap: 3rem;}
-.category {padding: 1.5rem 0 1.25rem; position: relative; border-bottom: 1px solid var(--c-black-admin);}
-.category .allcategory .onedepth {display: flex; align-items: center; gap: 0.5rem; font-weight: 600; cursor: pointer; font-size: 1.125rem; color: #fff;}
-.category .allcategory .twodepth {max-width: 10rem; position: absolute; z-index: 99; background-color: var(--bg-color-2); padding: 1.5rem 1.5rem; top: 5rem; border-radius: 0 0 1rem 1rem; box-shadow: 4px 12px 30px 6px rgba(0,0,0,.09);}
-.category .allcategory .twodepth .depths {display: flex; gap: 0.75rem; margin-top: 1rem; color: #fff;}
-.category .allcategory .twodepth .depths:first-child {margin: 0;}
-.category .allcategory .twodepth .depths img {width: 1.125rem; transition: 0.3s;}
-.category .allcategory .twodepth .depths:hover img { margin-top: -6px;}
-.category .allcategory .twodepth .depths p {font-size: 0.925rem; font-weight: 600; color: var(--txt-color-2);}
-.category .featuredcategory {display: flex; gap: 5.5rem; font-weight: 500; font-size: 1.125rem;}
-.category .featuredcategory a { color: #fff;}
-.category .pointdepth {border: 1px solid var(--c-black-admin); padding: 0.325rem 1rem; border-radius: var(--radius-all-md); color: var(--main-color); font-weight: 500; transition: 0.3s; font-size: 0.925rem;}
-.category .pointdepth:hover {background: var(--bg-color-2);}
+.pointAdmin {border: 1px solid var(--c-black-admin); padding: 0.325rem 0.75rem; border-radius: var(--radius-all-md); color: var(--main-color); font-weight: 500; transition: 0.3s; font-size: 0.925rem; display: flex; align-items: center; gap: 0.25rem;}
+.pointAdmin:hover {background: var(--bg-color-2);}
+.pointAdmin span {font-size: 1.125rem;}
 
 @media screen and (max-width:1300px) {
 }

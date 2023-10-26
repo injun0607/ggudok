@@ -1,5 +1,5 @@
 const initialState = {
-  isadminLayout: false
+  isadminLayout: false,
 };
 
 const adminLayoutReducer = (state = initialState, action) => {

@@ -99,14 +99,14 @@ const EditProfile = () => {
       if (memberImg) {
         const formData = new FormData();
         formData.append('profileImage', memberImg);
-        console.log(memberImg)
+        console.log('memberImg', memberImg)
   
         // 서버로 이미지 업로드 요청
-        const response = await axios.post('/upload-profile-image', formData);
+        const response = await axios.post('/member/update/image', formData);
         // 업로드 성공 시 서버에서 이미지 URL을 받아옴
         const imageUrl = response.data.imageUrl;
+        console.log(imageUrl)
         // 이미지 URL을 저장
-        // dispatch(setMemberImg(imageUrl));
         setMemberImg(imageUrl);
   
         console.log('이미지 업로드 성공');
@@ -144,21 +144,11 @@ const EditProfile = () => {
             
             <div className={style.userImg}>
               <div className={style.circle}>
-                {/* { memberImg
-                ? <img src={URL.createObjectURL(memberImg)} alt='유저 이미지' onError={(e) => {e.target.src = NO_IMAGE_URL;}}/>
-                : <img src={`${NO_IMAGE_URL}`} alt='유저 이미지' />
-                } */}
                 { memberImg
                 ? <img src={memberImg} alt='유저 이미지' onError={(e) => {e.target.src = NO_IMAGE_URL;}}/>
                 : <img src={`${NO_IMAGE_URL}`} alt='유저 이미지' />
                 }
               </div>
-              {/* <input type="file" id="file" accept="image/*" className='inputFile'
-                onChange={(e) => {
-                  const imageFile = e.target.files[0];
-                  dispatch(setMemberImg(imageFile));
-                }}
-              /> */}
               <input type="file" id="file" accept="image/*" className='inputFile'
                 onChange={(e) => {
                   const imageFile = e.target.files[0];

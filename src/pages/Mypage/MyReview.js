@@ -124,10 +124,6 @@ function ReviewItem({ review, ratingMap, index }) {
           rating: editReviewRating,
           contents: editReviewContents,
         };
-        console.log("reviewData:", reviewData);
-        console.log("subsId:", subsId);
-        console.log("editReviewRating:", editReviewRating);
-        console.log("editReviewContents:", editReviewContents);
 
         dispatch(editMyReview(reviewData));
       }
