@@ -315,7 +315,7 @@ const ItemDetail = () => {
             </article>
           </section>
 
-        </div> : <Error />) : <Loading />}
+        </div> : <Error message="존재하지 않는 구독서비스입니다." />) : <Loading />}
 
         
         <section className={style.section}>

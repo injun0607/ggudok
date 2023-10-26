@@ -8,6 +8,7 @@ import Loading from '../components/Loading';
 import style from '../styles/Item.module.css';
 // redux import
 import { setEvent } from '../redux/actions/eventActions';
+import ErrorItem from '../components/ErrorItem';
 
 const NO_IMAGE_URL = '/images/common/noimg.png';
 
@@ -69,7 +70,7 @@ const Event = () => {
               ))
             }
           </section>
-        : <Error />) : <Loading />}
+        : <ErrorItem message="진행중인 이벤트가 없습니다." />) : <Loading />}
       </div>
     </section>
   );

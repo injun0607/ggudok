@@ -30,7 +30,7 @@ const AdminLayout = () => {
         <Routes>
           <Route path='/Admin/AdminHome' element={<AdminHome />}></Route>
 
-          <Route path='*' element={ <Error /> }></Route>
+          <Route path='*' element={ <Error message="저런! 존재하지 않는 페이지입니다." /> }></Route>
         </Routes>
       </div>
       <AdminFooter />
