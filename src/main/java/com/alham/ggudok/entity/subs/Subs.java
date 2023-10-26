@@ -73,4 +73,5 @@ public class Subs extends ImageResourceEntity {
     public void updateRatingAvg(int ratingAvg) {
         this.ratingAvg = ratingAvg;
     }
+
 }

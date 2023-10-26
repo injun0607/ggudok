@@ -7,11 +7,13 @@ import com.alham.ggudok.tempadmin.dto.TagForm;
 import com.alham.ggudok.tempadmin.dto.subs.*;
 import com.alham.ggudok.tempadmin.service.AdminTagService;
 import com.alham.ggudok.tempadmin.service.subs.AdminSubsService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -33,8 +35,33 @@ public class TempAdminController {
     private final EventRepository eventRepository;
 
 
+
+    @Value("${upload.subs.main}")
+    private String uploadSubsMain;
+
+    @Value("${upload.subs.icon}")
+    private String uploadSubsIcon;
+
+    @Value("${upload.category}")
+    private String uploadCategory;
+
+
+    @Value("${download.subs.main}")
+    private String downLoadSubsMain;
+
+    @Value("${download.subs.icon}")
+    private String downLoadSubsIcon;
+
+    @Value("${download.category}")
+    private String downLoadCategory;
+
+    @Value("${download.member}")
+    private String downLoadMember;
+
+
     @PostMapping("/category/register")
     public String addCategory(CategoryRegisterDto categoryRegisterDto) {
+
         adminSubsService.createCategory(categoryRegisterDto.getCategoryName());
 
         return "redirect:/admin/subs";
@@ -44,6 +71,14 @@ public class TempAdminController {
     public String showCategoryForm(Model model) {
         model.addAttribute("form", new CategoryRegisterDto());
         return "admin/subs/categoryForm";
+    }
+
+    @PostMapping("/category/register/icon")
+    public String addCategoryIcon(@RequestParam("file") MultipartFile file, @PathVariable("categoryId")Long categoryId) {
+
+        String imgUrl = "";
+
+        return "redirect:/admin/subs";
     }
 
     @GetMapping("subs")
@@ -68,6 +103,8 @@ public class TempAdminController {
         return "redirect:/admin/subs";
     }
 
+
+
     @GetMapping("subs/{subsId}")
     public String manageSubsRank(@PathVariable("subsId") Long subsId, Model model) {
         Subs subs = adminSubsService.findSubsById(subsId);
@@ -76,31 +113,64 @@ public class TempAdminController {
         model.addAttribute("subsId", subs.getSubsId());
         model.addAttribute("subsName", subs.getSubsName());
         model.addAttribute("subsRanks", subsRanks);
+        model.addAttribute("subsImage", subs.getImage());
 
 
         return "/admin/subs/subsRankList";
     }
 
-    @Value("${upload.dir}")
-    private String uploadDir;
+
 
 
     @PostMapping("subs/{subsId}/upload")
-    public String uploadSubsImage(@RequestParam("file") MultipartFile file,Model model) {
+    public String uploadSubsMainImage(@RequestParam("file") MultipartFile file, @PathVariable("subsId")Long subsId, Model model, HttpServletRequest request) {
         String imgUrl = "";
+        String file1 = request.getParameter("file");
         if (file.isEmpty()) {
-            return "/admin/subs/subsRankList";
+            return "redirect:/admin/subs/{subsId}";
         }
 
-        try {
-            String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
-            File dest = new File(uploadDir + "/" + fileName);
-            file.transferTo(dest);
-            imgUrl = dest.getAbsolutePath();
 
-            return "/admin/subs/subsRankList";
+        try {
+            Subs subs = adminSubsService.findSubsById(subsId);
+            String fileName = subsId + "_" + file.getOriginalFilename();
+            File dest = new File(uploadSubsMain + fileName);
+
+            file.transferTo(dest);
+
+            imgUrl = downLoadSubsMain+fileName;
+
+            adminSubsService.updateImage(subsId,imgUrl,fileName);
+
+            return "redirect:/admin/subs/{subsId}";
         } catch (IOException e) {
-            return "/admin/subs/subsRankList";
+            return "redirect:/admin/subs/{subsId}";
+        }
+
+    }
+
+    @PostMapping("subs/{subsId}/upload_icon")
+    public String uploadSubsIconImage(@RequestParam("file") MultipartFile file, @PathVariable("subsId")Long subsId,Model model) {
+        String imgUrl = "";
+        if (file.isEmpty()) {
+            return "redirect:/admin/subs/{subsId}";
+        }
+
+
+        try {
+            Subs subs = adminSubsService.findSubsById(subsId);
+            String fileName = subsId + "_" + file.getOriginalFilename();
+            File dest = new File(uploadSubsIcon + fileName);
+
+            file.transferTo(dest);
+
+            imgUrl = downLoadSubsIcon+fileName;
+
+            adminSubsService.updateIcon(subsId,imgUrl,fileName);
+
+            return "redirect:/admin/subs/{subsId}";
+        } catch (IOException e) {
+            return "redirect:/admin/subs/{subsId}";
         }
 
     }

@@ -536,4 +536,8 @@ public class MemberService {
 
     }
 
+    @Transactional
+    public void updateMemberProfile(Member member, String imgUrl) {
+        member.updateImage(imgUrl);
+    }
 }

@@ -147,4 +147,19 @@ public class AdminSubsService {
 
         return LocalDateTime.of(Integer.parseInt(year), Integer.parseInt(month), Integer.parseInt(day),0,0);
     }
+
+    @Transactional
+    public void updateImage(Long subsId, String imgUrl,String imageName) {
+        Subs subs = findSubsById(subsId);
+        subs.updateImage(imgUrl);
+        subs.updateImageName(imageName);
+    }
+
+    @Transactional
+    public void updateIcon(Long subsId, String imgIcon, String iconName) {
+        Subs subs = findSubsById(subsId);
+        subs.updateIcon(imgIcon);
+        subs.updateIconName(iconName);
+
+    }
 }

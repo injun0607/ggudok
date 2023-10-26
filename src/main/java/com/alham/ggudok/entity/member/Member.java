@@ -102,4 +102,8 @@ public class Member {
         this.memberRelTags = changeMemberRelTags;
         return memberRelTags.size();
     }
+
+    public void updateImage(String profileImage) {
+        this.profileImage = profileImage;
+    }
 }

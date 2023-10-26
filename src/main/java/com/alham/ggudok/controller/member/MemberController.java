@@ -19,6 +19,7 @@ import com.alham.ggudok.service.TagService;
 import com.alham.ggudok.service.member.MemberService;
 import com.alham.ggudok.service.member.ReviewService;
 import com.alham.ggudok.service.subs.SubsService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
@@ -51,6 +52,14 @@ public class MemberController {
     private final TagService tagService;
 
     private final SubsService subsService;
+
+    @Value("${upload.member}")
+    private String uploadMember;
+
+
+    @Value("${download.member}")
+    private String downLoadMember;
+
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MemberException.class)
@@ -131,29 +140,47 @@ public class MemberController {
         }
     }
 
-    @Value("${upload.dir}")
-    private String uploadDir;
 
-    //서버로 requestParam으로 파일을 받음
+//    서버로 requestParam으로 파일을 받음
     @PostMapping("update/image")
-    public ResponseEntity<String> memberImageUpdate(@RequestParam("file")MultipartFile file) {
+    public ResponseEntity<Map> memberImageUpdate(HttpServletRequest servletRequest, @RequestParam(required = false , value = "profileImage")MultipartFile file, Principal principal) {
+        MemberDto memberDto = isLoginUser(principal);
+        Member member = memberService.findByLoginId(memberDto.getLoginId());
+        String profileImage = servletRequest.getParameter("profileImage");
+        Map<String, String> resultMap = new HashMap<>();
         String imgUrl = "";
-        if (file.isEmpty()) {
-            return new ResponseEntity<>("no-file", HttpStatus.BAD_REQUEST);
+        if (file == null || file.isEmpty()) {
+            resultMap.put("error", "이미지 파일이 존재하지 않습니다");
+            return new ResponseEntity<>(resultMap, HttpStatus.BAD_REQUEST);
         }
 
         try {
-            String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
-            File dest = new File(uploadDir + "/" + fileName);
+
+            String contentType = "";
+
+            if (file.getContentType().equals("image/png")) {
+                contentType = ".png";
+            } else if (file.getContentType().equals("image/jpeg")) {
+                contentType = ".jpg";
+            } else if (file.getContentType().equals("image/gif")){
+                contentType = ".gif";
+            } else {
+                resultMap.put("error", "올바른 이미지가 아닙니다.");
+                return new ResponseEntity<>(resultMap, HttpStatus.BAD_REQUEST);
+            }
+            String fileName = member.getMemberId() + "_" + member.getMemberName();
+            File dest = new File(uploadMember + fileName+contentType);
             file.transferTo(dest);
-            imgUrl = dest.getAbsolutePath();
 
-            return new ResponseEntity<>(imgUrl, HttpStatus.OK);
+            imgUrl = downLoadMember+fileName;
+            memberService.updateMemberProfile(member, imgUrl);
+
+            resultMap.put("imageUrl", imgUrl);
+
+            return new ResponseEntity<>(resultMap, HttpStatus.OK);
         } catch (IOException e) {
-            return new ResponseEntity<>("File upload failed", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(resultMap, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
-
     }
 
 

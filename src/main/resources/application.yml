@@ -27,4 +27,17 @@ logging:
  #   org.hibernate.orm.jdbc.bind: trace
 
 upload:
-  dir: C:/ggudown
+  subs:
+    main: C:/ggudown/subs/main/
+    icon: C:/ggudown/subs/icon/
+
+  category: C:/ggudown/category/
+  member: C:/ggudown/member/
+
+download:
+  subs:
+    main: /images/subs/main/
+    icon: /images/subs/icon/
+
+  category: /images/category/
+  member: /images/member
