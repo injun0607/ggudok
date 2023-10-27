@@ -195,7 +195,8 @@ public class SubsController {
                         r.getMember().getMemberName(),
                         subsId ,subs.getSubsName(),
                         r.getRating(),
-                        subs.getImage()));
+                        subs.getImage(),
+                        r.getMember().getProfileImage()));
             }
             subsDetailDto.setReviews(reviewDtoList);
             subsDetailDto.setRatingAvg(subs.getRatingAvg());

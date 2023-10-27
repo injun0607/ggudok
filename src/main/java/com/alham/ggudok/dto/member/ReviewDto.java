@@ -15,6 +15,7 @@ public class ReviewDto {
     private String subsName;
     private int rating;
     private String subsImage;
+    private String memberImage;
 
 
 

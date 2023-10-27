@@ -96,11 +96,17 @@ public class MemberController {
     }
 
     @GetMapping("/memberInfo")
-    private String viewMemberInfo(Principal principal) {
-        MemberDto memberDto = (MemberDto) principal;
-        String loginId = memberDto.getLoginId();
-        memberService.viewMemberInfo(loginId);
-        return null;
+    private MemberBasicDto viewMemberInfo(Principal principal) {
+        MemberDto memberDto = isLoginUser(principal);
+        Member member = memberService.findByLoginId(memberDto.getLoginId());
+
+        MemberBasicDto memberBasicDto = new MemberBasicDto();
+        memberBasicDto.setMemberId(member.getMemberId());
+        memberBasicDto.setMemberName(member.getMemberName());
+        memberBasicDto.setProfileImage(member.getProfileImage());
+
+
+        return memberBasicDto;
 
     }
 
@@ -169,10 +175,10 @@ public class MemberController {
                 return new ResponseEntity<>(resultMap, HttpStatus.BAD_REQUEST);
             }
             String fileName = member.getMemberId() + "_" + member.getMemberName();
-            File dest = new File(uploadMember + fileName+contentType);
+            File dest = new File(uploadMember + fileName + contentType);
             file.transferTo(dest);
 
-            imgUrl = downLoadMember+fileName;
+            imgUrl = downLoadMember+fileName+contentType;
             memberService.updateMemberProfile(member, imgUrl);
 
             resultMap.put("imageUrl", imgUrl);
@@ -200,7 +206,8 @@ public class MemberController {
                         r.getSubs().getSubsId(),
                         r.getSubs().getSubsName(),
                         r.getRating(),
-                        r.getSubs().getImage()))
+                        r.getSubs().getImage(),
+                        r.getMember().getProfileImage()))
                 .toList();
         HashMap<String, List<ReviewDto>> result = new HashMap<>();
         result.put("reviews", reviews);
@@ -213,6 +220,11 @@ public class MemberController {
         MemberDto memberDto = isLoginUser(principal);
 
         memberService.removeReview(memberDto.getLoginId(),subsId);
+
+        Subs subs = subsService.findSubsById(subsId);
+        Integer ratingAvg = reviewService.updateRatingAvg(subs.getSubsId());
+        subsService.updateRatingAvg(subs,ratingAvg);
+
         return true;
     }
 
