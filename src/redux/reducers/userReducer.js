@@ -23,6 +23,7 @@ const initialState = {
   quitModal: false,
   
   // ******************** 마이페이지 *******************
+  memberImg: '',
   // 관심서비스
   likedItems: [],
 
@@ -44,6 +45,11 @@ const userReducer = (state = initialState, action) => {
       return {
         ...state,
         likedItems: action.payload,
+      };
+    case 'FETCH_MEMBERIMG':
+      return {
+        ...state,
+        memberImg: action.payload,
       };
 
     // 회원탈퇴 모달 제어

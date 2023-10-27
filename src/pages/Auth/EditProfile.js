@@ -32,22 +32,16 @@ const EditProfile = () => {
   
 	// 회원 정보 조회 요청
   const fetchMemberInfo = async () => {
-    console.log('1. 세션 상태 조회 시작...')
     try {
       const response = await axios.get('/member/update');
       const userData = response.data;
-      console.log('2. 세션 상태 조회 성공')
-      console.log('2.5. 세션 데이터 있나?', userData, response.data)
       if (userData.gender && userData.age && userData.phoneNumber) {
-        console.log('3. 세션 데이터 있음', userData)
         dispatch(setAge(userData.age));
         dispatch(setGender(userData.gender));
         dispatch(setPhoneNumber(userData.phoneNumber));
         // dispatch(setMemberinfo(userData));
         dispatch(setIsLoading(false));
         dispatch(setValidPhoneNumber(true))
-        console.log('4. 세션 적용 완료')
-        console.log(`phoneNumber : ${phoneNumber} \n gender : ${gender} \n age : ${age}`)
       }
     } catch (error) {
       console.error('Error fetch set member information :', error);
@@ -94,27 +88,46 @@ const EditProfile = () => {
     dispatch(setValidPhoneNumber(isPhoneNumberReg));
   }
 
+  const convertBlobURLToBlob = async (blobURL) => {
+    try {
+      const response = await fetch(blobURL);
+      const blobData = await response.blob();
+      return blobData;
+    } catch (error) {
+      console.error('Blob URL을 Blob 객체로 변환하는 중에 오류가 발생했습니다:', error);
+      throw error;
+    }
+  };
+  
+  // 사용 예시
   const handleImageUpload = async () => {
     try {
       if (memberImg) {
+        const blobData = await convertBlobURLToBlob(memberImg);
         const formData = new FormData();
-        formData.append('profileImage', memberImg);
-        console.log('memberImg', memberImg)
-  
-        // 서버로 이미지 업로드 요청
-        const response = await axios.post('/member/update/image', formData);
-        // 업로드 성공 시 서버에서 이미지 URL을 받아옴
+        formData.append('profileImage', blobData);
+        
+        const response = await axios({
+          method: "POST",
+          url: `/member/update/image`,
+          charset: 'utf-8',
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+          data: formData
+        })
+        
         const imageUrl = response.data.imageUrl;
-        console.log(imageUrl)
-        // 이미지 URL을 저장
         setMemberImg(imageUrl);
   
-        console.log('이미지 업로드 성공');
+        console.log('response.data', response.data);
+        console.log('imageUrl', imageUrl);
       }
     } catch (error) {
       console.error('이미지 업로드 오류:', error);
     }
   };
+  
 
   const handleEdit = async(e) => {
     e.preventDefault();
@@ -132,6 +145,10 @@ const EditProfile = () => {
     };
     dispatch(editMemberinfo(userData, navigate));
   };
+  
+	useEffect(() => {
+		fetchMemberInfo();
+	}, [])
 
   const NO_IMAGE_URL = '/images/common/noimg.png';
 
@@ -149,7 +166,7 @@ const EditProfile = () => {
                 : <img src={`${NO_IMAGE_URL}`} alt='유저 이미지' />
                 }
               </div>
-              <input type="file" id="file" accept="image/*" className='inputFile'
+              <input type="file" id="file" accept="image/*" className='inputFile' name="profileImage"
                 onChange={(e) => {
                   const imageFile = e.target.files[0];
                   setMemberImg(URL.createObjectURL(imageFile));

@@ -6,11 +6,17 @@ export const setLoggedIn = (userData) => {
     payload: userData,
   };
 }
-// *********************** 관심서비스 *************************
+// *********************** 마이페이지 *************************
 export const fetchLikedItemsSuccess = (likedItems) => {
   return {
     type: 'FETCH_LIKED_ITEMS_SUCCESS',
     payload: likedItems,
+  };
+}
+export const fetchMemberImg = (memberImg) => {
+  return {
+    type: 'FETCH_MEMBERIMG',
+    payload: memberImg,
   };
 }
 // ***********************로그인*************************

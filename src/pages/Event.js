@@ -23,7 +23,6 @@ const Event = () => {
     try {
       const response = await axios.get(`/event`);
       const data = response.data.eventSubs;
-      console.log('data : ', data)
 
       if(data !== 0){
         dispatch(setEvent(data));

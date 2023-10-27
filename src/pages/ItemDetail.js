@@ -231,7 +231,7 @@ const ItemDetail = () => {
                       ))
                     }
                   </div>
-                  <p className='txt_ex'>{reviews.length}명의 사람들이 평가했어요.</p>
+                  <p className='txt_ex'>{reviews.length}명의 이용자가 평가했어요.</p>
                 </div>
               </div>
               <div className={style.btnArea}>
@@ -267,7 +267,7 @@ const ItemDetail = () => {
                       <article className={style.rating} key={index}>
                         <div className={style.userImg}>
                           <div className={style.circle}>
-                            <img src='../images/common/' alt='유저 이미지' onError={(e) => {e.target.src = NO_IMAGE_URL;}}/>
+                            <img src={review.memberImage} alt='유저 이미지' onError={(e) => {e.target.src = NO_IMAGE_URL;}}/>
                           </div>
                         </div>
                         <div className={style.txt}>

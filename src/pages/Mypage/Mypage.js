@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, Outlet, useLocation, } from 'react-router-dom';
 // component import
@@ -6,14 +7,45 @@ import Quit from '../../components/Quit';
 // css import
 import style from '../../styles/Mypage.module.css'
 // redux import
-import { setQuitModal } from '../../redux/actions/userActions';
+import { fetchMemberImg, setQuitModal } from '../../redux/actions/userActions';
 
 const NO_IMAGE_URL = '/images/common/noimg.png';
 
 const Mypage = ({memberName}) => {
   const dispatch = useDispatch();
   const location = useLocation();
+  const memberImg = useSelector(state => state.user.memberImg);
   const quitModal = useSelector(state => state.user.quitModal);
+  const [IsResult, setIsResult] = useState(null);
+  const [IsLoading, setIsLoading] = useState(true);
+  
+  // ************************** 기본 reviews fetch ***************************
+  const fetchMyReviewData = async () => {
+    try {
+      const response = await axios.get(`/member/memberInfo`);
+      const data = response.data.profileImage;
+      console.log('data : ', data)
+
+      if(data !== 0){
+        dispatch(fetchMemberImg(data));
+      } else {
+        dispatch(fetchMemberImg(''));
+      }
+
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  useEffect(() => {
+    fetchMyReviewData();
+  }, [dispatch]);
+
+  // 결과 유무
+  useEffect(() => {
+    setIsResult(memberImg.length > 0);
+  }, [dispatch, memberImg]);
 
   // 탈퇴모달팝업
   const handleQuitModal = () => { dispatch(setQuitModal()) }
@@ -35,7 +67,7 @@ const Mypage = ({memberName}) => {
               <div className={style.profile}>
                 <div className={style.userImg}>
                   <div className={style.circle}>
-                    <img src='../images/common/' alt='유저 이미지' onError={(e) => {e.target.src = NO_IMAGE_URL;}}/>
+                    <img src={memberImg} alt='유저 이미지' onError={(e) => {e.target.src = NO_IMAGE_URL;}}/>
                   </div>
                 </div>
                 <div className={style.userName}><span className={style.name}>{memberName}</span>님</div>
