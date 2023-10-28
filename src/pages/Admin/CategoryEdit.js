@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
+import { useLocation, Link, useNavigate } from 'react-router-dom';
 // css import
 import style from '../../styles/Auth.module.css'
 //redux import
@@ -10,6 +10,8 @@ import { editCategory, setValidCategoryName, setCategoryName } from '../../redux
 const CategoryEdit = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
+  const categoryId = location.state.categoryId;
 
   const isCategoryNameval = useSelector(state => state.user.isCategoryNameval);
 
@@ -79,10 +81,7 @@ const CategoryEdit = () => {
               
               <div className={style.userImg}>
                 <div className={`${style.circle} ${style.circleSm}`}>
-                  { categoryIcon
-                  ? <img src={categoryIcon} alt='카테고리 아이콘' onError={(e) => {e.target.src = NO_IMAGE_URL;}}/>
-                  : <img src={`${NO_IMAGE_URL}`} alt='카테고리 아이콘' />
-                  }
+                  <img src={categoryIcon || NO_IMAGE_URL} alt={categoryName} />
                 </div>
                 <input type="file" id="file" accept="image/*" className='inputFile'
                   onChange={(e) => {

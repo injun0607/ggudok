@@ -106,7 +106,7 @@ const Home = () => {
                 <SwiperSlide key={index} className='item-list-box'>
                   <Link to={`/subs/detail/${item.id}`}>
                     <div className='img'>
-                      <img src={`${item.image}`} alt={item.name} onError={(e) => {e.target.src = NO_IMAGE_URL;}}/>
+                      <img src={item.image || NO_IMAGE_URL} alt={item.name} />
                     </div>
                     <div className='txt'>
                       <h3>{item.name}</h3>
@@ -145,7 +145,7 @@ const Home = () => {
               <SwiperSlide key={index} className='item-list-box'>
                 <Link to={`/subs/detail/${item.id}`}>
                   <div className='img'>
-                    <img src={`${item.image}`} alt={item.name} onError={(e) => {e.target.src = NO_IMAGE_URL;}}/>
+                    <img src={item.image || NO_IMAGE_URL} alt={item.name} />
                   </div>
                   <div className='txt'>
                     <h3>{item.name}</h3>

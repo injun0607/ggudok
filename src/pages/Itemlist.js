@@ -188,7 +188,7 @@ useEffect(() => {
                 {IsResult ? pageditems.map((item, index) => (
                   <Link to={`/subs/detail/${item.id}`} key={index} className={style.item}>
                     <div className={style.img}>
-                      <img src={`${item.image}`} alt={item.name} onError={(e) => {e.target.src = NO_IMAGE_URL;}}/>
+                      <img src={item.image || NO_IMAGE_URL} alt={item.name} />
                     </div>
                     <div className={style.txt}>
                       <h3>{item.name}</h3>

@@ -55,8 +55,8 @@ const AdminLayout = () => {
   
 
   return (
-		isCheckingLogin ? (<Loading />) : (
-    isLoggedIn ?
+		// isCheckingLogin ? (<Loading />) : (
+    // isLoggedIn ?
     <div className='adminLayout'>
       <AdminHeader />
 			<div className={style.body}>
@@ -78,12 +78,12 @@ const AdminLayout = () => {
       </div>
       <AdminFooter />
     </div>
-     : (
-      <>
-        <ErrorLogin />
-        <div className='modalBg modalBg-Blur' onClick={() => { navigate(-1) }}></div>
-      </>
-    ))
+    //  : (
+    //   <>
+    //     <ErrorLogin />
+    //     <div className='modalBg modalBg-Blur' onClick={() => { navigate(-1) }}></div>
+    //   </>
+    // ))
   );
 };
 

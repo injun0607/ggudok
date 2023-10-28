@@ -18,20 +18,17 @@ const Tags = () => {
         <div className={style.tbScroll}>
           <table className={style.table}>
             <colgroup>
-              <col width={'80px'} />
               <col width={'*'} />
               <col width={'250px'} />
             </colgroup>
             <thead>
               <tr>
-                <th>번호</th>
                 <th>태그명</th>
                 <th>관리</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td>1</td>
                 <td>20대</td>
                 <td className={style.tdBtn}>
                   <button type='button' className='btn_xs btn_normal'>수정</button>
@@ -39,7 +36,6 @@ const Tags = () => {
                 </td>
               </tr>
               <tr>
-                <td>2</td>
                 <td>30대</td>
                 <td className={style.tdBtn}>
                   <button type='button' className='btn_xs btn_normal'>수정</button>

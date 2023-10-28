@@ -1,5 +1,6 @@
 const initialState = {
   categories: [],
+  pagedCategories: [],
   isCategoryNameval: false,
   categoryName: '',
 };
@@ -7,15 +8,19 @@ const initialState = {
 
 const adminCategoryReducer = (state = initialState, action) => {
   switch (action.type) {
-    case 'CREATE_CATEGORY':
+    case 'FETCH_CATEGORY_SUCCESS':
       return {
         ...state,
         categories: action.payload,
       };
-    case 'EDIT_CATEGORY':
+    case 'PAGING_CATEGORY':
       return {
         ...state,
-        categories: action.payload,
+        pagedCategories: action.payload,
+      }
+    case 'CREATE_CATEGORY':
+      return {
+        ...state,
       };
     case 'SET_VALID_CATEGORYNAME':
       return {
@@ -27,10 +32,25 @@ const adminCategoryReducer = (state = initialState, action) => {
         ...state,
         categoryName: action.payload,
       };
-
+    case 'EDIT_CATEGORY_SUCCESS':
+      return {
+        ...state,
+      };
+    case 'EDIT_CATEGORY_FAILURE':
+      return {
+        ...state,
+      };
+    case 'DELETE_CATEGORY_SUCCESS':
+      return {
+        ...state,
+      };
+    case 'DELETE_CATEGORY_FAILURE':
+      return {
+        ...state,
+      };
     default:
       return state;
   }
 };
 
-export { adminCategoryReducer };
+export default adminCategoryReducer;

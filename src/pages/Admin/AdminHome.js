@@ -21,27 +21,23 @@ const AdminHome = () => {
           <div className={`${style.tbScroll} ${style.tbSm}`}>
             <table className={style.table}>
               <colgroup>
-                <col width={'80px'} />
-                <col width={'15%'} />
                 <col width={'*'} />
+                <col width={'15%'} />
               </colgroup>
               <thead>
                 <tr>
-                  <th>번호</th>
-                  <th>아이콘</th>
                   <th>카테고리명</th>
+                  <th>아이콘</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td>1</td>
-                  <td className={style.tdIcon}><img src='/images/icons/ott.svg' alt='영상' /></td>
                   <td>영상</td>
+                  <td className={style.tdIcon}><img src='/images/icons/ott.svg' alt='영상' /></td>
                 </tr>
                 <tr>
-                  <td>1</td>
-                  <td className={style.tdIcon}><img src='/images/icons/ott.svg' alt='영상' /></td>
                   <td>영상</td>
+                  <td className={style.tdIcon}><img src='/images/icons/ott.svg' alt='영상' /></td>
                 </tr>
               </tbody>
             </table>
@@ -59,25 +55,21 @@ const AdminHome = () => {
           <div className={`${style.tbScroll} ${style.tbSm}`}>
             <table className={style.table}>
               <colgroup>
-                <col width={'80px'} />
                 <col width={'*'} />
                 <col width={'15%'} />
               </colgroup>
               <thead>
                 <tr>
-                  <th>번호</th>
                   <th>구독서비스명</th>
                   <th>카테고리</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td>1</td>
                   <td>스마트비디오</td>
                   <td>영상</td>
                 </tr>
                 <tr>
-                  <td>2</td>
                   <td>클립비젼</td>
                   <td>음료</td>
                 </tr>
@@ -97,22 +89,18 @@ const AdminHome = () => {
           <div className={`${style.tbScroll} ${style.tbSm}`}>
             <table className={style.table}>
               <colgroup>
-                <col width={'40px'} />
                 <col width={'*'} />
               </colgroup>
               <thead>
                 <tr>
-                  <th>번호</th>
                   <th>태그명</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td>1</td>
                   <td>20대</td>
                 </tr>
                 <tr>
-                  <td>2</td>
                   <td>30대</td>
                 </tr>
               </tbody>
@@ -131,7 +119,6 @@ const AdminHome = () => {
           <div className={`${style.tbScroll} ${style.tbSm}`}>
             <table className={style.table}>
               <colgroup>
-                <col width={'40px'} />
                 <col width={'*'} />
                 <col width={'*'} />
                 <col width={'*'} />
@@ -140,7 +127,6 @@ const AdminHome = () => {
               </colgroup>
               <thead>
                 <tr>
-                  <th>번호</th>
                   <th>구독서비스명</th>
                   <th>이벤트 태그</th>
                   <th>이벤트 설명</th>
@@ -150,7 +136,6 @@ const AdminHome = () => {
               </thead>
               <tbody>
                 <tr>
-                  <td>1</td>
                   <td>스마트 비디오</td>
                   <td>40% 할인</td>
                   <td>지루한 날을 단번에 날려주는 스마트 비디오 OTT 서비스</td>
@@ -158,7 +143,6 @@ const AdminHome = () => {
                   <td>20231026</td>
                 </tr>
                 <tr>
-                  <td>2</td>
                   <td>스마트 비디오</td>
                   <td>40% 할인</td>
                   <td>지루한 날을 단번에 날려주는 스마트 비디오 OTT 서비스</td>

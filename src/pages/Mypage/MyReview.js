@@ -159,7 +159,7 @@ function ReviewItem({ review, ratingMap, index }) {
       <div className={style.service}>
         <div className={style.left}>
           <div className={style.circle}>
-            <img src={`${review.image}`} alt={`${review.subsName}`} onError={(e) => {e.target.src = NO_IMAGE_URL;}}/>
+            <img src={review.image || NO_IMAGE_URL} alt={review.subsName} />
           </div>
           <h3 className={style.name}>{review.subsName}</h3>
         </div>

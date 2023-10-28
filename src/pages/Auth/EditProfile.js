@@ -42,6 +42,7 @@ const EditProfile = () => {
         // dispatch(setMemberinfo(userData));
         dispatch(setIsLoading(false));
         dispatch(setValidPhoneNumber(true))
+        setMemberImg(userData.memberImg);
       }
     } catch (error) {
       console.error('Error fetch set member information :', error);
@@ -144,6 +145,13 @@ const EditProfile = () => {
       memberImg,
     };
     dispatch(editMemberinfo(userData, navigate));
+
+    dispatch(setPassword(''));
+    dispatch(setNewPassword(''));
+    dispatch(setNewPasswordCheck(''));
+    dispatch(setGender(''));
+    dispatch(setAge(''));
+    dispatch(setPhoneNumber(''));
   };
   
 	useEffect(() => {
@@ -161,10 +169,7 @@ const EditProfile = () => {
             
             <div className={style.userImg}>
               <div className={style.circle}>
-                { memberImg
-                ? <img src={memberImg} alt='유저 이미지' onError={(e) => {e.target.src = NO_IMAGE_URL;}}/>
-                : <img src={`${NO_IMAGE_URL}`} alt='유저 이미지' />
-                }
+                <img src={memberImg || NO_IMAGE_URL} alt='유저 이미지' />
               </div>
               <input type="file" id="file" accept="image/*" className='inputFile' name="profileImage"
                 onChange={(e) => {

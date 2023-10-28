@@ -2,7 +2,7 @@
 .errorpage p {color: #fff;}
 .body {
   min-height: calc(100vh - 6.957rem);
-  padding-top: 5rem;
+  padding: 5rem 0  3rem;
 }
 .dashboxWrap {
   display: grid;

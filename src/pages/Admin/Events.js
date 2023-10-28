@@ -18,7 +18,6 @@ const Events = () => {
         <div className={style.tbScroll}>
           <table className={style.table}>
             <colgroup>
-              <col width={'80px'} />
               <col width={'*'} />
               <col width={'*'} />
               <col width={'*'} />
@@ -28,7 +27,6 @@ const Events = () => {
             </colgroup>
             <thead>
               <tr>
-                <th>번호</th>
                 <th>구독서비스명</th>
                 <th>이벤트 태그</th>
                 <th>이벤트 설명</th>
@@ -39,7 +37,6 @@ const Events = () => {
             </thead>
             <tbody>
               <tr>
-                <td>1</td>
                 <td>스마트 비디오</td>
                 <td>40% 할인</td>
                 <td>지루한 날을 단번에 날려주는 스마트 비디오 OTT 서비스</td>
@@ -51,7 +48,6 @@ const Events = () => {
                 </td>
               </tr>
               <tr>
-                <td>2</td>
                 <td>스마트 비디오</td>
                 <td>40% 할인</td>
                 <td>지루한 날을 단번에 날려주는 스마트 비디오 OTT 서비스</td>

@@ -250,7 +250,7 @@ const ItemDetail = () => {
           <section className={style.right}>
             <article className={`${style.cont} ${style.detailLg}`}>
               <div className={style.img}>
-                <img src={`${itemDetail.image}`} alt={itemDetail.name} onError={(e) => {e.target.src = NO_IMAGE_URL;}}/>
+                <img src={itemDetail.image || NO_IMAGE_URL} alt={itemDetail.name} />
               </div>
             </article>
             <article className={style.cont}>
@@ -267,7 +267,7 @@ const ItemDetail = () => {
                       <article className={style.rating} key={index}>
                         <div className={style.userImg}>
                           <div className={style.circle}>
-                            <img src={review.memberImage} alt='유저 이미지' onError={(e) => {e.target.src = NO_IMAGE_URL;}}/>
+                            <img src={review.memberImage || NO_IMAGE_URL} alt='유저 이미지' />
                           </div>
                         </div>
                         <div className={style.txt}>
@@ -326,7 +326,7 @@ const ItemDetail = () => {
             {similarItems.slice(0,4).map((item, index) => (
               <Link to={`/subs/detail/${item.id}`} key={index}className='item-list-box'>
                 <div className='img'>
-                  <img src={`${item.image}`} alt={item.name} onError={(e) => {e.target.src = NO_IMAGE_URL;}}/>
+                  <img src={item.image || NO_IMAGE_URL} alt={item.name} />
                 </div>
                 <div className='txt'>
                   <h3>{item.name}</h3>

@@ -145,7 +145,7 @@ const Compare = () => {
             <div className={style.boxrow}>
               <div className={`${style.box} ${style.titbox}`}>
                 <Link to={`/subs/detail/${compareItem1.id}`}>
-                  <img src={`${compareItem1.image}`} alt={compareItem1.name} onError={(e) => {e.target.src = NO_IMAGE_URL;}}/>
+                  <img src={compareItem1.image || NO_IMAGE_URL} alt={compareItem1.name} />
                   <h3>{compareItem1.name}</h3>
                 </Link>
               </div>
@@ -202,7 +202,7 @@ const Compare = () => {
             <div className={style.boxrow}>
               <div className={`${style.box} ${style.titbox}`}>
                 <Link to={`/subs/detail/${compareItem2.id}`}>
-                  <img src={`${compareItem2.image}`} alt={compareItem2.name} onError={(e) => {e.target.src = NO_IMAGE_URL;}}/>
+                  <img src={compareItem2.image || NO_IMAGE_URL} alt={compareItem2.name} />
                   <h3>{compareItem2.name}</h3>
                 </Link>
               </div>

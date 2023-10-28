@@ -1,5 +1,5 @@
 import React from 'react'
-import { Helmet } from 'react-helmet';
+import { Helmet, HelmetProvider } from 'react-helmet-async';
 import { useLocation } from 'react-router-dom';
 // component import
 import Layout from './components/Layout'
@@ -15,16 +15,20 @@ function App() {
     <div className="App">
       {location.pathname.startsWith('/Admin') ? (
         <>
-          <Helmet>
-            <title>꾸독 : 관리자</title>
-          </Helmet>
+          <HelmetProvider>
+            <Helmet>
+              <title>꾸독 : 관리자</title>
+            </Helmet>
+          </HelmetProvider>
           <AdminLayout />
         </>
       ) : (
         <>
-          <Helmet>
-            <title>꾸독 : 나만의 구독 비서</title>
-          </Helmet>
+          <HelmetProvider>
+            <Helmet>
+              <title>꾸독 : 나만의 구독 비서</title>
+            </Helmet>
+          </HelmetProvider>
           <Layout />
         </>
       )}

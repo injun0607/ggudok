@@ -26,7 +26,7 @@ const Mypage = ({memberName}) => {
       const data = response.data.profileImage;
       console.log('data : ', data)
 
-      if(data !== 0){
+      if(data){
         dispatch(fetchMemberImg(data));
       } else {
         dispatch(fetchMemberImg(''));
@@ -44,7 +44,7 @@ const Mypage = ({memberName}) => {
 
   // 결과 유무
   useEffect(() => {
-    setIsResult(memberImg.length > 0);
+    setIsResult(memberImg && memberImg.length > 0);
   }, [dispatch, memberImg]);
 
   // 탈퇴모달팝업
@@ -67,7 +67,7 @@ const Mypage = ({memberName}) => {
               <div className={style.profile}>
                 <div className={style.userImg}>
                   <div className={style.circle}>
-                    <img src={memberImg} alt='유저 이미지' onError={(e) => {e.target.src = NO_IMAGE_URL;}}/>
+                    <img src={memberImg || NO_IMAGE_URL} alt='유저 이미지' />
                   </div>
                 </div>
                 <div className={style.userName}><span className={style.name}>{memberName}</span>님</div>

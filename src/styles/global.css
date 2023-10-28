@@ -441,7 +441,7 @@ accent-color: #FF724C;
     color: var(--c-black-1);
 }
 
-.adminLayout .cont_tit_m h2 {margin-top: 2rem; margin-bottom: 2rem;}
+.adminLayout .cont_tit_m h2 {margin-top: 8vh; margin-bottom: 0;}
 
 /* ------------------서브페이지 두번째 제목 (bullet 버전)------------------*/
 /* .cont_tit_m h5 {

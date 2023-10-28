@@ -57,7 +57,7 @@ const Event = () => {
             {
               events.map((event, index) => (
                 <section key={index} className='bannerslider'>
-                  <img style={{ width: '100%' }} src={event.image} alt={event.subsName}onError={(e) => {e.target.src = NO_IMAGE_URL;}}/>
+                  <img src={event.image || NO_IMAGE_URL} style={{ width: '100%' }} alt={event.subsName} />
                   <div className='tag'>
                     <p>{event.categoryName}</p>
                     <p>{event.infoTag}</p>

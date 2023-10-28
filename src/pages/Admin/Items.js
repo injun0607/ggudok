@@ -18,14 +18,12 @@ const Items = () => {
         <div className={style.tbScroll}>
           <table className={style.table}>
             <colgroup>
-              <col width={'80px'} />
               <col width={'*'} />
               <col width={'15%'} />
               <col width={'350px'} />
             </colgroup>
             <thead>
               <tr>
-                <th>번호</th>
                 <th>구독서비스명</th>
                 <th>카테고리</th>
                 <th>관리</th>
@@ -33,7 +31,6 @@ const Items = () => {
             </thead>
             <tbody>
               <tr>
-                <td>1</td>
                 <td>스마트비디오</td>
                 <td>영상</td>
                 <td className={style.tdBtn}>
@@ -43,7 +40,6 @@ const Items = () => {
                 </td>
               </tr>
               <tr>
-                <td>2</td>
                 <td>클립비젼</td>
                 <td>음료</td>
                 <td className={style.tdBtn}>

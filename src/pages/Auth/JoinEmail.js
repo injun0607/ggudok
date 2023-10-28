@@ -111,6 +111,18 @@ const JoinEmail = () => {
       fetchedEmailValNumber,
     };
     dispatch(join(userData, navigate));
+
+    dispatch(setMemberName(''));
+    dispatch(setLoginId(''));
+    dispatch(setPassword(''));
+    dispatch(setPasswordCheck(''));
+    dispatch(setGender(''));
+    dispatch(setAge(''));
+    dispatch(setPhoneNumber(''));
+    dispatch(setEmailValNumber(''));
+    dispatch(setEmailSent(false));
+    dispatch(setValidPassword(false));
+    dispatch(setValidPhoneNumber(false));
   };
 
   return (

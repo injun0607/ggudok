@@ -79,10 +79,7 @@ const CategoryCreate = () => {
               
               <div className={style.userImg}>
                 <div className={`${style.circle} ${style.circleSm}`}>
-                  { categoryIcon
-                  ? <img src={categoryIcon} alt='카테고리 아이콘' onError={(e) => {e.target.src = NO_IMAGE_URL;}}/>
-                  : <img src={`${NO_IMAGE_URL}`} alt='카테고리 아이콘' />
-                  }
+                  <img src={categoryIcon || NO_IMAGE_URL} alt={categoryName} />
                 </div>
                 <input type="file" id="file" accept="image/*" className='inputFile'
                   onChange={(e) => {

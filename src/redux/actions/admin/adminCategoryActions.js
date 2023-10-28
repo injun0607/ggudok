@@ -1,5 +1,16 @@
 import axios from 'axios';
-
+export const fetchCategorySuccess = (categories) => {
+  return {
+    type: 'FETCH_CATEGORY_SUCCESS',
+    payload: categories,
+  };
+}
+export const pagingCategory = (pagedCategories) => {
+  return {
+    type: 'PAGING_CATEGORY',
+    payload: pagedCategories,
+  };
+};
 export const createCategory = (userData, navigate) => async(dispatch) => {
   const {
     categoryName,
@@ -27,7 +38,6 @@ export const createCategory = (userData, navigate) => async(dispatch) => {
     }
   }
 }
-
 export const editCategory = (userData, navigate) => async(dispatch) => {
   const {
     categoryName,
@@ -43,13 +53,15 @@ export const editCategory = (userData, navigate) => async(dispatch) => {
         categoryIcon: categoryIcon,
       });
       if (response.status === 200) {
-        dispatch({ type: 'EDIT_CATEGORY' });
+        dispatch({ type: 'EDIT_CATEGORY_SUCCESS' });
         alert(`카테고리 수정이 완료되었습니다.`)
         navigate('/Admin/Category');
       } else {
+        dispatch({ type: 'EDIT_CATEGORY_FAILURE' });
         alert(`카테고리 수정을 실패하였습니다. 다시 작성해주시기 바랍니다.`)
       }
     } catch (error) {
+      dispatch({ type: 'EDIT_CATEGORY_FAILURE' });
       console.log('Error Create New Category :', error);
       alert(`${error}`)
     }
@@ -70,4 +82,22 @@ export const setCategoryName = (categoryName) => {
       categoryName,
     }
   };
+};
+export const deleteCategory = (categoryData) => async (dispatch) => {
+  const { categoryId } = categoryData;
+  try {
+    const response = await axios.post(`/admin/category/delete`, { categoryId : categoryId });
+    if (response.status === 200) {
+      dispatch({type: 'DELETE_CATEGORY_SUCCESS'});
+      alert(`카테고리 삭제가 완료되었습니다.`);
+      window.location.reload();
+    } else {
+      dispatch({ type: 'DELETE_CATEGORY_FAILURE' });
+      alert(`카테고리 삭제 중 오류가 발생했습니다. 잠시 후 다시 시도해주시기 바랍니다.`)
+    }
+  } catch (error) {
+    console.log('Error Deleting Category :', error);
+    dispatch({ type: 'DELETE_CATEGORY_FAILURE' });
+    alert(`카테고리 삭제 중 오류가 발생했습니다. 잠시 후 다시 시도해주시기 바랍니다.`)
+  }
 };

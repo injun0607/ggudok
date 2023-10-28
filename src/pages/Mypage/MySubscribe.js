@@ -49,7 +49,7 @@ const MySubscribe = () => {
   }, [dispatch, mySubscribe]);
 
   return (
-    !IsLoading ? (IsResult ?
+    !IsLoading ? (IsResult && mySubscribe ?
     <section className={`${style.section} ${style.subscribewrap}`}>
       <p className='txt_right main_clr02 mb_10'>* 한 달 기준 구독내역입니다.</p>
       <div className={style.overallprice}>

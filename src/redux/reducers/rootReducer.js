@@ -26,7 +26,7 @@ const rootReducer = combineReducers({
   darkMode: darkModeReducer,
   review: reviewReducer,
   adminLayout: adminLayoutReducer,
-  adminCategory: adminLayoutReducer,
+  adminCategory: adminCategoryReducer,
 });
 
 export default rootReducer;
