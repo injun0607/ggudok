@@ -52,6 +52,8 @@ const Compare = () => {
 
   const handleChangeOneDepth = (e) => {
     dispatch(setSelectedOneDepth(e.target.value));
+    dispatch(setCompareItem1({}));
+    dispatch(setCompareItem2({}));
   }
 
   const handleChangeCompareItem = (e, itemNumber) => {
@@ -123,7 +125,9 @@ const Compare = () => {
             <select className={`${style.select} ${style.select01}`} onChange={(e) => handleChangeCompareItem(e, 1)} value={compareItem1} disabled={!isOneDepthSelected}>
               <option value="">{isCompareItem1Selected ? `${compareItem1.name}` : '첫번째 구독서비스를 선택하세요.'}</option>
               {
-                twoDepthItems.map((item, index) => 
+                twoDepthItems
+                .filter(item => item.id !== compareItem2.id)
+                .map((item, index) => 
                 <option value={item.id} key={index}>{item.name}</option>
                 )
               }
@@ -131,7 +135,9 @@ const Compare = () => {
             <select className={`${style.select} ${style.select02}`} onChange={(e) => handleChangeCompareItem(e, 2)} value={compareItem2} disabled={!isOneDepthSelected}>
               <option value="">{isCompareItem2Selected ? `${compareItem2.name}` : '두번째 구독서비스를 선택하세요.'}</option>
               {
-                twoDepthItems.map((item, index) => 
+                twoDepthItems
+                .filter(item => item.id !== compareItem1.id)
+                .map((item, index) => 
                 <option value={item.id} key={index}>{item.name}</option>
                 )
               }

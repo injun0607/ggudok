@@ -1,8 +1,11 @@
 const initialState = {
   categories: [],
   pagedCategories: [],
-  isCategoryNameval: false,
   categoryName: '',
+  isCategoryNameval: false,
+  categoryEng: '',
+  isCategoryEngval: false,
+  categoryImage: '',
 };
 
 
@@ -31,6 +34,21 @@ const adminCategoryReducer = (state = initialState, action) => {
       return {
         ...state,
         categoryName: action.payload,
+      };
+    case 'SET_VALID_CATEGORYENG':
+      return {
+        ...state,
+        isCategoryEngval: action.payload,
+      };
+    case 'SET_CATEGORYENG':
+      return {
+        ...state,
+        categoryEng: action.payload,
+      };
+    case 'SET_CATEGORYIMAGE':
+      return {
+        ...state,
+        categoryImage: action.payload,
       };
     case 'EDIT_CATEGORY_SUCCESS':
       return {

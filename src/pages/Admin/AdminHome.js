@@ -22,21 +22,20 @@ const AdminHome = () => {
             <table className={style.table}>
               <colgroup>
                 <col width={'*'} />
+                <col width={'*'} />
                 <col width={'15%'} />
               </colgroup>
               <thead>
                 <tr>
                   <th>카테고리명</th>
+                  <th>영문명</th>
                   <th>아이콘</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
                   <td>영상</td>
-                  <td className={style.tdIcon}><img src='/images/icons/ott.svg' alt='영상' /></td>
-                </tr>
-                <tr>
-                  <td>영상</td>
+                  <td>Health</td>
                   <td className={style.tdIcon}><img src='/images/icons/ott.svg' alt='영상' /></td>
                 </tr>
               </tbody>

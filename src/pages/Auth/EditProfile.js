@@ -100,7 +100,6 @@ const EditProfile = () => {
     }
   };
   
-  // 사용 예시
   const handleImageUpload = async () => {
     try {
       if (memberImg) {
@@ -129,7 +128,6 @@ const EditProfile = () => {
     }
   };
   
-
   const handleEdit = async(e) => {
     e.preventDefault();
     await handleImageUpload();

@@ -38,17 +38,9 @@ const Join = () => {
               <img src='../images/icons/icon_kakaotalk.png' alt='kakao' />
               <p>카카오톡 간편가입하기</p>
             </Link>
-            <Link to="" className={`${style.sns} ${style.facebook}`}>
-              <img src='../images/icons/icon_facebook.png' alt='facebook' />
-              <p>페이스북 간편가입하기</p>
-            </Link>
             <Link to="" className={`${style.sns} ${style.google}`}>
               <img src='../images/icons/icon_google.png' alt='google' />
               <p>구글 간편가입하기</p>
-            </Link>
-            <Link to="" className={`${style.sns} ${style.apple}`}>
-              <img src='../images/icons/icon_apple.png' alt='apple' />
-              <p>애플 간편가입하기</p>
             </Link>
           </div>
           <div className={style.doublebutton}>

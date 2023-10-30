@@ -1,23 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 // css import
 import style from '../../styles/Auth.module.css'
 //redux import
-import { createCategory, setValidCategoryName, setCategoryName } from '../../redux/actions/admin/adminCategoryActions';
+import { createCategory, setValidCategoryName, setValidCategoryEng, setCategoryName, setCategoryEng, setCategoryImage } from '../../redux/actions/admin/adminCategoryActions';
 
-const CategoryCreate = () => {
+const CategoryEdit = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const navigate = useNavigate(); 
 
-  const isCategoryNameval = useSelector(state => state.user.isCategoryNameval);
-
-  const [categoryIcon, setCategoryIcon] = useState(null);
-  const categoryName = useSelector(state => state.user.categoryName);
-  const IsLoading = useSelector(state => state.user.IsLoading);
+  const categoryName = useSelector(state => state.adminCategory.categoryName);
+  const categoryEng = useSelector(state => state.adminCategory.categoryEng);
+  const categoryImage = useSelector(state => state.adminCategory.categoryImage);
   
+  const isCategoryNameval = useSelector(state => state.adminCategory.isCategoryNameval);
+  const isCategoryEngval = useSelector(state => state.adminCategory.isCategoryEngval);
   const [errorMessage, setErrorMessage] = useState('');
+  const [errorMessageE, setErrorMessageE] = useState('');
 
   const handleChangeCategoryName = (newCategoryName) => {
     const regCategoryName = /^[가-힣]{1,}$/;
@@ -32,22 +33,52 @@ const CategoryCreate = () => {
     // Redux 상태 업데이트
     dispatch(setValidCategoryName(isCategoryNameReg));
   }
+  const handleChangeCategoryEng = (newCategoryEng) => {
+    const regCategoryEng = /^[a-z]{1,}$/;
+    const isCategoryEngReg = regCategoryEng.test(newCategoryEng);
+  
+    // 오류 메시지 설정
+    if (!isCategoryEngReg) {
+      setErrorMessageE('한 글자 이상의 영문만 입력해주세요.');
+    } else {
+      setErrorMessageE('');
+    }
+    // Redux 상태 업데이트
+    dispatch(setValidCategoryEng(isCategoryEngReg));
+  }
 
+  const convertBlobURLToBlob = async (blobURL) => {
+    try {
+      const response = await fetch(blobURL);
+      const blobData = await response.blob();
+      return blobData;
+    } catch (error) {
+      console.error('Blob URL을 Blob 객체로 변환하는 중에 오류가 발생했습니다:', error);
+      throw error;
+    }
+  };
+  
   const handleImageUpload = async () => {
     try {
-      if (categoryIcon) {
+      if (categoryImage) {
+        const blobData = await convertBlobURLToBlob(categoryImage);
         const formData = new FormData();
-        formData.append('categoryIcon', categoryIcon);
-        console.log(categoryIcon)
-  
-        // 서버로 이미지 업로드 요청
-        const response = await axios.post('/upload-pcategoryIcon', formData);
-        // 업로드 성공 시 서버에서 이미지 URL을 받아옴
+        formData.append('categoryImage', blobData);
+        
+        const response = await axios({
+          method: "POST",
+          url: `/admin/category/image`,
+          charset: 'utf-8',
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+          data: formData
+        })
+        
         const imageUrl = response.data.imageUrl;
-        // 이미지 URL을 저장
-        setCategoryIcon(imageUrl);
-  
-        console.log('이미지 업로드 성공');
+        dispatch(setCategoryImage(imageUrl));
+        
+        return imageUrl;
       }
     } catch (error) {
       console.error('이미지 업로드 오류:', error);
@@ -56,21 +87,37 @@ const CategoryCreate = () => {
 
   const handleCreate = async(e) => {
     e.preventDefault();
-    await handleImageUpload();
-    const userData = {
-      categoryName,
-      categoryIcon,
-      isCategoryNameval,
-    };
-    dispatch(createCategory(userData, navigate));
-  };
+    try {
+      const updatedImageUrl = await handleImageUpload();
+  
+      const categoryData = {
+        categoryName,
+        categoryEng,
+        categoryImage: updatedImageUrl,
+        isCategoryNameval,
+        isCategoryEngval,
+      };
+      console.log('categoryData', categoryData)
+      dispatch(createCategory(categoryData, navigate));
+  } catch (error) {
+    console.error('Error handling Create:', error);
+  }
+};
+  
+  useEffect(() => {
+    return () => {
+      dispatch(setCategoryName(''));
+      dispatch(setCategoryEng(''));
+      dispatch(setCategoryImage(''));
+    }
+  }, []);
 
   const NO_IMAGE_URL = '/images/common/noimg.png';
 
   return (
     <section className={`${style.join} ${style.auth}`}>
       <div className='webwidth'>
-        <div className='cont_tit_nm'>
+        <div className='cont_tit_m'>
           <h2>신규 카테고리 등록</h2>
         </div>
         
@@ -79,12 +126,12 @@ const CategoryCreate = () => {
               
               <div className={style.userImg}>
                 <div className={`${style.circle} ${style.circleSm}`}>
-                  <img src={categoryIcon || NO_IMAGE_URL} alt={categoryName} />
+                  <img src={categoryImage || NO_IMAGE_URL} alt={categoryName} />
                 </div>
                 <input type="file" id="file" accept="image/*" className='inputFile'
                   onChange={(e) => {
                     const imageFile = e.target.files[0];
-                    setCategoryIcon(URL.createObjectURL(imageFile));
+                    dispatch(setCategoryImage(URL.createObjectURL(imageFile)));
                   }}
                 />
                 <label htmlFor="file">카테고리 아이콘 등록</label>
@@ -99,6 +146,15 @@ const CategoryCreate = () => {
                     handleChangeCategoryName(e.target.value);
                   }} />
                 {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
+                <input
+                  type='text' name='categoryEng' autoComplete="off"
+                  placeholder='영문명을 입력하세요.' 
+                  value={categoryEng}
+                  onChange={(e) => {
+                    dispatch(setCategoryEng(e.target.value))
+                    handleChangeCategoryEng(e.target.value);
+                  }} />
+                {errorMessageE && <p style={{ color: 'red' }}>{errorMessageE}</p>}
               </div>
               <div className={style.doublebutton}>
                 <Link className='btn btn_normal' onClick={ ()=>{ navigate(-1) } }>뒤로 가기</Link>
@@ -111,4 +167,4 @@ const CategoryCreate = () => {
   )
 }
 
-export default CategoryCreate;
+export default CategoryEdit;

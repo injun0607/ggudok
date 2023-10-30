@@ -11,7 +11,7 @@ import Paging from '../../components/Paging';
 import { fetchCategorySuccess, pagingCategory, deleteCategory } from '../../redux/actions/admin/adminCategoryActions';
 
 const ITEMS_PER_PAGE = 6;
-const NO_IMAGE_URL = '/images/common/noimg.png';
+const NO_IMAGE_URL = '/images/common/logo_grey.png';
 
 const Category = () => {
   const dispatch = useDispatch();
@@ -30,7 +30,6 @@ const Category = () => {
     try {
       const response = await axios.get(`/admin/category`);
       const data = response.data.categoryList;
-      console.log('data : ', data)
 
       if(data !== 0){
         dispatch(fetchCategorySuccess(data));
@@ -77,7 +76,7 @@ const Category = () => {
 
   // 수정
   const handleEditCategory = (categoryId) => {
-    navigate(`/Admin/CategoryEdit`, { state: categoryId });
+    navigate(`/Admin/CategoryEdit/${categoryId}`);
   }
   // 삭제
   const handleDeleteCategory = async(e, categoryId) => {
@@ -101,12 +100,14 @@ const Category = () => {
           <table className={style.table}>
             <colgroup>
               <col width={'*'} />
+              <col width={'*'} />
               <col width={'15%'} />
               <col width={'250px'} />
             </colgroup>
             <thead>
               <tr>
                 <th>카테고리명</th>
+                <th>영문명</th>
                 <th>아이콘</th>
                 <th>관리</th>
               </tr>
@@ -116,8 +117,9 @@ const Category = () => {
               {pagedCategories.map((category, index) => (
                 <tr key={index}>
                   <td>{category.categoryName}</td>
+                  <td>{category.categoryEng}</td>
                   <td className={style.tdIcon}>
-                    <img src={`/images/icons/${category.categoryEng}.svg` || NO_IMAGE_URL} alt={category.categoryName} />
+                    <img src={category.categoryImage || NO_IMAGE_URL} alt={category.categoryName} />
                   </td>
                   <td className={style.tdBtn}>
                     <button type='button' className='btn_xs btn_normal' onClick={() => handleEditCategory(category.categoryId) }>수정</button>

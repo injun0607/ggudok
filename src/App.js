@@ -18,6 +18,7 @@ function App() {
           <HelmetProvider>
             <Helmet>
               <title>꾸독 : 관리자</title>
+              <link rel="icon" href="/images/favicon_grey.ico" />
             </Helmet>
           </HelmetProvider>
           <AdminLayout />
@@ -27,6 +28,7 @@ function App() {
           <HelmetProvider>
             <Helmet>
               <title>꾸독 : 나만의 구독 비서</title>
+              <link rel="icon" href="/images/favicon.ico" />
             </Helmet>
           </HelmetProvider>
           <Layout />

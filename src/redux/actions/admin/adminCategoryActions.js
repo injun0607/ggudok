@@ -11,19 +11,23 @@ export const pagingCategory = (pagedCategories) => {
     payload: pagedCategories,
   };
 };
-export const createCategory = (userData, navigate) => async(dispatch) => {
+export const createCategory = (categoryData, navigate) => async(dispatch) => {
   const {
     categoryName,
-    categoryIcon,
+    categoryEng,
+    categoryImage,
     isCategoryNameval,
-  } = userData;
+    isCategoryEngval,
+  } = categoryData;
   
   if(!isCategoryNameval){ alert('한 글자 이상의 한글만 입력해주세요.')
+  } else if(!isCategoryEngval){ alert('한 글자 이상의 영문만 입력해주세요.')
   } else {
     try{
-      const response = await axios.post('/admin/register', {
+      const response = await axios.post('/admin/category/register', {
         categoryName: categoryName,
-        categoryIcon: categoryIcon,
+        categoryEng: categoryEng,
+        categoryImage: categoryImage,
       });
       if (response.status === 200) {
         dispatch({ type: 'CREATE_CATEGORY' });
@@ -38,19 +42,25 @@ export const createCategory = (userData, navigate) => async(dispatch) => {
     }
   }
 }
-export const editCategory = (userData, navigate) => async(dispatch) => {
+export const editCategory = (categoryData, navigate) => async(dispatch) => {
   const {
+    categoryId,
     categoryName,
-    categoryIcon,
+    categoryEng,
+    categoryImage,
     isCategoryNameval,
-  } = userData;
+    isCategoryEngval,
+  } = categoryData;
   
   if(!isCategoryNameval){ alert('한 글자 이상의 한글만 입력해주세요.')
+  } else if(!isCategoryEngval){ alert('한 글자 이상의 영문만 입력해주세요.')
   } else {
     try{
-      const response = await axios.post('/admin/register', {
+      const response = await axios.post(`/admin/category/update/${categoryId}`, {
+        categoryId: categoryId,
         categoryName: categoryName,
-        categoryIcon: categoryIcon,
+        categoryEng: categoryEng,
+        categoryImage: categoryImage,
       });
       if (response.status === 200) {
         dispatch({ type: 'EDIT_CATEGORY_SUCCESS' });
@@ -62,7 +72,7 @@ export const editCategory = (userData, navigate) => async(dispatch) => {
       }
     } catch (error) {
       dispatch({ type: 'EDIT_CATEGORY_FAILURE' });
-      console.log('Error Create New Category :', error);
+      console.log('Error Edit New Category :', error);
       alert(`${error}`)
     }
   }
@@ -70,17 +80,31 @@ export const editCategory = (userData, navigate) => async(dispatch) => {
 export const setValidCategoryName = (isCategoryNameval) => {
   return {
     type: 'SET_VALID_CATEGORYNAME',
-    payload: {
-      isCategoryNameval,
-    }
+    payload: isCategoryNameval,
   };
 };
 export const setCategoryName = (categoryName) => {
   return {
     type: 'SET_CATEGORYNAME',
-    payload: {
-      categoryName,
-    }
+    payload: categoryName,
+  };
+};
+export const setValidCategoryEng = (isCategoryEngval) => {
+  return {
+    type: 'SET_VALID_CATEGORYENG',
+    payload: isCategoryEngval,
+  };
+};
+export const setCategoryEng = (categoryEng) => {
+  return {
+    type: 'SET_CATEGORYENG',
+    payload: categoryEng,
+  };
+};
+export const setCategoryImage = (categoryImage) => {
+  return {
+    type: 'SET_CATEGORYIMAGE',
+    payload: categoryImage,
   };
 };
 export const deleteCategory = (categoryData) => async (dispatch) => {

@@ -15,6 +15,7 @@ import Loading from './../Loading';
 import AdminHome from '../../pages/Admin/AdminHome';
 import Category from '../../pages/Admin/Category';
 import CategoryCreate from '../../pages/Admin/CategoryCreate';
+import CategoryEdit from '../../pages/Admin/CategoryEdit';
 import Items from '../../pages/Admin/Items';
 import Tags from '../../pages/Admin/Tags';
 import Events from '../../pages/Admin/Events';
@@ -65,6 +66,7 @@ const AdminLayout = () => {
 
           <Route path='/Admin/Category' element={<Category />}></Route>
           <Route path='/Admin/CategoryCreate' element={<CategoryCreate />}></Route>
+          <Route path='/Admin/CategoryEdit/:categoryId' element={<CategoryEdit />}></Route>
 
           <Route path='/Admin/Items' element={<Items />}></Route>
 

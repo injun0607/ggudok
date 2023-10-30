@@ -1,4 +1,5 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
+import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 /* css import */
@@ -6,8 +7,9 @@ import style from '../styles/Header.module.css';
 // redux import
 import { logout } from '../redux/actions/userActions';
 import { setSearchQuery } from '../redux/actions/searchActions';
-import { setDropCategory } from '../redux/actions/categoryActions';
+import { fetchCategory, setDropCategory } from '../redux/actions/categoryActions';
 
+const NO_ICON_URL = '/images/common/logo_grey.png';
 
 const Header = () => {
   return (
@@ -90,6 +92,29 @@ const Allcategory = () => {
   const categories = useSelector(state => state.category.categories);
   const dropCategory = useSelector(state => state.category.dropCategory);
 	
+  const [IsLoading, setIsLoading] = useState(true);
+
+  // ************************** 추천 아이템 / 헤더 fetch ***************************
+  const fetchCategoryData = async () => {
+    try {
+      const response = await axios.get(`/home`);
+      const data = response.data;
+      if(data){
+        dispatch(fetchCategory(data.categoryList))
+      } else {
+				dispatch(fetchCategory([]))
+      }
+    } catch (error) {
+      console.error('Error fetching item:', error);
+      alert(`서비스를 가져오던 중 오류가 발생했습니다. 잠시 후 다시 시도해주시기 바랍니다.`)
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  useEffect(() => {
+    fetchCategoryData();
+  }, [dispatch]);
+
 	const handleTwodepth = () => {
 		dispatch(setDropCategory());
 	}
@@ -112,12 +137,12 @@ const Allcategory = () => {
 		}, [dispatch, ref]);
 	}
 	return (
-		<nav className={style.allcategory}>
+		categories && <nav className={style.allcategory}>
 			<div className={style.onedepth} onClick={ handleTwodepth }>
 				<span className='material-icons'>menu</span>
 				<p>전체카테고리</p>
 			</div>
-			{dropCategory ? 
+			{ dropCategory ? 
 				<div className={style.twodepth} ref={dropdownRef}>
 					{
 						categories.map((category, index) => 
@@ -126,8 +151,8 @@ const Allcategory = () => {
 							className={style.depths}
 							key={index}
 						>
-								<img src={`${category.icon}`} alt={category.category} />
-								<p>{category.category}</p>
+							<img src={category.categoryImage || NO_ICON_URL} alt={category.categoryName} />
+                <p>{category.categoryName}</p>
 						</Link>
 						)
 					}
