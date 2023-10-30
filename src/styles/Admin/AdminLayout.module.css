@@ -30,6 +30,43 @@
 
 /**************************************************************/
 /**************************************************************/
+/********************** basic form setting ********************/
+/**************************************************************/
+/**************************************************************/
+.select {
+  width: 180px;
+  height: 3rem;
+  padding-left: 1.5rem;
+  color: #000;
+  font-size: 1.125rem;
+  /* background: transparent; */
+  border: 1px solid var(--c-black-6);
+  overflow: hidden;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  cursor: pointer;
+  border-radius: var(--radius-all-xs);
+  box-sizing: border-box;
+  display: block;
+  background-image: url('../../images/expand_more_black.svg');
+  background-repeat: no-repeat;
+  background-position: calc(100% - 0.75rem) center;
+}
+.select:focus {border: 1px solid var(--main-color);}
+.select:disabled {background: var(--c-black-7); color: var(--c-black-3);}
+.select option {line-height: 1.8em;}
+.formTagSection {padding: 1.5rem 0; border-top: 1px solid var(--c-black-6); color: var(--txt-color);}
+.formTagSection .tit {display: flex; justify-content: space-between; align-items: center;}
+.formTagSection .tit h3 {font-size: 1.125rem; font-weight: 500; flex-grow: 1;}
+.formTagSection .cont {margin-top: 0.25rem; max-height: 2000px; overflow: hidden; transition: ease all 0.2s;}
+.formTagSection .cont.contTag {display: flex; gap: 0.25rem 1rem; flex-wrap: wrap;}
+.formTagSection .cont.hide {max-height: 0;}
+.formTagSection .cont select {width: 100%; border-radius: var(--radius-all-md); border: 1px solid var(--sub-color-5); padding: 0 1rem;}
+.checkInputWrap {margin-top: 10px;}
+.multiTxt {font-size: 0.875rem; color: var(--txt-color-2); padding-right: 0.5rem; font-weight: 300; text-align: right; display: inline-block; float: right;}
+/**************************************************************/
+/**************************************************************/
 /********************** basic box setting *********************/
 /**************************************************************/
 /**************************************************************/
@@ -60,7 +97,7 @@
 /**************************************************************/
 /**************************************************************/
 .tableWrap {padding: var(--pad-sm);}
-.tableWrap>a {max-width: 180px; float: right; margin-bottom: 1rem; font-weight: 500;}
+.tableWrap>button, .tableWrap>a {width: 180px; float: right; margin-bottom: 1rem; font-weight: 500;}
 .tbScroll {
   overflow-x: auto;
   width: 100%;
@@ -108,6 +145,8 @@
   word-break: keep-all;
 }
 .table .tdIcon img {max-width: 2rem; max-height: 2rem;}
+.table .tdImg {padding: 8px;}
+.table .tdImg img {max-width: 4rem; max-height: 4rem;}
 .table .tdBtn button {margin-right: 0.75rem; min-width: 5rem;}
 .table .tdBtn button:last-child {margin: 0;}
 .tbSm .table th {padding: 14px; font-size: 0.938rem;}

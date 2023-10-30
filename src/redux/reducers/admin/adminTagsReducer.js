@@ -6,7 +6,7 @@ const initialState = {
 };
 
 
-const adminCategoryReducer = (state = initialState, action) => {
+const adminTagsReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'FETCH_TAG_SUCCESS':
       return {
@@ -53,4 +53,4 @@ const adminCategoryReducer = (state = initialState, action) => {
   }
 };
 
-export default adminCategoryReducer;
+export default adminTagsReducer;

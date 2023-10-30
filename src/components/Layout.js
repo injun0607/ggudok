@@ -148,7 +148,7 @@ const Layout = () => {
 						<Route
 							key={category.categoryEng}
 							path={`/Category/${category.categoryEng}`}
-							element={ <Suspense fallback={ <Loading /> }><Itemlist category={category.category} categoryEng={category.categoryEng} /></Suspense>}
+							element={ <Suspense fallback={ <Loading /> }><Itemlist category={category.categoryName} categoryEng={category.categoryEng} /></Suspense>}
 						/>
 					))}
 					{featuredcategories.map((featuredcategories) => (

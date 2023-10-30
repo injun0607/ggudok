@@ -34,7 +34,7 @@ const Category = () => {
       if(data !== 0){
         dispatch(fetchCategorySuccess(data));
 
-        // 페이지 리뷰 계산
+        // 페이지 카테고리 계산
         const pagedCategories = data.slice(startIndex, startIndex + ITEMS_PER_PAGE);
         dispatch(pagingCategory(pagedCategories))
         setStartIndex(0);
@@ -59,7 +59,7 @@ const Category = () => {
     setIsResult(categories.length > 0);
   }, [dispatch, categories]);
 
-  // 페이지 리뷰 슬라이스
+  // 페이지 카테고리 슬라이스
   useEffect(() => {
     const pagedCategories = categories.slice(startIndex, startIndex + ITEMS_PER_PAGE);
     dispatch(pagingCategory(pagedCategories))
@@ -113,7 +113,6 @@ const Category = () => {
               </tr>
             </thead>
             <tbody>
-
               {pagedCategories.map((category, index) => (
                 <tr key={index}>
                   <td>{category.categoryName}</td>
@@ -129,10 +128,10 @@ const Category = () => {
               ))}
             </tbody>
           </table>
-        </div>
+          </div>
           <Paging handlePageChange={handlePageChange} page={page} count={categories.length} ITEMS_PER_PAGE={ITEMS_PER_PAGE} />
           </>
-        : <ErrorItem message="등록 된 카테고리가 없습니다." />}
+        : <ErrorItem message="등록된 카테고리가 없습니다." />}
       </section>
     </div>
   )

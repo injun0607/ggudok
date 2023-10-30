@@ -371,7 +371,7 @@ accent-color: #FF724C;
 }
 .btn_normal_b_clr {
     border: 1px solid var(--sub-color);
-    background: #fff;
+    background: none;
     color: var(--sub-color);
 }
 .btn_normal_b_grey {

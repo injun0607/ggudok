@@ -1,8 +1,8 @@
 import axios from 'axios';
-export const fetchTagSuccess = (categories) => {
+export const fetchTagSuccess = (tags) => {
   return {
     type: 'FETCH_TAG_SUCCESS',
-    payload: categories,
+    payload: tags,
   };
 }
 export const pagingTag = (pagedTags) => {

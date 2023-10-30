@@ -12,6 +12,8 @@ import eventReducer from './eventReducer';
 import darkModeReducer from './darkModeReducer';
 import adminLayoutReducer from './adminLayoutReducer';
 import adminCategoryReducer from './admin/adminCategoryReducer';
+import adminItemsReducer from './admin/adminItemsReducer';
+import adminTagsReducer from './admin/adminTagsReducer';
 
 const rootReducer = combineReducers({
   user: userReducer,
@@ -27,6 +29,8 @@ const rootReducer = combineReducers({
   review: reviewReducer,
   adminLayout: adminLayoutReducer,
   adminCategory: adminCategoryReducer,
+  adminItems: adminItemsReducer,
+  adminTags: adminTagsReducer,
 });
 
 export default rootReducer;

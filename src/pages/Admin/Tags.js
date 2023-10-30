@@ -8,7 +8,7 @@ import style from '../../styles/Admin/AdminLayout.module.css';
 import ErrorItem from '../../components/ErrorItem';
 import Paging from '../../components/Paging';
 // redux import
-import { fetchTagSuccess, pagingTag, deleteTag } from '../../redux/actions/admin/adminTagActions';
+import { fetchTagSuccess, pagingTag, deleteTag } from '../../redux/actions/admin/adminTagsActions';
 
 const ITEMS_PER_PAGE = 6;
 const NO_IMAGE_URL = '/images/common/noimg.png';

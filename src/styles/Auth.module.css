@@ -28,6 +28,7 @@
   border-radius: var(--radius-all-xs);
   box-sizing: border-box;
   display: block;
+  letter-spacing: -0.75px;
 }
 .auth .form input.inputFile {width: inherit !important;}
 .auth .form input:focus {
@@ -98,7 +99,7 @@
   height: 3.5rem;
   padding-left: 1.5rem;
   color: #000;
-  font-size: 1.125rem;
+  font-size: 1rem;
   /* background: transparent; */
   border: 1px solid var(--c-black-6);
   overflow: hidden;
@@ -136,3 +137,28 @@
 .subscribeCur .detail {font-size: 1rem; font-weight: 400; color: var(--txt-color-2);}
 .subscribeCur .price {display: flex; justify-content: flex-end; gap: 0.5rem; align-items: baseline; font-size: 1.25rem; color: var(--txt-color-2);}
 .subscribeCur .price .point {font-size: 1.5rem; color: var(--txt-color); font-weight: 500;}
+
+/* 관리자 등록/수정 */
+.formSection {padding: 1.5rem 0; border-top: 1px solid var(--c-black-5); color: var(--txt-color); width: 100%;}
+.formSection .closeBtn { background: none; float: right; width: auto;}
+.formSection .closeBtn span {color: #fff;}
+.formSection input[type="checkbox"], input[type="radio"] {border: 0; height: auto; width: auto;}
+.formSection input[type="checkbox"]:focus, input[type="radio"]:focus {border: 0;}
+.formSection .tit {display: flex; justify-content: space-between; align-items: center; width: 100%;}
+.formSection .tit h3 {font-size: 1.125rem; font-weight: 500; flex-grow: 1;}
+.formSection .tit button {width: 80px; min-width: 80px;}
+.formSection .cont {margin-top: 0.5rem; max-height: 2000px; overflow: hidden; transition: ease all 0.2s; padding: 0.75rem; border: 1px solid #202233; border-radius: var(--radius-all-xs); background: var(--bg-color-2);}
+.formSection .cont.nopadtop {padding-top: 0.5rem;}
+.formSection .cont.contTag {display: flex; gap: 0.25rem 1rem; flex-wrap: wrap;}
+.formSection .cont.contTag .checkInputWrap {margin: 4px 0;}
+.formSection .cont.hide {max-height: 0;}
+.checkInputWrap {margin-top: 10px;}
+.multiTxt {font-size: 0.875rem; color: var(--txt-color-2); padding-right: 0.5rem; font-weight: 300; text-align: right; display: inline-block; float: right;}
+.formSection .contTriple {display: flex; gap: 0.5rem; flex-wrap: wrap;}
+.formSection .contTriple input, .formSection .contTriple select {width: calc((100% - 1rem) / 3); padding: 0 1rem !important;}
+.formSection .cont .contInner {width: 100%;}
+.formSection .cont .contInner .innerTit {display: flex; justify-content: space-between; align-items: center;}
+.formSection .cont .contInner .innerTit h4 {font-weight: 400; font-size: 1.075rem;}
+.formSection .cont .contInner .innerTit button {min-width: 80px; width: 80px;}
+.formSection .cont .contInner .innerCont {margin-top: 0.5rem; display: flex; gap: 0.25rem;}
+.formSection .cont .contInner .innerCont input {width: calc(100% - 0.25rem);}

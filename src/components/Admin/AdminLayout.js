@@ -17,6 +17,8 @@ import Category from '../../pages/Admin/Category';
 import CategoryCreate from '../../pages/Admin/CategoryCreate';
 import CategoryEdit from '../../pages/Admin/CategoryEdit';
 import Items from '../../pages/Admin/Items';
+import ItemsCreate from '../../pages/Admin/ItemsCreate';
+import ItemsEdit from '../../pages/Admin/ItemsEdit';
 import Tags from '../../pages/Admin/Tags';
 import Events from '../../pages/Admin/Events';
 //redux import
@@ -69,6 +71,8 @@ const AdminLayout = () => {
           <Route path='/Admin/CategoryEdit/:categoryId' element={<CategoryEdit />}></Route>
 
           <Route path='/Admin/Items' element={<Items />}></Route>
+          <Route path='/Admin/ItemsCreate' element={<ItemsCreate />}></Route>
+          <Route path='/Admin/ItemsEdit/:categoryId' element={<ItemsEdit />}></Route>
 
           <Route path='/Admin/Tags' element={<Tags />}></Route>
 
