@@ -1,6 +1,5 @@
 package com.alham.ggudok.tempadmin.service.subs;
 
-import com.alham.ggudok.entity.Tag;
 import com.alham.ggudok.entity.subs.Category;
 import com.alham.ggudok.entity.subs.RankLevel;
 import com.alham.ggudok.entity.subs.Subs;
@@ -70,8 +69,6 @@ class AdminSubsServiceTest {
         //then
         assertEquals(findNet.getCategory().getCategoryName(),"movie");
         assertEquals(findMel.getCategory().getCategoryName(),"music");
-
-
 
     }
 

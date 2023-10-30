@@ -1,5 +1,6 @@
 package com.alham.ggudok.config.security;
 
+import com.alham.ggudok.config.security.auth.CustomOAuth2MemberService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -21,6 +22,8 @@ public class SecurityConfig {
 
     private final CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
     private final CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
+
+    private final CustomOAuth2MemberService customOAuth2MemberService;
 
 
 
@@ -52,6 +55,7 @@ public class SecurityConfig {
                                 .logoutSuccessUrl("http://192.168.45.96:8080/logoutSuccess")
 
                 );
+        http.oauth2Login().userInfoEndpoint().userService(customOAuth2MemberService);
 
         return http.build();
     }

@@ -9,7 +9,7 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
-public class SubsRegisterDto {
+public class SubsUpdateDto {
 
     @NotNull
     private Long categoryId;

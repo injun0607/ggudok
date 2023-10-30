@@ -116,6 +116,23 @@ public class MemberService {
         return true;
     }
 
+//    @Transactional
+//    public Member updateMember(String loginId, String memberName) {
+//        Optional<Member> optionalMember = memberRepository.findByLoginId(loginId);
+//
+//        if (optionalMember.isPresent()) {
+//            Member member = optionalMember.get();
+//            member.updateMember(memberName);
+//        } else {
+//            Member member = new Member(loginId, memberName);
+//            memberRepository.save(member);
+//
+//        }
+//
+//        return memberRepository.findByLoginId(loginId).get();
+//
+//    }
+
 
     @Transactional
     public boolean createMemberHaveSubs(Member member, Subs subs, RankLevel rankLevel) {

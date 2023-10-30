@@ -31,6 +31,11 @@ public class Member {
     private String password;
     @Enumerated(STRING)
     private Gender gender;
+
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Role role = Role.GUEST;
     private String phoneNumber;
 
     private String profileImage;
@@ -62,6 +67,11 @@ public class Member {
         this.phoneNumber = phoneNumber;
     }
 
+    public Member(String loginId,String memberName) {
+        this.memberName = memberName;
+        this.loginId = loginId;
+    }
+
     public void updateMember(String newPassword,String phoneNumber,Gender gender,int age,String profileImage ) {
         this.password = newPassword;
         this.phoneNumber = phoneNumber;
@@ -77,6 +87,9 @@ public class Member {
         this.age = age;
     }
 
+    public void updateMember(String memberName ) {
+        this.memberName = memberName;
+    }
 
     public static Member noMember() {
         return new Member("no-member",0);

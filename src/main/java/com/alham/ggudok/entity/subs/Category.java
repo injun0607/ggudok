@@ -24,6 +24,8 @@ public class Category {
 
     private String categoryEng;
 
+    private String categoryImage;
+
     @OneToMany(mappedBy = "category",cascade = ALL)
     private List<Subs> subsList = new ArrayList<>();
 
@@ -31,8 +33,23 @@ public class Category {
         this.categoryName = categoryName;
     }
 
+    public Category(String categoryName, String categoryEng,String categoryImage) {
+        this.categoryName = categoryName;
+        this.categoryEng = categoryEng;
+        this.categoryImage = categoryImage;
+    }
     public Category(String categoryName, String categoryEng) {
         this.categoryName = categoryName;
         this.categoryEng = categoryEng;
+    }
+
+    public void updateCategory(String categoryName, String categoryEng) {
+        this.categoryName = categoryName;
+        this.categoryEng = categoryEng;
+
+    }
+
+    public void updateCategoryImage(String categoryImage) {
+        this.categoryImage = categoryImage;
     }
 }

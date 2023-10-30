@@ -3,6 +3,7 @@ package com.alham.ggudok.dto;
 import com.alham.ggudok.dto.subs.EventSubsDto;
 import com.alham.ggudok.dto.subs.SubsDto;
 import com.alham.ggudok.entity.subs.Subs;
+import com.alham.ggudok.tempadmin.dto.subs.category.CategoryDto;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -21,6 +22,8 @@ public class MainDto {
     private List<SubsDto> recommendBasic = new ArrayList<>();
     private List<SubsDto> recommendCustomized = new ArrayList<>();
     private List<SubsDto> defaultSubs = new ArrayList<>();
+
+    private List<CategoryDto> categoryList = new ArrayList<>();
 
 
     /**

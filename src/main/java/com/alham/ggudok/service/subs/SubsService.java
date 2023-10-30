@@ -2,9 +2,11 @@ package com.alham.ggudok.service.subs;
 
 import com.alham.ggudok.dto.subs.SubsRecommendDto;
 import com.alham.ggudok.entity.Tag;
+import com.alham.ggudok.entity.subs.Category;
 import com.alham.ggudok.entity.subs.EventSubs;
 import com.alham.ggudok.entity.subs.Subs;
 import com.alham.ggudok.entity.subs.SubsRank;
+import com.alham.ggudok.repository.subs.CategoryRepository;
 import com.alham.ggudok.repository.subs.EventRepository;
 import com.alham.ggudok.repository.subs.SubsRepository;
 import com.alham.ggudok.util.GgudokUtil;
@@ -25,6 +27,8 @@ public class SubsService {
     private final SubsRepository subsRepository;
 
     private final EventRepository eventRepository;
+
+    private final CategoryRepository categoryRepository;
 
     /**
      * 해당 subs 와 관련있는 태그들을 모두 찾아온다.
@@ -300,5 +304,9 @@ public class SubsService {
 
         return subsRepository.findSubsListByQuery(searchQuery);
 
+    }
+
+    public List<Category> findAllCategory() {
+        return categoryRepository.findAll();
     }
 }

@@ -1,26 +1,31 @@
 package com.alham.ggudok.tempadmin.controller;
 
+import com.alham.ggudok.dto.TagDto;
 import com.alham.ggudok.entity.Tag;
 import com.alham.ggudok.entity.subs.*;
 import com.alham.ggudok.repository.subs.EventRepository;
+import com.alham.ggudok.service.subs.SubsService;
 import com.alham.ggudok.tempadmin.dto.TagForm;
 import com.alham.ggudok.tempadmin.dto.subs.*;
+import com.alham.ggudok.tempadmin.dto.subs.category.CategoryDto;
+import com.alham.ggudok.tempadmin.dto.subs.category.CategoryListDto;
+import com.alham.ggudok.tempadmin.dto.subs.category.CategoryRegisterDto;
 import com.alham.ggudok.tempadmin.service.AdminTagService;
 import com.alham.ggudok.tempadmin.service.subs.AdminSubsService;
-import jakarta.servlet.http.HttpServletRequest;
+import com.alham.ggudok.util.GgudokUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Controller
 @RequiredArgsConstructor
@@ -30,9 +35,13 @@ public class TempAdminController {
 
     private final AdminSubsService adminSubsService;
 
+    private final SubsService subsService;
+
     private final AdminTagService tagService;
 
     private final EventRepository eventRepository;
+
+    private final AdminTagService adminTagService;
 
 
 
@@ -59,95 +68,395 @@ public class TempAdminController {
     private String downLoadMember;
 
 
-    @PostMapping("/category/register")
-    public String addCategory(CategoryRegisterDto categoryRegisterDto) {
+    @GetMapping("/category")
+    @ResponseBody
+    public CategoryListDto showCategories() {
+        CategoryListDto categoryListDto = new CategoryListDto();
+        List<Category> categoryList = adminSubsService.findAllCategories();
+        List<CategoryDto> categoryDtoList = new ArrayList<>();
+        for (Category category : categoryList) {
+            CategoryDto categoryDto = new CategoryDto();
+            categoryDto.setCategoryId(category.getCategoryId());
+            categoryDto.setCategoryName(category.getCategoryName());
+            categoryDto.setCategoryEng(category.getCategoryEng());
+            categoryDto.setCategoryImage(category.getCategoryImage());
 
-        adminSubsService.createCategory(categoryRegisterDto.getCategoryName());
+            categoryDtoList.add(categoryDto);
+        }
 
-        return "redirect:/admin/subs";
+        categoryListDto.setCategoryList(categoryDtoList);
+
+        return categoryListDto;
     }
 
-    @GetMapping("/category/register")
-    public String showCategoryForm(Model model) {
-        model.addAttribute("form", new CategoryRegisterDto());
-        return "admin/subs/categoryForm";
+    @PostMapping("/category/delete")
+    @ResponseBody
+    public boolean categoryDelete(@RequestBody CategoryRegisterDto categoryRegisterDto) {
+        try {
+            adminSubsService.deleteCategory(categoryRegisterDto.getCategoryId());
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
-    @PostMapping("/category/register/icon")
-    public String addCategoryIcon(@RequestParam("file") MultipartFile file, @PathVariable("categoryId")Long categoryId) {
+    @PostMapping("/category/update/{categoryId}")
+    @ResponseBody
+    public boolean categoryUpdate(@RequestBody CategoryRegisterDto categoryRegisterDto,@PathVariable("categoryId") Long categoryId) {
+
+        if (adminSubsService.updateCategory(categoryId
+                , categoryRegisterDto.getCategoryName()
+                , categoryRegisterDto.getCategoryEng()
+                , categoryRegisterDto.getCategoryImage())) {
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
+    @GetMapping("/category/update/{categoryId}")
+    @ResponseBody
+    public CategoryDto showCategoryDetail(@PathVariable("categoryId") Long categoryId) {
+
+        Category category = adminSubsService.findCategoryById(categoryId);
+        CategoryDto categoryDto = new CategoryDto();
+        categoryDto.setCategoryId(category.getCategoryId());
+        categoryDto.setCategoryName(category.getCategoryName());
+        categoryDto.setCategoryEng(category.getCategoryEng());
+        categoryDto.setCategoryImage(category.getCategoryImage());
+
+        return categoryDto;
+
+    }
+
+
+
+
+    @PostMapping("/category/image")
+    public ResponseEntity addCategoryImage(@RequestParam("categoryImage") MultipartFile file) {
 
         String imgUrl = "";
+        Map<String, String> resultMap = new HashMap<>();
+        if (file.isEmpty()) {
+            resultMap.put("error", "이미지가 존재하지 않습니다");
+            return new ResponseEntity<>(resultMap, HttpStatus.BAD_REQUEST);
+        }
 
-        return "redirect:/admin/subs";
+        try {
+
+            String contentType = GgudokUtil.checkImageType(file.getContentType());
+            String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
+            File dest = new File(uploadCategory + fileName+contentType);
+
+            file.transferTo(dest);
+
+            imgUrl = downLoadCategory+fileName+contentType;
+            resultMap.put("imageUrl", imgUrl);
+
+            return new ResponseEntity<>(resultMap, HttpStatus.OK);
+
+        } catch (IOException e) {
+            resultMap.put("error", "이미지가 존재하지 않습니다");
+
+            return new ResponseEntity(resultMap, HttpStatus.BAD_REQUEST);
+        }
+
     }
+
+
+
+//    @PostMapping("/category/register")
+//    public String addCategory(CategoryRegisterDto categoryRegisterDto) {
+//
+//        adminSubsService.createCategory(categoryRegisterDto.getCategoryName());
+//
+//        return "redirect:/admin/subs";
+//    }
+
+    @PostMapping("/category/register")
+    @ResponseBody
+    public boolean addCategory(@RequestBody CategoryRegisterDto categoryRegisterDto) {
+
+        adminSubsService.createCategory(categoryRegisterDto.getCategoryName(),categoryRegisterDto.getCategoryEng(),categoryRegisterDto.getCategoryImage());
+
+        return true;
+    }
+
+
+
+//    @GetMapping("/category/register")
+//    public String showCategoryForm(Model model) {
+//        model.addAttribute("form", new CategoryRegisterDto());
+//        return "admin/subs/categoryForm";
+//    }
+
+
+//    @GetMapping("subs")
+//    public String showSubs(Model model) {
+//        List<Subs> subsList = adminSubsService.findSubs();
+//        model.addAttribute("subsList", subsList);
+//        return "admin/subs/subsList";
+//    }
 
     @GetMapping("subs")
-    public String showSubs(Model model) {
-        List<Subs> subsList = adminSubsService.findSubs();
-        model.addAttribute("subsList", subsList);
-        return "admin/subs/subsList";
+    @ResponseBody
+    public AdminSubsListDto showSubs() {
+        List<Subs> subsList = adminSubsService.findAllWithCategory();
+
+        List<AdminSubsDto> adminSubsDtoList = new ArrayList<>();
+        for (Subs subs : subsList) {
+            AdminSubsDto adminSubsDto = new AdminSubsDto();
+            adminSubsDto.setSubsName(subs.getSubsName());
+            adminSubsDto.setCategoryName(subs.getCategory().getCategoryName());
+            adminSubsDto.setSubsId(subs.getSubsId());
+            adminSubsDto.setSubsImage(subs.getImage());
+
+            List<SubsRelTag> srtList = adminSubsService.findSubsByIdWithTag(subs.getSubsId());
+            List<TagDto> tagList = new ArrayList<>();
+            for (SubsRelTag subsRelTag : srtList) {
+                TagDto tagDto = new TagDto();
+                tagDto.setTagId(subsRelTag.getTag().getTagId());
+                tagDto.setTagName(subsRelTag.getTag().getTagName());
+
+                tagList.add(tagDto);
+            }
+
+            adminSubsDto.setTagList(tagList);
+
+            adminSubsDtoList.add(adminSubsDto);
+
+        }
+
+        AdminSubsListDto adminSubsListDto = new AdminSubsListDto();
+        adminSubsListDto.setSubsList(adminSubsDtoList);
+
+        return adminSubsListDto;
     }
+
+
+//    @GetMapping("subs/register")
+//    public String showSubsForm(Model model) {
+//        List<Category> categories = adminSubsService.findAllCategories();
+//
+//        model.addAttribute("form", new SubsRegisterDto());
+//        model.addAttribute("categories", categories);
+//        return "admin/subs/subsForm";
+//    }
+
 
     @GetMapping("subs/register")
-    public String showSubsForm(Model model) {
-        List<Category> categories = adminSubsService.findAllCategories();
+    @ResponseBody
+    public SubsRegisterViewForm showSubsForm() {
 
-        model.addAttribute("form", new SubsRegisterDto());
-        model.addAttribute("categories", categories);
-        return "admin/subs/subsForm";
+        SubsRegisterViewForm subsRegisterViewForm = new SubsRegisterViewForm();
+
+        CategoryListDto categoryListDto = new CategoryListDto();
+        List<Category> categoryList = adminSubsService.findAllCategories();
+        List<CategoryDto> categoryDtoList = new ArrayList<>();
+        for (Category category : categoryList) {
+            CategoryDto categoryDto = new CategoryDto();
+            categoryDto.setCategoryId(category.getCategoryId());
+            categoryDto.setCategoryName(category.getCategoryName());
+            categoryDto.setCategoryEng(category.getCategoryEng());
+            categoryDto.setCategoryImage(category.getCategoryImage());
+
+            categoryDtoList.add(categoryDto);
+        }
+
+        List<Tag> tagList = tagService.findAllTag();
+        List<TagDto> tagDtoList = new ArrayList<>();
+        for (Tag tag : tagList) {
+            TagDto tagDto = new TagDto();
+
+            tagDto.setTagId(tag.getTagId());
+            tagDto.setTagName(tag.getTagName());
+            tagDtoList.add(tagDto);
+        }
+
+        categoryListDto.setCategoryList(categoryDtoList);
+
+        subsRegisterViewForm.setCategoryList(categoryDtoList);
+        subsRegisterViewForm.setTagList(tagDtoList);
+
+
+
+        return subsRegisterViewForm;
     }
+
+
+
 
     @PostMapping("subs/register")
-    public String addSubs(SubsRegisterDto subsRegisterDto) {
-        adminSubsService.createSubs(subsRegisterDto.getSubsName(), subsRegisterDto.getCategoryId());
-        return "redirect:/admin/subs";
+    @ResponseBody
+    public boolean addSubs(@RequestBody SubsRegisterDto subsRegisterDto) {
+        List<TagDto> tagDtoList = subsRegisterDto.getTagList();
+
+        List<AdminSubsRankDto> subsRankDtoList = subsRegisterDto.getSubsRankList();
+
+        List<Tag> tagList = new ArrayList<>();
+        for (TagDto tagDto : tagDtoList) {
+            Tag tag = adminTagService.findTagByTagId(tagDto.getTagId());
+
+            tagList.add(tag);
+        }
+
+        Subs subs = adminSubsService.createSubs(subsRegisterDto.getSubsName(), subsRegisterDto.getCategoryId());
+        adminSubsService.updateImage(subs.getSubsId(),subsRegisterDto.getSubsImage());
+
+        for (Tag tag : tagList) {
+            adminSubsService.addSubsTag(subs.getSubsId(),tag);
+        }
+
+        for (AdminSubsRankDto adminSubsRankDto : subsRankDtoList) {
+            adminSubsService.addSubsRank(subs.getSubsId(), adminSubsRankDto);
+
+            List<SubsContentForm> contentList = adminSubsRankDto.getContentList();
+            for (SubsContentForm subsContentForm : contentList) {
+                adminSubsService.addSubsContent(subs.getSubsId(),adminSubsRankDto.getRankLevel(),subsContentForm.getContent());
+            }
+
+        }
+
+        return true;
     }
 
+
+    @PostMapping("subs/delete")
+    @ResponseBody
+    public boolean deleteSubs(@RequestBody AdminSubsDto adminSubsDto) {
+        if (adminSubsService.deleteSubs(adminSubsDto.getSubsId())) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+//    @PostMapping("subs/register")
+//    public String addSubs(SubsRegisterDto subsRegisterDto) {
+//        adminSubsService.createSubs(subsRegisterDto.getSubsName(), subsRegisterDto.getCategoryId());
+//        return "redirect:/admin/subs";
+//    }
+
+
+
+//    @GetMapping("subs/{subsId}")
+//    public String manageSubsRank(@PathVariable("subsId") Long subsId, Model model) {
+//        Subs subs = adminSubsService.findSubsById(subsId);
+//        List<SubsRank> subsRanks = subs.getSubsRanks();
+//
+//        model.addAttribute("subsId", subs.getSubsId());
+//        model.addAttribute("subsName", subs.getSubsName());
+//        model.addAttribute("subsRanks", subsRanks);
+//        model.addAttribute("subsImage", subs.getImage());
+//
+//
+//        return "/admin/subs/subsRankList";
+//    }
 
 
     @GetMapping("subs/{subsId}")
-    public String manageSubsRank(@PathVariable("subsId") Long subsId, Model model) {
-        Subs subs = adminSubsService.findSubsById(subsId);
-        List<SubsRank> subsRanks = subs.getSubsRanks();
+    @ResponseBody
+    public AdminSubsDetailDto manageSubsRank(@PathVariable("subsId") Long subsId, Model model) {
+        Subs subs = subsService.findSubsByIdWithCategory(subsId);
+        List<SubsRank> subsRankList = subsService.findContentBySubsId(subsId);
+        List<Tag> tagList = subsService.findTagsBySubsId(subsId);
 
-        model.addAttribute("subsId", subs.getSubsId());
-        model.addAttribute("subsName", subs.getSubsName());
-        model.addAttribute("subsRanks", subsRanks);
-        model.addAttribute("subsImage", subs.getImage());
+        //subsTag관련
+        List<TagDto> tagDtoList = new ArrayList<>();
+        for (Tag tag : tagList) {
+            TagDto tagDto = new TagDto();
+
+            tagDto.setTagId(tag.getTagId());
+            tagDto.setTagName(tag.getTagName());
+            tagDtoList.add(tagDto);
+        }
+
+        //subsRank관련
+        List<AdminSubsRankDto> rankDtoList = new ArrayList<>();
+        for (SubsRank subsRank : subsRankList) {
+            AdminSubsRankDto adminSubsRankDto = new AdminSubsRankDto();
+            adminSubsRankDto.setRankId(subsRank.getRankId());
+            adminSubsRankDto.setRankLevel(subsRank.getRankLevel());
+            adminSubsRankDto.setRankName(subsRank.getRankName());
+            adminSubsRankDto.setPrice(subsRank.getPrice());
+
+            List<SubsContent> contents = subsRank.getContents();
+            List<SubsContentForm> contentFormList = new ArrayList<>();
+            for (SubsContent content : contents) {
+                SubsContentForm subsContentForm = new SubsContentForm();
+                subsContentForm.setContent(content.getContent());
+                subsContentForm.setContentId(content.getContentId());
+
+                contentFormList.add(subsContentForm);
+            }
+            adminSubsRankDto.setContentList(contentFormList);
+
+            rankDtoList.add(adminSubsRankDto);
+
+        }
+
+        AdminSubsDetailDto adminSubsDetailDto = new AdminSubsDetailDto();
+
+        adminSubsDetailDto.setCategoryName(subs.getCategory().getCategoryName());
+        adminSubsDetailDto.setCategoryId(subs.getCategory().getCategoryId());
+        adminSubsDetailDto.setSubsId(subs.getSubsId());
+        adminSubsDetailDto.setSubsName(subs.getSubsName());
+        adminSubsDetailDto.setSubsImage(subs.getImage());
+        adminSubsDetailDto.setTagList(tagDtoList);
+        adminSubsDetailDto.setSubsRankList(rankDtoList);
 
 
-        return "/admin/subs/subsRankList";
+        return adminSubsDetailDto;
     }
 
+    @PostMapping("/subs/update/{subsId}")
+    @ResponseBody
+    public boolean updateSubsDetail(@RequestBody SubsUpdateDto subsUpdateDto,@PathVariable("subsId")Long subsId) {
 
+        Subs subs = adminSubsService.findSubsById(subsId);
 
-
-    @PostMapping("subs/{subsId}/upload")
-    public String uploadSubsMainImage(@RequestParam("file") MultipartFile file, @PathVariable("subsId")Long subsId, Model model, HttpServletRequest request) {
-        String imgUrl = "";
-        String file1 = request.getParameter("file");
-        if (file.isEmpty()) {
-            return "redirect:/admin/subs/{subsId}";
+        //카테고리 체크
+        if (subs.getCategory().getCategoryId() != subsUpdateDto.getCategoryId()) {
+            adminSubsService.changeSubsCategory(subs, subsUpdateDto.getCategoryId());
         }
 
 
+        return false;
+    }
+
+
+    @PostMapping("subs/register/image")
+    public ResponseEntity<Map> uploadSubsMainImage(@RequestParam(value = "subsImage",required = false) MultipartFile file) {
+
+        String imgUrl = "";
+        Map<String, String> resultMap = new HashMap<>();
+
         try {
-            Subs subs = adminSubsService.findSubsById(subsId);
-            String fileName = subsId + "_" + file.getOriginalFilename();
+            String contentType = GgudokUtil.checkImageType(file.getContentType());
+            if (contentType.equals(GgudokUtil.NOT_IMAGE)) {
+                resultMap.put("error", "올바른 이미지 파일이 아닙니다");
+                return new ResponseEntity<>(resultMap, HttpStatus.BAD_REQUEST);
+            }
+            String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename()+contentType;
+
+
             File dest = new File(uploadSubsMain + fileName);
 
             file.transferTo(dest);
 
-            imgUrl = downLoadSubsMain+fileName;
+            imgUrl = downLoadSubsMain + fileName;
 
-            adminSubsService.updateImage(subsId,imgUrl,fileName);
+            resultMap.put("imageUrl", imgUrl);
 
-            return "redirect:/admin/subs/{subsId}";
+            return new ResponseEntity<>(resultMap, HttpStatus.OK);
         } catch (IOException e) {
-            return "redirect:/admin/subs/{subsId}";
+            resultMap.put("error", "이미지 처리중 에러발생");
+            return new ResponseEntity<>(resultMap, HttpStatus.BAD_REQUEST);
         }
 
     }
+
 
     @PostMapping("subs/{subsId}/upload_icon")
     public String uploadSubsIconImage(@RequestParam("file") MultipartFile file, @PathVariable("subsId")Long subsId,Model model) {
@@ -259,6 +568,7 @@ public class TempAdminController {
     }
 
 
+
     @GetMapping("tag/add")
     public String showTagForm(Model model) {
 
@@ -267,21 +577,51 @@ public class TempAdminController {
         return "/admin/tagForm";
     }
 
-    @GetMapping("tag")
-    public String showTags(Model model) {
-        List<Tag> tags = tagService.findAllTag();
-        model.addAttribute("tags", tags);
 
-        return "/admin/tagList";
+
+//    @GetMapping("tag")
+//    public String showTags(Model model) {
+//        List<Tag> tags = tagService.findAllTag();
+//        model.addAttribute("tags", tags);
+//
+//        return "/admin/tagList";
+//    }
+
+    @GetMapping("tag")
+    @ResponseBody
+    public List<TagDto> showTags() {
+        List<Tag> tags = tagService.findAllTag();
+
+        List<TagDto> tagList = new ArrayList<>();
+        for (Tag tag : tags) {
+            TagDto tagDto = new TagDto();
+            tagDto.setTagName(tag.getTagName());
+            tagDto.setTagId(tag.getTagId());
+
+            tagList.add(tagDto);
+        }
+
+        return tagList;
     }
 
+//    @PostMapping("tag/add")
+//    public String showTagForm(TagForm tagForm) {
+//
+//        tagService.saveTag(tagForm.getTagName());
+//
+//        return "redirect:/admin/tag";
+//    }
+
     @PostMapping("tag/add")
-    public String showTagForm(TagForm tagForm) {
+    @ResponseBody
+    public boolean addTag(@RequestBody TagForm tagForm) {
 
         tagService.saveTag(tagForm.getTagName());
 
-        return "redirect:/admin/tag";
+
+        return true;
     }
+
 
     @GetMapping("event")
     public String showEvent(Model model) {

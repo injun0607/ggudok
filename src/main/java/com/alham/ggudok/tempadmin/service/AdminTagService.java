@@ -42,6 +42,14 @@ public class AdminTagService {
 
     }
 
+    public Tag findTagByTagId(Long tagId) {
+        return tagRepository.findById(tagId).get();
+    }
+
+    public Tag findTagByTagName(String tagName) {
+        return tagRepository.findTagByTagName(tagName);
+    }
+
 
 
 

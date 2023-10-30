@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class SubsContentForm {
 
+    private Long contentId;
+
     private String content;
 
 }

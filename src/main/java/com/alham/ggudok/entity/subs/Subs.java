@@ -60,6 +60,10 @@ public class Subs extends ImageResourceEntity {
         category.getSubsList().add(this);
     }
 
+    public void updateCategory(Category updateCategory) {
+        this.category.getSubsList().remove(this);
+        this.category = updateCategory;
+    }
 
     public void addTag(Tag tag) {
         SubsRelTag subsRelTag = SubsRelTag.createSubsRelTag(this, tag);

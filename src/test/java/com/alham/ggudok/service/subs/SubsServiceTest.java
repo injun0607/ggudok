@@ -24,12 +24,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringBootTest
 @Transactional
-
 class SubsServiceTest {
 
     @Autowired
@@ -966,6 +966,36 @@ class SubsServiceTest {
         assertEquals(subsListByQuery1.size(), 1);
         assertEquals(subsListByQuery2.size(),3);
 
+    }
+
+
+    @Test
+    public void subsChangeCategoryTest()throws Exception{
+        //given
+        Category movie = adminSubsService.createCategory("movie");
+        categoryRepository.save(movie);
+
+
+        Category music = adminSubsService.createCategory("music");
+        categoryRepository.save(music);
+
+
+        Subs subs1 = adminSubsService.createSubs("subs1", movie.getCategoryId());
+
+        em.flush();
+        em.clear();
+        //when
+        Subs subs = subsRepository.findById(subs1.getSubsId()).get();
+
+        subs.updateCategory(music);
+
+        em.flush();
+        em.clear();
+        //then
+
+
+        Subs findSubs = adminSubsService.findSubsByIdWithCategory(subs.getSubsId());
+        assertEquals(findSubs.getCategory().getCategoryName(),"music");
 
     }
 

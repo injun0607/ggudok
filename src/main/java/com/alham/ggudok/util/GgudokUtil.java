@@ -14,6 +14,7 @@ public class GgudokUtil {
     private static final String EMAIL_REGEX =
             "^[A-Za-z0-9+_.-]+@(.+)$";
 
+
     private static final String AGE_TAG_FORMAT = "\\d+대";
 
     public static final String MAN = "남성";
@@ -21,6 +22,8 @@ public class GgudokUtil {
     public static final String WOMAN = "여성";
 
     public static final String EMAIL_FAIL = "FAIL";
+
+    public static final String NOT_IMAGE = "NOT_IMAGE";
 
     // 이메일 유효성 검사 메서드
     public static boolean isValidEmail(String email) {
@@ -119,5 +122,22 @@ public class GgudokUtil {
         sb.append(localDateTime.getDayOfMonth());
 
         return sb.toString();
+    }
+
+    public static String checkImageType(String fileContentsType) {
+        String contentType = "";
+
+        if (fileContentsType.contains("image/png")) {
+            contentType = ".png";
+        } else if (fileContentsType.contains("image/jpeg")) {
+            contentType = ".jpg";
+        } else if (fileContentsType.contains("image/gif")) {
+            contentType = ".gif";
+        }else if (fileContentsType.contains("image/svg")) {
+            contentType = ".svg";
+        } else {
+            contentType = "not-image";
+        }
+        return contentType;
     }
 }

@@ -11,6 +11,7 @@ import com.alham.ggudok.dto.subs.SubsDto;
 import com.alham.ggudok.dto.subs.SubsMainDto;
 import com.alham.ggudok.entity.Tag;
 import com.alham.ggudok.entity.member.Member;
+import com.alham.ggudok.entity.subs.Category;
 import com.alham.ggudok.entity.subs.EventSubs;
 import com.alham.ggudok.entity.subs.Subs;
 import com.alham.ggudok.exception.ErrorResult;
@@ -18,6 +19,8 @@ import com.alham.ggudok.service.TagService;
 import com.alham.ggudok.service.member.MemberService;
 import com.alham.ggudok.service.member.ReviewService;
 import com.alham.ggudok.service.subs.SubsService;
+import com.alham.ggudok.tempadmin.dto.subs.category.CategoryDto;
+import com.alham.ggudok.tempadmin.dto.subs.category.CategoryListDto;
 import com.alham.ggudok.util.GgudokUtil;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -49,12 +52,31 @@ public class HomeController {
 
 
 
+
     @GetMapping("/home")
     public MainDto main(Principal principal) {
 
         MemberDto memberDto = SecurityUtils.transPrincipal(principal);
         //event페이지
         MainDto mainDto = new MainDto();
+
+
+        List<Category> categoryList =subsService.findAllCategory();
+
+        List<CategoryDto> categoryDtoList = new ArrayList<>();
+
+        for (Category category : categoryList) {
+            CategoryDto categoryDto = new CategoryDto();
+            categoryDto.setCategoryId(category.getCategoryId());
+            categoryDto.setCategoryEng(category.getCategoryEng());
+            categoryDto.setCategoryName(category.getCategoryName());
+            categoryDto.setCategoryImage(category.getCategoryImage());
+
+            categoryDtoList.add(categoryDto);
+        }
+
+        mainDto.setCategoryList(categoryDtoList);
+
         List<Subs> allSubsList = subsService.findAllSubsList();
         List<EventSubs> allEventSubs = subsService.findAllEventSubs();
         List<EventSubsDto> eventSubsDtoList = new ArrayList<>();
@@ -102,7 +124,7 @@ public class HomeController {
                     .map(mrt -> mrt.getTag())
                     .collect(Collectors.toList());
 
-            List<Subs> subsListRecommendBasic = subsService.findSubsListByTagList(allSubsList,basicTag);
+            List<Subs> subsListRecommendBasic = subsService.findSubsListByTagList(allSubsList, basicTag);
             mainDto.transRecommendBasic(subsListRecommendBasic);
             //알고리즘 맞춤 서비스
             //해당 유저가 좋아요한 구독정보를 위주로
@@ -117,7 +139,7 @@ public class HomeController {
                     }
                     recommendTagList.add(tagList.get(i));
 
-                }else{
+                } else {
                     break;
                 }
             }
@@ -125,7 +147,7 @@ public class HomeController {
             List<Subs> subsListRecommendCustom = subsService.findSubsListByTag(allSubsList, recommendTagList);
             if (subsListRecommendCustom.size() != 0) {
                 mainDto.transRecommendCustomized(subsListRecommendCustom);
-            }else{
+            } else {
                 mainDto.transDefaultSubs(allSubsList);
             }
 
@@ -138,6 +160,31 @@ public class HomeController {
         return mainDto;
 
     }
+
+    @GetMapping("/category")
+    public CategoryListDto categoryList() {
+
+        List<Category> categoryList = subsService.findAllCategory();
+
+        CategoryListDto categoryListDto = new CategoryListDto();
+
+        List<CategoryDto> categoryDtoList = new ArrayList<>();
+
+        for (Category category : categoryList) {
+            CategoryDto categoryDto = new CategoryDto();
+            categoryDto.setCategoryId(category.getCategoryId());
+            categoryDto.setCategoryEng(category.getCategoryEng());
+            categoryDto.setCategoryName(category.getCategoryName());
+            categoryDto.setCategoryImage(category.getCategoryImage());
+
+            categoryDtoList.add(categoryDto);
+        }
+
+        categoryListDto.setCategoryList(categoryDtoList);
+
+        return categoryListDto;
+    }
+
 
     @GetMapping("/event")
     public EventPageDto showEvent() {

@@ -19,6 +19,7 @@ import com.alham.ggudok.service.TagService;
 import com.alham.ggudok.service.member.MemberService;
 import com.alham.ggudok.service.member.ReviewService;
 import com.alham.ggudok.service.subs.SubsService;
+import com.alham.ggudok.util.GgudokUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -152,7 +153,6 @@ public class MemberController {
     public ResponseEntity<Map> memberImageUpdate(HttpServletRequest servletRequest, @RequestParam(required = false , value = "profileImage")MultipartFile file, Principal principal) {
         MemberDto memberDto = isLoginUser(principal);
         Member member = memberService.findByLoginId(memberDto.getLoginId());
-        String profileImage = servletRequest.getParameter("profileImage");
         Map<String, String> resultMap = new HashMap<>();
         String imgUrl = "";
         if (file == null || file.isEmpty()) {
@@ -162,18 +162,13 @@ public class MemberController {
 
         try {
 
-            String contentType = "";
+            String contentType = GgudokUtil.checkImageType(file.getContentType());
 
-            if (file.getContentType().equals("image/png")) {
-                contentType = ".png";
-            } else if (file.getContentType().equals("image/jpeg")) {
-                contentType = ".jpg";
-            } else if (file.getContentType().equals("image/gif")){
-                contentType = ".gif";
-            } else {
+            if (contentType.equals(GgudokUtil.NOT_IMAGE)) {
                 resultMap.put("error", "올바른 이미지가 아닙니다.");
                 return new ResponseEntity<>(resultMap, HttpStatus.BAD_REQUEST);
             }
+
             String fileName = member.getMemberId() + "_" + member.getMemberName();
             File dest = new File(uploadMember + fileName + contentType);
             file.transferTo(dest);
