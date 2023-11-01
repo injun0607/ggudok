@@ -31,4 +31,9 @@ public class SubsContent {
         this.subsRank = subsRank;
         subsRank.getContents().add(this);
     }
+
+    //subsRank 수정일때 사용
+    public void updateSubsRank(SubsRank subsRank) {
+        this.subsRank = subsRank;
+    }
 }

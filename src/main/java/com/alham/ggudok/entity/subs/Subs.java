@@ -37,7 +37,7 @@ public class Subs extends ImageResourceEntity {
 
     private int ratingAvg;
 
-    @OneToMany(mappedBy = "subs", cascade = ALL)
+    @OneToMany(mappedBy = "subs", cascade = ALL,orphanRemoval = true)
     List<SubsRank> subsRanks = new ArrayList<>();
 
     @ManyToOne(fetch = LAZY)
@@ -45,7 +45,7 @@ public class Subs extends ImageResourceEntity {
     private Category category;
 
 
-    @OneToMany(mappedBy = "subs", cascade = ALL)
+    @OneToMany(mappedBy = "subs", cascade = ALL,orphanRemoval = true)
     private List<SubsRelTag> subsRelTags = new ArrayList<>();
 
     @OneToMany(mappedBy = "subs")
@@ -78,4 +78,29 @@ public class Subs extends ImageResourceEntity {
         this.ratingAvg = ratingAvg;
     }
 
+    public void updateSubsName(String subsName) {
+        this.subsName = subsName;
+    }
+
+    public void updateInfo(String subsInfo) {
+        this.info = subsInfo;
+    }
+
+    public void updateSubsRank(List<SubsRank> alreadySubsRank) {
+        this.subsRanks = alreadySubsRank;
+        for (SubsRank subsRank : alreadySubsRank) {
+            subsRank.updateSubs(this);
+        }
+    }
+
+    /**
+     * 수정시 사용하는 메소드
+     * @param tagList
+     */
+    public void updateSubsRelTags(List<Tag> tagList) {
+        this.subsRelTags.clear();
+        for (Tag tag : tagList) {
+            SubsRelTag.createSubsRelTag(this, tag);
+        }
+    }
 }

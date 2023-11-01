@@ -302,11 +302,13 @@ public class TempAdminController {
         }
 
         Subs subs = adminSubsService.createSubs(subsRegisterDto.getSubsName(), subsRegisterDto.getCategoryId());
-        adminSubsService.updateImage(subs.getSubsId(),subsRegisterDto.getSubsImage());
+        adminSubsService.updateSubsInfo(subs,subsRegisterDto.getSubsInfo());
+        adminSubsService.updateSubsImage(subs,subsRegisterDto.getSubsImage());
 
         for (Tag tag : tagList) {
             adminSubsService.addSubsTag(subs.getSubsId(),tag);
         }
+
 
         for (AdminSubsRankDto adminSubsRankDto : subsRankDtoList) {
             adminSubsService.addSubsRank(subs.getSubsId(), adminSubsRankDto);
@@ -405,6 +407,7 @@ public class TempAdminController {
         adminSubsDetailDto.setSubsImage(subs.getImage());
         adminSubsDetailDto.setTagList(tagDtoList);
         adminSubsDetailDto.setSubsRankList(rankDtoList);
+        adminSubsDetailDto.setSubsInfo(subs.getInfo());
 
 
         return adminSubsDetailDto;
@@ -421,6 +424,25 @@ public class TempAdminController {
             adminSubsService.changeSubsCategory(subs, subsUpdateDto.getCategoryId());
         }
 
+        //subs기본정보 업데이트
+        adminSubsService.updateSubsName(subs,subsUpdateDto.getSubsName());
+        adminSubsService.updateSubsInfo(subs,subsUpdateDto.getSubsInfo());
+        adminSubsService.updateSubsImage(subs,subsUpdateDto.getSubsImage());
+
+        //태그 정보 업데이트
+        List<Tag> tagList = new ArrayList<>();
+        List<TagDto> tagDtoList = subsUpdateDto.getTagList();
+        for (TagDto tagDto : tagDtoList) {
+            Tag tag = adminTagService.findTagByTagId(tagDto.getTagId());
+
+            tagList.add(tag);
+        }
+        adminSubsService.updateSubsTag(subs, tagList);
+
+        //subsRank정보 업데이트
+        List<AdminSubsRankDto> subsRankDtoList = subsUpdateDto.getSubsRankList();
+
+        adminSubsService.updateSubsRank(subs, subsRankDtoList);
 
         return false;
     }
@@ -618,10 +640,16 @@ public class TempAdminController {
 
         tagService.saveTag(tagForm.getTagName());
 
-
         return true;
     }
 
+    @PostMapping("tag/delete")
+    @ResponseBody
+    public boolean deleteTag(@RequestBody TagDto tagDto) {
+
+        tagService.deleteTag(tagDto.getTagId());
+        return true;
+    }
 
     @GetMapping("event")
     public String showEvent(Model model) {

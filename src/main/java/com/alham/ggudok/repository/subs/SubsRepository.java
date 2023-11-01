@@ -3,6 +3,7 @@ package com.alham.ggudok.repository.subs;
 import com.alham.ggudok.entity.subs.Category;
 import com.alham.ggudok.entity.subs.Subs;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -29,5 +30,8 @@ public interface SubsRepository extends JpaRepository<Subs, Long>, SubsRepositor
     @Query("select s from Subs s join fetch s.category c")
     List<Subs> findAllWithCategory();
 
+    @Modifying
+    @Query("delete from SubsRelTag srt where srt.tag.tagId =:tagId")
+    void deleteSubsRelTagByTagId(@Param("tagId") Long tagId);
 
 }

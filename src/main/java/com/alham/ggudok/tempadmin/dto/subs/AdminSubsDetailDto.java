@@ -15,6 +15,8 @@ public class AdminSubsDetailDto {
     private String categoryName;
     private String subsName;
     private String subsImage;
+    private String subsInfo = "";
+    private int price;
     private List<TagDto> tagList;
     private List<AdminSubsRankDto> subsRankList;
 

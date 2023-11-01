@@ -1,6 +1,7 @@
 package com.alham.ggudok.entity.subs;
 
 import jakarta.persistence.*;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -15,6 +16,7 @@ import static lombok.AccessLevel.PROTECTED;
 @Entity
 @Getter
 @NoArgsConstructor(access = PROTECTED)
+@EqualsAndHashCode(of = "rank_Id")
 public class SubsRank {
 
     @Id
@@ -32,7 +34,7 @@ public class SubsRank {
     @JoinColumn(name = "subs_id")
     private Subs subs;
 
-    @OneToMany(mappedBy = "subsRank", cascade = ALL)
+    @OneToMany(mappedBy = "subsRank", cascade = ALL, orphanRemoval = true)
     private List<SubsContent> contents = new ArrayList<>();
 
     public SubsRank(String rankName, int price, RankLevel rankLevel) {
@@ -46,5 +48,23 @@ public class SubsRank {
         subs.getSubsRanks().add(this);
     }
 
+    public void updateSubs(Subs subs) {
+        this.subs = subs;
+    }
 
+    public void updateSubsRank(String rankName, int price) {
+        this.rankName = rankName;
+        this.price = price;
+    }
+
+    public void updateSubsContents(List<SubsContent> contentList) {
+        this.contents.clear();
+        for (SubsContent subsContent : contentList) {
+            subsContent.addSubsRank(this);
+        }
+    }
+
+    public void deleteContents() {
+        this.contents.clear();
+    }
 }

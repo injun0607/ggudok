@@ -4,6 +4,7 @@ import com.alham.ggudok.entity.Tag;
 import com.alham.ggudok.entity.subs.Subs;
 import com.alham.ggudok.repository.TagRepository;
 import com.alham.ggudok.repository.subs.SubsRepository;
+import com.alham.ggudok.service.TagService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +21,8 @@ public class AdminTagService {
     private final TagRepository tagRepository;
 
     private final SubsRepository subsRepository;
+
+    private final TagService tagService;
 
     public Tag saveTag(String tagName) {
 
@@ -51,7 +54,7 @@ public class AdminTagService {
     }
 
 
-
-
-
+    public void deleteTag(Long tagId) {
+        tagService.deleteTag(tagId);
+    }
 }

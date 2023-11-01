@@ -16,6 +16,7 @@ public class SubsUpdateDto {
     @NotNull
     private String subsName;
     private String subsImage;
+    private String subsInfo;
     private List<TagDto> tagList;
     private List<AdminSubsRankDto> subsRankList;
 

@@ -144,4 +144,15 @@ public class TagService {
         }
         return result;
     }
+
+    public void deleteTag(Long tagId) {
+        Tag tag = tagRepository.findById(tagId).get();
+
+        subsRepository.deleteSubsRelTagByTagId(tagId);
+        memberRepository.deleteMemberRelTagByTagId(tagId);
+
+        tagRepository.delete(tag);
+
+
+    }
 }

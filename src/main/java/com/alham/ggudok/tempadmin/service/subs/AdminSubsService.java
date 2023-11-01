@@ -9,13 +9,16 @@ import com.alham.ggudok.repository.subs.SubsRepository;
 import com.alham.ggudok.tempadmin.dto.TagForm;
 import com.alham.ggudok.tempadmin.dto.subs.AdminSubsRankDto;
 import com.alham.ggudok.tempadmin.dto.subs.EventRegisterForm;
+import com.alham.ggudok.tempadmin.dto.subs.SubsContentForm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * 기본적인 Transactional 설정
@@ -208,13 +211,12 @@ public class AdminSubsService {
         return LocalDateTime.of(Integer.parseInt(year), Integer.parseInt(month), Integer.parseInt(day),0,0);
     }
 
-    @Transactional
-    public void updateImage(Long subsId, String imgUrl) {
-        Subs subs = findSubsById(subsId);
+
+    public void updateSubsImage(Subs subs, String imgUrl) {
         subs.updateImage(imgUrl);
     }
 
-    @Transactional
+
     public void updateIcon(Long subsId, String imgIcon, String iconName) {
         Subs subs = findSubsById(subsId);
         subs.updateIcon(imgIcon);
@@ -222,7 +224,6 @@ public class AdminSubsService {
 
     }
 
-    @Transactional
     public boolean updateCategory(Long categoryId, String categoryName, String categoryEng, String categoryImage) {
 
         Optional<Category> optionalCategory = categoryRepository.findById(categoryId);
@@ -243,7 +244,7 @@ public class AdminSubsService {
 
     }
 
-    @Transactional
+
     public void updateCategoryImage(Long categoryId, String imgUrl) {
         Category category = categoryRepository.findById(categoryId).get();
         category.updateCategoryImage(imgUrl);
@@ -266,8 +267,80 @@ public class AdminSubsService {
     }
 
     public void changeSubsCategory(Subs subs, Long categoryId) {
+        Category changeCategory = categoryRepository.findById(categoryId).get();
+        subs.updateCategory(changeCategory);
 
+    }
 
+    public void updateSubsName(Subs subs, String subsName) {
+        subs.updateSubsName(subsName);
+    }
 
+    public void updateSubsInfo(Subs subs, String subsInfo) {
+        subs.updateInfo(subsInfo);
+    }
+
+    /**
+     * subs의 태그정보를 업데이트
+     * @param subs
+     * @param tagList
+     */
+    public void updateSubsTag(Subs subs, List<Tag> tagList) {
+        subs.updateSubsRelTags(tagList);
+    }
+
+    public List<SubsRank> findSubsRankListById(Long subsId) {
+
+        return subsRepository.findSubsByIdWithAllContent(subsId);
+
+    }
+
+    public void updateSubsRank(Subs subs, List<AdminSubsRankDto> subsRankDtoList) {
+
+        Subs withSubsRank = subsRepository.findSubsByIdWithRank(subs.getSubsId()).get();
+        List<SubsRank> subsRankList = withSubsRank.getSubsRanks();
+//        List<SubsRank> SubsRankWithContent = findSubsRankListById(subs.getSubsId());
+        List<RankLevel> alreadyRankLevel = subsRankList.stream().map(sr->sr.getRankLevel()).collect(Collectors.toList());
+        //삭제된 subsRank가 있다면 삭제
+
+        alreadyRankLevel.removeAll(subsRankDtoList.stream().map(srd -> srd.getRankLevel()).collect(Collectors.toList()));
+        for (int i = subsRankList.size()-1; i > -1; i--) {
+            SubsRank subsRank = subsRankList.get(i);
+
+            for (RankLevel rankLevel : alreadyRankLevel) {
+                if (subsRank.getRankLevel() == rankLevel) {
+                    subsRankList.remove(i);
+                }
+            }
+        }
+
+        //rankLevel로 같은 랭크인지 확인
+        for (AdminSubsRankDto adminSubsRankDto : subsRankDtoList) {
+            Optional<SubsRank> optionalSubsRank = subsRankList.stream()
+                    .filter(sr -> sr.getRankLevel().equals(adminSubsRankDto.getRankLevel())).findFirst();
+
+            //존재한다면 수정
+            if (optionalSubsRank.isPresent()) {
+                SubsRank subsRank = optionalSubsRank.get();
+                //subsRank 기본정보수정
+                subsRank.updateSubsRank(adminSubsRankDto.getRankName(),adminSubsRankDto.getPrice());
+                //subsRankContent 수정
+                subsRank.deleteContents();
+                List<SubsContent> contentList = new ArrayList<>();
+                List<SubsContentForm> newContentList = adminSubsRankDto.getContentList();
+                for (SubsContentForm subsContentForm : newContentList) {
+                    SubsContent subsContent = new SubsContent(subsContentForm.getContent());
+                    contentList.add(subsContent);
+                }
+                subsRank.updateSubsContents(contentList);
+
+            } else {
+                //존재하지 않으면 새로 생성
+                addSubsRank(subs.getSubsId(), adminSubsRankDto);
+                adminSubsRankDto.getContentList().stream().forEach(scf->addSubsContent(subs.getSubsId(),adminSubsRankDto.getRankLevel(),scf.getContent()));
+            }
+        }
+
+        //원래 subsRank삭제
     }
 }

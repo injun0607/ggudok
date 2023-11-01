@@ -27,6 +27,11 @@ public class SecurityConfig {
 
 
 
+    /*
+    1. 네이버 로그인 연결
+    2. 카카오 로그인 연결
+    3. 로그인시 폼 로그인이 아닌 requestBody를 받는 방식으로 변경
+     */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf().disable();
