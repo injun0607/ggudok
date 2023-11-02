@@ -174,9 +174,10 @@ input[type="search"] {
 box-sizing: content-box;
 }
 
-input::placeholder {
+input::placeholder, textarea::placeholder {
   font-size: 0.925rem;
   color: #999;
+  font-weight: 300;
 }
 
 /* 비활성화된 요소의 스타일링 설정 */

@@ -10,7 +10,7 @@ import Paging from '../../components/Paging';
 // redux import
 import { fetchCategorySuccess, pagingCategory, deleteCategory } from '../../redux/actions/admin/adminCategoryActions';
 
-const ITEMS_PER_PAGE = 6;
+const ITEMS_PER_PAGE = 10;
 const NO_IMAGE_URL = '/images/common/logo_grey.png';
 
 const Category = () => {

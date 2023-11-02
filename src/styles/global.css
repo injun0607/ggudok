@@ -644,6 +644,8 @@ textarea {border-radius: var(--radius-all-xs); border: 1px solid var(--c-black-6
 .inputfile + label * {
 	pointer-events: none;
 }
+/* ---------------------- textarea setting -----------------------*/
+.adminLayout form textarea {height: 10rem !important;}
 /* ---------------------- box setting -----------------------*/
 .box_basic {
     border: 1px solid var(--c-black-5);

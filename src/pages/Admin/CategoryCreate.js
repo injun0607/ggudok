@@ -26,7 +26,7 @@ const CategoryEdit = () => {
   
     // 오류 메시지 설정
     if (!isCategoryNameReg) {
-      setErrorMessage('한 글자 이상의 한글만 입력해주세요.');
+      setErrorMessage('한 글자 이상의 한글만 입력해주세요. (띄어쓰기 불가능)');
     } else {
       setErrorMessage('');
     }
@@ -34,12 +34,12 @@ const CategoryEdit = () => {
     dispatch(setValidCategoryName(isCategoryNameReg));
   }
   const handleChangeCategoryEng = (newCategoryEng) => {
-    const regCategoryEng = /^[a-z]{1,}$/;
+    const regCategoryEng = /^[a-zA-Z]{1,}$/;
     const isCategoryEngReg = regCategoryEng.test(newCategoryEng);
   
     // 오류 메시지 설정
     if (!isCategoryEngReg) {
-      setErrorMessageE('한 글자 이상의 영문만 입력해주세요.');
+      setErrorMessageE('한 글자 이상의 영문만 입력해주세요. (띄어쓰기 불가능)');
     } else {
       setErrorMessageE('');
     }

@@ -21,19 +21,23 @@ const ItemsCreate = () => {
   const [itemName, setItemName] = useState('');
   const [isItemNameval, setItemNameval] = useState(false);
   const [itemCategory, setItemCategory] = useState('');
+  const [itemInfo, setItemInfo] = useState('');
+  const [isItemInfoval, setItemInfoval] = useState(false);
   const [itemTags, setItemTags] = useState([]);
   const [itemImage, setItemImage] = useState('');
   const [itemRanks, setItemRanks] = useState([
     {
       rankName: "",
-      price: "",
+      price: 0,
       rankLevel: "",
       contentList: [{content: ""}],
     },
   ]);
 
   const [errorMessage, setErrorMessage] = useState('');
-  const [errorMessageE, setErrorMessageE] = useState('');
+  const [errorMessageCat, setErrorMessageCat] = useState('');
+  const [errorMessageInfo, setErrorMessageInfo] = useState('');
+  const [errorMessageTag, setErrorMessageTag] = useState('');
   const [IsResult, setIsResult] = useState(null);
   const [IsLoading, setIsLoading] = useState(true);
   
@@ -63,16 +67,30 @@ const ItemsCreate = () => {
 
   // 구독서비스명
   const handleChangeItemName = (newItemName) => {
-    const regItemName = /^[가-힣]{1,}$/;
+    const regItemName = /^[가-힣a-zA-Z]{1,}$/;
     const isItemNameReg = regItemName.test(newItemName);
   
     if (!isItemNameReg) {
-      setErrorMessage('한 글자 이상의 한글만 입력해주세요.');
+      setErrorMessage('한 글자 이상의 한글과 영문만 입력해주세요. (띄어쓰기 불가능)');
     } else {
       setErrorMessage('');
     }
     
     setItemNameval(isItemNameReg);
+  }
+
+  // 구독서비스설명
+  const handleChangeItemInfo = (newItemInfo) => {
+    const regItemInfo = /^.{1,}$/;
+    const isItemInfoReg = regItemInfo.test(newItemInfo);
+  
+    if (!isItemInfoReg) {
+      setErrorMessageInfo('한 글자 이상 입력해주세요.');
+    } else {
+      setErrorMessageInfo('');
+    }
+    
+    setItemInfoval(isItemInfoReg);
   }
   // 태그 선택
   const handleSelectedTag = (e) => {
@@ -175,9 +193,26 @@ const ItemsCreate = () => {
 
   // 최종 form submit
   const handleCreate = async(e) => {
+    console.log(itemTags)
     e.preventDefault();
-    if(!itemCategory) {
-      setErrorMessageE('카테고리를 설정해주세요.');
+    if(!isItemNameval) {
+      alert('구독서비스명을 입력하세요.');
+      setErrorMessage('한 글자 이상의 한글과 영문만 입력해주세요. (띄어쓰기 불가능)');
+      return;
+    } else if(!itemCategory) {
+      alert('카테고리를 선택하세요.');
+      setErrorMessageCat('카테고리를 선택하세요.');
+      return;
+    } else if(!isItemInfoval) {
+      alert('구독서비스 설명을 입력하세요.');
+      setErrorMessageInfo('한 글자 이상 입력해주세요.');
+      return;
+    } else if(itemTags.length === 0) {
+      alert('태그를 하나 이상 선택하세요.');
+      setErrorMessageTag('태그를 하나 이상 선택하세요');
+      return;
+    } else if (!itemRanks.every(rank => rank.rankName && rank.price && rank.rankLevel && rank.contentList.every(content => content.content))) {
+      alert('기본 DEFAULT 요금제 항목을 전부 입력하세요.');
       return;
     }
     try {
@@ -196,14 +231,12 @@ const ItemsCreate = () => {
   
       const itemData = {
         subsName: itemName,
+        subsInfo: itemInfo,
         categoryId: categoryId,
         tagList: tagList,
         subsImage: updatedImageUrl,
         subsRankList: itemRanks,
-        isItemNameval,
       };
-      console.log('itemData', itemData)
-      console.log('subsRankList', itemRanks)
       dispatch(createItem(itemData, navigate));
     } catch (error) {
       console.error('Error handling Create:', error);
@@ -216,7 +249,7 @@ const ItemsCreate = () => {
     <section className={`${style.join} ${style.auth}`}>
       <div className='webwidth'>
         <div className='cont_tit_m'>
-          <h2>신규 카테고리 등록</h2>
+          <h2>신규 구독서비스 등록</h2>
         </div>
         
         <div className={`${style.form} mt_60`}>
@@ -240,7 +273,7 @@ const ItemsCreate = () => {
                   placeholder='구독서비스명을 입력하세요.' 
                   value={itemName}
                   onChange={(e) => {
-                    setItemName(e.target.value)
+                    setItemName(e.target.value);
                     handleChangeItemName(e.target.value);
                   }} />
                 {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
@@ -256,7 +289,17 @@ const ItemsCreate = () => {
                       </option>
                     ))}
                 </select>
-                {errorMessageE && <p style={{ color: 'red' }}>{errorMessageE}</p>}
+                {errorMessageCat && <p style={{ color: 'red' }}>{errorMessageCat}</p>}
+                <textarea
+                  type='text' name='itemInfo'
+                  placeholder='상세한 구독서비스 설명을 입력하세요.'
+                  onChange={(e) => {
+                    setItemInfo(e.target.value);
+                    handleChangeItemInfo(e.target.value);
+                  }}
+                  value={itemInfo}
+                  />
+                {errorMessageInfo && <p style={{ color: 'red' }}>{errorMessageInfo}</p>}
                 <section className={style.formSection}>
                   <div className={style.tit}>
                     <h3>
@@ -277,6 +320,7 @@ const ItemsCreate = () => {
                       ))
                     }
                   </ul>
+                  {errorMessageTag && <p className='mt_10' style={{ color: 'red' }}>{errorMessageTag}</p>}
                 </section>
                 <section className={style.formSection}>
                   <div className={style.tit}>
@@ -319,7 +363,7 @@ const ItemsCreate = () => {
                         <input
                           type='text' name='itemRankPrice' autoComplete="off"
                           placeholder='가격을 숫자만 입력하세요.' 
-                          value={rank.rankPrice}
+                          value={rank.price}
                           onChange={(e) => {
                             handleRankPriceChange(e.target.value, index)
                           }} />

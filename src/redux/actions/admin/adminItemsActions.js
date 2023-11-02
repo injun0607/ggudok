@@ -24,67 +24,35 @@ export const pagingItems = (pagedItems) => {
   };
 };
 export const createItem = (itemData, navigate) => async(dispatch) => {
-  const {
-    subsName,
-    categoryId,
-    tagList,
-    subsImage,
-    subsRankList,
-    isItemNameval,
-  } = itemData;
-  
-  if(!isItemNameval){ alert('한 글자 이상의 한글만 입력해주세요.')
-  } else if(!categoryId){ alert('카테고리를 선택하세요.')
-} else if(!subsRankList){ alert('요금제 기본값을 입력하세요.')
-  } else {
-    try{
-      const response = await axios.post('/admin/subs/register', itemData);
-      if (response.status === 200) {
-        dispatch({ type: 'CREATE_ITEM' });
-        alert(`신규 구독서비스 등록이 완료되었습니다.`)
-        navigate('/Admin/Items');
-      } else {
-        alert(`신규 구독서비스 등록을 실패하였습니다. 다시 작성해주시기 바랍니다.`)
-      }
-    } catch (error) {
-      console.log('Error Create New Items :', error);
-      alert(`${error}`)
+  try{
+    const response = await axios.post('/admin/subs/register', itemData);
+    if (response.status === 200) {
+      dispatch({ type: 'CREATE_ITEM' });
+      alert(`신규 구독서비스 등록이 완료되었습니다.`)
+      navigate('/Admin/Items');
+    } else {
+      alert(`신규 구독서비스 등록을 실패하였습니다. 다시 작성해주시기 바랍니다.`)
     }
+  } catch (error) {
+    console.log('Error Create New Items :', error);
+    alert(`${error}`)
   }
 }
-export const editItem = (itemData, navigate) => async(dispatch) => {
-  const {
-    itemId,
-    itemName,
-    itemEng,
-    itemImage,
-    isItemNameval,
-    isItemEngval,
-  } = itemData;
-  
-  if(!isItemNameval){ alert('한 글자 이상의 한글만 입력해주세요.')
-  } else if(!isItemEngval){ alert('한 글자 이상의 영문만 입력해주세요.')
-  } else {
-    try{
-      const response = await axios.post(`/admin/item/update/${itemId}`, {
-        itemId: itemId,
-        itemName: itemName,
-        itemEng: itemEng,
-        itemImage: itemImage,
-      });
-      if (response.status === 200) {
-        dispatch({ type: 'EDIT_ITEM_SUCCESS' });
-        alert(`구독서비스 수정이 완료되었습니다.`)
-        navigate('/Admin/Items');
-      } else {
-        dispatch({ type: 'EDIT_ITEM_FAILURE' });
-        alert(`구독서비스 수정을 실패하였습니다. 다시 작성해주시기 바랍니다.`)
-      }
-    } catch (error) {
+export const editItem = (subsId, itemData, navigate) => async(dispatch) => {
+  try{
+    const response = await axios.post(`/admin/subs/update/${subsId}`, itemData);
+    if (response.status === 200) {
+      dispatch({ type: 'EDIT_ITEM_SUCCESS' });
+      alert(`구독서비스 수정이 완료되었습니다.`)
+      navigate('/Admin/Items');
+    } else {
       dispatch({ type: 'EDIT_ITEM_FAILURE' });
-      console.log('Error Edit New Items :', error);
-      alert(`${error}`)
+      alert(`구독서비스 수정을 실패하였습니다. 다시 작성해주시기 바랍니다.`)
     }
+  } catch (error) {
+    dispatch({ type: 'EDIT_ITEM_FAILURE' });
+    console.log('Error Edit New Items :', error);
+    alert(`${error}`)
   }
 }
 export const setValidItemName = (isItemNameval) => {

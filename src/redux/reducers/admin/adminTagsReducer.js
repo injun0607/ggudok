@@ -2,7 +2,7 @@ const initialState = {
   tags: [],
   pagedTags: [],
   isTagNameval: false,
-  TagName: '',
+  tagName: '',
 };
 
 
@@ -30,15 +30,7 @@ const adminTagsReducer = (state = initialState, action) => {
     case 'SET_TAGNAME':
       return {
         ...state,
-        TagName: action.payload,
-      };
-    case 'EDIT_TAG_SUCCESS':
-      return {
-        ...state,
-      };
-    case 'EDIT_TAG_FAILURE':
-      return {
-        ...state,
+        tagName: action.payload,
       };
     case 'DELETE_TAG_SUCCESS':
       return {

@@ -14,6 +14,7 @@ import adminLayoutReducer from './adminLayoutReducer';
 import adminCategoryReducer from './admin/adminCategoryReducer';
 import adminItemsReducer from './admin/adminItemsReducer';
 import adminTagsReducer from './admin/adminTagsReducer';
+import adminEventsReducer from './admin/adminEventsReducer';
 
 const rootReducer = combineReducers({
   user: userReducer,
@@ -31,6 +32,7 @@ const rootReducer = combineReducers({
   adminCategory: adminCategoryReducer,
   adminItems: adminItemsReducer,
   adminTags: adminTagsReducer,
+  adminEvents: adminEventsReducer,
 });
 
 export default rootReducer;

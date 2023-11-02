@@ -20,6 +20,7 @@ import Items from '../../pages/Admin/Items';
 import ItemsCreate from '../../pages/Admin/ItemsCreate';
 import ItemsEdit from '../../pages/Admin/ItemsEdit';
 import Tags from '../../pages/Admin/Tags';
+import TagCreate from '../../pages/Admin/TagCreate';
 import Events from '../../pages/Admin/Events';
 //redux import
 import { setAdminLayout } from '../../redux/actions/adminLayoutActions';
@@ -72,9 +73,10 @@ const AdminLayout = () => {
 
           <Route path='/Admin/Items' element={<Items />}></Route>
           <Route path='/Admin/ItemsCreate' element={<ItemsCreate />}></Route>
-          <Route path='/Admin/ItemsEdit/:categoryId' element={<ItemsEdit />}></Route>
+          <Route path='/Admin/ItemsEdit/:subsId' element={<ItemsEdit />}></Route>
 
           <Route path='/Admin/Tags' element={<Tags />}></Route>
+          <Route path='/Admin/TagCreate' element={<TagCreate />}></Route>
 
           <Route path='/Admin/Events' element={<Events />}></Route>
 

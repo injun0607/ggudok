@@ -57,7 +57,7 @@
   height: 15rem;
   padding-left: 1.5rem;
   color: #000;
-  font-size: 1.125rem;
+  /* font-size: 1.125rem; */
   /* background: transparent; */
   border: 1px solid var(--c-black-6);
   overflow: hidden;
@@ -142,8 +142,8 @@
 .formSection {padding: 1.5rem 0; border-top: 1px solid var(--c-black-5); color: var(--txt-color); width: 100%;}
 .formSection .closeBtn { background: none; float: right; width: auto;}
 .formSection .closeBtn span {color: #fff;}
-.formSection input[type="checkbox"], input[type="radio"] {border: 0; height: auto; width: auto;}
-.formSection input[type="checkbox"]:focus, input[type="radio"]:focus {border: 0;}
+.formSection input[type="checkbox"], .formSection input[type="radio"] {border: 0; height: auto; width: auto;}
+.formSection input[type="checkbox"]:focus, .formSection input[type="radio"]:focus {border: 0;}
 .formSection .tit {display: flex; justify-content: space-between; align-items: center; width: 100%;}
 .formSection .tit h3 {font-size: 1.125rem; font-weight: 500; flex-grow: 1;}
 .formSection .tit button {width: 80px; min-width: 80px;}
