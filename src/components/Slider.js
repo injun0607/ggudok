@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
-import { Fade } from 'react-slideshow-image';
-import 'react-slideshow-image/dist/styles.css'
+import { Link } from 'react-router-dom';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation } from 'swiper/modules';
+// css import
+import 'swiper/css';
+import 'swiper/css/navigation';
 // component import
 import Loading from '../components/Loading';
 // redux import
@@ -45,23 +49,33 @@ const Bannerslider = () => {
 
     return (
       !IsLoading ? (IsResult &&
-      <section className="slide-container">
-        <Fade>
+      <section className="mainslider">
+        <Swiper
+            cssMode={true}
+            navigation={true}
+            pagination={false}
+            spaceBetween={0}
+            slidesPerView={1}
+            modules={[Navigation]}
+            className="item-list_carousel"
+          >
         {
           events.map((event, index) => (
-            <section key={index} className='bannerslider'>
-              <img src={event.image || NO_IMAGE_URL} style={{ width: '100%' }} alt={event.subsName} />
-              <div className='tag'>
-                <p>{event.categoryName}</p>
-                <p>{event.infoTag}</p>
-              </div>
-              <h3>{event.subsName}</h3>
-              <h4>{event.info}</h4>
-              <p>{event.startDate} - {event.endDate}</p>
-            </section>
+            <SwiperSlide key={index} className='bannerslider'>
+              <Link to={`/subs/detail/${event.subsId}`}>
+                <img src={event.image || NO_IMAGE_URL} style={{ width: '100%' }} alt={event.subsName} />
+                <div className='tag'>
+                  <p>{event.categoryName}</p>
+                  <p>{event.infoTag}</p>
+                </div>
+                <h3>{event.subsName}</h3>
+                <h4>{event.info}</h4>
+                <p>{event.startDate} - {event.endDate}</p>
+              </Link>
+            </SwiperSlide>
           ))
         }
-        </Fade>
+        </Swiper>
       </section>
       ) : <Loading />
     )

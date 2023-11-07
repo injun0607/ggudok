@@ -22,6 +22,8 @@ import ItemsEdit from '../../pages/Admin/ItemsEdit';
 import Tags from '../../pages/Admin/Tags';
 import TagCreate from '../../pages/Admin/TagCreate';
 import Events from '../../pages/Admin/Events';
+import EventCreate from '../../pages/Admin/EventCreate';
+import EventEdit from '../../pages/Admin/EventEdit';
 //redux import
 import { setAdminLayout } from '../../redux/actions/adminLayoutActions';
 import { setLoggedIn } from '../../redux/actions/userActions';
@@ -79,6 +81,8 @@ const AdminLayout = () => {
           <Route path='/Admin/TagCreate' element={<TagCreate />}></Route>
 
           <Route path='/Admin/Events' element={<Events />}></Route>
+          <Route path='/Admin/EventCreate' element={<EventCreate />}></Route>
+          <Route path='/Admin/EventEdit/:eventId' element={<EventEdit />}></Route>
 
 
           <Route path='*' element={ <Error message="이런! 존재하지 않는 페이지입니다." /> }></Route>

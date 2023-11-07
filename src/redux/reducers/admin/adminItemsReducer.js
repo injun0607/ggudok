@@ -3,8 +3,6 @@ const initialState = {
   selectedCategory: '',
   filteredItems: [],
   pagedItems: [],
-  // isItemNameval: false,
-  // ItemName: '',
 };
 
 
@@ -33,16 +31,6 @@ const adminItemsReducer = (state = initialState, action) => {
     case 'CREATE_ITEM':
       return {
         ...state,
-      };
-    case 'SET_VALID_ITEMNAME':
-      return {
-        ...state,
-        isItemNameval: action.payload,
-      };
-    case 'SET_ITEMNAME':
-      return {
-        ...state,
-        ItemName: action.payload,
       };
     case 'EDIT_ITEM_SUCCESS':
       return {

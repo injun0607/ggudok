@@ -2,9 +2,6 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
-import { hover } from '@testing-library/user-event/dist/hover';
-import { Pie } from 'react-chartjs-2';
 // css import
 import style from '../styles/Item.module.css';
 // component import
@@ -15,8 +12,6 @@ import Paging from '../components/Paging';
 // redux import
 import { likeItemSuccess, likeItemFailure, fetchitemDetailSuccess, setLoginModal } from '../redux/actions/itemActions';
 import { setReview, pagingReview, setMyItemReviewRating, setMyItemReviewContents, setMyItemReview, setReviewModal, } from '../redux/actions/reviewActions';
-
-ChartJS.register(ArcElement, Tooltip, Legend);
 
 const ITEMS_PER_PAGE = 5;
 const NO_IMAGE_URL = '/images/common/noimg.png';
@@ -56,7 +51,7 @@ const ItemDetail = () => {
     try {
       const response = await axios.get(`/subs/detail/${subsId}`);
       const data = response.data;
-
+      console.log(data)
       dispatch(fetchitemDetailSuccess(data));
       
       // 아이템 회원등급 Default와 나머지 분리
@@ -254,7 +249,33 @@ const ItemDetail = () => {
               </div>
             </article>
             <article className={style.cont}>
-              <p>{itemDetail.info}</p>
+              {itemDetail.info ? <p>{itemDetail.info}</p> : <p className='txt_grey'>구독서비스 설명이 없습니다.</p>}
+            </article>
+            <article className={style.cont}>
+              <div className={style.tit}>
+                <h3>요금제</h3>
+              </div>
+              <div className={style.subscribe}>
+                {
+                  itemDetail.ranks.map((rank, rankindex) => (
+                  <div className={style.box} key={rankindex}>
+                    <div className={style.left}>
+                      <h2 className={style.name}>{rank.rankName}</h2>
+                      <ul className={style.detail}>
+                        {rank.content.map((cont, contindex) => (
+                          <li key={contindex}>{cont}</li>
+                        ))}
+                      </ul>
+                    </div>
+                    <div className={style.right}>
+                      <p className={style.price}>
+                      월 <span className={style.point}>{rank.price}</span>원
+                      </p>
+                    </div>
+                  </div>
+                  ))
+                }
+              </div>
             </article>
             <article className={`${style.cont} ${style.ratingwrap}`}>
               <div className={style.tit}>
@@ -290,28 +311,6 @@ const ItemDetail = () => {
               ) : (
                 <div className='txt_grey txt_center'>등록된 리뷰가 없습니다.</div>
               )}
-              {/* { reviews.length > 5 ? <div className='pagination-wrap'>
-                <div className='pagination'>
-                  <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>
-                  <span className='material-icons'>chevron_left</span>
-                  </button>
-                  <span>{currentPage}</span> / <span>{totalPages}</span>
-                  <button onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages}>
-                  <span className='material-icons'>chevron_right</span>
-                  </button>
-                </div>
-              </div> : null } */}
-            </article>
-            <article className={`${style.cont} ${style.chartwrap}`}>
-              <div className={style.tit}>
-                <h3>구독 유형 분석</h3>
-              </div>
-              <div className={style.chart}>
-                <Pie data={dataAge} />
-              </div>
-              <div className={style.chart}>
-                <Pie data={dataGender} />
-              </div>
             </article>
           </section>
 
@@ -428,63 +427,5 @@ const ReviewModal = ({myItemReviewRating, myItemReviewContents, subsId}) => {
     </form>
   )
 }
-
-export const dataAge = {
-  labels: ['20대 미만', '20대', '30대', '40대', '50대', '60대 이상'],
-  datasets: [
-    {
-      label: '구독자 수',
-      data: [12, 19, 3, 5, 2, 3],
-      backgroundColor: [
-        '#FF724C',
-        '#FF8E6F',
-        '#FFA194',
-        '#FFBDB9',
-        '#FFD3CD',
-        '#FFEAE6',
-        '#FF533C',
-        '#FF2A00',
-        '#CC1E00',
-        '#990F00',
-      ],
-      borderColor: [
-        'rgba(255, 99, 132, 1)',
-        'rgba(54, 162, 235, 1)',
-        'rgba(255, 206, 86, 1)',
-        'rgba(75, 192, 192, 1)',
-        'rgba(153, 102, 255, 1)',
-        'rgba(255, 159, 64, 1)',
-      ],
-      borderWidth: 0,
-    },
-  ],
-};
-export const dataGender = {
-  labels: ['여성', '남성'],
-  datasets: [
-    {
-      label: '구독자 수',
-      data: [12, 19],
-      backgroundColor: [
-        '#d4d9dd',
-        '#858c94',
-        // '#FFCA7A',
-        // '#FFD699',
-        // '#FFE3B8',
-        // '#FFEDD2',
-        // '#FFF6EB',
-        // '#FDAB50',
-        // '#FEEDC3',
-        // '#FBCF75',
-        // '#F8BB25',
-      ],
-      borderColor: [
-        'rgba(255, 99, 132, 1)',
-        'rgba(54, 162, 235, 1)',
-      ],
-      borderWidth: 0,
-    },
-  ],
-};
 
 export default ItemDetail;

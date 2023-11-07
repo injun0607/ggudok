@@ -20,6 +20,7 @@ import Loading from './Loading';
 import Home from '../pages/Home';
 import Login from '../pages/Auth/Login';
 import Join from '../pages/Auth/Join';
+import JoinAfter from '../pages/Auth/JoinAfter';
 import JoinEmail from '../pages/Auth/JoinEmail';
 import EditProfile from '../pages/Auth/EditProfile';
 import Itemlist from '../pages/Itemlist';
@@ -130,6 +131,7 @@ const Layout = () => {
 
 					<Route path='/Auth/Login' element={ <Login /> }></Route>
 					<Route path='/Auth/Join' element={ <Join /> }></Route>
+					<Route path='/Auth/JoinAfter' element={ <JoinAfter /> }></Route>
 					<Route path='/Auth/JoinEmail' element={ <JoinEmail /> }></Route>
 					<Route path='/Auth/EditProfile' element={
 						isCheckingLogin ? (<Loading />) : (

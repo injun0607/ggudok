@@ -119,6 +119,37 @@
 .select option {line-height: 1.8em;}
 .select option:first-child {display: none;}
 
+/* 토글버튼 */
+.toggleSwitch {
+  width: 80px;
+  height: 38px;
+  display: block;
+  position: relative;
+  border-radius: 30px;
+  background: #ffffffa9;
+  box-shadow: var(--box-shadow);
+  cursor: pointer;
+}
+.toggleSwitch .toggleButton {
+  width: 28px;
+  aspect-ratio: 1/1;
+  position: absolute;
+  top: 50%;
+  left: 4px;
+  transform: translateY(-50%);
+  border-radius: 50%;
+  background: var(--sub-color-4);
+}
+#toggle:checked ~ .toggleSwitch {
+  background: var(--sub-color);
+}
+#toggle:checked ~ .toggleSwitch .toggleButton {
+  left: calc(100% - 32px);
+  background: #fff;
+}
+.toggleSwitch, .toggleButton {
+  transition: all 0.2s ease-in;
+}
 
 /* 구독하기 */
 .subscribe .box {width: 100%; border: 1px solid var(--c-black-6); border-radius: var(--radius-all-md); box-shadow: var(--box-shadow); display: flex; padding: 3rem 2.5rem 2.5rem 1.5rem; margin-top: 1.5rem; gap: 2rem;}

@@ -55,36 +55,6 @@ export const editItem = (subsId, itemData, navigate) => async(dispatch) => {
     alert(`${error}`)
   }
 }
-export const setValidItemName = (isItemNameval) => {
-  return {
-    type: 'SET_VALID_ITEMNAME',
-    payload: isItemNameval,
-  };
-};
-export const setItemName = (itemName) => {
-  return {
-    type: 'SET_ITEMNAME',
-    payload: itemName,
-  };
-};
-export const setValidItemEng = (isItemEngval) => {
-  return {
-    type: 'SET_VALID_ITEMENG',
-    payload: isItemEngval,
-  };
-};
-export const setItemEng = (itemEng) => {
-  return {
-    type: 'SET_ITEMENG',
-    payload: itemEng,
-  };
-};
-export const setItemImage = (itemImage) => {
-  return {
-    type: 'SET_ITEMIMAGE',
-    payload: itemImage,
-  };
-};
 export const deleteItem = (subsId) => async (dispatch) => {
   try {
     const response = await axios.post(`/admin/subs/delete`, subsId);

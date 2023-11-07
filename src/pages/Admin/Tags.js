@@ -10,7 +10,7 @@ import Paging from '../../components/Paging';
 // redux import
 import { fetchTagSuccess, pagingTag, deleteTag } from '../../redux/actions/admin/adminTagsActions';
 
-const ITEMS_PER_PAGE = 10;
+const ITEMS_PER_PAGE = 30;
 const NO_IMAGE_URL = '/images/common/noimg.png';
 
 const Tags = () => {
@@ -92,7 +92,17 @@ const Tags = () => {
         <Link to="/Admin/TagCreate" className='btn_full02 btn_s'>신규 태그 등록</Link>
         {IsResult && tags && tags.length > 0 ? 
           <>
-          <div className={style.tbScroll}>
+          <div className={style.AdminBox}>
+            {pagedTags.map((tag, index) => (
+              <div className={style.box} key={index}>
+                <h3>{tag.tagName}</h3>
+                <div className={style.btnWrap}>
+                  <button type='button' className='btn_xs btn_full' onClick={(e) => handleDeleteTag(e, tag.tagId) }>삭제</button>
+                </div>
+              </div>
+            ))}
+          </div>
+          {/* <div className={style.tbScroll}>
             <table className={style.table}>
               <colgroup>
                 <col width={'*'} />
@@ -115,7 +125,7 @@ const Tags = () => {
                 ))}
               </tbody>
             </table>
-          </div>
+          </div> */}
           <Paging handlePageChange={handlePageChange} page={page} count={tags.length} ITEMS_PER_PAGE={ITEMS_PER_PAGE} />
           </>
         : <ErrorItem message="등록된 태그가 없습니다." />}

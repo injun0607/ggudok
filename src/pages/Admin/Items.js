@@ -119,14 +119,6 @@ const Items = () => {
     if(confirm){ dispatch(deleteItem(itemData)); }
     else {}
   }
-  // 이벤트동록
-  const handleEventItem = async(e, subsId, subsName) => {
-    const itemData = { subsId };
-    e.preventDefault();
-    const confirm = window.confirm(`${subsName} 구독서비스를 이벤트에 등록하시겠습니까?`);
-    if(confirm){ dispatch(deleteItem(itemData)); }
-    else {}
-  }
   // 신규 구독서비스 등록
   const handleCreateItem = () => {
     navigate('/Admin/ItemsCreate');

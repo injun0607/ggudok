@@ -1,10 +1,6 @@
 const initialState = {
   events: [],
   pagedEvents: [],
-  eventName: '',
-  isEventNameval: false,
-  eventEng: '',
-  isEventEngval: false,
 };
 
 
@@ -23,31 +19,6 @@ const adminEventReducer = (state = initialState, action) => {
     case 'CREATE_EVENT':
       return {
         ...state,
-      };
-    case 'SET_VALID_EVENTNAME':
-      return {
-        ...state,
-        isEventNameval: action.payload,
-      };
-    case 'SET_EVENTNAME':
-      return {
-        ...state,
-        eventName: action.payload,
-      };
-    case 'SET_VALID_EVENTENG':
-      return {
-        ...state,
-        isEventEngval: action.payload,
-      };
-    case 'SET_EVENTENG':
-      return {
-        ...state,
-        eventEng: action.payload,
-      };
-    case 'SET_EVENTIMAGE':
-      return {
-        ...state,
-        eventImage: action.payload,
       };
     case 'EDIT_EVENT_SUCCESS':
       return {

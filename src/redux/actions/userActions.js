@@ -105,6 +105,33 @@ export const join = (userData, navigate) => async(dispatch) => {
     }
   }
 }
+export const joinAfter = (userData, navigate) => async(dispatch) => {
+  const {
+    gender,
+    age,
+  } = userData;
+  
+  if(age === ''){ alert('나이를 입력하세요.')
+  } else if (gender === '성별을 선택하세요.' || gender === ''){ alert('성별을 선택하세요.')
+  } else {
+    try{
+      const response = await axios.post('/member/register', {
+        gender: gender,
+        age: age,
+      });
+      if (response.status === 200) {
+        alert(`회원가입이 완료되었습니다. 로그인해주시기 바랍니다.`)
+        navigate('/Auth/Login');
+      } else {
+        alert(`회원가입에 실패하였습니다. 다시 작성해주시기 바랍니다.`)
+        // window.location.reload();
+      }
+    } catch (error) {
+      console.log('Error Member Register :', error);
+      alert(`회원가입 중 오류가 발생했습니다. 잠시 후 다시 시도해주시기 바랍니다.`)
+    }
+  }
+}
 export const setMemberinfo = (userData) => {
   return {
     type: 'SET_MEMBERINFO',

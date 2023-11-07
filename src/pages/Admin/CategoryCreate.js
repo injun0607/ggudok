@@ -7,7 +7,7 @@ import style from '../../styles/Auth.module.css'
 //redux import
 import { createCategory, setValidCategoryName, setValidCategoryEng, setCategoryName, setCategoryEng, setCategoryImage } from '../../redux/actions/admin/adminCategoryActions';
 
-const CategoryEdit = () => {
+const CategoryCreate = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate(); 
 
@@ -167,4 +167,4 @@ const CategoryEdit = () => {
   )
 }
 
-export default CategoryEdit;
+export default CategoryCreate;

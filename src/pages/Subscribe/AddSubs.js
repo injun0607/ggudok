@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { useLocation, Link, useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 // css import
 import style from '../../styles/Auth.module.css';
 // redux import
@@ -11,6 +12,14 @@ const AddSubs = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const subsId = location.state.subsId;
+  const [itemRanks, setItemRanks] = useState([
+    {
+      rankName: "",
+      price: 0,
+      rankLevel: "",
+      contentList: [{content: ""}],
+    },
+  ]);
   const [rankLevel, setRankLevel] = useState('');
 
   const handleAdd = (e) => {

@@ -644,8 +644,9 @@ textarea {border-radius: var(--radius-all-xs); border: 1px solid var(--c-black-6
 .inputfile + label * {
 	pointer-events: none;
 }
-/* ---------------------- textarea setting -----------------------*/
+/* ---------------------- adminlayout setting -----------------------*/
 .adminLayout form textarea {height: 10rem !important;}
+.adminLayout form {gap: 0 !important;}
 /* ---------------------- box setting -----------------------*/
 .box_basic {
     border: 1px solid var(--c-black-5);
@@ -995,7 +996,7 @@ table .sub_tit:last-child {
     color: #222;
     padding: 0 5rem;
     width: 100%;
-    margin: 1.75rem 0 1.75rem;
+    margin: 1.75rem 0 1.25rem;
     letter-spacing: 1px;
 }
 .section .bannerslider h3 {font-size: 2rem; margin: 1.25rem 0 0.5rem;}
@@ -1012,11 +1013,12 @@ table .sub_tit:last-child {
     padding: 0 5rem;
     width: 100%;
     color: var(--sub-color-4);
+    margin-bottom: 3rem;
 }
 .bannerslider .tag {
     display: flex;
     gap: 0.5rem;
-    margin-top: 1rem;
+    margin-top: 3rem;
     padding: 0 5rem;
     width: 100%;
 }
@@ -1027,12 +1029,15 @@ table .sub_tit:last-child {
     font-size: 0.925rem;
     border-radius: 6px;
     width: auto;
+    margin-bottom: 0;
 }
 .bannerslider .tag p:nth-child(2) {background: var(--main-color); color: #fff;}
 
 .react-slideshow-container .default-nav {background: none !important;}
 .react-slideshow-container .nav:first-of-type {left: -3rem;}
 .react-slideshow-container .nav:last-of-type {right: -3rem;}
+
+/* .mainslider .item-list_carousel .swiper-slide {padding: 3rem 0;} */
 
 /* ---------------------- 리스트 (박스) ------------------------*/
 .item-list {
@@ -1087,7 +1092,6 @@ table .sub_tit:last-child {
 .item-list_carousel {margin-top: 2rem;}
 .item-list_carousel .swiper-slide {
     background: #fff;
-    /* box-shadow: 4px 12px 30px 6px rgba(0,0,0,.09); */
     box-shadow: none;
     transition: all .3s ease;
     border-radius: 0;

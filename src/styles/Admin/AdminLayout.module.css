@@ -90,7 +90,11 @@
 .dashbox .dashcont {
   padding: var(--pad-sm);
 }
-
+/********************** tag box setting *********************/
+.AdminBox {display: flex; gap: 0.75rem; margin-top: 5rem; flex-wrap: wrap;}
+.AdminBox .box {background: var(--bg-color-4); padding: 0.75rem 1.5rem; border-radius: var(--radius-all-xs); display: flex; gap: 2rem; align-items: center;}
+.AdminBox .box h3 {font-weight: 400; font-size: 1.125rem;}
+.AdminBox .box button {min-width: auto;}
 /**************************************************************/
 /**************************************************************/
 /********************* basic table setting ********************/

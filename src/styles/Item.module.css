@@ -130,6 +130,15 @@
 .detailwrap .ratingwrap .ratings .txt .starrating .star span {font-size: 0.938rem;}
 .detailwrap .ratingwrap .ratings .txt .review {width: 100%;}
 
+/* 디테일 요금제 */
+.subscribe .box {width: 100%; border-radius: var(--radius-all-sm); display: flex; padding: 2rem 1.5rem 1.5rem 2rem; margin-top: 1rem; gap: 1rem; background: var(--bg-color-2);}
+.subscribe .box .radioWrap {width: 3rem; display: flex; align-items: center; justify-content: center;}
+.subscribe .box .left {width: calc(100% - 5rem - 10rem); flex-grow: 1;}
+.subscribe .box .right {width: 10rem; text-align: right; display: flex; justify-content: flex-end; align-items: center;}
+.subscribe .box .name {font-size: 1.325rem; padding-bottom: 1rem; font-weight: 400; color: var(--txt-color);}
+.subscribe .box .detail {font-size: 1rem; font-weight: 400; color: var(--txt-color-2);}
+.subscribe .box .price {display: flex; justify-content: flex-end; gap: 0.5rem; align-items: baseline; font-size: 1.125rem; color: var(--txt-color-2);}
+.subscribe .box .price .point {font-size: 1.325rem; color: var(--txt-color); font-weight: 500;}
 
 /* 리뷰작성모달 */
 .modalCont .starrating {margin-bottom: 1rem;}

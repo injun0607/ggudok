@@ -183,7 +183,7 @@ const CategoryEdit = () => {
               </div>
               <div className={style.doublebutton}>
                 <Link className='btn btn_normal' onClick={ ()=>{ navigate(-1) } }>뒤로 가기</Link>
-                <button type='submit' className='btn btn_full'>등록하기</button>
+                <button type='submit' className='btn btn_full'>수정하기</button>
               </div>
             </form>
           </div>

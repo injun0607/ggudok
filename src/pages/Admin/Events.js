@@ -11,12 +11,14 @@ import Paging from '../../components/Paging';
 import { fetchEventSuccess, pagingEvent, deleteEvent } from '../../redux/actions/admin/adminEventsActions';
 
 const ITEMS_PER_PAGE = 10;
+const NO_IMAGE_URL = '/images/common/noimg.png';
 
 const Events = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const events = useSelector(state => state.adminEvents.events);
   const pagedEvents = useSelector(state => state.adminEvents.pagedEvents);
+
   const [IsResult, setIsResult] = useState(null);
   const [IsLoading, setIsLoading] = useState(true);
   
@@ -33,7 +35,7 @@ const Events = () => {
       if(data !== 0){
         dispatch(fetchEventSuccess(data));
 
-        // 페이지 카테고리 계산
+        // 페이지 이벤트 계산
         const pagedEvents = data.slice(startIndex, startIndex + ITEMS_PER_PAGE);
         dispatch(pagingEvent(pagedEvents))
         setStartIndex(0);
@@ -58,7 +60,7 @@ const Events = () => {
     setIsResult(events.length > 0);
   }, [dispatch, events]);
 
-  // 페이지 카테고리 슬라이스
+  // 페이지 이벤트 슬라이스
   useEffect(() => {
     const pagedEvents = events.slice(startIndex, startIndex + ITEMS_PER_PAGE);
     dispatch(pagingEvent(pagedEvents))
@@ -81,64 +83,65 @@ const Events = () => {
   const handleDeleteEvent = async(e, eventId) => {
     const eventData = { eventId };
     e.preventDefault();
-    const confirm = window.confirm('카테고리를 삭제하시겠습니까?');
+    const confirm = window.confirm('이벤트를 삭제하시겠습니까?');
     if(confirm){ dispatch(deleteEvent(eventData)); }
     else {}
   }
 
   return (
-    <div className='webwidth'>
+    !IsLoading && <div className='webwidth'>
       <div className='cont_tit_m'>
         <h2>이벤트 목록</h2>
       </div>
       <section className={style.tableWrap}>
         <Link to="/Admin/EventCreate" className='btn_full02 btn_s'>신규 이벤트 등록</Link>
-        <div className={style.tbScroll}>
-          <table className={style.table}>
-            <colgroup>
-              <col width={'*'} />
-              <col width={'*'} />
-              <col width={'*'} />
-              <col width={'120px'} />
-              <col width={'120px'} />
-              <col width={'250px'} />
-            </colgroup>
-            <thead>
-              <tr>
-                <th>구독서비스명</th>
-                <th>이벤트 태그</th>
-                <th>이벤트 설명</th>
-                <th>시작날짜</th>
-                <th>종료날짜</th>
-                <th>관리</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>스마트 비디오</td>
-                <td>40% 할인</td>
-                <td>지루한 날을 단번에 날려주는 스마트 비디오 OTT 서비스</td>
-                <td>20231026</td>
-                <td>20231026</td>
-                <td className={style.tdBtn}>
-                  <button type='button' className='btn_xs btn_normal'>수정</button>
-                  <button type='button' className='btn_xs btn_full'>삭제</button>
-                </td>
-              </tr>
-              <tr>
-                <td>스마트 비디오</td>
-                <td>40% 할인</td>
-                <td>지루한 날을 단번에 날려주는 스마트 비디오 OTT 서비스</td>
-                <td>20231026</td>
-                <td>20231026</td>
-                <td className={style.tdBtn}>
-                  <button type='button' className='btn_xs btn_normal'>수정</button>
-                  <button type='button' className='btn_xs btn_full'>삭제</button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+        {IsResult && events && events.length > 0 ? 
+          <>
+          <div className={style.tbScroll}>
+            <table className={style.table}>
+              <colgroup>
+                <col width={'10%'} />
+                <col width={'*'} />
+                <col width={'*'} />
+                <col width={'*'} />
+                <col width={'120px'} />
+                <col width={'120px'} />
+                <col width={'250px'} />
+              </colgroup>
+              <thead>
+                <tr>
+                  <th>이미지</th>
+                  <th>구독서비스명</th>
+                  <th>이벤트 태그</th>
+                  <th>이벤트 설명</th>
+                  <th>시작날짜</th>
+                  <th>종료날짜</th>
+                  <th>관리</th>
+                </tr>
+              </thead>
+              <tbody>
+                {pagedEvents.map((event, index) => (
+                  <tr key={index}>
+                    <td className={style.tdImg}>
+                      <img src={event.eventImage || NO_IMAGE_URL} alt={event.subsName} />
+                    </td>
+                    <td>{event.subsName}</td>
+                    <td>{event.infoTag}</td>
+                    <td>{event.info}</td>
+                    <td>{event.startDate}</td>
+                    <td>{event.endDate}</td>
+                    <td className={style.tdBtn}>
+                    <button type='button' className='btn_xs btn_normal' onClick={() => handleEditEvent(event.eventId) }>수정</button>
+                    <button type='button' className='btn_xs btn_full' onClick={(e) => handleDeleteEvent(e, event.eventId) }>삭제</button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <Paging handlePageChange={handlePageChange} page={page} count={events.length} ITEMS_PER_PAGE={ITEMS_PER_PAGE} />
+          </>
+        : <ErrorItem message="등록된 이벤트가 없습니다." />}
       </section>
     </div>
   )
