@@ -1,6 +1,5 @@
 package com.alham.ggudok.config.security;
 
-import com.alham.ggudok.dto.member.MemberDto;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
 import java.security.Principal;

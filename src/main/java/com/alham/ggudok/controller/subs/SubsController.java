@@ -1,7 +1,7 @@
 package com.alham.ggudok.controller.subs;
 
 import com.alham.ggudok.config.security.SecurityUtils;
-import com.alham.ggudok.dto.member.MemberDto;
+import com.alham.ggudok.config.security.MemberDto;
 import com.alham.ggudok.dto.member.MemberRegisterDto;
 import com.alham.ggudok.dto.member.MemberSubsDto;
 import com.alham.ggudok.dto.member.ReviewDto;
@@ -239,6 +239,29 @@ public class SubsController {
         subsMainDetailDto.setSimilarItems(similarItems);
 
         return subsMainDetailDto;
+    }
+
+    @GetMapping("/subs_rank/{subsId}")
+    public List<SubsRankDetailDto> subsRanksList(@PathVariable("subsId")Long subsId,Principal principal) {
+        MemberDto memberDto = isLoginUser(principal);
+
+        List<SubsRankDetailDto> subsRankDetailDtoList = new ArrayList<>();
+        List<SubsRank> subsRankList = subsService.findContentBySubsId(subsId);
+
+        for (SubsRank subsRank : subsRankList) {
+
+            SubsRankDetailDto subsRankDetailDto = new SubsRankDetailDto();
+
+            subsRankDetailDto.setPrice(subsRank.getPrice());
+            subsRankDetailDto.setRankName(subsRank.getRankName());
+            subsRankDetailDto.setRankLevel(subsRank.getRankLevel());
+            subsRankDetailDto.setContent(subsRank.getContents().stream().map(sr->sr.getContent()).collect(Collectors.toList()));
+            subsRankDetailDtoList.add(subsRankDetailDto);
+
+        }
+
+        return subsRankDetailDtoList;
+
     }
 
 

@@ -1,5 +1,6 @@
 package com.alham.ggudok.controller.member;
 
+import com.alham.ggudok.config.security.MemberDto;
 import com.alham.ggudok.config.security.SecurityUtils;
 import com.alham.ggudok.dto.member.*;
 import com.alham.ggudok.dto.subs.SubsDto;

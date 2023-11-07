@@ -54,6 +54,9 @@ public class TempAdminController {
     @Value("${upload.category}")
     private String uploadCategory;
 
+    @Value("${upload.event}")
+    private String uploadEvent;
+
 
     @Value("${download.subs.main}")
     private String downLoadSubsMain;
@@ -66,6 +69,9 @@ public class TempAdminController {
 
     @Value("${download.member}")
     private String downLoadMember;
+
+    @Value("${download.event}")
+    private String downloadEvent;
 
 
     @GetMapping("/category")
@@ -480,124 +486,124 @@ public class TempAdminController {
     }
 
 
-    @PostMapping("subs/{subsId}/upload_icon")
-    public String uploadSubsIconImage(@RequestParam("file") MultipartFile file, @PathVariable("subsId")Long subsId,Model model) {
-        String imgUrl = "";
-        if (file.isEmpty()) {
-            return "redirect:/admin/subs/{subsId}";
-        }
+//    @PostMapping("subs/{subsId}/upload_icon")
+//    public String uploadSubsIconImage(@RequestParam("file") MultipartFile file, @PathVariable("subsId")Long subsId,Model model) {
+//        String imgUrl = "";
+//        if (file.isEmpty()) {
+//            return "redirect:/admin/subs/{subsId}";
+//        }
+//
+//
+//        try {
+//            Subs subs = adminSubsService.findSubsById(subsId);
+//            String fileName = subsId + "_" + file.getOriginalFilename();
+//            File dest = new File(uploadSubsIcon + fileName);
+//
+//            file.transferTo(dest);
+//
+//            imgUrl = downLoadSubsIcon+fileName;
+//
+//            adminSubsService.updateIcon(subsId,imgUrl,fileName);
+//
+//            return "redirect:/admin/subs/{subsId}";
+//        } catch (IOException e) {
+//            return "redirect:/admin/subs/{subsId}";
+//        }
+//
+//    }
 
-
-        try {
-            Subs subs = adminSubsService.findSubsById(subsId);
-            String fileName = subsId + "_" + file.getOriginalFilename();
-            File dest = new File(uploadSubsIcon + fileName);
-
-            file.transferTo(dest);
-
-            imgUrl = downLoadSubsIcon+fileName;
-
-            adminSubsService.updateIcon(subsId,imgUrl,fileName);
-
-            return "redirect:/admin/subs/{subsId}";
-        } catch (IOException e) {
-            return "redirect:/admin/subs/{subsId}";
-        }
-
-    }
-
-    @GetMapping("subs/{subsId}/subsRank")
-    public String showSubsRankForm(@PathVariable("subsId") Long subsId, Model model) {
-        Subs subs = adminSubsService.findSubsById(subsId);
-
-        model.addAttribute("subs", subs);
-        model.addAttribute("form", new AdminSubsRankDto());
-
-        return "/admin/subs/subsRankForm";
-    }
-
-    @PostMapping("subs/{subsId}/subsRank")
-    public String addSubsRankForm(@PathVariable("subsId") Long subsId, AdminSubsRankDto adminSubsRankDto) {
-
-        adminSubsService.addSubsRank(subsId, adminSubsRankDto);
-
-        return "redirect:/admin/subs/{subsId}";
-    }
-
-    @GetMapping("subs/{subsId}/{subsRankId}/contents")
-    public String showSubsContent(@PathVariable("subsId") Long subsId,
-                                  @PathVariable("subsRankId") Long subsRankId,
-                                  Model model) {
-
-        Subs subs = adminSubsService.findSubsById(subsId);
-        SubsRank subsRank = subs.getSubsRanks().stream().filter(rank -> rank.getRankId() == subsRankId).findFirst().get();
-        List<SubsContent> contents = subsRank.getContents();
-
-        model.addAttribute("subs", subs);
-        model.addAttribute("subsRank", subsRank);
-        model.addAttribute("contents", contents);
-
-        return "/admin/subs/subsContentList";
-    }
-
-    @GetMapping("subs/{subsId}/{subsRankId}/contents/add")
-    public String showSubsContentForm(@PathVariable("subsId") Long subsId,
-                                      @PathVariable("subsRankId") Long subsRankId,
-                                      Model model) {
-
-        Subs subs = adminSubsService.findSubsById(subsId);
-        SubsRank subsRank = subs.getSubsRanks().stream().filter(rank -> rank.getRankId() == subsRankId).findFirst().get();
-        List<SubsContent> contents = subsRank.getContents();
-
-        model.addAttribute("form", new SubsContentForm());
-        model.addAttribute("subs", subs);
-        model.addAttribute("subsRank", subsRank);
-
-        return "/admin/subs/subsContentForm";
-    }
-
-
-    @PostMapping("subs/{subsId}/{subsRankId}/contents")
-    public String addSubsContent(@PathVariable("subsId") Long subsId,
-                                 @PathVariable("subsRankId") Long subsRankId,
-                                 SubsContentForm subsContentForm) {
-
-        adminSubsService.addSubsContent(subsId, subsRankId, subsContentForm.getContent());
-
-
-        return "redirect:/admin/subs/{subsId}/{subsRankId}/contents";
-    }
-
-    @PostMapping("subs/{subsId}/tag")
-    public String addSubsTag(@PathVariable("subsId") Long subsId, TagForm tagForm) {
-        adminSubsService.addSubsTag(subsId, tagForm);
-
-        return "redirect:/admin/subs/{subsId}/tag";
-    }
-
-    @GetMapping("subs/{subsId}/tag")
-    public String showSubsTag(@PathVariable("subsId") Long subsId, Model model) {
-
-        List<Tag> allTag = tagService.findAllTag();
-        List<Tag> tagsBySubsId = tagService.findTagsBySubsId(subsId);
-        model.addAttribute("subsId", subsId);
-        model.addAttribute("form", new TagForm());
-        model.addAttribute("tags", allTag);
-        model.addAttribute("subsTags", tagsBySubsId);
-
-        return "/admin/subs/subsTagAddForm";
-
-    }
-
-
-
-    @GetMapping("tag/add")
-    public String showTagForm(Model model) {
-
-        model.addAttribute("form", new TagForm());
-
-        return "/admin/tagForm";
-    }
+//    @GetMapping("subs/{subsId}/subsRank")
+//    public String showSubsRankForm(@PathVariable("subsId") Long subsId, Model model) {
+//        Subs subs = adminSubsService.findSubsById(subsId);
+//
+//        model.addAttribute("subs", subs);
+//        model.addAttribute("form", new AdminSubsRankDto());
+//
+//        return "/admin/subs/subsRankForm";
+//    }
+//
+//    @PostMapping("subs/{subsId}/subsRank")
+//    public String addSubsRankForm(@PathVariable("subsId") Long subsId, AdminSubsRankDto adminSubsRankDto) {
+//
+//        adminSubsService.addSubsRank(subsId, adminSubsRankDto);
+//
+//        return "redirect:/admin/subs/{subsId}";
+//    }
+//
+//    @GetMapping("subs/{subsId}/{subsRankId}/contents")
+//    public String showSubsContent(@PathVariable("subsId") Long subsId,
+//                                  @PathVariable("subsRankId") Long subsRankId,
+//                                  Model model) {
+//
+//        Subs subs = adminSubsService.findSubsById(subsId);
+//        SubsRank subsRank = subs.getSubsRanks().stream().filter(rank -> rank.getRankId() == subsRankId).findFirst().get();
+//        List<SubsContent> contents = subsRank.getContents();
+//
+//        model.addAttribute("subs", subs);
+//        model.addAttribute("subsRank", subsRank);
+//        model.addAttribute("contents", contents);
+//
+//        return "/admin/subs/subsContentList";
+//    }
+//
+//    @GetMapping("subs/{subsId}/{subsRankId}/contents/add")
+//    public String showSubsContentForm(@PathVariable("subsId") Long subsId,
+//                                      @PathVariable("subsRankId") Long subsRankId,
+//                                      Model model) {
+//
+//        Subs subs = adminSubsService.findSubsById(subsId);
+//        SubsRank subsRank = subs.getSubsRanks().stream().filter(rank -> rank.getRankId() == subsRankId).findFirst().get();
+//        List<SubsContent> contents = subsRank.getContents();
+//
+//        model.addAttribute("form", new SubsContentForm());
+//        model.addAttribute("subs", subs);
+//        model.addAttribute("subsRank", subsRank);
+//
+//        return "/admin/subs/subsContentForm";
+//    }
+//
+//
+//    @PostMapping("subs/{subsId}/{subsRankId}/contents")
+//    public String addSubsContent(@PathVariable("subsId") Long subsId,
+//                                 @PathVariable("subsRankId") Long subsRankId,
+//                                 SubsContentForm subsContentForm) {
+//
+//        adminSubsService.addSubsContent(subsId, subsRankId, subsContentForm.getContent());
+//
+//
+//        return "redirect:/admin/subs/{subsId}/{subsRankId}/contents";
+//    }
+//
+//    @PostMapping("subs/{subsId}/tag")
+//    public String addSubsTag(@PathVariable("subsId") Long subsId, TagForm tagForm) {
+//        adminSubsService.addSubsTag(subsId, tagForm);
+//
+//        return "redirect:/admin/subs/{subsId}/tag";
+//    }
+//
+//    @GetMapping("subs/{subsId}/tag")
+//    public String showSubsTag(@PathVariable("subsId") Long subsId, Model model) {
+//
+//        List<Tag> allTag = tagService.findAllTag();
+//        List<Tag> tagsBySubsId = tagService.findTagsBySubsId(subsId);
+//        model.addAttribute("subsId", subsId);
+//        model.addAttribute("form", new TagForm());
+//        model.addAttribute("tags", allTag);
+//        model.addAttribute("subsTags", tagsBySubsId);
+//
+//        return "/admin/subs/subsTagAddForm";
+//
+//    }
+//
+//
+//
+//    @GetMapping("tag/add")
+//    public String showTagForm(Model model) {
+//
+//        model.addAttribute("form", new TagForm());
+//
+//        return "/admin/tagForm";
+//    }
 
 
 
@@ -651,30 +657,159 @@ public class TempAdminController {
         return true;
     }
 
+//    @GetMapping("event")
+//    public String showEvent(Model model) {
+//        List<EventSubs> eventSubsList = eventRepository.findAllWithSubs();
+//
+//        model.addAttribute("eventList", eventSubsList);
+//
+//        return "/admin/subs/eventList";
+//    }
+
+    /**
+     * 이벤트 리스트
+     * @return
+     */
     @GetMapping("event")
-    public String showEvent(Model model) {
-        List<EventSubs> eventSubsList = eventRepository.findAllWithSubs();
+    @ResponseBody
+    public List<EventShowDto> showEventList() {
+        List<EventShowDto> eventList = new ArrayList<>();
 
-        model.addAttribute("eventList", eventSubsList);
+        List<EventSubs> allEvent = eventRepository.findAllWithSubs();
+        for (EventSubs eventSubs : allEvent) {
+            EventShowDto eventShowDto = new EventShowDto();
+            eventShowDto.setEventId(eventSubs.getEventId());
+            eventShowDto.setSubsId(eventSubs.getSubs().getSubsId());
+            eventShowDto.setSubsName(eventSubs.getSubs().getSubsName());
+            eventShowDto.setInfo(eventSubs.getInfo());
+            eventShowDto.setEventImage(eventSubs.getEventImage());
+            eventShowDto.setInfoTag(eventSubs.getInfoTag());
 
-        return "/admin/subs/eventList";
+            String startTime = "" + eventSubs.getStartDate().getYear() + eventSubs.getStartDate().getMonthValue()
+                    + transferStringDay(eventSubs.getStartDate().getDayOfMonth());
+
+            String endTime = "" + eventSubs.getEndDate().getYear() + eventSubs.getEndDate().getMonthValue()
+                    + transferStringDay(eventSubs.getEndDate().getDayOfMonth());
+
+            eventShowDto.setStartDate(startTime);
+            eventShowDto.setEndDate(endTime);
+
+            eventList.add(eventShowDto);
+        }
+
+        return eventList;
+
     }
 
-    @PostMapping("event/add/{subsId}")
-    public String addEvent(@PathVariable("subsId") Long subsId) {
+    /**
+     * 이벤트 등록 페이지
+     * @return
+     */
+    @GetMapping("event/register")
+    @ResponseBody
+    public EventRegisterShowForm showRegisterEventForm() {
+        EventRegisterShowForm eventRegisterForm = new EventRegisterShowForm();
 
-        adminSubsService.addEvent(subsId);
+        List<Category> allCategories = adminSubsService.findAllCategories();
+        List<CategoryDto> categoryDtoList = new ArrayList<>();
+        for (Category category : allCategories) {
+            CategoryDto categoryDto = new CategoryDto();
+            categoryDto.setCategoryId(category.getCategoryId());
+            categoryDto.setCategoryName(category.getCategoryName());
 
-        return "redirect:/admin/event";
+            categoryDtoList.add(categoryDto);
+        }
+
+        eventRegisterForm.setCategoryList(categoryDtoList);
+
+        List<AdminSubsDto> adminSubsDtoList = new ArrayList<>();
+        List<Subs> subsList = adminSubsService.findAllWithCategory();
+
+        for (Subs subs : subsList) {
+            AdminSubsDto adminSubsDto = new AdminSubsDto();
+
+            adminSubsDto.setSubsId(subs.getSubsId());
+            adminSubsDto.setSubsName(subs.getSubsName());
+            adminSubsDto.setCategoryName(subs.getCategory().getCategoryName());
+
+            adminSubsDtoList.add(adminSubsDto);
+        }
+
+        eventRegisterForm.setSubsList(adminSubsDtoList);
+
+
+        return eventRegisterForm;
+
     }
 
+    /**
+     * 이벤트 이미지 등록
+     * @param file
+     * @return
+     */
+    @PostMapping("event/register/image")
+    public ResponseEntity<Map> uploadEventImage(@RequestParam(value = "eventImage",required = false) MultipartFile file) {
+
+        String imgUrl = "";
+        Map<String, String> resultMap = new HashMap<>();
+
+        try {
+            String contentType = GgudokUtil.checkImageType(file.getContentType());
+            if (contentType.equals(GgudokUtil.NOT_IMAGE)) {
+                resultMap.put("error", "올바른 이미지 파일이 아닙니다");
+                return new ResponseEntity<>(resultMap, HttpStatus.BAD_REQUEST);
+            }
+            String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename()+contentType;
+
+
+            File dest = new File(uploadEvent + fileName);
+
+            file.transferTo(dest);
+
+            imgUrl = downloadEvent + fileName;
+
+            resultMap.put("imageUrl", imgUrl);
+
+            return new ResponseEntity<>(resultMap, HttpStatus.OK);
+        } catch (IOException e) {
+            resultMap.put("error", "이미지 처리중 에러발생");
+            return new ResponseEntity<>(resultMap, HttpStatus.BAD_REQUEST);
+        }
+
+    }
+
+    /**
+     * 이벤트 등록 요청
+     * @param eventRegisterForm
+     * @return
+     */
+    @PostMapping("event/register")
+    @ResponseBody
+    public boolean registerEventForm(@RequestBody EventRegisterForm eventRegisterForm) {
+
+        adminSubsService.addEvent(eventRegisterForm);
+        return true;
+
+    }
+
+    /**
+     * 이벤트 상세 정보
+     * @param eventId
+     * @return
+     */
     @GetMapping("event/{eventId}")
-    public String showEventDetail(Model model, @PathVariable("eventId") Long eventId) {
+    @ResponseBody
+    public EventDetailFormDto showEventDetail(@PathVariable("eventId") Long eventId) {
         EventSubs eventSubs = eventRepository.findByIdWithSubs(eventId);
-        EventRegisterForm registerForm = new EventRegisterForm();
 
-        registerForm.setInfo(eventSubs.getInfo());
-        registerForm.setInfoTag(eventSubs.getInfoTag());
+        EventDetailFormDto eventForm = new EventDetailFormDto();
+
+        eventForm.setSubsId(eventSubs.getSubs().getSubsId());
+        eventForm.setSubsName(eventSubs.getSubs().getSubsName());
+        eventForm.setCategoryName(eventSubs.getSubs().getCategory().getCategoryName());
+        eventForm.setInfo(eventSubs.getInfo());
+        eventForm.setInfoTag(eventSubs.getInfoTag());
+
 
         String startTime = "" + eventSubs.getStartDate().getYear() + eventSubs.getStartDate().getMonthValue()
                 + transferStringDay(eventSubs.getStartDate().getDayOfMonth());
@@ -682,26 +817,81 @@ public class TempAdminController {
         String endTime = "" + eventSubs.getEndDate().getYear() + eventSubs.getEndDate().getMonthValue()
                 + transferStringDay(eventSubs.getEndDate().getDayOfMonth());
 
-        registerForm.setStartDate(startTime);
-        registerForm.setEndDate(endTime);
-        registerForm.setValid(eventSubs.getIsValid());
-        registerForm.setImage(eventSubs.getEventImage());
+        eventForm.setStartDate(startTime);
+        eventForm.setEndDate(endTime);
+        eventForm.setValid(eventSubs.getIsValid());
+        eventForm.setEventImage(eventSubs.getEventImage());
 
-        model.addAttribute("eventSubs", eventSubs);
-        model.addAttribute("form", registerForm);
-
-        return "/admin/subs/eventAddForm";
-
+        return eventForm;
     }
 
-    @PostMapping("event/{eventId}")
-    public String addEventDetail(@PathVariable("eventId") Long eventId,EventRegisterForm registerForm) {
-        adminSubsService.updateEvent(eventId,registerForm);
+    /**
+     * 이벤트 수정
+     * @param eventUpdateForm
+     * @return
+     */
+    @PostMapping("event/update")
+    @ResponseBody
+    public boolean updateEvent(@RequestBody EventUpdateForm eventUpdateForm) {
 
-        return "redirect:/admin/event/"+eventId;
+        adminSubsService.updateEvent(eventUpdateForm);
+
+        return true;
     }
 
+    @PostMapping("event/delete")
+    @ResponseBody
+    public boolean deleteEvent(@RequestBody EventUpdateForm eventUpdateForm) {
+        adminSubsService.deleteEvent(eventUpdateForm);
 
+        return true;
+    }
+
+//    @PostMapping("event/add/{subsId}")
+//    public String addEvent(@PathVariable("subsId") Long subsId) {
+//
+//        adminSubsService.addEvent(subsId);
+//
+//        return "redirect:/admin/event";
+//    }
+
+//    @GetMapping("event/{eventId}")
+//    public String showEventDetail(Model model, @PathVariable("eventId") Long eventId) {
+//        EventSubs eventSubs = eventRepository.findByIdWithSubs(eventId);
+//        EventRegisterForm registerForm = new EventRegisterForm();
+//
+//        registerForm.setInfo(eventSubs.getInfo());
+//        registerForm.setInfoTag(eventSubs.getInfoTag());
+//
+//        String startTime = "" + eventSubs.getStartDate().getYear() + eventSubs.getStartDate().getMonthValue()
+//                + transferStringDay(eventSubs.getStartDate().getDayOfMonth());
+//
+//        String endTime = "" + eventSubs.getEndDate().getYear() + eventSubs.getEndDate().getMonthValue()
+//                + transferStringDay(eventSubs.getEndDate().getDayOfMonth());
+//
+//        registerForm.setStartDate(startTime);
+//        registerForm.setEndDate(endTime);
+//        registerForm.setValid(eventSubs.getIsValid());
+//        registerForm.setImage(eventSubs.getEventImage());
+//
+//        model.addAttribute("eventSubs", eventSubs);
+//        model.addAttribute("form", registerForm);
+//
+//        return "/admin/subs/eventAddForm";
+//
+//    }
+
+//    @PostMapping("event/{eventId}")
+//    public String addEventDetail(@PathVariable("eventId") Long eventId,EventRegisterForm registerForm) {
+//        adminSubsService.updateEvent(eventId,registerForm);
+//
+//        return "redirect:/admin/event/"+eventId;
+//    }
+
+
+    /*
+    이벤트 날짜 표시시 day 7 -> 07로 바꿔주는 역할
+     */
     public String transferStringDay(int day) {
         String result = String.valueOf(day);
         if (result.length() == 1) {

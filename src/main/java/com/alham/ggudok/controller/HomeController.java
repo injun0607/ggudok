@@ -3,8 +3,10 @@ package com.alham.ggudok.controller;
 
 import com.alham.ggudok.config.security.SecurityUtils;
 import com.alham.ggudok.controller.session.SessionMemberDto;
+import com.alham.ggudok.dto.LoginDto;
 import com.alham.ggudok.dto.MainDto;
-import com.alham.ggudok.dto.member.MemberDto;
+import com.alham.ggudok.config.security.MemberDto;
+import com.alham.ggudok.dto.member.MemberLoginDto;
 import com.alham.ggudok.dto.subs.EventPageDto;
 import com.alham.ggudok.dto.subs.EventSubsDto;
 import com.alham.ggudok.dto.subs.SubsDto;
@@ -26,10 +28,7 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.ArrayList;
@@ -199,6 +198,7 @@ public class HomeController {
             eventSubsDto.setInfoTag(eventSub.getInfoTag());
             eventSubsDto.setCategoryName(eventSub.getSubs().getCategory().getCategoryName());
             eventSubsDto.setSubsName(eventSub.getSubs().getSubsName());
+            eventSubsDto.setImage(eventSub.getEventImage());
 
             String startDate = GgudokUtil.transferDateTime(eventSub.getStartDate());
             String endDate = GgudokUtil.transferDateTime(eventSub.getEndDate());
@@ -242,26 +242,26 @@ public class HomeController {
         return subsMainDto;
     }
 
-//    @PostMapping("/login")
-//    public LoginDto memberLogin(MemberLoginDto memberLoginDto, HttpSession session) {
-//        Member loginMember = memberService.memberLoginCheck(memberLoginDto);
-//        LoginDto loginDto = new LoginDto();
-//        if(loginMember != null) {
-//
-//            MemberDto memberDto = new MemberDto();
-//            memberDto.setMemberName(loginMember.getMemberName());
-//            memberDto.setLoginId(loginMember.getLoginId());
-//
-//            session.setAttribute(SESSION_MEMBER, memberDto);
-//
-//            loginDto.setSessionId(session.getId());
-//            loginDto.setMemberDto(memberDto);
-//
-//            return loginDto;
-//        } else {
-//            return loginDto;
-//        }
-//    }
+    @PostMapping("/login")
+    public LoginDto memberLogin(@RequestBody MemberLoginDto memberLoginDto, HttpSession session) {
+        Member loginMember = memberService.memberLoginCheck(memberLoginDto);
+        LoginDto loginDto = new LoginDto();
+        if(loginMember != null) {
+
+            MemberDto memberDto = new MemberDto();
+            memberDto.setMemberName(loginMember.getMemberName());
+            memberDto.setLoginId(loginMember.getLoginId());
+
+            session.setAttribute(SESSION_MEMBER, memberDto);
+
+            loginDto.setSessionId(session.getId());
+            loginDto.setMemberDto(memberDto);
+
+            return loginDto;
+        } else {
+            return loginDto;
+        }
+    }
 
     @GetMapping("/logoutSuccess")
     public String memberLogout() {

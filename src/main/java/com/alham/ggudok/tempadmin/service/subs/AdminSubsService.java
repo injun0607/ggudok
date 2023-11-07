@@ -9,6 +9,7 @@ import com.alham.ggudok.repository.subs.SubsRepository;
 import com.alham.ggudok.tempadmin.dto.TagForm;
 import com.alham.ggudok.tempadmin.dto.subs.AdminSubsRankDto;
 import com.alham.ggudok.tempadmin.dto.subs.EventRegisterForm;
+import com.alham.ggudok.tempadmin.dto.subs.EventUpdateForm;
 import com.alham.ggudok.tempadmin.dto.subs.SubsContentForm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -143,15 +144,35 @@ public class AdminSubsService {
 
     }
 
+    public void addEvent(EventRegisterForm eventRegisterForm) {
+        Subs subs = subsRepository.findById(eventRegisterForm.getSubsId()).get();
 
-    public void updateEvent(Long eventId, EventRegisterForm registerForm) {
+        EventSubs eventSubs = new EventSubs(subs);
 
-        EventSubs eventSubs = eventRepository.findByIdWithSubs(eventId);
+        LocalDateTime startDate = transferDateTime(eventRegisterForm.getStartDate());
+        LocalDateTime endDate = transferDateTime(eventRegisterForm.getEndDate());
 
-        LocalDateTime startDate = transferDateTime(registerForm.getStartDate());
-        LocalDateTime endDate = transferDateTime(registerForm.getEndDate());
 
-        eventSubs.updateEventSubs(registerForm.getInfoTag(), registerForm.getInfo(), startDate,endDate, registerForm.isValid());
+        eventSubs.updateEventSubs(eventRegisterForm.getInfoTag(),
+                eventRegisterForm.getInfo(),
+                startDate,
+                endDate,
+                eventRegisterForm.getEventImage(),
+                eventRegisterForm.isValid());
+
+        eventRepository.save(eventSubs);
+
+    }
+
+
+    public void updateEvent(EventUpdateForm updateForm) {
+
+        EventSubs eventSubs = eventRepository.findByIdWithSubs(updateForm.getEventId());
+
+        LocalDateTime startDate = transferDateTime(updateForm.getStartDate());
+        LocalDateTime endDate = transferDateTime(updateForm.getEndDate());
+
+        eventSubs.updateEventSubs(updateForm.getInfoTag(), updateForm.getInfo(), startDate,endDate,updateForm.getEventImage(), updateForm.isValid());
 
     }
 
@@ -203,6 +224,11 @@ public class AdminSubsService {
     }
 
 
+    /**
+     *
+     * @param stringDateTime(YYYYMMDD 형태)
+     * @return
+     */
     public LocalDateTime transferDateTime(String stringDateTime) {
         String year = stringDateTime.substring(0, 4);
         String month = stringDateTime.substring(4, 6);
@@ -342,5 +368,11 @@ public class AdminSubsService {
         }
 
         //원래 subsRank삭제
+    }
+
+    public void deleteEvent(EventUpdateForm eventUpdateForm) {
+
+        EventSubs eventSubs = eventRepository.findByIdWithSubs(eventUpdateForm.getEventId());
+        eventRepository.delete(eventSubs);
     }
 }

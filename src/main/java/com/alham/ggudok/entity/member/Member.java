@@ -40,6 +40,7 @@ public class Member {
 
     private String profileImage;
 
+    private boolean admin;
 
     @OneToMany(mappedBy = "member", cascade = ALL, orphanRemoval = true)
     private List<MemberRelTag> memberRelTags = new ArrayList<>();

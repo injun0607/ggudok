@@ -6,10 +6,10 @@ import org.jetbrains.annotations.NotNull;
 
 @Data
 @NoArgsConstructor
-public class EventRegisterForm {
+public class EventUpdateForm {
 
     @NotNull
-    private Long subsId;
+    private Long eventId;
 
     private String infoTag = "";
 

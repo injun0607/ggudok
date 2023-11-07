@@ -1,6 +1,6 @@
 package com.alham.ggudok.dto;
 
-import com.alham.ggudok.dto.member.MemberDto;
+import com.alham.ggudok.config.security.MemberDto;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

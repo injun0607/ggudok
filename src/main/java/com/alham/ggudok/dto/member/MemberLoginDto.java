@@ -1,8 +1,10 @@
 package com.alham.ggudok.dto.member;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 public class MemberLoginDto {
 
     private String loginId;

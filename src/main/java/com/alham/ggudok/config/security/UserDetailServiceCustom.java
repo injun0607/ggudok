@@ -1,9 +1,7 @@
 package com.alham.ggudok.config.security;
 
-import com.alham.ggudok.dto.member.MemberDto;
 import com.alham.ggudok.entity.member.Member;
 import com.alham.ggudok.repository.member.MemberRepository;
-import com.alham.ggudok.service.member.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,11 +14,9 @@ import java.util.Optional;
 @Component
 @Slf4j
 @RequiredArgsConstructor
-public class CustomLoadUserByUsername implements UserDetailsService {
+public class UserDetailServiceCustom implements UserDetailsService {
 
     private final MemberRepository memberRepository;
-
-    private final MemberService memberService;
 
     @Override
     public UserDetails loadUserByUsername(String loginId) throws UsernameNotFoundException {
@@ -33,6 +29,7 @@ public class CustomLoadUserByUsername implements UserDetailsService {
             memberDto.setPassword(member.getPassword());
             memberDto.setAge(member.getAge());
             memberDto.setGender(member.getGender());
+            memberDto.setRole(member.getRole());
 
             return memberDto;
         }else{

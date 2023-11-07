@@ -2,14 +2,16 @@ package com.alham.ggudok.tempadmin.dto.subs;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.jetbrains.annotations.NotNull;
 
 @Data
 @NoArgsConstructor
-public class EventRegisterForm {
+public class EventDetailFormDto {
 
-    @NotNull
     private Long subsId;
+
+    private String subsName;
+
+    private String categoryName;
 
     private String infoTag = "";
 
@@ -21,6 +23,7 @@ public class EventRegisterForm {
 
     private String endDate;
 
-    private boolean valid;
+    private boolean isValid;
+
 
 }

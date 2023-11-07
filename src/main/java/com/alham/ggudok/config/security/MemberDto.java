@@ -1,6 +1,7 @@
-package com.alham.ggudok.dto.member;
+package com.alham.ggudok.config.security;
 
 import com.alham.ggudok.entity.member.Gender;
+import com.alham.ggudok.entity.member.Role;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -18,7 +19,7 @@ public class MemberDto implements UserDetails {
 
 
     private String memberName;
-    private String role;
+    private Role role;
     private String loginId;
     private String password;
 
@@ -29,7 +30,7 @@ public class MemberDto implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-        authorities.add(new SimpleGrantedAuthority(ROLE_PREFIX + role));
+        authorities.add(new SimpleGrantedAuthority(ROLE_PREFIX + this.role));
         return authorities;
     }
 

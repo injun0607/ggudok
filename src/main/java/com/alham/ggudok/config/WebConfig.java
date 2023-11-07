@@ -48,5 +48,11 @@ public class WebConfig implements WebMvcConfigurer {
                 .addResourceLocations("file:///C:/ggudown/member/")
                 // 접근 파일 캐싱 시간
                 .setCacheControl(CacheControl.maxAge(1, TimeUnit.MINUTES));
+
+        registry.addResourceHandler("/images/event/**")
+                //해당 경로의 파일을 읽는다.
+                .addResourceLocations("file:///C:/ggudown/event/")
+                // 접근 파일 캐싱 시간
+                .setCacheControl(CacheControl.maxAge(1, TimeUnit.MINUTES));
     }
 }

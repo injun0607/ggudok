@@ -40,11 +40,12 @@ public class EventSubs {
         this.subs = subs;
     }
 
-    public void updateEventSubs(String infoTag, String info, LocalDateTime startDate, LocalDateTime endDate, boolean isValid) {
+    public void updateEventSubs(String infoTag, String info, LocalDateTime startDate, LocalDateTime endDate,String eventImage, boolean isValid) {
         this.infoTag = infoTag;
         this.info = info;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.eventImage = eventImage;
         this.isValid = isValid;
     }
 }
