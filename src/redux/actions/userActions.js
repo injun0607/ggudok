@@ -1,4 +1,12 @@
 import axios from 'axios';
+import Cookies from 'js-cookie';
+import { setCookie, getCookie, removeCookie } from './cookieActions';
+
+// Action 타입
+export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
+export const LOGIN_FAILURE = 'LOGIN_FAILURE';
+export const LOGOUT = 'LOGOUT';
+export const REFRESH_TOKEN_SUCCESS = 'REFRESH_TOKEN_SUCCESS';
 
 export const setLoggedIn = (userData) => {
   return {
@@ -6,6 +14,18 @@ export const setLoggedIn = (userData) => {
     payload: userData,
   };
 }
+export const loginSuccess = (userData) => ({
+  type: LOGIN_SUCCESS,
+  payload: userData,
+});
+export const loginFailure = () => ({
+  type: LOGIN_FAILURE,
+});
+export const refreshTokenSuccess = (newAccessToken) => ({
+  type: REFRESH_TOKEN_SUCCESS,
+  payload: newAccessToken,
+});
+
 // *********************** 마이페이지 *************************
 export const fetchLikedItemsSuccess = (likedItems) => {
   return {
@@ -23,31 +43,70 @@ export const fetchMemberImg = (memberImg) => {
 export const login = (userData, navigate) => async (dispatch) => {
   const { loginId, password } = userData;
   try {
-    const response = await axios.post('/login', new URLSearchParams({
+    const response = await axios.post('/login', {
       loginId: loginId,
       password: password,
-    }));
+    });
+    
     if (response.status === 200) {
-      dispatch({ type: 'LOGIN_SUCCESS', payload: { loginId } });
+      const access = response.headers.access;
+      const refresh = response.headers.refresh;
+      
+      // Access Token을 쿠키에 저장
+      setCookie('access', access, { path: '/' });
+      setCookie('refresh', refresh, { path: '/' });
+
+      dispatch(loginSuccess({ loginId }));
+
       navigate('/Home');
     } else {
       dispatch({ type: 'LOGIN_FAILURE' });
     }
   } catch (error) {
     console.log('Error logging in:', error);
-    dispatch({ type: 'LOGIN_FAILURE' });
+    dispatch(loginFailure());
     alert(`로그인 중 오류가 발생했습니다. 잠시 후 다시 시도해주시기 바랍니다.`)
   }
 };
-export const logout = () => async (dispatch) => {
+
+// Refresh Token을 통해 새로운 AccessToken을 가져오는 액션
+export const refreshToken = () => async (dispatch) => {
+  const refresh = getCookie('refresh');
+  if (!refresh) {
+    return;
+  }
   try {
-      const response = await axios.get('/logout');
-      if (response.status === 200) {
-      dispatch({ type: 'LOGOUT' });
+    const response = await axios.post('/refresh', { refresh });
+    if (response.status === 200) {
+      const newAccessToken = response.headers.access;
+
+      setCookie('access', newAccessToken, { path: '/' });
+
+      dispatch(refreshTokenSuccess(newAccessToken));
+    } else {
+      // RefreshToken을 통한 갱신에 실패할 경우
+      dispatch(logout());
     }
   } catch (error) {
-    console.log('Error logging out:', error);
+    console.error('Error refreshing token:', error);
   }
+};
+
+// export const logout = () => async (dispatch) => {
+//   try {
+//       const response = await axios.get('/logout');
+//       if (response.status === 200) {
+//       dispatch({ type: 'LOGOUT' });
+//     }
+//   } catch (error) {
+//     console.log('Error logging out:', error);
+//   }
+// };
+export const logout = () => async (dispatch) => {
+  removeCookie('access');
+  removeCookie('refresh');
+
+  dispatch({ type: LOGOUT });
 };
 
 // *********************** 회원가입 및 회원정보수정 **********************

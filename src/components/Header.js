@@ -34,6 +34,7 @@ const Topheader = () => {
   const searchQuery = useSelector(state => state.search.searchQuery);
 	const handleLogout = () => {
     dispatch(logout());
+    navigate('/home');
   };
 	const handleSearchChange = (e) => {
 		dispatch(setSearchQuery(e.target.value));

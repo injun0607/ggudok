@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect, lazy, Suspense, } from 'react';
 import axios from 'axios';
+import Cookies from 'js-cookie';
 import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -12,9 +13,6 @@ import Footer from './Footer';
 import Error from './Error.js'
 import ErrorItem from './ErrorItem.js'
 import ErrorLogin from './ErrorLogin.js'
-import AdminHeader from './Admin/AdminHeader';
-import AdminFooter from './Admin/AdminFooter';
-import AdminLayout from './Admin/AdminLayout';
 import Loading from './Loading';
 // page import
 import Home from '../pages/Home';
@@ -23,7 +21,7 @@ import Join from '../pages/Auth/Join';
 import JoinAfter from '../pages/Auth/JoinAfter';
 import JoinEmail from '../pages/Auth/JoinEmail';
 import EditProfile from '../pages/Auth/EditProfile';
-import Itemlist from '../pages/Itemlist';
+// import Itemlist from '../pages/Itemlist';
 import FeaturedItemlist from '../pages/FeaturedItemlist';
 import SearchItemlist from '../pages/SearchItemlist';
 import Compare from '../pages/Compare';
@@ -35,13 +33,14 @@ import Mypage from '../pages/Mypage/Mypage';
 import MySubscribe from '../pages/Mypage/MySubscribe';
 import MyReview from '../pages/Mypage/MyReview';
 import MyLike from '../pages/Mypage/MyLike';
-import AdminHome from '../pages/Admin/AdminHome';
 // redux import
 import { toggleDarkMode } from '../redux/actions/darkModeActions';
-import { setLoggedIn } from '../redux/actions/userActions';
+import { setLoggedIn, login, refreshToken, logout } from '../redux/actions/userActions';
 import { setAdminLayout } from '../redux/actions/adminLayoutActions';
+import { setCookie, getCookie, removeCookie } from '../redux/actions/cookieActions';
 
 const ItemDetail = lazy( () => import('../pages/ItemDetail') )
+const Itemlist = lazy( () => import('../pages/Itemlist') )
 
 const Layout = () => {
 	let dispatch = useDispatch();
@@ -57,10 +56,67 @@ const Layout = () => {
   const memberName = useSelector(state => state.user.memberName);
   const loginId = useSelector(state => state.user.loginId);
 	
-	// 세션 상태 조회 요청
+
+	// JWT 만료 시간을 토큰에서 추출
+	const parseJwt = (token) => {
+		const base64Url = token.split('.')[1];
+		const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+		const jsonPayload = decodeURIComponent(atob(base64));
+		return JSON.parse(jsonPayload);
+	};
+	
+	// refreschToken 설정
+	const checkAccessTokenExpiration = async () => {
+		const decodedToken = parseJwt(getCookie('access')); // JWT 디코딩
+		const expirationTime = decodedToken.exp; // 만료 시간 (Unix timestamp 형식)
+    const currentTime = Math.floor(Date.now() / 1000);
+
+    if (expirationTime - currentTime < 30) {
+      try {
+        await dispatch(refreshToken()); // refreshToken을 백엔드에 전송하여 새로운 AccessToken을 받아옴
+      } catch (error) {
+        console.error('Error refreshing token:', error);
+      }
+    }
+  };
+	useEffect(() => {
+    const checkInterval = setInterval(() => {
+      if (isLoggedIn) {
+        checkAccessTokenExpiration();
+      }
+    }, 30000); // 30초마다 AccessToken 만료 시간 확인
+
+    return () => clearInterval(checkInterval);
+  }, [isLoggedIn]);
+
+	// 회원 상태조회 요청
+	useEffect(() => {
+		const interceptor = axios.interceptors.request.use(
+			(config) => {
+				const access = getCookie("access");
+				if (access) {
+					config.headers.access = `Bearer ${access}`;
+				}
+				return config;
+			},
+			(error) => {
+				return Promise.reject(error);
+			}
+		);
+	
+		// 컴포넌트가 언마운트될 때 인터셉터를 정리
+		return () => {
+			axios.interceptors.request.eject(interceptor);
+		};
+	}, []); // 한 번만 실행
+	
 	const fetchSessionStatus = async () => {
 		try {
-			const response = await axios.get('/getSession');
+			const response = await axios.get('/getSession', {
+				headers: {
+					access: `Bearer ${getCookie('access')}`,
+				},
+			});
 			const userData = response.data;
 			if (userData.memberName !== undefined && userData.loginId !== undefined) {
 				dispatch(setLoggedIn(userData));
@@ -72,8 +128,11 @@ const Layout = () => {
 		}
 	};
 	useEffect(() => {
-		fetchSessionStatus();
-	}, [location.pathname])
+		const accessToken = getCookie('access');
+		if(accessToken){
+			fetchSessionStatus();
+		} else { dispatch(logout()) }
+	}, [location.pathname, getCookie('access')])
 
 	// 다크모드 state 감지
   const darkMode = useSelector(state => state.darkMode.darkMode);

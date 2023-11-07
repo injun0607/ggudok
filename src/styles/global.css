@@ -1051,7 +1051,7 @@ table .sub_tit:last-child {
     background: #fff;
     box-shadow: 4px 12px 30px 6px rgba(0,0,0,.09);
     transition: all .3s ease;
-    border-radius: var(--radius-all-md);
+    border-radius: var(--radius-all-sm);
     overflow: hidden;
     cursor: pointer;
     position: relative;
@@ -1094,7 +1094,7 @@ table .sub_tit:last-child {
     background: #fff;
     box-shadow: none;
     transition: all .3s ease;
-    border-radius: 0;
+    /* border-radius: 0; */
     cursor: pointer;
     position: relative;
     height: fit-content !important;
