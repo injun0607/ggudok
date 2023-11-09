@@ -88,6 +88,19 @@ public class Member {
         this.age = age;
     }
 
+    /**
+     * Oauth2Update시 사용
+     * @param memberName
+     * @param gender
+     * @param age
+     */
+    public void oauthUpdate(String memberName, Gender gender, int age) {
+        this.memberName = memberName;
+        this.gender = gender;
+        this.age = age;
+        this.role = Role.GUEST;
+    }
+
     public void updateMember(String memberName ) {
         this.memberName = memberName;
     }
@@ -119,5 +132,9 @@ public class Member {
 
     public void updateImage(String profileImage) {
         this.profileImage = profileImage;
+    }
+
+    public void updateRole(Role updateRole) {
+        this.role = updateRole;
     }
 }

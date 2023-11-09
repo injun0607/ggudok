@@ -1,6 +1,8 @@
 package com.alham.ggudok.config.security;
 
 import com.alham.ggudok.config.security.auth.CustomOAuth2MemberService;
+import com.alham.ggudok.config.security.auth.userInfo.OAuth2LoginFailureHandler;
+import com.alham.ggudok.config.security.auth.userInfo.OAuth2LoginSuccessHandler;
 import com.alham.ggudok.config.security.jwt.JwtService;
 import com.alham.ggudok.repository.security.MemberSecurityRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -16,6 +18,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @RequiredArgsConstructor
@@ -28,6 +31,10 @@ public class SecurityConfig {
     private final ObjectMapper objectMapper;
 
     private final CustomOAuth2MemberService customOAuth2MemberService;
+
+    private final OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
+    private final OAuth2LoginFailureHandler oAuth2LoginFailureHandler;
+
 
     /*
     1. 네이버 로그인 연결
@@ -42,12 +49,19 @@ public class SecurityConfig {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .anyRequest().permitAll();
+
+                .requestMatchers(new AntPathRequestMatcher("/member/**")).authenticated()
+                .requestMatchers(new AntPathRequestMatcher("/")).permitAll();
+
+
+        http.oauth2Login()
+                .successHandler(oAuth2LoginSuccessHandler) // 동의하고 계속하기를 눌렀을 때 Handler 설정
+                .failureHandler(oAuth2LoginFailureHandler) // 소셜 로그인 실패 시 핸들러 설정
+                .userInfoEndpoint().userService(customOAuth2MemberService); // customUserService 설정
 
         http.addFilterAfter(customJsonUsernamePasswordAuthenticationFilter(), LogoutFilter.class);
         http.addFilterBefore(jwtAuthenticationProcessingFilter(), JsonLoginProcessFilter.class);
 
-        http.oauth2Login().userInfoEndpoint().userService(customOAuth2MemberService);
 
         return http.build();
     }

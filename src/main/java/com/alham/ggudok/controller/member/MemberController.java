@@ -82,12 +82,21 @@ public class MemberController {
         }
     }
 
+    @PostMapping("/oauth/update")
+    public void updateOauth(@RequestBody MemberOauthDto memberOauthDto,Principal principal) {
+
+        MemberDto loginUser = isLoginUser(principal);
+        memberService.updateOauth(memberOauthDto,loginUser.getLoginId());
+
+    }
+
     /*
     이메일 인증하기
     이메일 인증 버튼누른후 -> 인증번호 입력
      */
     @PostMapping("/emailCheck")
-    private Map<String, String> checkEmail(@RequestBody MemberRegisterDto registerDto) {
+    public Map<String, String> checkEmail(@RequestBody MemberRegisterDto registerDto) {
+
         String checkEmail = registerDto.getLoginId();
         String certCode = memberService.checkEmail(checkEmail);
         Map<String, String> map = new HashMap<>();
@@ -97,8 +106,8 @@ public class MemberController {
 
     }
 
-    @GetMapping("/memberInfo")
-    private MemberBasicDto viewMemberInfo(Principal principal) {
+    @GetMapping("/member_info")
+    public MemberBasicDto viewMemberInfo(Principal principal) {
         MemberDto memberDto = isLoginUser(principal);
         Member member = memberService.findByLoginId(memberDto.getLoginId());
 
@@ -113,7 +122,7 @@ public class MemberController {
     }
 
     @GetMapping("/update")
-    private MemberUpdateDto updateViewMember(Principal principal) {
+    public MemberUpdateDto updateViewMember(Principal principal) {
         MemberDto memberDto = isLoginUser(principal);
 
         Member member = memberService.findByLoginId(memberDto.getLoginId());
@@ -127,8 +136,10 @@ public class MemberController {
     }
 
 
+
+
     @PostMapping("/update")
-    private boolean updateMember(@RequestBody MemberUpdateDto updateDto, Principal principal) {
+    public boolean updateMember(@RequestBody MemberUpdateDto updateDto, Principal principal) {
         MemberDto memberDto = isLoginUser(principal);
         Member member = memberService.findByLoginId(memberDto.getLoginId());
 
@@ -294,6 +305,7 @@ public class MemberController {
             String categoryEng = subs.getCategory().getCategoryEng();
 
             MemberHaveSubsDetail memberHaveSubsDetail = new MemberHaveSubsDetail();
+            memberHaveSubsDetail.setSubsId(subs.getSubsId());
             memberHaveSubsDetail.setSubsName(subs.getSubsName());
             //subsRankList에서 해당 subs에 해당하는 subsRank를 모두가져온다.
             List<SubsRank> subsRankList = memberHaveSubsRank.stream().filter(mhs -> mhs.getSubs().getSubsId()

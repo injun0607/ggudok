@@ -1,11 +1,11 @@
 package com.alham.ggudok.controller;
 
 
+import com.alham.ggudok.config.security.MemberDto;
 import com.alham.ggudok.config.security.SecurityUtils;
 import com.alham.ggudok.controller.session.SessionMemberDto;
 import com.alham.ggudok.dto.LoginDto;
 import com.alham.ggudok.dto.MainDto;
-import com.alham.ggudok.config.security.MemberDto;
 import com.alham.ggudok.dto.member.MemberLoginDto;
 import com.alham.ggudok.dto.subs.EventPageDto;
 import com.alham.ggudok.dto.subs.EventSubsDto;
@@ -56,9 +56,8 @@ public class HomeController {
     public MainDto main(Principal principal) {
 
         MemberDto memberDto = SecurityUtils.transPrincipal(principal);
-        //event페이지
-        MainDto mainDto = new MainDto();
 
+        MainDto mainDto = new MainDto();
 
         List<Category> categoryList =subsService.findAllCategory();
 
@@ -122,6 +121,14 @@ public class HomeController {
                     .filter(mrt -> mrt.isBasic())
                     .map(mrt -> mrt.getTag())
                     .collect(Collectors.toList());
+
+            List<String> defatulTagList = new ArrayList<>();
+            for (Tag tag : basicTag) {
+
+                defatulTagList.add(tag.getTagName());
+            }
+
+            mainDto.setMemberDefaultTag(defatulTagList);
 
             List<Subs> subsListRecommendBasic = subsService.findSubsListByTagList(allSubsList, basicTag);
             mainDto.transRecommendBasic(subsListRecommendBasic);
@@ -279,8 +286,15 @@ public class HomeController {
      * 세션체크 맵핑
      */
     @GetMapping("/getSession")
-    public SessionMemberDto getSession(HttpSession session) {
-        return (SessionMemberDto) session.getAttribute(SESSION_MEMBER);
+    public SessionMemberDto getSession(Principal principal) {
+        MemberDto memberDto = SecurityUtils.transPrincipal(principal);
+        SessionMemberDto sessionMemberDto = new SessionMemberDto();
+        if (memberDto != null) {
+            sessionMemberDto.setMemberName(memberDto.getMemberName());
+            sessionMemberDto.setLoginId(memberDto.getLoginId());
+        }
+
+        return sessionMemberDto;
 
     }
 
@@ -292,7 +306,9 @@ public class HomeController {
             errorResult = new ErrorResult("bad", "아이디가 올바르지 않습니다");
         } else if (errorMessage.equals("password")) {
             errorResult = new ErrorResult("bad", "비밀번호가 올바르지 않습니다");
-        } else{
+        } else if(errorMessage.equals("oauth2")){
+            errorResult = new ErrorResult("bad", "소셜정보가 올바르지 않습니다");
+        }else{
             errorResult = new ErrorResult("bad", "회원정보가 올바르지 않습니다");
         }
         return new ResponseEntity<>(errorResult, HttpStatus.BAD_REQUEST);

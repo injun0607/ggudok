@@ -7,12 +7,12 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.Optional;
@@ -41,7 +41,7 @@ public class JwtService {
 
     private static final String ACCESS_TOKEN_SUBJECT = "AccessToken";
     private static final String REFRESH_TOKEN_SUBJECT = "RefreshToken";
-    private static final String EMAIL_CLAIM = "email";
+    private static final String EMAIL_CLAIM = "loginId";
     private static final String BEARER = "Bearer ";
     private long tokenValidTime = 3000 * 60 * 1000l;
 
@@ -97,8 +97,11 @@ public class JwtService {
     public void sendAccessAndRefreshToken(HttpServletResponse response, String accessToken, String refreshToken) {
         response.setStatus(HttpServletResponse.SC_OK);
 
+
         setAccessTokenHeader(response, accessToken);
-        setRefreshTokenHeader(response, refreshToken);
+        if (!(refreshToken == null)) {
+            setRefreshTokenHeader(response, refreshToken);
+        }
         log.info("Access Token, Refresh Token 헤더 설정 완료");
     }
 
@@ -162,7 +165,8 @@ public class JwtService {
     /**
      * RefreshToken DB 저장(업데이트)
      */
-    public void updateRefreshToken(String loginId, String refreshToken,HttpSession httpSession)
+    @Transactional
+    public void updateRefreshToken(String loginId, String refreshToken)
     {
         memberSecurityRepository.findMemberSecurityByLoginId(loginId)
                 .ifPresentOrElse(

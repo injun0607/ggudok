@@ -2,15 +2,18 @@ package com.alham.ggudok.service.member;
 
 
 import com.alham.ggudok.dto.member.MemberLoginDto;
+import com.alham.ggudok.dto.member.MemberOauthDto;
 import com.alham.ggudok.dto.member.MemberRegisterDto;
 import com.alham.ggudok.dto.member.MemberUpdateDto;
 import com.alham.ggudok.entity.Tag;
 import com.alham.ggudok.entity.member.*;
+import com.alham.ggudok.entity.security.MemberSecurity;
 import com.alham.ggudok.entity.subs.RankLevel;
 import com.alham.ggudok.entity.subs.Subs;
 import com.alham.ggudok.exception.member.MemberException;
 import com.alham.ggudok.repository.member.MemberRepository;
 import com.alham.ggudok.repository.member.ReviewRepository;
+import com.alham.ggudok.repository.security.MemberSecurityRepository;
 import com.alham.ggudok.service.TagService;
 import com.alham.ggudok.util.GgudokUtil;
 import jakarta.persistence.EntityManager;
@@ -31,6 +34,8 @@ import java.util.stream.Collectors;
 public class MemberService {
 
     private final MemberRepository memberRepository;
+
+    private final MemberSecurityRepository memberSecurityRepository;
 
     private final TagService tagService;
 
@@ -65,6 +70,10 @@ public class MemberService {
                 registerDto.getPhoneNumber());
 
         Member savedMember = memberRepository.save(member);
+        MemberSecurity memberSecurity = new MemberSecurity();
+        memberSecurity.updateLoginId(savedMember.getLoginId());
+        memberSecurityRepository.save(memberSecurity);
+
 
 //      회원 태그 분류 작업
 //      나이 성별
@@ -73,6 +82,34 @@ public class MemberService {
 
         MemberRelTag.createRelTag(savedMember, ageTag,true);
         MemberRelTag.createRelTag(savedMember, genderTag,true);
+
+        return true;
+    }
+
+    /**
+     * 소셜 로그인시 필수로 필요한 부분 업데이트
+     * @param memberOauthDto
+     * @return
+     */
+    @Transactional
+    public boolean updateOauth(MemberOauthDto memberOauthDto,String loginId) {
+
+        Optional<Member> optionalMember = memberRepository.findByLoginId(loginId);
+
+        if (!optionalMember.isPresent()) {
+            throw new MemberException();
+        }
+
+        Member member = optionalMember.get();
+
+        member.oauthUpdate(memberOauthDto.getName(), memberOauthDto.getGender(),memberOauthDto.getAge());
+//      회원 태그 분류 작업
+//      나이 성별
+        Tag ageTag = tagService.checkAgeTag(memberOauthDto.getAge());
+        Tag genderTag = tagService.checkGender(memberOauthDto.getGender());
+
+        MemberRelTag.createRelTag(member, ageTag,true);
+        MemberRelTag.createRelTag(member, genderTag,true);
 
         return true;
     }

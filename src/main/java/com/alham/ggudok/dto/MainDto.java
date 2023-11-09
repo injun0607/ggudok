@@ -25,6 +25,8 @@ public class MainDto {
 
     private List<CategoryDto> categoryList = new ArrayList<>();
 
+    private List<String> memberDefaultTag = new ArrayList<>();
+
 
     /**
      * customized 추천 서비스는 회원이 좋아하는 태그기반

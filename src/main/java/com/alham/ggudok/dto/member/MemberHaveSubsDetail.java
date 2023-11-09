@@ -8,6 +8,9 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 public class MemberHaveSubsDetail {
+
+    private Long subsId;
+
     private String subsName;
 
     private List<String> content;
