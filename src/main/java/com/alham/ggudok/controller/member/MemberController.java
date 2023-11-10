@@ -141,7 +141,7 @@ public class MemberController {
     @PostMapping("/update")
     public boolean updateMember(@RequestBody MemberUpdateDto updateDto, Principal principal) {
         MemberDto memberDto = isLoginUser(principal);
-        Member member = memberService.findByLoginId(memberDto.getLoginId());
+        Member member = memberService.findByLoginIdWithTags(memberDto.getLoginId());
 
         if (!passwordEncoder.matches(updateDto.getPassword(), member.getPassword())) {
             throw new MemberException("현재 비밀번호가 맞지 않습니다!");

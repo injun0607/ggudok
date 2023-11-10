@@ -92,4 +92,8 @@ public class MemberRelTag {
     public void basicCheck(boolean check) {
         this.isBasic = check;
     }
+
+    public void updateTag(Tag tag) {
+        this.tag = tag;
+    }
 }

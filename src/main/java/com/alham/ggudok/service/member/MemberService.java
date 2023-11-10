@@ -147,6 +147,33 @@ public class MemberService {
         if (StringUtils.hasText(updateDto.getNewPassword())) {
             passwordEncoder.encode(updateDto.getNewPassword());
             member.updateMember(passwordEncoder.encode(updateDto.getNewPassword()), updateDto.getPhoneNumber(),updateDto.getGender(),updateDto.getAge(), updateDto.getMemberImg());
+            //성별, 나이 확인후 바뀐점이 있다면 기본 태그변경
+            List<MemberRelTag> memberRelTags = member.getMemberRelTags();
+
+            List<Tag> basicTag = memberRelTags.stream().filter(mrt -> mrt.isBasic()).map(mrt -> mrt.getTag()).collect(Collectors.toList());
+            for (Tag tag : basicTag) {
+                if (GgudokUtil.isAgeFormat(tag.getTagName())) {
+                    //나이태그
+                    Tag checkAgeTag = tagService.checkAgeTag(updateDto.getAge());
+                    if (!tag.equals(checkAgeTag)) {
+                        //다르다면 바꾸고
+                        MemberRelTag memberRelTagAge = memberRelTags.stream().filter(mrt -> mrt.getTag().equals(tag)).findFirst().get();
+                        memberRelTagAge.updateTag(checkAgeTag);
+                    }
+                }
+                else{
+                    Tag checkGenderTag = tagService.checkGender(updateDto.getGender());
+                    //성별태그
+                    if (!tag.equals(checkGenderTag)) {
+                        //다르다면 바꾸고
+                        MemberRelTag memberRelTagGender = memberRelTags.stream().filter(mrt -> mrt.getTag().equals(tag)).findFirst().get();
+                        memberRelTagGender.updateTag(checkGenderTag);
+                    }
+
+                }
+            }
+
+
         }else{
             member.updateMember(updateDto.getPhoneNumber(),updateDto.getGender(),updateDto.getAge(),updateDto.getMemberImg());
         }
