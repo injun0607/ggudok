@@ -69,7 +69,6 @@ export const deleteSubscribe = (itemId, navigate) => async (dispatch) => {
       alert(`구독 해지 중 오류가 발생했습니다. 잠시 후 다시 시도해주시기 바랍니다.`);
     }
   } catch (error) {
-    console.log('subsId : ', subsId);
     console.log('Error deleting subs :', error);
     dispatch({ type: 'DELETE_SUBS_FAILURE' });
     alert(`구독 해지 중 오류가 발생했습니다. 잠시 후 다시 시도해주시기 바랍니다.`);

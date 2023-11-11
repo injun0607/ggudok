@@ -38,10 +38,6 @@ const Join = () => {
               <img src='../images/icons/icon_kakaotalk.png' alt='kakao' />
               <p>카카오톡 간편가입하기</p>
             </Link>
-            <Link to="http://192.168.45.96:8080/oauth2/authorization/google" className={`${style.sns} ${style.google}`}>
-              <img src='../images/icons/icon_google.png' alt='google' />
-              <p>구글 간편가입하기</p>
-            </Link>
           </div>
           <div className={style.doublebutton}>
             <Link className="btn btn_normal" onClick={ ()=>{ navigate(-1) } }>뒤로 가기</Link>

@@ -30,7 +30,6 @@ const Tags = () => {
     try {
       const response = await axios.get(`/admin/tag`);
       const data = response.data;
-      console.log(data)
       if(data !== 0){
         dispatch(fetchTagSuccess(data));
 

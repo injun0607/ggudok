@@ -5,6 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 // css import
 import style from '../../styles/Auth.module.css'
 // redux import
+import { setCookie, getCookie, removeCookie } from '../../redux/actions/cookieActions';
 import { joinAfter, setAge, setGender, setMemberName } from '../../redux/actions/userActions';
 
 const JoinAfter = () => {
@@ -13,6 +14,35 @@ const JoinAfter = () => {
   const memberName = useSelector(state => state.user.memberName);
   const gender = useSelector(state => state.user.gender);
   const age = useSelector(state => state.user.age);
+  const [access, setAccess] = useState('');
+  const [IsResult, setIsResult] = useState(false);
+  const [IsLoading, setIsLoading] = useState(true);
+
+  
+  // ************************ access token fetch *************************
+  const fetchAccessToken = async () => {
+    try {
+      const urlParams = new URLSearchParams(window.location.search);
+      const access = urlParams.get('access');
+      const refresh = urlParams.get('refresh');
+      if(access){
+        // Access Token을 쿠키에 저장
+        setCookie('access', access, { path: '/' });
+        setCookie('refresh', refresh, { path: '/' });
+        setAccess(access);
+        setIsResult(true);
+      } else {
+        setIsResult(false);
+      }
+    } catch (error) {
+      console.error('Error fetching Access Token:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  useEffect(() => {
+    fetchAccessToken();
+  }, []);
 
   // 나이 검사
   const handleChangeAge = (newAge) => {
@@ -38,7 +68,13 @@ const JoinAfter = () => {
     } else if (!gender) {
       alert('성별을 선택하세요.')
     } else {
-      dispatch(joinAfter(gender, age));
+      const userData = {
+        access,
+        memberName,
+        gender,
+        age,
+      };
+      dispatch(joinAfter(userData, navigate));
       
       dispatch(setMemberName(''));
       dispatch(setGender(''));
@@ -48,7 +84,7 @@ const JoinAfter = () => {
   };
 
   return (
-    <section className={`${style.join} ${style.auth}`}>
+    !IsLoading && <section className={`${style.join} ${style.auth}`}>
       <div className='webwidth webwidth_pd'>
         <div className='page_tit'><h2>이제 한 단계만 남았어요!</h2></div>
         <div className={style.form}>

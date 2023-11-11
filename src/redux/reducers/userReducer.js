@@ -18,6 +18,7 @@ const initialState = {
   gender: '',
   age: '',
   phoneNumber: '',
+  role: '',
 
   // ******************** 회원탈퇴 *******************
   quitModal: false,
@@ -132,6 +133,11 @@ const userReducer = (state = initialState, action) => {
       return {
         ...state,
         memberName: action.payload,
+      };
+    case 'SET_ROLE':
+      return {
+        ...state,
+        role: action.payload,
       };
     case 'SET_PASSWORD':
       return {

@@ -48,7 +48,6 @@ const ItemsEdit = () => {
       const responseItem = await axios.get(`/admin/subs/${subsId}`);
       const data = response.data;
       const dataItem = responseItem.data;
-      console.log(dataItem.tagList)
       if(data !== 0){
         dispatch(fetchTagSuccess(data.tagList));
         dispatch(fetchCategorySuccess(data.categoryList));
@@ -66,7 +65,6 @@ const ItemsEdit = () => {
         setItemTags(dataItem.tagList.map(tag => tag.tagId));
         setItemImage(dataItem.subsImage);
         setItemRanks(dataItem.subsRankList);
-        console.log(dataItem.subsRankList)
       }
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -116,7 +114,6 @@ const ItemsEdit = () => {
       // 선택되지 않은 태그라면 추가
       updateItemTags.push(tagId);
     }
-    console.log(updateItemTags)
     setItemTags(updateItemTags);
   };
   
@@ -200,17 +197,14 @@ const ItemsEdit = () => {
     setItemRanks(updatedRanks);
   };
   const handleContentChange = (content, rankIndex, contentIndex) => {
-    console.log("Before Update:", itemRanks);
     const updatedRanks = [...itemRanks];
     updatedRanks[rankIndex].contentList[contentIndex].content = content;
     setItemRanks(updatedRanks);
-    console.log("After Update:", updatedRanks);
   };
   
 
   // 최종 form submit
   const handleEdit = async(e) => {
-    console.log(itemTags)
     e.preventDefault();
     if(!isItemNameval) {
       alert('구독서비스명을 입력하세요.');

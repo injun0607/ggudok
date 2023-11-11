@@ -24,7 +24,6 @@ export const refreshTokenSuccess = (newAccessToken) => ({
   type: REFRESH_TOKEN_SUCCESS,
   payload: newAccessToken,
 });
-
 // *********************** 마이페이지 *************************
 export const fetchLikedItemsSuccess = (likedItems) => {
   return {
@@ -154,30 +153,26 @@ export const join = (userData, navigate) => async(dispatch) => {
 }
 export const joinAfter = (userData, navigate) => async(dispatch) => {
   const {
+    access,
     memberName,
     gender,
     age,
   } = userData;
   
-  if(age === ''){ alert('나이를 입력하세요.')
-  } else if(memberName === ''){ alert('이름을 입력하세요.')
-} else if (gender === '성별을 선택하세요.' || gender === ''){ alert('성별을 선택하세요.')
+  if(!access){
+    alert('회원가입 중 오류가 발생했습니다. 다시 시도해 주세요.');
+    navigate('/Auth/Join');
   } else {
     try{
-      const response = await axios.post('/member/register', {
+      const response = await axios.post('/member/oauth/update', {
+        access: access,
         memberName: memberName,
         gender: gender,
         age: age,
       });
       if (response.status === 200) {
-        const access = response.headers.access;
-        const refresh = response.headers.refresh;
-      
-        // Access Token을 쿠키에 저장
-        setCookie('access', access, { path: '/' });
-        setCookie('refresh', refresh, { path: '/' });
-        
         alert(`회원가입이 완료되었습니다. 로그인해주시기 바랍니다.`)
+        dispatch(logout());
         navigate('/Auth/Login');
       } else {
         alert(`회원가입에 실패하였습니다. 다시 작성해주시기 바랍니다.`)
@@ -204,7 +199,9 @@ export const editMemberinfo = (userData, navigate) => async(dispatch) => {
     phoneNumber,
     isPassval,
     isPhoneval,
-  } = userData;
+    memberImg,
+    role,
+    } = userData;
   
   if(password === ''){ alert('비밀번호를 입력하세요.')
   } else if ((newPassword !== '' || newPasswordCheck !== '') && !isPassval) {
@@ -223,8 +220,52 @@ export const editMemberinfo = (userData, navigate) => async(dispatch) => {
         age: age,
         password: password,
         newPassword: newPassword,
+        memberImg: memberImg,
         newPasswordCheck: newPasswordCheck,
         phoneNumber: phoneNumber,
+        role: role,
+      });
+      if (response.status === 200) {
+        alert(`회원정보수정이 완료되었습니다.`)
+        navigate('/Home');
+      } else {
+        alert(`회원정보수정에 실패하였습니다. 다시 작성해주시기 바랍니다.`)
+        // window.location.reload();
+      }
+    } catch (error) {
+      console.log('Error Member Register :', error);
+      alert(`회원정보수정 중 오류가 발생했습니다. 잠시 후 다시 시도해주시기 바랍니다.`)
+      // window.location.reload();
+    } finally {
+      dispatch(setPassword(''));
+      dispatch(setNewPassword(''));
+      dispatch(setNewPasswordCheck(''));
+    }
+  }
+}
+export const editSocialMemberinfo = (userSocialData, navigate) => async(dispatch) => {
+  const {
+    gender,
+    age,
+    phoneNumber,
+    isPhoneval,
+    memberImg,
+    role,
+  } = userSocialData;
+  
+  if(age === ''){ alert('나이를 입력하세요.')
+  } else if (gender === '성별을 선택하세요.' || gender === ''){ alert('성별을 선택하세요.')
+  } else if (!isPhoneval){
+    alert('휴대폰 번호를 올바르게 입력하세요.')
+    dispatch(setPhoneNumber(''));
+  } else {
+    try{
+      const response = await axios.post('/member/update', {
+        gender: gender,
+        age: age,
+        memberImg: memberImg,
+        phoneNumber: phoneNumber,
+        role: role,
       });
       if (response.status === 200) {
         alert(`회원정보수정이 완료되었습니다.`)
@@ -248,6 +289,12 @@ export const setLoginId = (loginId) => {
   return {
     type: 'SET_LOGINID',
     payload: loginId,
+  };
+}
+export const setRole = (role) => {
+  return {
+    type: 'SET_ROLE',
+    payload: role,
   };
 }
 export const setMemberImg = (memberImg) => {

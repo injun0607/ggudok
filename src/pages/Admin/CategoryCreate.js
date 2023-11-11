@@ -97,7 +97,6 @@ const CategoryCreate = () => {
         isCategoryNameval,
         isCategoryEngval,
       };
-      console.log('categoryData', categoryData)
       dispatch(createCategory(categoryData, navigate));
   } catch (error) {
     console.error('Error handling Create:', error);

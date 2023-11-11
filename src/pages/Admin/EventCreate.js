@@ -200,7 +200,6 @@ const EventCreate = () => {
           eventDateEnd,
           isValid,
         };
-        console.log('eventData : ', eventData)
         dispatch(createEvent(eventData, navigate));
       } catch (error) {
         console.error('Error handling Create:', error);
@@ -268,7 +267,6 @@ const EventCreate = () => {
                     id="itemFilter"
                     className={style.select}
                     onChange={(e) => {
-                      console.log(e.target.value)
                       setEventSubsId(e.target.value)
                     }}
                     value={subsId}

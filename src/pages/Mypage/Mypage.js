@@ -24,7 +24,6 @@ const Mypage = ({memberName}) => {
     try {
       const response = await axios.get(`/member/member_info`);
       const data = response.data.profileImage;
-      console.log('data : ', data)
 
       if(data){
         dispatch(fetchMemberImg(data));

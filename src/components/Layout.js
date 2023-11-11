@@ -81,7 +81,7 @@ const Layout = () => {
   };
 	useEffect(() => {
     const checkInterval = setInterval(() => {
-      if (isLoggedIn) {
+      if (isLoggedIn && !isCheckingLogin) {
         checkAccessTokenExpiration();
       }
     }, 30000); // 30초마다 AccessToken 만료 시간 확인
@@ -109,7 +109,19 @@ const Layout = () => {
 			axios.interceptors.request.eject(interceptor);
 		};
 	}, []); // 한 번만 실행
-	
+	const fetchAccessToken = async () => {
+		const urlParams = new URLSearchParams(window.location.search);
+		const access = urlParams.get('access');
+		const refresh = urlParams.get('refresh');
+		console.log('access', access,'\nrefresh', refresh,);
+		// Access Token을 쿠키에 저장
+		setCookie('access', access, { path: '/' });
+		setCookie('refresh', refresh, { path: '/' });
+		console.log('저장완료');
+		console.log(document.cookie);
+
+  };
+
 	const fetchSessionStatus = async () => {
 		try {
 			const response = await axios.get('/getSession', {
@@ -120,6 +132,7 @@ const Layout = () => {
 			const userData = response.data;
 			if (userData.memberName !== undefined && userData.loginId !== undefined) {
 				dispatch(setLoggedIn(userData));
+				console.log(2);
 			}
 		} catch (error) {
 			console.error('Error fetch login session :', error);
@@ -128,13 +141,20 @@ const Layout = () => {
 		}
 	};
 	useEffect(() => {
-		const accessToken = getCookie('access');
-		if(accessToken){
-			fetchSessionStatus();
-		} else {
-			dispatch(logout());
-			setIsCheckingLogin(false);
-		}
+		const fetchAccessSession = async () => {
+			if (window.location.search) {
+				await fetchAccessToken();
+			}
+			const accessToken = getCookie('access');
+			if(accessToken){
+      	fetchSessionStatus();
+			} else {
+				dispatch(logout());
+				setIsCheckingLogin(false);
+			}
+    };
+
+		fetchAccessSession();
 	}, [location.pathname, getCookie('access')])
 
 	// 다크모드 state 감지
@@ -148,7 +168,7 @@ const Layout = () => {
 				<Routes>
 					<Route path='/' element={<Home />} />
 					{/* <Route path='/Home' element={<Home />}></Route> */}
-					<Route path='/Home' element={isCheckingLogin ? <Loading /> : <Home />} />
+					<Route path='/Home' element={isCheckingLogin ? <Loading /> : <Home isCheckingLogin={isCheckingLogin} />} />
 
 					<Route path='/Mypage' element={
 						isCheckingLogin ? (<Loading />) : (

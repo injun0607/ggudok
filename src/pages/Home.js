@@ -15,11 +15,12 @@ import 'swiper/css/navigation';
 // redux import
 import { setRecomBasic, setRecomCustom } from '../redux/actions/itemActions';
 import { fetchCategory } from '../redux/actions/categoryActions';
+import { setCookie, getCookie, removeCookie } from '../redux/actions/cookieActions';
 
 const NO_IMAGE_URL = '/images/common/noimg.png';
 const NO_ICON_URL = '/images/common/logo_grey.png';
 
-const Home = () => {
+const Home = ({isCheckingLogin}) => {
   let dispatch = useDispatch();
   const isLoggedIn = useSelector(state => state.user.isLoggedIn);
   const categories = useSelector(state => state.category.categories);
@@ -38,7 +39,7 @@ const Home = () => {
     try {
       const response = await axios.get(`/home`);
       const data = response.data;
-      console.log(data)
+			console.log(3)
       if(data !== 0){
         dispatch(setRecomBasic(data.recommendBasic))
         dispatch(fetchCategory(data.categoryList))
@@ -48,6 +49,8 @@ const Home = () => {
           dispatch(setRecomCustom(data.defaultSubs))
         }
         if(isLoggedIn){
+          console.log(4)
+          console.log('data.memberDefaultTag', data.memberDefaultTag)
           setRecommendTag(data.memberDefaultTag)
         }
       } else {
@@ -63,13 +66,16 @@ const Home = () => {
     }
   };
   useEffect(() => {
-    fetchHomeData();
-  }, [dispatch]);
+    if(!isCheckingLogin){
+      fetchHomeData();
+    }
+  }, [isCheckingLogin, isLoggedIn])
   
   // 결과 유무
   useEffect(() => {
     setIsResult(recommendBasic.length > 0 && recommendCustomized.length > 0);
   }, [dispatch, recommendBasic, isLoggedIn]);
+
 
   return (
     !IsLoading && <section className={style.home}>

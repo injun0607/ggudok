@@ -39,9 +39,20 @@ const Login = () => {
             </div>
             <button type='submit' className='btn btn_full'>로그인</button>
           </form>
+          
+          <div className={`${style.easySignup} mt_30`}>
+            <Link to="http://192.168.45.96:8080/oauth2/authorization/naver" className={`${style.sns} ${style.naver}`}>
+              <img src='../images/icons/icon_naver.png' alt='naver' />
+              <p>네이버 로그인</p>
+            </Link>
+            <Link to="http://192.168.45.96:8080/oauth2/authorization/kakao" className={`${style.sns} ${style.kakao}`}>
+              <img src='../images/icons/icon_kakaotalk.png' alt='kakao' />
+              <p>카카오톡 로그인</p>
+            </Link>
+          </div>
           <div className={style.doublebutton}>
-            <Link to="/Auth/Join" className='btn btn_normal'>회원가입</Link>
-            <Link to="/Home" className='btn btn_full02'>간편로그인</Link>
+            <Link className="btn btn_normal" onClick={ ()=>{ navigate(-1) } }>뒤로 가기</Link>
+            <Link to="/Auth/Join" className='btn btn_full'>회원가입</Link>
           </div>
         </div>
       </div>

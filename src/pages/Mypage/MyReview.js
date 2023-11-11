@@ -29,7 +29,6 @@ const MyReview = ({isCheckingLogin}) => {
     try {
       const response = await axios.get(`/member/reviews`);
       const data = response.data.reviews;
-      console.log('data : ', data)
 
       if(data !== 0){
         dispatch(setMyReview(data));

@@ -49,7 +49,6 @@ const EventEdit = () => {
       const data = response.data;
       const dataSubs = responseReg.data.subsList;
       const dataCategory = responseReg.data.categoryList;
-      console.log('editing data', data)
 
       if(data !== 0){
         setEventSubsName(data.subsName);
@@ -224,7 +223,6 @@ const EventEdit = () => {
           eventDateEnd,
           isValid,
         };
-        console.log('eventData : ', eventData)
         dispatch(editEvent(eventData, navigate));
       } catch (error) {
         console.error('Error handling Edit:', error);
@@ -277,35 +275,6 @@ const EventEdit = () => {
                 <div className={`${style.cont} ${style.contTag}`}>
                   <input type="text" name='categoryFilter' readOnly placeholder={selectedCategory} />
                   <input type="text" name='itemFilter' readOnly placeholder={eventSubsName} />
-                  {/* <select
-                    id="categoryFilter"
-                    className={style.select}
-                    onChange={(e) => dispatch(setSelectedCategory(e.target.value))}
-                    value={selectedCategory}
-                  >
-                    <option value="">카테고리 선택</option>
-                    {categories.map((category) => (
-                      <option key={category.categoryId} value={category.categoryName}>
-                        {category.categoryName}
-                      </option>
-                    ))}
-                  </select>
-                  <select
-                    id="itemFilter"
-                    className={style.select}
-                    onChange={(e) => {
-                      console.log(e.target.value)
-                      setEventSubsId(e.target.value)
-                    }}
-                    value={subsId}
-                  >
-                    <option value="">구독서비스 선택</option>
-                    {filteredItems.map((item) => (
-                      <option key={item.subsId} value={item.subsId}>
-                        {item.subsName}
-                      </option>
-                    ))}
-                  </select> */}
                 </div>
               </div>
               <div className={`${style.inputwrap} ${style.formSection}`}>

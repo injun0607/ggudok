@@ -29,7 +29,6 @@ const CategoryEdit = () => {
     try {
       const response = await axios.get(`/admin/category/update/${categoryId}`);
       const data = response.data;
-      console.log('editing data', data)
       dispatch(setCategoryName(data.categoryName));
       dispatch(setCategoryEng(data.categoryEng))
       dispatch(setCategoryImage(data.categoryImage))
@@ -129,7 +128,6 @@ const CategoryEdit = () => {
         isCategoryNameval,
         isCategoryEngval,
       };
-      console.log('categoryData', categoryData);
       dispatch(editCategory(categoryData, navigate));
     } catch (error) {
       console.error('Error handling edit:', error);

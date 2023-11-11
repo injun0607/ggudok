@@ -5,7 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 // css import
 import style from '../../styles/Auth.module.css'
 // redux import
-import { editMemberinfo, setValidPassword, setAge, setGender, setValidPhoneNumber, setPhoneNumber, setPassword, setNewPassword, setNewPasswordCheck, setIsLoading } from '../../redux/actions/userActions';
+import { editMemberinfo, editSocialMemberinfo, setRole, setValidPassword, setAge, setGender, setValidPhoneNumber, setPhoneNumber, setPassword, setNewPassword, setNewPasswordCheck, setIsLoading } from '../../redux/actions/userActions';
 
 const EditProfile = () => {
   const dispatch = useDispatch();
@@ -14,7 +14,6 @@ const EditProfile = () => {
   const isPassval = useSelector(state => state.user.isPassval);
   const isPhoneval = useSelector(state => state.user.isPhoneval);
 
-  // const memberImg = useSelector(state => state.user.memberImg);
   const [memberImg, setMemberImg] = useState(null);
 
   const memberName = useSelector(state => state.user.memberName);
@@ -25,6 +24,7 @@ const EditProfile = () => {
   const gender = useSelector(state => state.user.gender);
   const age = useSelector(state => state.user.age);
   const phoneNumber = useSelector(state => state.user.phoneNumber);
+  const role = useSelector(state => state.user.role);
   const IsLoading = useSelector(state => state.user.IsLoading);
   
   const [errorMessage, setErrorMessage] = useState('');
@@ -35,18 +35,25 @@ const EditProfile = () => {
     try {
       const response = await axios.get('/member/update');
       const userData = response.data;
-      if (userData.gender && userData.age && userData.phoneNumber) {
+      console.log('userData', userData)
+      if (userData.gender && userData.age) {
         dispatch(setAge(userData.age));
         dispatch(setGender(userData.gender));
-        dispatch(setPhoneNumber(userData.phoneNumber));
-        // dispatch(setMemberinfo(userData));
-        dispatch(setIsLoading(false));
-        dispatch(setValidPhoneNumber(true))
-        setMemberImg(userData.memberImg);
+        if(userData.phoneNumber){
+          dispatch(setPhoneNumber(userData.phoneNumber));
+        }
+        dispatch(setValidPhoneNumber(true));
+        if(memberImg){
+          setMemberImg(userData.memberImg);
+        }
+        if(userData.role){
+          dispatch(setRole(userData.role));
+        }
       }
     } catch (error) {
       console.error('Error fetch set member information :', error);
-      dispatch(setIsLoading(true));
+    } finally {
+      dispatch(setIsLoading(false));
     }
   };
 	useEffect(() => {
@@ -119,9 +126,6 @@ const EditProfile = () => {
         
         const imageUrl = response.data.imageUrl;
         setMemberImg(imageUrl);
-  
-        console.log('response.data', response.data);
-        console.log('imageUrl', imageUrl);
       }
     } catch (error) {
       console.error('이미지 업로드 오류:', error);
@@ -131,6 +135,14 @@ const EditProfile = () => {
   const handleEdit = async(e) => {
     e.preventDefault();
     await handleImageUpload();
+    const userSocialData = {
+      gender,
+      age,
+      phoneNumber,
+      isPhoneval,
+      memberImg,
+      role,
+    };
     const userData = {
       password,
       newPassword,
@@ -141,8 +153,10 @@ const EditProfile = () => {
       isPassval,
       isPhoneval,
       memberImg,
+      role,
     };
-    dispatch(editMemberinfo(userData, navigate));
+    if(role === 'SOCIAL'){ dispatch(editSocialMemberinfo(userSocialData, navigate)); }
+    else{ dispatch(editMemberinfo(userData, navigate)); }
 
     dispatch(setPassword(''));
     dispatch(setNewPassword(''));
@@ -178,35 +192,36 @@ const EditProfile = () => {
               <label htmlFor="file">프로필 사진 선택하기</label>
             </div>
             <div className={style.inputwrap}>
-              <input type="text" name='emailid' value={loginId} readOnly />
-              <input
-                type="password" name="password" autoComplete="off"
-                placeholder="현재 비밀번호를 입력하세요."
-                value={password}
-                onChange={(e) => {
-                  dispatch(setPassword(e.target.value));
-                }}
-              />
-              <input
-                type="password" name="newPassword" autoComplete="off"
-                placeholder="비밀번호를 변경할 경우에만 입력하세요."
-                value={newPassword}
-                onChange={(e) => {
-                  dispatch(setNewPassword(e.target.value));
-                  handleChangePassword(e.target.value, newPasswordCheck);
-                }}
-              />
-              <input
-                type="password" name="newPasswordCheck" autoComplete="off"
-                placeholder="변경할 비밀번호를 한번 더 입력하세요."
-                value={newPasswordCheck}
-                onChange={(e) => {
-                  dispatch(setNewPasswordCheck(e.target.value));
-                  handleChangePassword(newPassword, e.target.value);
-                }}
-              />
-              {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
-              
+              {role !== 'SOCIAL' && <>
+                <input type="text" name='emailid' value={loginId} readOnly />
+                <input
+                  type="password" name="password" autoComplete="off"
+                  placeholder="현재 비밀번호를 입력하세요."
+                  value={password}
+                  onChange={(e) => {
+                    dispatch(setPassword(e.target.value));
+                  }}
+                />
+                <input
+                  type="password" name="newPassword" autoComplete="off"
+                  placeholder="비밀번호를 변경할 경우에만 입력하세요."
+                  value={newPassword}
+                  onChange={(e) => {
+                    dispatch(setNewPassword(e.target.value));
+                    handleChangePassword(e.target.value, newPasswordCheck);
+                  }}
+                />
+                <input
+                  type="password" name="newPasswordCheck" autoComplete="off"
+                  placeholder="변경할 비밀번호를 한번 더 입력하세요."
+                  value={newPasswordCheck}
+                  onChange={(e) => {
+                    dispatch(setNewPasswordCheck(e.target.value));
+                    handleChangePassword(newPassword, e.target.value);
+                  }}
+                />
+                {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
+              </>}
               <input type='text' name='memberName'
                 placeholder='이름을 입력하세요.' value={memberName} readOnly />
               <input type='text' name='age' autoComplete="off"

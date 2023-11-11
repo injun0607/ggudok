@@ -1,15 +1,64 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 // css import
 import style from '../../styles/Admin/AdminLayout.module.css';
 //redux import
-import { useDispatch } from 'react-redux';
+import { fetchCategorySuccess } from '../../redux/actions/admin/adminCategoryActions';
+import { fetchItemsSuccess } from '../../redux/actions/admin/adminItemsActions';
+import { fetchTagSuccess } from '../../redux/actions/admin/adminTagsActions';
+import { fetchEventSuccess } from '../../redux/actions/admin/adminEventsActions';
+
+const NO_IMAGE_URL = '/images/common/logo_grey.png';
 
 const AdminHome = () => {
   const dispatch = useDispatch();
+  const categories = useSelector(state => state.adminCategory.categories);
+  const events = useSelector(state => state.adminEvents.events);
+  const tags = useSelector(state => state.adminTags.tags);
+  const items = useSelector(state => state.adminItems.items);
+
+  const [IsResult, setIsResult] = useState(null);
+  const [IsLoading, setIsLoading] = useState(true);
+  
+  // ************************** 기본 전체 fetch ***************************
+  const fetchData = async () => {
+    try {
+      const responseCategory = await axios.get(`/admin/category`);
+      const responseItem = await axios.get(`/admin/subs`);
+      const responseTag = await axios.get(`/admin/tag`);
+      const responseEvent = await axios.get(`/admin/event`);
+      const dataCategory = responseCategory.data.categoryList;
+      const dataItem = responseItem.data.subsList;
+      const dataTag = responseTag.data;
+      const dataEvent = responseEvent.data;
+
+      if(dataCategory !== 0){
+        dispatch(fetchCategorySuccess(dataCategory));
+      } else { dispatch(fetchCategorySuccess([])); }
+      if(dataItem !== 0){
+        dispatch(fetchItemsSuccess(dataItem));
+      } else { dispatch(fetchItemsSuccess([])); }
+      if(dataTag !== 0){
+        dispatch(fetchTagSuccess(dataTag));
+      } else { dispatch(fetchTagSuccess([])); }
+      if(dataEvent !== 0){
+        dispatch(fetchEventSuccess(dataEvent));
+      } else { dispatch(fetchEventSuccess([])); }
+
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   return (
-    <section className={style.dashboxWrap}>
+    !IsLoading && <section className={style.dashboxWrap}>
       <article className={style.dashbox}>
         <Link to="/Admin/Category" className={style.dashtit}>
           <h2>카테고리 관리</h2>
@@ -18,12 +67,13 @@ const AdminHome = () => {
           </button>
         </Link>
         <div className={style.dashcont}>
+          {categories.length > 0 ?
           <div className={`${style.tbScroll} ${style.tbSm}`}>
             <table className={style.table}>
               <colgroup>
                 <col width={'*'} />
                 <col width={'*'} />
-                <col width={'15%'} />
+                <col width={'100px'} />
               </colgroup>
               <thead>
                 <tr>
@@ -33,14 +83,20 @@ const AdminHome = () => {
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>영상</td>
-                  <td>Health</td>
-                  <td className={style.tdIcon}><img src='/images/icons/ott.svg' alt='영상' /></td>
-                </tr>
+                {categories.slice(0,4).map((category, index) => (
+                  <tr key={index}>
+                    <td>{category.categoryName}</td>
+                    <td>{category.categoryEng}</td>
+                    <td className={style.tdIcon}>
+                      <img src={category.categoryImage || NO_IMAGE_URL} alt={category.categoryName} />
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
+          : <p className='txt_center txt_grey mt_30'>등록된 이벤트가 없습니다.</p>
+          }
         </div>
       </article>
       <article className={style.dashbox}>
@@ -51,30 +107,49 @@ const AdminHome = () => {
           </button>
         </Link>
         <div className={style.dashcont}>
+          {items.length > 0 ?
           <div className={`${style.tbScroll} ${style.tbSm}`}>
             <table className={style.table}>
               <colgroup>
+                <col width={'100px'} />
                 <col width={'*'} />
-                <col width={'15%'} />
+                <col width={'*'} />
+                <col width={'10%'} />
               </colgroup>
               <thead>
                 <tr>
+                  <th>대표이미지</th>
                   <th>구독서비스명</th>
+                  <th>태그</th>
                   <th>카테고리</th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>스마트비디오</td>
-                  <td>영상</td>
-                </tr>
-                <tr>
-                  <td>클립비젼</td>
-                  <td>음료</td>
-                </tr>
+                {items.slice(0,4).map((item, index) => (
+                  <tr key={index}>
+                    <td className={style.tdImg}>
+                      <img src={item.subsImage || NO_IMAGE_URL} alt={item.subsName} />
+                    </td>
+                    <td>{item.subsName}</td>
+                    <td>
+                      <p>
+                      {
+                        item.tagList?.map((tag, tagindex) => (
+                          <span key={tagindex}>
+                            {tagindex > 0 && ", "} {tag.tagName}
+                          </span>
+                        ))
+                      }
+                      </p>
+                    </td>
+                    <td>{item.categoryName}</td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
+          : <p className='txt_center txt_grey mt_30'>등록된 이벤트가 없습니다.</p>
+          }
         </div>
       </article>
       <article className={style.dashbox}>
@@ -85,26 +160,16 @@ const AdminHome = () => {
           </button>
         </Link>
         <div className={style.dashcont}>
-          <div className={`${style.tbScroll} ${style.tbSm}`}>
-            <table className={style.table}>
-              <colgroup>
-                <col width={'*'} />
-              </colgroup>
-              <thead>
-                <tr>
-                  <th>태그명</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>20대</td>
-                </tr>
-                <tr>
-                  <td>30대</td>
-                </tr>
-              </tbody>
-            </table>
+          {tags.length > 0 ?
+          <div className={style.AdminBox}>
+            {tags.map((tag, index) => (
+              <div className={style.box} key={index}>
+                <h3>{tag.tagName}</h3>
+              </div>
+            ))}
           </div>
+          : <p className='txt_center txt_grey mt_30'>등록된 태그가 없습니다.</p>
+          }
         </div>
       </article>
       <article className={style.dashbox}>
@@ -115,9 +180,11 @@ const AdminHome = () => {
           </button>
         </Link>
         <div className={style.dashcont}>
+          {events.length > 0 ?
           <div className={`${style.tbScroll} ${style.tbSm}`}>
             <table className={style.table}>
               <colgroup>
+                <col width={'100px'} />
                 <col width={'*'} />
                 <col width={'*'} />
                 <col width={'*'} />
@@ -126,6 +193,7 @@ const AdminHome = () => {
               </colgroup>
               <thead>
                 <tr>
+                  <th>이미지</th>
                   <th>구독서비스명</th>
                   <th>이벤트 태그</th>
                   <th>이벤트 설명</th>
@@ -134,23 +202,23 @@ const AdminHome = () => {
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>스마트 비디오</td>
-                  <td>40% 할인</td>
-                  <td>지루한 날을 단번에 날려주는 스마트 비디오 OTT 서비스</td>
-                  <td>20231026</td>
-                  <td>20231026</td>
-                </tr>
-                <tr>
-                  <td>스마트 비디오</td>
-                  <td>40% 할인</td>
-                  <td>지루한 날을 단번에 날려주는 스마트 비디오 OTT 서비스</td>
-                  <td>20231026</td>
-                  <td>20231026</td>
-                </tr>
+                {events.slice(0,4).map((event, index) => (
+                  <tr key={index}>
+                    <td className={style.tdImg}>
+                      <img src={event.eventImage || NO_IMAGE_URL} alt={event.subsName} />
+                    </td>
+                    <td>{event.subsName}</td>
+                    <td>{event.infoTag}</td>
+                    <td>{event.info}</td>
+                    <td>{event.startDate}</td>
+                    <td>{event.endDate}</td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
+          : <p className='txt_center txt_grey mt_30'>등록된 이벤트가 없습니다.</p>
+          }
         </div>
       </article>
     </section>
