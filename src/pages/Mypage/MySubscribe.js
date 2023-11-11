@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 // component import
@@ -71,15 +72,17 @@ const MySubscribe = () => {
           </div>
           <div className={style.cont}>
             {category.subsList.map((subs, subsIndex) => (
-              <article className={style.subscribe} key={subsIndex}>
-                {subs.content.map((cont, index) => (
-                  <h4>{cont}</h4>
-                ))}
-                <div className={style.tag}>
-                  <p>{subs.subsName}</p>
-                  <p>{subs.price}원</p>
-                </div>
-              </article>
+              <Link to={`/subs/detail/${subs.subsId}`} key={subsIndex}>
+                <article className={style.subscribe}>
+                  {subs.content.map((cont, index) => (
+                    <h4 key={index}>{cont}</h4>
+                  ))}
+                  <div className={style.tag}>
+                    <p>{subs.subsName}</p>
+                    <p>{subs.price}원</p>
+                  </div>
+                </article>
+              </Link>
             ))}
           </div>
         </div>

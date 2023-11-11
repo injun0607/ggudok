@@ -1,5 +1,4 @@
 import axios from 'axios';
-import Cookies from 'js-cookie';
 import { setCookie, getCookie, removeCookie } from './cookieActions';
 
 // Action 타입
@@ -92,20 +91,9 @@ export const refreshToken = () => async (dispatch) => {
   }
 };
 
-// export const logout = () => async (dispatch) => {
-//   try {
-//       const response = await axios.get('/logout');
-//       if (response.status === 200) {
-//       dispatch({ type: 'LOGOUT' });
-//     }
-//   } catch (error) {
-//     console.log('Error logging out:', error);
-//   }
-// };
 export const logout = () => async (dispatch) => {
   removeCookie('access');
   removeCookie('refresh');
-
   dispatch({ type: LOGOUT });
 };
 
@@ -166,24 +154,33 @@ export const join = (userData, navigate) => async(dispatch) => {
 }
 export const joinAfter = (userData, navigate) => async(dispatch) => {
   const {
+    memberName,
     gender,
     age,
   } = userData;
   
   if(age === ''){ alert('나이를 입력하세요.')
-  } else if (gender === '성별을 선택하세요.' || gender === ''){ alert('성별을 선택하세요.')
+  } else if(memberName === ''){ alert('이름을 입력하세요.')
+} else if (gender === '성별을 선택하세요.' || gender === ''){ alert('성별을 선택하세요.')
   } else {
     try{
       const response = await axios.post('/member/register', {
+        memberName: memberName,
         gender: gender,
         age: age,
       });
       if (response.status === 200) {
+        const access = response.headers.access;
+        const refresh = response.headers.refresh;
+      
+        // Access Token을 쿠키에 저장
+        setCookie('access', access, { path: '/' });
+        setCookie('refresh', refresh, { path: '/' });
+        
         alert(`회원가입이 완료되었습니다. 로그인해주시기 바랍니다.`)
         navigate('/Auth/Login');
       } else {
         alert(`회원가입에 실패하였습니다. 다시 작성해주시기 바랍니다.`)
-        // window.location.reload();
       }
     } catch (error) {
       console.log('Error Member Register :', error);

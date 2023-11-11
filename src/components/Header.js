@@ -34,6 +34,7 @@ const Topheader = () => {
   const searchQuery = useSelector(state => state.search.searchQuery);
 	const handleLogout = () => {
     dispatch(logout());
+		alert('로그아웃되었습니다. ')
     navigate('/home');
   };
 	const handleSearchChange = (e) => {

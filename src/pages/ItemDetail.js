@@ -51,7 +51,6 @@ const ItemDetail = () => {
     try {
       const response = await axios.get(`/subs/detail/${subsId}`);
       const data = response.data;
-      console.log(data)
       dispatch(fetchitemDetailSuccess(data));
       
       // 아이템 회원등급 Default와 나머지 분리

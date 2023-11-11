@@ -30,15 +30,15 @@ const Join = () => {
         <div className='page_tit'><h2>3초만에 끝나는 간편회원가입</h2></div>
         <div className={style.form}>
           <div className={style.easySignup}>
-            <Link to="" className={`${style.sns} ${style.naver}`}>
+            <Link to="http://192.168.45.96:8080/oauth2/authorization/naver" className={`${style.sns} ${style.naver}`}>
               <img src='../images/icons/icon_naver.png' alt='naver' />
               <p>네이버 간편가입하기</p>
             </Link>
-            <Link to="" className={`${style.sns} ${style.kakao}`}>
+            <Link to="http://192.168.45.96:8080/oauth2/authorization/kakao" className={`${style.sns} ${style.kakao}`}>
               <img src='../images/icons/icon_kakaotalk.png' alt='kakao' />
               <p>카카오톡 간편가입하기</p>
             </Link>
-            <Link to="" className={`${style.sns} ${style.google}`}>
+            <Link to="http://192.168.45.96:8080/oauth2/authorization/google" className={`${style.sns} ${style.google}`}>
               <img src='../images/icons/icon_google.png' alt='google' />
               <p>구글 간편가입하기</p>
             </Link>

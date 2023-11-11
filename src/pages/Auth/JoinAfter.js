@@ -5,11 +5,12 @@ import { Link, useNavigate } from 'react-router-dom';
 // css import
 import style from '../../styles/Auth.module.css'
 // redux import
-import { joinAfter, setAge, setGender, } from '../../redux/actions/userActions';
+import { joinAfter, setAge, setGender, setMemberName } from '../../redux/actions/userActions';
 
 const JoinAfter = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const memberName = useSelector(state => state.user.memberName);
   const gender = useSelector(state => state.user.gender);
   const age = useSelector(state => state.user.age);
 
@@ -30,12 +31,18 @@ const JoinAfter = () => {
 
   const handleJoinAfter = (e) => {
     e.preventDefault();
-    if (!gender) {
-      alert('성별을 선택하세요.')
+    if (!memberName) {
+      alert('이름을 입력하세요.')
     } else if (!age) {
       alert('나이를 숫자만 입력하세요.')
+    } else if (!gender) {
+      alert('성별을 선택하세요.')
     } else {
       dispatch(joinAfter(gender, age));
+      
+      dispatch(setMemberName(''));
+      dispatch(setGender(''));
+      dispatch(setAge(''));
       navigate('/Home');
     }
   };
@@ -47,6 +54,10 @@ const JoinAfter = () => {
         <div className={style.form}>
           <form onSubmit={ handleJoinAfter }>
             <div className={style.inputwrap}>
+              <input type='text' name='memberName' autoComplete="off"
+                placeholder='이름을 입력하세요.'
+                value={memberName}
+                onChange={(e) => { dispatch(setMemberName(e.target.value)) }} />
               <input type='text' name='age' autoComplete="off"
                   placeholder='나이를 숫자만 입력하세요.'
                   value={age}

@@ -22,7 +22,7 @@ const Mypage = ({memberName}) => {
   // ************************** 기본 reviews fetch ***************************
   const fetchMyReviewData = async () => {
     try {
-      const response = await axios.get(`/member/memberInfo`);
+      const response = await axios.get(`/member/member_info`);
       const data = response.data.profileImage;
       console.log('data : ', data)
 

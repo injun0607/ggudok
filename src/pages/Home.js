@@ -28,6 +28,8 @@ const Home = () => {
   const recommendBasic = useSelector(state => state.item.recommendBasic);
   const recommendCustomized = useSelector(state => state.item.recommendCustomized);
 
+  const [recommendTag, setRecommendTag] = useState([]);
+
   const [IsResult, setIsResult] = useState(false);
   const [IsLoading, setIsLoading] = useState(true);
 
@@ -36,6 +38,7 @@ const Home = () => {
     try {
       const response = await axios.get(`/home`);
       const data = response.data;
+      console.log(data)
       if(data !== 0){
         dispatch(setRecomBasic(data.recommendBasic))
         dispatch(fetchCategory(data.categoryList))
@@ -43,6 +46,9 @@ const Home = () => {
           dispatch(setRecomCustom(data.recommendCustomized))
         } else {
           dispatch(setRecomCustom(data.defaultSubs))
+        }
+        if(isLoggedIn){
+          setRecommendTag(data.memberDefaultTag)
         }
       } else {
         dispatch(setRecomBasic([]));
@@ -132,7 +138,11 @@ const Home = () => {
           : <ErrorItem message="해당하는 구독서비스가 없습니다." />}
         { IsResult ?
           <section className={style.section}>
-            <h2 className={style.tit}>나와 같은 <span className='main_clr'>20대 남성</span>이 가장 많이 구독한 서비스</h2>
+            {
+              isLoggedIn ?
+              <h2 className={style.tit}>나와 같은 <span className='main_clr'>{recommendTag[0]} {recommendTag[1]}</span>이 가장 많이 구독한 서비스</h2> :
+              <h2 className={style.tit}>지금 가장 인기있는 서비스</h2>
+            }
             <Swiper
               cssMode={true}
               navigation={true}

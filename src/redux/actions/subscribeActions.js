@@ -13,11 +13,11 @@ export const setMyTotal = (data) => {
 };
 // *************************** 구독하기 ****************************
 export const addSubscribe = (userData, navigate) => async (dispatch) => {
-  const { subsId, rankLevel } = userData;
+  const { subsId, selectedRankLevel } = userData;
   try {
     const response = await axios.post('/subs/buy', {
       subsId,
-      rankLevel: rankLevel,
+      rankLevel: selectedRankLevel,
     });
     if (response.status === 200) {
       dispatch({ type: 'ADD_SUBS_SUCCESS', payload: { subsId } });

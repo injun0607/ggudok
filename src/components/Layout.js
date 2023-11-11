@@ -131,7 +131,10 @@ const Layout = () => {
 		const accessToken = getCookie('access');
 		if(accessToken){
 			fetchSessionStatus();
-		} else { dispatch(logout()) }
+		} else {
+			dispatch(logout());
+			setIsCheckingLogin(false);
+		}
 	}, [location.pathname, getCookie('access')])
 
 	// 다크모드 state 감지
@@ -144,7 +147,8 @@ const Layout = () => {
 			<div className={style.body}>
 				<Routes>
 					<Route path='/' element={<Home />} />
-					<Route path='/Home' element={<Home />}></Route>
+					{/* <Route path='/Home' element={<Home />}></Route> */}
+					<Route path='/Home' element={isCheckingLogin ? <Loading /> : <Home />} />
 
 					<Route path='/Mypage' element={
 						isCheckingLogin ? (<Loading />) : (
