@@ -35,9 +35,8 @@ import MyReview from '../pages/Mypage/MyReview';
 import MyLike from '../pages/Mypage/MyLike';
 // redux import
 import { toggleDarkMode } from '../redux/actions/darkModeActions';
-import { setLoggedIn, login, refreshToken, logout } from '../redux/actions/userActions';
-import { setAdminLayout } from '../redux/actions/adminLayoutActions';
-import { setCookie, getCookie, removeCookie } from '../redux/actions/cookieActions';
+import { setLoggedIn, setAdminUser, refreshToken, logout } from '../redux/actions/userActions';
+import { setCookie, getCookie } from '../redux/actions/cookieActions';
 
 const ItemDetail = lazy( () => import('../pages/ItemDetail') )
 const Itemlist = lazy( () => import('../pages/Itemlist') )
@@ -53,6 +52,7 @@ const Layout = () => {
   const featuredcategories = useSelector(state => state.category.featuredcategories);
 	const isadminLayout = useSelector(state => state.adminLayout.isadminLayout);
   const isLoggedIn = useSelector(state => state.user.isLoggedIn);
+  const isAdminUser = useSelector(state => state.user.isAdminUser);
   const memberName = useSelector(state => state.user.memberName);
   const loginId = useSelector(state => state.user.loginId);
 	
@@ -84,7 +84,7 @@ const Layout = () => {
       if (isLoggedIn && !isCheckingLogin) {
         checkAccessTokenExpiration();
       }
-    }, 30000); // 30초마다 AccessToken 만료 시간 확인
+    }, 3000000); // 30초마다 AccessToken 만료 시간 확인
 
     return () => clearInterval(checkInterval);
   }, [isLoggedIn]);
@@ -134,6 +134,9 @@ const Layout = () => {
 				dispatch(setLoggedIn(userData));
 				console.log(2);
 			}
+			if (userData.role === 'ADMIN'){
+				dispatch(setAdminUser(true))
+			}
 		} catch (error) {
 			console.error('Error fetch login session :', error);
 		} finally {
@@ -163,7 +166,7 @@ const Layout = () => {
 	return (
 		<div className={`${darkMode ? 'dark' : ''}`}>
 		<div className={style.layout}>
-			{!isadminLayout && <Header />} 
+			{!isadminLayout && <Header isAdminUser={isAdminUser} />} 
 			<div className={style.body}>
 				<Routes>
 					<Route path='/' element={<Home />} />
@@ -254,24 +257,6 @@ const Layout = () => {
 					<Route path='Compare' element={ <Compare /> }></Route>
 					<Route path='Event' element={ <Event /> }></Route>
 					<Route path='Contactus' element={ <Contactus /> }></Route>
-
-					{/* <Route path='/Admin' element={
-					isCheckingLogin ? (<Loading />) : (
-							isLoggedIn ? (
-								(() => {
-									dispatch(setAdminLayout(true));
-									return <AdminLayout memberName={memberName} />;
-								})()
-							) : (
-								<>
-									<ErrorLogin />
-									<div className='modalBg modalBg-Blur' onClick={() => { navigate(-1) }}></div>
-								</>
-							)
-						)
-					}>
-						<Route path="/Admin/AdminHome" element={<AdminHome isadminLayout />} />
-					</Route> */}
 
 					<Route path='*' element={ <Error /> }></Route>
 					<Route path='*' element={ <ErrorItem /> }></Route>

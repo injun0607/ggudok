@@ -51,7 +51,7 @@
 .form .doublebutton {margin-top: 1rem; display: flex; flex-wrap: wrap; gap: 1rem; width: 100%;}
 .form .doublebutton a, .form .doublebutton button {width: calc((100% - 1rem) / 2);}
 
-.form form input.input_half {width: calc((100% - 1rem) / 2);}
+.form form .inputHalf {width: calc((100% - 1rem) / 2);}
 .form form textarea {
   width: 100%;
   height: 15rem;

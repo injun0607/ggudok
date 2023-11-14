@@ -11,10 +11,10 @@ import { fetchCategory, setDropCategory } from '../redux/actions/categoryActions
 
 const NO_ICON_URL = '/images/common/logo_grey.png';
 
-const Header = () => {
+const Header = ({ isAdminUser }) => {
   return (
 	<header>	
-		<Topheader />
+		<Topheader isAdminUser={isAdminUser} />
 		<div className={style.category}>
 			<div className='webwidth'>
 				<Allcategory />
@@ -27,7 +27,7 @@ const Header = () => {
   )
 }
 // 상단 메뉴
-const Topheader = () => {
+const Topheader = ({ isAdminUser }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const isLoggedIn = useSelector(state => state.user.isLoggedIn);
@@ -79,7 +79,7 @@ const Topheader = () => {
 								<Link to="/Auth/Join" className={style.point}>회원가입</Link>
 							</>
 						)}
-						<Link to="/Admin/AdminHome" className={style.pointAdmin} target='_blank'><span className='material-icons'>settings</span><p>Admin</p></Link>
+						{isAdminUser && <Link to="/Admin/AdminHome" className={style.pointAdmin} target='_blank'><span className='material-icons'>settings</span><p>Admin</p></Link>}
 					</div>
 				</div>
 			</div>

@@ -29,7 +29,8 @@ const Home = ({isCheckingLogin}) => {
   const recommendBasic = useSelector(state => state.item.recommendBasic);
   const recommendCustomized = useSelector(state => state.item.recommendCustomized);
 
-  const [recommendTag, setRecommendTag] = useState([]);
+  const [ageTag, setAgeTag] = useState('');
+  const [genderTag, setGenderTag] = useState('');
 
   const [IsResult, setIsResult] = useState(false);
   const [IsLoading, setIsLoading] = useState(true);
@@ -39,7 +40,6 @@ const Home = ({isCheckingLogin}) => {
     try {
       const response = await axios.get(`/home`);
       const data = response.data;
-			console.log(3)
       if(data !== 0){
         dispatch(setRecomBasic(data.recommendBasic))
         dispatch(fetchCategory(data.categoryList))
@@ -49,9 +49,8 @@ const Home = ({isCheckingLogin}) => {
           dispatch(setRecomCustom(data.defaultSubs))
         }
         if(isLoggedIn){
-          console.log(4)
-          console.log('data.memberDefaultTag', data.memberDefaultTag)
-          setRecommendTag(data.memberDefaultTag)
+          setAgeTag(data.ageTag)
+          setGenderTag(data.genderTag)
         }
       } else {
         dispatch(setRecomBasic([]));
@@ -146,7 +145,7 @@ const Home = ({isCheckingLogin}) => {
           <section className={style.section}>
             {
               isLoggedIn ?
-              <h2 className={style.tit}>나와 같은 <span className='main_clr'>{recommendTag[0]} {recommendTag[1]}</span>이 가장 많이 구독한 서비스</h2> :
+              <h2 className={style.tit}>나와 같은 <span className='main_clr'>{ageTag} {genderTag}</span>이 가장 많이 구독한 서비스</h2> :
               <h2 className={style.tit}>지금 가장 인기있는 서비스</h2>
             }
             <Swiper

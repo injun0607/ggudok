@@ -25,29 +25,104 @@ import Events from '../../pages/Admin/Events';
 import EventCreate from '../../pages/Admin/EventCreate';
 import EventEdit from '../../pages/Admin/EventEdit';
 //redux import
-import { setAdminLayout } from '../../redux/actions/adminLayoutActions';
-import { setLoggedIn } from '../../redux/actions/userActions';
+import { setLoggedIn, setAdminUser, refreshToken, logout } from '../../redux/actions/userActions';
+import { setCookie, getCookie } from '../../redux/actions/cookieActions';
 
 const AdminLayout = () => {
-  const dispatch = useDispatch();
+	let dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-  useEffect(() => {
-    dispatch(setAdminLayout(true));
-    return () => { dispatch(setAdminLayout(false)); };
-  }, []);
 
 	const [isCheckingLogin, setIsCheckingLogin] = useState(true);
+	
+	const categories = useSelector(state => state.category.categories);
+  const featuredcategories = useSelector(state => state.category.featuredcategories);
 	const isadminLayout = useSelector(state => state.adminLayout.isadminLayout);
   const isLoggedIn = useSelector(state => state.user.isLoggedIn);
+  const isAdminUser = useSelector(state => state.user.isAdminUser);
+  const memberName = useSelector(state => state.user.memberName);
+  const loginId = useSelector(state => state.user.loginId);
 	
-	// 세션 상태 조회 요청
+
+	// JWT 만료 시간을 토큰에서 추출
+	const parseJwt = (token) => {
+		const base64Url = token.split('.')[1];
+		const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+		const jsonPayload = decodeURIComponent(atob(base64));
+		return JSON.parse(jsonPayload);
+	};
+	
+	// refreschToken 설정
+	const checkAccessTokenExpiration = async () => {
+		const decodedToken = parseJwt(getCookie('access')); // JWT 디코딩
+		const expirationTime = decodedToken.exp; // 만료 시간 (Unix timestamp 형식)
+    const currentTime = Math.floor(Date.now() / 1000);
+
+    if (expirationTime - currentTime < 30) {
+      try {
+        await dispatch(refreshToken()); // refreshToken을 백엔드에 전송하여 새로운 AccessToken을 받아옴
+      } catch (error) {
+        console.error('Error refreshing token:', error);
+      }
+    }
+  };
+	useEffect(() => {
+    const checkInterval = setInterval(() => {
+      if (isLoggedIn && !isCheckingLogin) {
+        checkAccessTokenExpiration();
+      }
+    }, 30000); // 30초마다 AccessToken 만료 시간 확인
+
+    return () => clearInterval(checkInterval);
+  }, [isLoggedIn]);
+
+	// 회원 상태조회 요청
+	useEffect(() => {
+		const interceptor = axios.interceptors.request.use(
+			(config) => {
+				const access = getCookie("access");
+				if (access) {
+					config.headers.access = `Bearer ${access}`;
+				}
+				return config;
+			},
+			(error) => {
+				return Promise.reject(error);
+			}
+		);
+	
+		// 컴포넌트가 언마운트될 때 인터셉터를 정리
+		return () => {
+			axios.interceptors.request.eject(interceptor);
+		};
+	}, []); // 한 번만 실행
+	const fetchAccessToken = async () => {
+		const urlParams = new URLSearchParams(window.location.search);
+		const access = urlParams.get('access');
+		const refresh = urlParams.get('refresh');
+		console.log('access', access,'\nrefresh', refresh,);
+		// Access Token을 쿠키에 저장
+		setCookie('access', access, { path: '/' });
+		setCookie('refresh', refresh, { path: '/' });
+		console.log('저장완료');
+		console.log(document.cookie);
+
+  };
+
 	const fetchSessionStatus = async () => {
 		try {
-			const response = await axios.get('/getSession');
+			const response = await axios.get('/getSession', {
+				headers: {
+					access: `Bearer ${getCookie('access')}`,
+				},
+			});
 			const userData = response.data;
 			if (userData.memberName !== undefined && userData.loginId !== undefined) {
 				dispatch(setLoggedIn(userData));
+				console.log(2);
+			}
+			if (userData.role === 'ADMIN'){
+				dispatch(setAdminUser(true))
 			}
 		} catch (error) {
 			console.error('Error fetch login session :', error);
@@ -56,13 +131,26 @@ const AdminLayout = () => {
 		}
 	};
 	useEffect(() => {
-		fetchSessionStatus();
-	}, [location.pathname])
+		const fetchAccessSession = async () => {
+			if (window.location.search) {
+				await fetchAccessToken();
+			}
+			const accessToken = getCookie('access');
+			if(accessToken){
+      	fetchSessionStatus();
+			} else {
+				dispatch(logout());
+				setIsCheckingLogin(false);
+			}
+    };
+
+		fetchAccessSession();
+	}, [location.pathname, getCookie('access')])
   
 
   return (
-		// isCheckingLogin ? (<Loading />) : (
-    // isLoggedIn ?
+		isCheckingLogin ? <Loading /> : (
+    (isLoggedIn && isAdminUser) ?
     <div className='adminLayout'>
       <AdminHeader />
 			<div className={style.body}>
@@ -90,12 +178,12 @@ const AdminLayout = () => {
       </div>
       <AdminFooter />
     </div>
-    //  : (
-    //   <>
-    //     <ErrorLogin />
-    //     <div className='modalBg modalBg-Blur' onClick={() => { navigate(-1) }}></div>
-    //   </>
-    // ))
+     : 
+      <>
+        <ErrorLogin />
+        <div className='modalBg modalBg-Blur' onClick={() => { navigate(-1) }}></div>
+      </>
+    )
   );
 };
 

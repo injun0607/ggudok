@@ -14,6 +14,8 @@ const JoinAfter = () => {
   const memberName = useSelector(state => state.user.memberName);
   const gender = useSelector(state => state.user.gender);
   const age = useSelector(state => state.user.age);
+  const [IsNameVal, setIsNameVal] = useState(false);
+  const [IsAgeVal, setIsAgeVal] = useState(false);
   const [access, setAccess] = useState('');
   const [IsResult, setIsResult] = useState(false);
   const [IsLoading, setIsLoading] = useState(true);
@@ -44,18 +46,21 @@ const JoinAfter = () => {
     fetchAccessToken();
   }, []);
 
+  // 이름 검사
+  const handleChangeName = (newName) => {
+    const regName = /^[가-힣]{1,}$/;
+    const isNameReg = regName.test(newName);
+
+    setIsNameVal(isNameReg);
+    dispatch(setMemberName(newName))
+  }
+
   // 나이 검사
   const handleChangeAge = (newAge) => {
-    // 나이 유효성 검사
-    const regAge = /^[0-2]+$/;
+    const regAge = /^[0-9]+$/;
     const isAgeReg = regAge.test(newAge);
 
-    // 오류 메시지 설정
-    if (!isAgeReg){
-      return;
-    }
-  
-    // Redux 상태 업데이트
+    setIsAgeVal(isAgeReg);
     dispatch(setAge(newAge))
   }
 
@@ -63,7 +68,11 @@ const JoinAfter = () => {
     e.preventDefault();
     if (!memberName) {
       alert('이름을 입력하세요.')
-    } else if (!age) {
+    } else if (!IsNameVal) {
+      alert('한 글자 이상의 한글만 입력해주세요. (띄어쓰기 불가능)')
+    }  else if (!age) {
+      alert('나이를 입력하세요.')
+    } else if (!IsAgeVal) {
       alert('나이를 숫자만 입력하세요.')
     } else if (!gender) {
       alert('성별을 선택하세요.')
@@ -93,14 +102,17 @@ const JoinAfter = () => {
               <input type='text' name='memberName' autoComplete="off"
                 placeholder='이름을 입력하세요.'
                 value={memberName}
-                onChange={(e) => { dispatch(setMemberName(e.target.value)) }} />
+                onChange={(e) => {
+                  dispatch(setMemberName(e.target.value))
+                  handleChangeName(e.target.value);
+                }} />
               <input type='text' name='age' autoComplete="off"
-                  placeholder='나이를 숫자만 입력하세요.'
-                  value={age}
-                  onChange={(e) => { 
-                    dispatch(setAge(e.target.value))
-                    handleChangeAge(e.target.value);
-                  }} />
+                placeholder='나이를 숫자만 입력하세요.'
+                value={age}
+                onChange={(e) => { 
+                  dispatch(setAge(e.target.value))
+                  handleChangeAge(e.target.value);
+                }} />
               <select className={`${style.select}`} name='gender'
                 value={gender}
                 onChange={(e) => dispatch(setGender(e.target.value))}

@@ -13,6 +13,12 @@ export const setLoggedIn = (userData) => {
     payload: userData,
   };
 }
+export const setAdminUser = (isAdminUser) => {
+  return {
+    type: 'SET_ADMIN_USER',
+    payload: isAdminUser,
+  };
+}
 export const loginSuccess = (userData) => ({
   type: LOGIN_SUCCESS,
   payload: userData,

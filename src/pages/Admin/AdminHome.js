@@ -95,7 +95,7 @@ const AdminHome = () => {
               </tbody>
             </table>
           </div>
-          : <p className='txt_center txt_grey mt_30'>등록된 이벤트가 없습니다.</p>
+          : <p className='txt_center txt_grey mt_30'>등록된 카테고리가 없습니다.</p>
           }
         </div>
       </article>
@@ -148,7 +148,7 @@ const AdminHome = () => {
               </tbody>
             </table>
           </div>
-          : <p className='txt_center txt_grey mt_30'>등록된 이벤트가 없습니다.</p>
+          : <p className='txt_center txt_grey mt_30'>등록된 구독서비스가 없습니다.</p>
           }
         </div>
       </article>

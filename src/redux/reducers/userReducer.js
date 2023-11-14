@@ -1,5 +1,6 @@
 const initialState = {
   isLoggedIn: false,
+  isAdminUser: false,
 
   // ******************** 회원가입 *******************
   isEmailSent: false,
@@ -39,6 +40,11 @@ const userReducer = (state = initialState, action) => {
         isLoggedIn: true,
         loginId: action.payload.loginId,
         memberName: action.payload.memberName,
+      };
+    case 'SET_ADMIN_USER':
+      return {
+        ...state,
+        isAdminUser: true,
       };
 
     // ************************** 마이페이지 ************************
