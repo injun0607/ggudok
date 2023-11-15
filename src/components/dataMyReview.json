@@ -1,0 +1,25 @@
+{
+  "reviews": [
+    {
+        "contents": "인준아저씨 건강해요 ",
+        "memberName": "인인준",
+        "subsId": 1,
+        "subsName": "healthCare",
+        "rating": 5
+    },
+    {
+        "contents": "사히부인 밥이 더맛있어요",
+        "memberName": "인인준",
+        "subsId": 2,
+        "subsName": "dosirak",
+        "rating": 2
+    },
+    {
+        "contents": "인준아저씨 운동해요",
+        "memberName": "인인준",
+        "subsId": 3,
+        "subsName": "healthCare2",
+        "rating": 4
+    }
+  ]
+}

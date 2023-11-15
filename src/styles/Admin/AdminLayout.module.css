@@ -1,0 +1,239 @@
+@charset "utf-8";
+.errorpage p {color: #fff;}
+.body {
+  min-height: calc(100vh - 6.957rem);
+  padding: 5rem 0  3rem;
+}
+.dashboxWrap {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(calc((100% - 1.125rem) / 2), auto));
+  grid-auto-rows: minmax(100px, auto);
+  gap: 1.125rem;
+  padding: var(--pad-sm);
+}
+
+/* 위로가기 버튼 */
+.topbtn {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  right: 3vw;
+  bottom: 18vh;
+  padding: var(--pad-sm);
+  background: #fff;
+  color: var(--sub-color-2);
+  border-radius: 100%;
+  box-shadow: var(--box-shadow);
+  transition: 0.3s;
+}
+.topbtn.show {display: block;}
+
+/**************************************************************/
+/**************************************************************/
+/********************** basic form setting ********************/
+/**************************************************************/
+/**************************************************************/
+.select {
+  width: 180px;
+  height: 3rem;
+  padding-left: 1.5rem;
+  color: #000;
+  font-size: 1.125rem;
+  /* background: transparent; */
+  border: 1px solid var(--c-black-6);
+  overflow: hidden;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  cursor: pointer;
+  border-radius: var(--radius-all-xs);
+  box-sizing: border-box;
+  display: block;
+  background-image: url('../../images/expand_more_black.svg');
+  background-repeat: no-repeat;
+  background-position: calc(100% - 0.75rem) center;
+}
+.select:focus {border: 1px solid var(--main-color);}
+.select:disabled {background: var(--c-black-7); color: var(--c-black-3);}
+.select option {line-height: 1.8em;}
+.formTagSection {padding: 1.5rem 0; border-top: 1px solid var(--c-black-6); color: var(--txt-color);}
+.formTagSection .tit {display: flex; justify-content: space-between; align-items: center;}
+.formTagSection .tit h3 {font-size: 1.125rem; font-weight: 500; flex-grow: 1;}
+.formTagSection .cont {margin-top: 0.25rem; max-height: 2000px; overflow: hidden; transition: ease all 0.2s;}
+.formTagSection .cont.contTag {display: flex; gap: 0.25rem 1rem; flex-wrap: wrap;}
+.formTagSection .cont.hide {max-height: 0;}
+.formTagSection .cont select {width: 100%; border-radius: var(--radius-all-md); border: 1px solid var(--sub-color-5); padding: 0 1rem;}
+.checkInputWrap {margin-top: 10px;}
+.multiTxt {font-size: 0.875rem; color: var(--txt-color-2); padding-right: 0.5rem; font-weight: 300; text-align: right; display: inline-block; float: right;}
+/**************************************************************/
+/**************************************************************/
+/********************** basic box setting *********************/
+/**************************************************************/
+/**************************************************************/
+.dashbox {
+  background: #ffffff22;
+  border-radius: var(--radius-all-sm);
+}
+.dashbox .dashtit {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 1.25rem 1.25rem 1.05rem 1.75rem;
+  border-bottom: 1px solid #ffffff22;
+  color: #fff;
+}
+.dashbox .dashtit h2 {
+  font-size: 1.15rem;
+  font-weight: 400;
+  flex-grow: 1;
+}
+.dashbox .dashtit .moreBtn { background: none; }
+.dashbox .dashtit .moreBtn span { color: #fff; }
+.dashbox .dashcont {
+  padding: var(--pad-sm);
+}
+/********************** tag box setting *********************/
+.AdminBox {display: flex; gap: 0.75rem; margin-top: 5rem; flex-wrap: wrap;}
+.AdminBox .box {background: var(--bg-color-4); padding: 0.75rem 1.5rem; border-radius: var(--radius-all-xs); display: flex; gap: 2rem; align-items: center;}
+.AdminBox .box h3 {font-weight: 400; font-size: 1.125rem;}
+.AdminBox .box button {min-width: auto;}
+.dashcont .AdminBox {margin: 0;}
+.dashcont .AdminBox .box {padding: 0.5rem 1rem;}
+.dashcont .AdminBox .box h3 {font-size: 0.875rem;}
+/**************************************************************/
+/**************************************************************/
+/********************* basic table setting ********************/
+/**************************************************************/
+/**************************************************************/
+.tableWrap {padding: var(--pad-sm);}
+.tableWrap>button, .tableWrap>a {width: 180px; float: right; margin-bottom: 1rem; font-weight: 500;}
+.tbScroll {
+  overflow-x: auto;
+  width: 100%;
+}
+.table {
+  width: 100%;
+  min-width: 480px; 
+  border-collapse: collapse;
+  line-height: 1.5em;
+  text-align: center;
+  color: var(--txt-color-wht);
+  width: 100%;
+  overflow: hidden;
+  border-radius: var(--radius-all-sm);
+}
+.table_min {
+  min-width: 280px;
+}
+.table th {
+  background: var(--sub-color-2);
+  color: #fff;
+  padding: 20px;
+  font-weight: 400;
+}
+.table tbody tr {
+  background: var(--bg-color-3);
+}
+.table tbody tr:nth-child(odd) {
+  background: var(--bg-color-4);
+}
+.table td {
+  padding: 14px;
+  color: var(--txt-color);
+  vertical-align: middle;
+  background: none;
+}
+.table tr, .table th, .table td {
+  border-bottom: 0 !important;
+}
+.table th:last-child, .table td:last-child {
+  border-right: 0;
+}
+.table .cont {
+  text-align: left;
+  word-break: keep-all;
+}
+.table .tdIcon img {max-width: 2rem; max-height: 2rem;}
+.table .tdImg {padding: 8px;}
+.table .tdImg img {max-width: 4rem; max-height: 4rem;}
+.table .tdBtn button {margin-right: 0.75rem; min-width: 5rem;}
+.table .tdBtn button:last-child {margin: 0;}
+.tbSm .table th {padding: 14px; font-size: 0.938rem;}
+.tbSm .table td {padding: 10px; font-size: 0.875rem;}
+.tbSm .table td img {max-width: 2rem; max-height: 2rem;}
+/**************************************************************/
+/**************************************************************/
+/************************animate setting **********************/
+/**************************************************************/
+/**************************************************************/
+.adminLayout .ani {
+  /* z-index: -1; */
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+}
+.adminLayout .ani .ani06 {
+  display: block;
+  /* background: url('/images/common/animateBG-01.svg') center center no-repeat; */
+  position: absolute;
+  right: -5rem;
+  top: -5rem;
+  animation: rotate 20s infinite linear;
+  width: 40vw;
+  aspect-ratio: 1/1;
+}
+.adminLayout .ani .ani08 {
+  display: block;
+  /* background: url('/images/common/animateBG-02.svg') center center no-repeat; */
+  position: absolute;
+  left: -8rem;
+  bottom: -8rem;
+  animation: updown02 5s ease-in-out infinite;
+  width: 30vw;
+  aspect-ratio: 1/1;
+  opacity: 0.8;
+}
+.adminLayout .ani .ani00 {
+  display: block;
+  /* background: url('/images/common/animateBG-03.svg') center center no-repeat; */
+  position: absolute;
+  right: 15vw;
+  top: 20vh;
+  animation: updown 5s ease-in-out infinite;
+  width: 20vw;
+  aspect-ratio: 1/1;
+}
+
+@keyframes updown02 {
+  0%{
+    transform: translate(0,0);
+  }
+  50%{
+    transform: translate(0,20px);
+  }
+  100%{
+    transform: translate(0,0);
+  }
+}
+
+
+@keyframes updown {
+  0%{
+    transform: translate(0,0);
+  }
+  50%{
+    transform: translate(0,-20px);
+  }
+  100%{
+    transform: translate(0,0);
+  }
+}
+
+
+@keyframes rotate {
+  0%{
+    transform: rotate(0);
+  }
+  100%{
+    transform: rotate(-360deg);
+  }
+}

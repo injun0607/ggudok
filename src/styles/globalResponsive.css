@@ -1,0 +1,172 @@
+@charset "utf-8";
+
+@media screen and (max-width:1300px) {
+/**************************************************************/
+/**************************************************************/
+/****************************basic css*************************/
+/**************************************************************/
+/**************************************************************/
+
+html, body { font-size: 14px; }
+:root {
+    --web-width: 100%;
+}
+
+.clearfix::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+.pc_hidden {
+    display: block !important;
+}
+.m_hidden {
+    display: none !important;
+}
+
+.min_img {
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+.webwidth {width: 100%; padding: 0 1.125rem; box-sizing: border-box;}
+.webwidth_pd {padding: 2rem 1.125rem;}
+
+.page_tit h2 {font-size: 2rem;}
+
+/* ---------------------- 이미지 슬라이더 ------------------------*/
+.react-slideshow-container .nav:first-of-type {left: 1rem;}
+.react-slideshow-container .nav:last-of-type {right: 1rem;}
+.bannerslider h3 {font-size: 1.75rem; margin: 1.25rem 0 1rem;}
+.bannerslider h4 {font-size: 1.25rem;}
+section .bannerslider h3 {font-size: 1.75rem; margin: 1.25rem 0 1rem;}
+section .bannerslider h4 {font-size: 1.125rem;}
+.react-slideshow-container .default-nav {width: 1.25rem; height: 1.25rem;}
+/* ---------------------- swiper 스와이퍼 ------------------------*/
+.swiper-button-prev, .swiper-button-next {
+    top: 0;
+}
+.swiper-button-prev:after, .swiper-button-next:after {
+    font-size: 1.5rem !important;
+}
+.swiper-button-prev {left: inherit; right: 40px;}
+.swiper-button-next {left: inherit; right: 0;}
+}
+
+/*----------------------------------------1024--------------------------------*/
+
+@media screen and (max-width:1024px) {
+   
+
+}
+
+
+
+
+/*--------------------------------------800----------------------------------*/
+@media screen and (max-width:800px) {
+.page_tit h2 {font-size: 1.75rem;}
+.page_tit.page_tit-side {padding-top: 5rem;}
+
+/* ---------------------- 리스트 (박스) ------------------------*/
+.item-list {flex-wrap: wrap;}
+.item-list-box {width: calc((100% - 1.5rem) / 2);}
+
+/* ---------------------- 슬라이더 ------------------------*/
+section .bannerslider {height: 12rem;}
+section .bannerslider .tag {margin-top: 2rem; padding: 0 3rem;}
+section .bannerslider .tag p {padding: 0.125rem 0.5rem; margin-bottom: 0;}
+section .bannerslider h3 {font-size: 1.5rem; margin: 0.75rem 0 0.75rem; padding: 0 3rem;}
+section .bannerslider h4 {font-size: 1.085rem; margin: 0 0 0.5rem; padding: 0 3rem;}
+section .bannerslider p { padding: 0 3rem; margin-bottom: 2rem;}
+.react-slideshow-container .default-nav {width: 18px; height: 18px; min-width: inherit; min-height: inherit;}
+.react-slideshow-container .default-nav svg {object-fit: cover; width: 100%; height: 100%;}
+}
+
+
+
+
+/*----------------------------------------640--------------------------------*/
+
+@media screen and (max-width:640px) {
+    /**************************** basic **************************/
+
+	input[type="text"], input[type="password"], select { font-size:0.875rem; }
+	input[type="file"] { font-size: 0.875rem; }
+	textarea { font-size:0.875rem; }
+    .form-inline .i_sup_hf {width:100%;}
+    .form-inline .i_sup_md { display: block;}
+
+	.btn { height: 48px; line-height: 48px; min-width: 90px; font-size: 0.875rem; }	
+	.btn_s {  font-size:0.875rem; }
+    a.btn_write {
+        margin-bottom: 10px;
+    }
+    .checkbox-label {padding-left: 24px;}
+    .checkbox-label::after {width: 18px;height: 18px;background-size: cover; top: 0;}
+   
+
+    }
+
+
+
+
+
+
+/*----------------------------------------580--------------------------------*/
+
+@media screen and (max-width:580px) {
+   
+}
+	
+	
+	
+	
+	
+/*----------------------------------------480--------------------------------*/
+
+@media screen and (max-width:480px) {
+    /*************************** basic ***************************/
+    table th {
+        font-size: 1rem;
+    }
+    .txt_ex {
+        display: block;
+    }
+    .flex_res {
+        display: flex;
+    }
+    .flex_res .btn_modify, .flex_res .btn_delete, .flex_res .btn_back {
+        float: inherit;
+        width: 32%;
+        margin-right: 2%;
+    }
+    .flex_res .btn_back {
+        margin-right: 0;
+    }
+    .btn_ic_wrap {gap: 0.5rem;}
+    .waiting_sub {width: 80%;}
+    .waiting_sub::before {width: 100%;}
+    .waiting_sub p {font-size: 1rem;}
+
+    /* ---------------------- 리스트 (박스) ------------------------*/
+    /* .item-list-box .img {height: 8rem;} */
+    .item-list-box .txt {padding: 1rem;}
+    .item-list-box .txt h3 {font-size: 1rem;}
+    .item-list-box .tag {margin-top: 0.5rem;}
+    .item-list-box .tag p {letter-spacing: -1px;}
+}	
+	
+	
+	
+	
+/*----------------------------------------380--------------------------------*/
+
+@media screen and (max-width:380px) {
+
+
+    /******************* tab contents setting ********************/
+    .tab_link-tab .tabl {width: 50%;font-size: 1rem;}
+    .i_sup_md {min-width:150px; width: 120px;}
+    .cal_wrap .cal {width:150px;}
+    .check_group { display: block;}
+}

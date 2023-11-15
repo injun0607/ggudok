@@ -1,0 +1,84 @@
+{
+  "memberInfo": {
+      "subsLike": false,
+      "review": {
+          "contents": "서히가 배부러요",
+          "memberName": "깡깡지",
+          "subsId": 2,
+          "subsName": "dosirak",
+          "rating": 3,
+          "subsImage": null
+      }
+  },
+  "itemDetail": {
+      "id": 2,
+      "name": "dosirak",
+      "info": null,
+      "icon": null,
+      "image": null,
+      "category": "식품",
+      "ratingAvg": 3,
+      "ranks": [
+          {
+              "rankName": "아침",
+              "price": 2500,
+              "rankLevel": "DEFAULT",
+              "content": [
+                  "도시락 기본 구독혜택1",
+                  "도시락 기본 구독혜택2)"
+              ]
+          },
+          {
+              "rankName": "아침및점심",
+              "price": 6500,
+              "rankLevel": "PRIME",
+              "content": [
+                  "도시락 프리미엄 구독혜택1",
+                  "도시락 프리미엄 구독혜택2",
+                  "도시락 프리미엄 구독혜택3"
+              ]
+          }
+      ],
+      "tags": [
+          {
+              "tagId": 1,
+              "tagName": "20대"
+          },
+          {
+              "tagId": 2,
+              "tagName": "30대"
+          },
+          {
+              "tagId": 6,
+              "tagName": "식품"
+          }
+      ],
+      "reviews": [
+          {
+              "contents": "서히가 배부러요",
+              "memberName": "깡깡지",
+              "subsId": 2,
+              "subsName": "dosirak",
+              "rating": 3,
+              "subsImage": null
+          },
+          {
+              "contents": "사히부인 밥이 더맛있어요",
+              "memberName": "인인준",
+              "subsId": 2,
+              "subsName": "dosirak",
+              "rating": 2,
+              "subsImage": null
+          },
+          {
+              "contents": "낑낑이 리뷰!",
+              "memberName": "인인준준",
+              "subsId": 2,
+              "subsName": "dosirak",
+              "rating": 5,
+              "subsImage": null
+          }
+      ]
+  },
+  "similarItems": []
+}

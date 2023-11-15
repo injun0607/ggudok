@@ -1,0 +1,63 @@
+@charset "utf-8";
+
+.header {background: var(--bg-color);}
+.header.fixed {position: fixed; top: 0;}
+.header .logo {display: flex; justify-content: center; align-items: center;}
+.header .logo a {font-family: var(--main-font); color: var(--txt-color);font-size: 2.125rem; transition: 0.15s; display: flex;}
+.header .logo a span {font-family: var(--main-font); color: var(--txt-color);font-size: 2.125rem; transition: 0.2s;margin-top: -3px; display: inline-block;}
+.header .logo a:hover {margin-top: -3px;}
+.header .logo a:hover span {margin-top: 3px;}
+.header .search {flex-grow: 1;}
+.header .search .searchbar {float: right; width: 24rem; border: 1px solid var(--c-black-5); overflow: hidden; border-radius: var(--radius-all-lg); padding: 0 0.25rem 0 0.5rem; display: flex; align-items: center; background: var(--bg-color-2);}
+.header .search .searchbar input {width: calc(100% - 2rem); border: none; background: var(--bg-color-2);}
+.header .search .searchbar button {background: none;}
+.header .search .searchbar span {cursor: pointer; color: var(--txt-color);}
+.header .link {padding: 1.25rem 0 0; display: flex; justify-content: space-between; gap: 3rem;}
+.header .link .nav {display: flex; gap: 1rem; align-items: center; font-size: 0.925rem;}
+.header .link .nav a, .header .link .nav button {color: var(--txt-color); font-size: 0.925rem; background: none;}
+.header .link .nav a.point {color: #fff; display: inline-block; background-color: var(--main-color); padding: 0.25rem 0.5rem; border-radius: var(--radius-all-min);}
+.header .link .nav a.pointAdmin {color: #fff; display: inline-block; background-color: var(--sub-color-4); padding: 0.25rem 0.5rem; border-radius: var(--radius-all-min); display: flex; gap: 0.25rem; align-items: center;}
+.header .link .nav a.pointAdmin span {font-size: 0.938rem; color: #fff;}
+
+.category>div {display: flex; justify-content: space-between; align-items: center; gap: 3rem;}
+.category {background: var(--bg-color); border-bottom: 1px solid var(--c-black-6);padding: 1.5rem 0 1.25rem; position: relative;}
+.category .allcategory .onedepth {display: flex; align-items: center; gap: 0.5rem; font-weight: 600; cursor: pointer; font-size: 1.125rem; color: var(--txt-color);}
+.category .allcategory .twodepth {max-width: 10rem; position: absolute; z-index: 99; background-color: var(--bg-color-2); padding: 1.5rem 1.5rem; top: 5rem; border-radius: 0 0 1rem 1rem; box-shadow: 4px 12px 30px 6px rgba(0,0,0,.09);}
+.category .allcategory .twodepth .depths {display: flex; gap: 0.75rem; margin-top: 1rem; color: var(--txt-color); min-height: auto;}
+.category .allcategory .twodepth .depths:first-child {margin: 0;}
+.category .allcategory .twodepth .depths img {width: 1.125rem; transition: 0.3s;}
+.category .allcategory .twodepth .depths:hover img { margin-top: -6px;}
+.category .allcategory .twodepth .depths p {font-size: 0.925rem; font-weight: 600; color: var(--txt-color-2);}
+.category .featuredcategory {display: flex; gap: 5.5rem; font-weight: 500; font-size: 1.125rem;}
+.category .featuredcategory a { color: var(--txt-color);}
+.category .pointdepth {border: 1px solid var(--c-black-6); padding: 0.325rem 1rem; border-radius: var(--radius-all-md); color: var(--main-color); font-weight: 500; transition: 0.3s; font-size: 0.925rem;}
+.category .pointdepth span {display: none;}
+.category .pointdepth:hover {background: var(--bg-color-2);}
+
+@media screen and (max-width:800px) {
+  .header .logo a, .header .logo a span {font-size: 1.825rem;}
+  .header .link {flex-wrap: wrap; gap: 1rem; padding-top: 3.5rem;}
+  .header .link .nav {width: 100%; justify-content: flex-end; position: absolute; right: 1.125rem; top: 0.75rem;}
+  .header .link .logo {max-width: 50px;}
+  .header .link .search {width: calc(100% - 60px - 6rem); flex-grow: inherit;}
+  .header .search .searchbar {width: 100%;}
+  .header .search .searchbar input {height: 32px;}
+  
+  .category {padding: 1.25rem 0 1rem}
+  .category .allcategory .twodepth {top: 4.5rem;}
+  .category .featuredcategory {gap: 3rem;}
+}
+@media screen and (max-width:640px) {
+  .category .allcategory .onedepth p {display: none;}
+  .category .pointdepth {border: 0; padding: 0;}
+  .category .pointdepth span {display: inline-block;}
+  .category .pointdepth p {display: none;}
+}
+@media screen and (max-width:480px) {
+  .header .link .search {width: calc(100% - 50px - 1rem);}
+  .header .link .search input::placeholder {letter-spacing: -1px;}
+  .category>div {gap: 1rem;}
+  .category .featuredcategory {gap: 2rem;}
+  .category .featuredcategory p {letter-spacing: -1px;}
+  
+}

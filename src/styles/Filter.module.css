@@ -1,0 +1,28 @@
+@charset "utf-8";
+
+.left {width: 18rem;}
+.sideBarTit {display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;}
+.sideBarTit h2 {font-size: 1.425rem; font-weight: 600; color: var(--txt-color);}
+.sideBarTit .resetBtn {font-size: 1rem; color: var(--sub-color-4); background: none; display: flex; align-items: center; font-weight: 600; gap: 0.125rem; transition: 0.3s;}
+.sideBarTit .resetBtn:hover {color: var(--sub-color-2);}
+.sideBar .filter {padding: 1.5rem 0; border-top: 1px solid var(--c-black-6); color: var(--txt-color);}
+.sideBar .filter .tit {display: flex; justify-content: space-between; align-items: center;}
+.sideBar .filter .tit h3 {font-size: 1.125rem; font-weight: 500; flex-grow: 1;}
+.sideBar .filter .tit .hideMenuBtn { background: none; }
+.sideBar .filter .tit .hideMenuBtn span {color: var(--sub-color-2); transition: 0.3s; color: var(--txt-color);}
+.sideBar .filter .tit .hideMenuBtnActive span {transform: rotate(180deg);}
+.sideBar .filter .cont {margin-top: 0.25rem; max-height: 2000px; overflow: hidden; transition: ease all 0.2s;}
+.sideBar .filter .cont.contTag {display: flex; gap: 0.25rem 1rem; flex-wrap: wrap;}
+.sideBar .filter .cont.hide {max-height: 0;}
+.sideBar .filter .cont select {width: 100%; border-radius: var(--radius-all-md); border: 1px solid var(--sub-color-5); padding: 0 1rem;}
+.checkInputWrap {margin-top: 10px;}
+.filterMultiTxt {font-size: 0.875rem; color: var(--txt-color-2); padding-right: 0.5rem; font-weight: 300; text-align: right; display: inline-block; float: right;}
+
+@media screen and (max-width:640px) {
+  .left {width: 100%; background: var(--bg-color-2); padding: 1.25rem 1.325rem 1rem; border-radius: var(--radius-all-sm);}
+  .sideBarTit {margin-bottom: 0.5rem;}
+  .sideBar .filter {padding: 0.25rem 0 1rem; border-top: 1px solid var(--c-black-6);}
+  .sideBar .filter:last-child {padding-bottom: 0;}
+  .checkInputWrap {margin-top: 8px;}
+  .checkInputWrap:first-child {margin-top: 0;}
+}

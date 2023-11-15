@@ -1,0 +1,62 @@
+{
+  "items": [{
+    "id": 1,
+    "name": "netfilx",
+    "icon": null,
+    "image": null,
+    "category": "영화",
+    "ratingAvg": 3,
+
+    "ranks": [{
+      "rankName": "기본",
+      "price": 4500,
+      "rankLevel": "DEFAULT"
+    }, {
+      "rankName": "프리미엄",
+      "price": 5500,
+      "rankLevel": "PRIME"
+    }],
+
+    "tags": [{
+      "tagId": 1,
+      "tagName": "20대"
+    }, {
+      "tagId": 2,
+      "tagName": "30대"
+    }, {
+      "tagId": 3,
+      "tagName": "40대"
+    }, {
+      "tagId": 4,
+      "tagName": "여성"
+    }, {
+      "tagId": 5,
+      "tagName": "남성"
+    }]
+  },
+  
+  {
+    "id": 3,
+    "name": "watcha",
+    "icon": null,
+    "image": null,
+    "category": "영화",
+    "ratingAvg": 3,
+    "ranks": [{
+      "rankName": "왓챠 기본",
+      "price": 6900,
+      "rankLevel": "DEFAULT"
+    }, {
+      "rankName": "왓챠 프리미엄",
+      "price": 7500,
+      "rankLevel": "PRIME"
+    }],
+    "tags": [{
+      "tagId": 4,
+      "tagName": "여성"
+    }, {
+      "tagId": 5,
+      "tagName": "남성"
+    }]
+  }]
+}

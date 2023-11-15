@@ -1,0 +1,23 @@
+@charset "utf-8";
+
+.header {padding: var(--pad-sm); display: flex; justify-content: space-between; gap: 3rem; border-bottom: 1px solid var(--c-black-admin); background: #37394d;}
+.header.fixed {position: fixed; top: 0;}
+.header .logo {display: flex; justify-content: center; align-items: center;}
+.header .logo a {font-family: var(--main-font); color: #fff;font-size: 2.125rem; transition: 0.15s; display: flex;}
+.header .logo a span {font-family: var(--main-font); color: #fff;font-size: 2.125rem; transition: 0.2s;margin-top: -3px; display: inline-block;}
+.header .logo a:hover {margin-top: -3px;}
+.header .logo a:hover span {margin-top: 3px;}
+.header .search {flex-grow: 1;}
+.header .search .searchbar {float: right; width: 24rem; border: 1px solid var(--c-black-5); overflow: hidden; border-radius: var(--radius-all-lg); padding: 0 0.25rem 0 0.5rem; display: flex; align-items: center; background: var(--bg-color-2);}
+.header .search .searchbar input {width: calc(100% - 2rem); border: none; background: var(--bg-color-2);}
+.header .search .searchbar span {cursor: pointer; color: #fff;}
+.header .nav {width: calc(var(--web-width) / 2); display: flex; justify-content: space-between; align-items: center;}
+.header .nav a, .header .nav button {color: #fff; font-size: 1.063rem; background: none; font-weight: 300; letter-spacing: -0.0125em;}
+.header a.point {color: #fff; display: inline-block; background-color: var(--main-color); padding: 0.25rem 0.5rem; border-radius: var(--radius-all-min);}
+
+.pointAdmin {border: 1px solid var(--c-black-admin); padding: 0.325rem 0.75rem; border-radius: var(--radius-all-md); color: var(--main-color); font-weight: 500; transition: 0.3s; font-size: 0.925rem; display: flex; align-items: center; gap: 0.25rem;}
+.pointAdmin:hover {background: var(--bg-color-2);}
+.pointAdmin span {font-size: 1.125rem;}
+
+@media screen and (max-width:1300px) {
+}

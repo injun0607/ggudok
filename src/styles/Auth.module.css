@@ -1,0 +1,195 @@
+@charset "utf-8";
+
+.pagewrapPd {padding: 4rem 0;}
+
+.auth {
+  min-height: calc(100vh - 17.063rem);
+  box-sizing: border-box;
+  padding: 2rem 0;
+}
+.login {padding: 4rem 0; box-sizing: border-box;}
+.join .form, .login .form {max-width: 36rem; margin: 0 auto;}
+.contactus .form {max-width: 50rem; margin: 0 auto;}
+.form form {display: flex; gap: 1rem; flex-wrap: wrap;}
+.form form .inputwrap {width: 100%; display: flex; flex-wrap: wrap; gap: 1rem;}
+.auth .form input {
+  width: 100%;
+  height: 3.5rem;
+  padding-left: 1.5rem;
+  color: #000;
+  font-size: 1.125rem;
+  /* background: transparent; */
+  border: 1px solid var(--c-black-6);
+  overflow: hidden;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  cursor: pointer;
+  border-radius: var(--radius-all-xs);
+  box-sizing: border-box;
+  display: block;
+  letter-spacing: -0.75px;
+}
+.auth .form input.inputFile {width: inherit !important;}
+.auth .form input:focus {
+  border: 1px solid var(--sub-color);
+}
+.auth .form input:disabled {
+  background: var(--c-black-7);
+  color: var(--c-black-3);
+}
+
+.auth .userImg {margin: 0 auto; margin-bottom: 1rem;}
+.auth .userImg .circle {width: 10rem; border-radius: 100%; aspect-ratio: 1/1; overflow: hidden; margin: 0 auto; margin-bottom: 1rem;}
+.auth .userImg .circle.circleSm {width: 7rem; }
+.auth .userImg .circle.circleSmNr {width: 7rem; border-radius: 0; }
+.userImg>input {width: auto !important;}
+.auth .userImg .circle img {width: 100%; height: 100%; object-fit: cover;}
+.auth .userName {font-size: 1.5rem; width: 100%; text-align: center;}
+.auth .userName .name {font-size: 1.75rem; font-weight: 500; vertical-align: baseline; color: var(--txt-color);}
+.form button {width: 100%;}
+.form .doublebutton {margin-top: 1rem; display: flex; flex-wrap: wrap; gap: 1rem; width: 100%;}
+.form .doublebutton a, .form .doublebutton button {width: calc((100% - 1rem) / 2);}
+
+.form form .inputHalf {width: calc((100% - 1rem) / 2);}
+.form form textarea {
+  width: 100%;
+  height: 15rem;
+  padding-left: 1.5rem;
+  color: #000;
+  /* font-size: 1.125rem; */
+  /* background: transparent; */
+  border: 1px solid var(--c-black-6);
+  overflow: hidden;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  cursor: pointer;
+  border-radius: var(--radius-all-xs);
+  box-sizing: border-box;
+  display: block;
+}
+
+.form .easySignup {width: 100%; display: flex; flex-wrap: wrap; gap: 0.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--c-black-6);}
+.form .easySignup .sns {
+  width: 100%;
+  height: 3.5rem;
+  padding-left: 1.5rem;
+  color: #000;
+  font-size: 1.125rem;
+  overflow: hidden;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  cursor: pointer;
+  border-radius: var(--radius-all-xs);
+  color: #fff;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+.form .easySignup .sns.naver {background-color: rgb(99, 195, 61);}
+.form .easySignup .sns.kakao {background-color: rgb(252, 232, 77); color: rgb(51, 51, 51);}
+.form .easySignup .sns.facebook {background-color: rgb(24, 119, 242);}
+.form .easySignup .sns.google {background-color: rgb(208, 83, 63);}
+.form .easySignup .sns.apple {background-color: rgb(0, 0, 0);}
+.form .easySignup .sns img {width: 1.875rem;}
+.select {
+  width: 100%;
+  height: 3.5rem;
+  padding-left: 1.5rem;
+  color: #000;
+  font-size: 1rem;
+  /* background: transparent; */
+  border: 1px solid var(--c-black-6);
+  overflow: hidden;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  cursor: pointer;
+  border-radius: var(--radius-all-xs);
+  box-sizing: border-box;
+  display: block;
+  background-image: url('../images/expand_more_black.svg');
+  background-repeat: no-repeat;
+  background-position: calc(100% - 0.75rem) center;
+}
+.select:focus {border: 1px solid var(--main-color);}
+.select:disabled {background: var(--c-black-7); color: var(--c-black-3);}
+.select option {line-height: 1.8em;}
+.select option:first-child {display: none;}
+
+/* 토글버튼 */
+.toggleSwitch {
+  width: 80px;
+  height: 38px;
+  display: block;
+  position: relative;
+  border-radius: 30px;
+  background: #ffffffa9;
+  box-shadow: var(--box-shadow);
+  cursor: pointer;
+}
+.toggleSwitch .toggleButton {
+  width: 28px;
+  aspect-ratio: 1/1;
+  position: absolute;
+  top: 50%;
+  left: 4px;
+  transform: translateY(-50%);
+  border-radius: 50%;
+  background: var(--sub-color-4);
+}
+#toggle:checked ~ .toggleSwitch {
+  background: var(--sub-color);
+}
+#toggle:checked ~ .toggleSwitch .toggleButton {
+  left: calc(100% - 32px);
+  background: #fff;
+}
+.toggleSwitch, .toggleButton {
+  transition: all 0.2s ease-in;
+}
+
+/* 구독하기 */
+.subscribe .box {width: 100%; border: 1px solid var(--c-black-6); border-radius: var(--radius-all-md); box-shadow: var(--box-shadow); display: flex; padding: 3rem 2.5rem 2.5rem 1.5rem; margin-top: 1.5rem; gap: 2rem;}
+.subscribe .box .radioWrap {width: 3rem; display: flex; align-items: center; justify-content: center;}
+.subscribe .box .left {width: calc(100% - 5rem - 10rem); flex-grow: 1;}
+.subscribe .box .right {width: 10rem; text-align: right; display: flex; justify-content: flex-end; align-items: center;}
+.subscribe .box .name {font-size: 1.75rem; padding-bottom: 1rem; font-weight: 400; color: var(--txt-color);}
+.subscribe .box .detail {font-size: 1rem; font-weight: 400; color: var(--txt-color-2);}
+.subscribe .box .price {display: flex; justify-content: flex-end; gap: 0.5rem; align-items: baseline; font-size: 1.25rem; color: var(--txt-color-2);}
+.subscribe .box .price .point {font-size: 1.5rem; color: var(--txt-color); font-weight: 500;}
+/* 구독 변경/해지 */
+.subscribeCur {width: 100%; border-bottom: 2px solid var(--c-black-4); display: flex; padding: 3rem 0; margin-bottom: 3rem; gap: 2rem;}
+.subscribeCur .left {width: calc(100% - 5rem - 10rem); flex-grow: 1;}
+.subscribeCur .right {width: 10rem; text-align: right; display: flex; justify-content: flex-end; align-items: center;}
+.subscribeCur .name {font-size: 1.75rem; padding-bottom: 1rem; font-weight: 400; color: var(--txt-color);}
+.subscribeCur .detail {font-size: 1rem; font-weight: 400; color: var(--txt-color-2);}
+.subscribeCur .price {display: flex; justify-content: flex-end; gap: 0.5rem; align-items: baseline; font-size: 1.25rem; color: var(--txt-color-2);}
+.subscribeCur .price .point {font-size: 1.5rem; color: var(--txt-color); font-weight: 500;}
+
+/* 관리자 등록/수정 */
+.formSection {padding: 1.5rem 0; border-top: 1px solid var(--c-black-5); color: var(--txt-color); width: 100%;}
+.formSection .closeBtn { background: none; float: right; width: auto;}
+.formSection .closeBtn span {color: #fff;}
+.formSection input[type="checkbox"], .formSection input[type="radio"] {border: 0; height: auto; width: auto;}
+.formSection input[type="checkbox"]:focus, .formSection input[type="radio"]:focus {border: 0;}
+.formSection .tit {display: flex; justify-content: space-between; align-items: center; width: 100%;}
+.formSection .tit h3 {font-size: 1.125rem; font-weight: 500; flex-grow: 1;}
+.formSection .tit button {width: 80px; min-width: 80px;}
+.formSection .cont {margin-top: 0.5rem; max-height: 2000px; overflow: hidden; transition: ease all 0.2s; padding: 0.75rem; border: 1px solid #202233; border-radius: var(--radius-all-xs); background: var(--bg-color-2);}
+.formSection .cont.nopadtop {padding-top: 0.5rem;}
+.formSection .cont.contTag {display: flex; gap: 0.25rem 1rem; flex-wrap: wrap;}
+.formSection .cont.contTag .checkInputWrap {margin: 4px 0;}
+.formSection .cont.hide {max-height: 0;}
+.checkInputWrap {margin-top: 10px;}
+.multiTxt {font-size: 0.875rem; color: var(--txt-color-2); padding-right: 0.5rem; font-weight: 300; text-align: right; display: inline-block; float: right;}
+.formSection .contTriple {display: flex; gap: 0.5rem; flex-wrap: wrap;}
+.formSection .contTriple input, .formSection .contTriple select {width: calc((100% - 1rem) / 3); padding: 0 1rem !important;}
+.formSection .cont .contInner {width: 100%;}
+.formSection .cont .contInner .innerTit {display: flex; justify-content: space-between; align-items: center;}
+.formSection .cont .contInner .innerTit h4 {font-weight: 400; font-size: 1.075rem;}
+.formSection .cont .contInner .innerTit button {min-width: 80px; width: 80px;}
+.formSection .cont .contInner .innerCont {margin-top: 0.5rem; display: flex; gap: 0.25rem;}
+.formSection .cont .contInner .innerCont input {width: calc(100% - 0.25rem);}

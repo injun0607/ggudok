@@ -1,0 +1,107 @@
+@charset "utf-8";
+
+.pagewrapPd {padding: 4rem 0;}
+.starrating {display: flex;}
+.starrating span {color: var(--sub-color-5); font-size: 1.125rem; letter-spacing: -1px;}
+.starrating .starActive {color: var(--sub-color);}
+.starrating .editStar {cursor: pointer; transition: 0.3s;}
+.starrating .editStar:hover {color: var(--sub-color);}
+
+.both {display: flex; gap: 4rem;}
+.both .left {display: flex; flex-wrap: wrap; gap: 2rem; width: 18rem; height: fit-content; position: sticky; top: 11rem;}
+.both .right { width: calc(100% - 4rem - 18rem);}
+
+.box {border: 1px solid var(--c-black-6); border-radius: var(--radius-all-sm); box-sizing: border-box; width: 100%; background: var(--bg-color);}
+.box .profile {width: 100%; border-bottom: 1px solid var(--c-black-7); padding-bottom: 1.5rem; color: var(--txt-color);}
+.box .userImg {display: flex; justify-content: center; padding: 1.5rem;}
+.box .userImg .circle {width: 8rem; border-radius: 100%; aspect-ratio: 1/1; overflow: hidden;}
+.box .userImg .circle img {width: 100%; height: 100%; object-fit: cover;}
+.box .userName {font-size: 1.5rem; width: 100%; text-align: center;}
+.box .userName .name {font-size: 1.75rem; font-weight: 500; vertical-align: baseline; color: var(--txt-color);}
+.box .category {display: flex; justify-content: space-between; align-items: center; width: 100%; padding: 0.75rem 1.5rem 0.5rem;}
+.box .category a, .box .category button {font-size: 0.938rem; display: flex; gap: 0.5rem; align-items: center; font-weight: 500; color: var(--txt-color);}
+.box .category button.sm {color: #999;  font-weight: 300; background: none;}
+.box .category a img {max-width: 1.325rem;}
+
+.nav {border: 1px solid var(--c-black-6); border-radius: var(--radius-all-sm);box-sizing: border-box; width: 100%; background: var(--bg-color-2); overflow: hidden;}
+.nav a {display:flex; gap: 0.5rem; align-items: center; width: 100%; border-bottom: 1px solid var(--bg-color); padding: 1.325rem 1.5rem 1.125rem; font-size: 1rem; color: var(--txt-color-2);}
+.nav a:last-child {border: 0;}
+.nav a img {max-width: 1.25rem;}
+.nav .navOn {background: var(--bg-color); color: var(--txt-color); box-shadow: var(--box-shadow);}
+
+
+.ratingwrap .ratings .rating {display: flex; flex-wrap: wrap; gap: 1rem; align-items: flex-start; padding: 2rem 0; border-top: 1px solid var(--c-black-6);}
+.ratingwrap .ratings .rating:first-child {padding-top: 0; border: 0;}
+.ratingwrap .ratings .service {display: flex; justify-content: space-between; align-items: center; width: 100%;}
+.ratingwrap .ratings .service .left {position: inherit; height: inherit; display: flex; width: inherit; gap: 1.25rem; align-items: center;}
+.ratingwrap .ratings .service .right {display: flex; width: auto;}
+.ratingwrap .ratings .service .right button {background: none; font-size: 0.938rem; color: var(--txt-color-2); min-height: inherit;}
+.ratingwrap .ratings .service .right button.delete {border-left: 1px solid var(--c-black-5); padding-left: 1rem; margin-left: 0.75rem;}
+.ratingwrap .ratings .service .circle {width: 3rem; border-radius: var(--radius-all-xs); aspect-ratio: 1/1; overflow: hidden;}
+.ratingwrap .ratings .service .circle img {width: 100%; height: 100%; object-fit: cover;}
+.ratingwrap .ratings .service .name {font-size: 1.25rem; font-weight: 500; color: var(--txt-color);}
+.ratingwrap .ratings .txt { display: flex; gap: 0.25rem; align-items: center; flex-wrap: wrap; width: 100%; color: var(--txt-color-2);}
+.ratingwrap .ratings .txt .starrating .star span {font-size: 1.325rem;}
+.ratingwrap .ratings .txt .review {width: 100%; margin-top: 0.5rem;}
+.ratingwrap .ratings .txt .reviewEdit {width: 100%; margin-top: 0.5rem; display: flex; gap: 1rem; align-items: flex-end;}
+.ratingwrap .ratings .txt .reviewEdit .editArea {width: calc(100% - 1rem - 5rem);}
+.ratingwrap .ratings .txt .reviewEdit .editBtn {width: 5rem; border-radius: var(--radius-all-xs); background: var(--sub-color-5); height: 64px;}
+
+.subscribewrap .overallprice {border-top: 2px solid var(--sub-color); padding: 1.5rem 0; display: flex; align-items: flex-end; justify-content: flex-end; gap: 0.5rem;  z-index: -2; color: var(--txt-color);}
+.subscribewrap .overallprice img {max-width: 2.25rem;}
+.subscribewrap .overallprice .md {font-size: 1.25rem;}
+.subscribewrap .overallprice .lg {font-size: 1.75rem; font-weight: 600; display: inline-block; padding: 0 0.25rem; position: relative; z-index: 1; color: var(--txt-color);}
+.subscribewrap .overallprice .lg::before {content: '';  position: absolute; bottom: 2px; width: 100%; height: 0.75rem; background: #fdbf50ad; left: 50%; transform: translateX(-50%); z-index: -1;}
+.subscribewrap .subscribes {display: flex; gap: 3rem; padding: var(--pad-tb-md); border-top: 1px solid var(--c-black-6); flex-wrap: wrap;}
+/* .subscribewrap .subscribes:nth-child(3) {border: 0;} */
+.subscribewrap .subscribes .tit {display: flex; flex-wrap: wrap; align-content: space-between; justify-content: flex-end; width: 11rem; color: var(--txt-color);}
+.subscribewrap .subscribes .tit .name { width: 100%; display: flex; align-items: center;}
+.subscribewrap .subscribes .tit .name img {max-width: 1.45rem; margin-right: 0.75rem;}
+.subscribewrap .subscribes .tit .name h3 {font-size: 1.325rem; font-weight: 500;}
+.subscribewrap .subscribes .tit .price { text-align: right;}
+.subscribewrap .subscribes .tit .price .sm { color: var(--txt-color-2);}
+.subscribewrap .subscribes .tit .price .md {font-size: 1.125rem;}
+.subscribewrap .subscribes .tit .price .lg {font-weight: 500; color: var(--txt-color);}
+.subscribewrap .subscribes .cont {display: flex; gap: 1.5rem; flex-wrap: wrap; width: calc(100% - 3rem - 11rem);}
+.subscribewrap .subscribes .cont .subscribe {background: var(--bg-color-2); padding: var(--pad-sm); border-radius: var(--radius-all-sm); color: var(--txt-color); transition: 0.3s;}
+/* .subscribewrap .subscribes .cont .subscribe:hover {box-shadow: rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(17, 20, 22, 0.20) 0px 0px 15px 0px;} */
+.subscribewrap .subscribes .cont .subscribe h4 {font-weight: 600;}
+.subscribewrap .subscribes .cont .subscribe .tag {display: flex; gap: 0.5rem; margin-top: 0.5rem;}
+.subscribewrap .subscribes .cont .subscribe .tag p {
+  background: #e0e0e9;
+  color: #222;
+  padding: 0.125rem 0.5rem;
+  font-size: 0.938rem;
+  border-radius: 6px;
+}
+
+
+/*----------------------------------------980--------------------------------*/
+@media screen and (max-width:980px) {
+  .both {display: flex; gap: 2rem;}
+  .both .left {width: 14rem;}
+  .both .right {width: calc(100% - 2rem - 14rem);}
+  .box .userImg .circle {width: 6rem;}
+  .box .userName {font-size: 1.25rem;}
+  .box .userName .name {font-size: 1.5rem;}
+  .subscribewrap .subscribes {gap: 0.5rem;}
+  .subscribewrap .subscribes .tit {width: 100%; justify-content: space-between;}
+  .subscribewrap .subscribes .tit .name {width: auto;}
+  .subscribewrap .subscribes .cont {width: 100%; gap: 0.5rem;}
+  .subscribewrap .subscribes .cont .subscribe {padding: 1rem;}
+}
+
+
+/*----------------------------------------640--------------------------------*/
+@media screen and (max-width:640px) {
+  .both {flex-wrap: wrap;}
+  .both .left, .both .right {width: 100%;}
+  .both .left {gap: 1rem; position: relative; top: 0;}
+  .box .category {padding: 0.325rem 1.5rem;}
+  .box .profile {display: flex; padding-bottom: 0;}
+  .box .userImg {padding: 1rem 1rem 1rem 1.5rem;}
+  .box .userImg .circle {width: 3rem;}
+  .box .userName {display: flex; align-items: center;}
+  .subscribewrap .overallprice {padding: 1rem 0;}
+  .subscribewrap .subscribes {padding: 1.5rem 0 1.75rem;}
+}

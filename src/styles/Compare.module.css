@@ -1,0 +1,74 @@
+@charset "utf-8";
+
+.pagewrapPd {padding: 4rem 0;}
+.starrating {display: flex;}
+.starrating span {color: var(--sub-color-5);}
+.starrating .starActive {color: var(--sub-color);}
+
+/* 섹션레이아웃 */
+.section {
+  margin-top: 4rem;
+}
+.section .tit {
+  font-size: 1.5rem;
+  color: var(--txt-color);
+}
+.section:last-child {margin-bottom: 2rem;}
+
+/* 셀렉박스 */
+.search {display: flex; gap: 1rem; flex-wrap: wrap; max-width: 50rem; margin: 0 auto;}
+.search .onedepth {width: 100%;}
+.search .twodepth {width: 100%; display: flex; gap: 1rem; flex-wrap: wrap;}
+.search .twodepth .select {width: calc((100% - 1rem) / 2);}
+.search .select {width: 100%;
+  height: 3.5rem;
+  padding-left: 1.5rem;
+  color: #000;
+  font-size: 1.125rem;
+  /* background: transparent; */
+  border: 1px solid var(--c-black-6);
+  overflow: hidden;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  cursor: pointer;
+  border-radius: var(--radius-all-xs);
+  box-sizing: border-box;
+  display: block;
+  background-image: url('../images/expand_more_black.svg');
+  background-repeat: no-repeat;
+  background-position: calc(100% - 0.75rem) center;
+}
+.search .select:focus {border: 1px solid var(--main-color);}
+.search .select:disabled {background: var(--c-black-7); color: var(--c-black-3);}
+.search .select option {line-height: 1.8em;}
+.search .select option:first-child {display: none;}
+
+/* 비교 상세박스 */
+.detail {margin-top: 4rem; display: flex; gap: 1rem;}
+.boxrow {display: flex; flex-wrap: wrap; min-width: calc((100% - 1rem) / 2); border-top: var(--sub-color-3) 2px solid;}
+.boxrow.boxrowerror {width: 100%; min-height: 17rem; display: flex; justify-content: center; align-items: flex-start; border-bottom: 1px solid var(--c-black-6); color: var(--txt-color-2); border-top: 2px var(--sub-color-5) solid; padding-top: 3rem;}
+.boxrow .box {width: 100%; border-bottom: 1px solid var(--c-black-7); padding: 2rem;}
+.boxrow .box.titbox img {border-radius: var(--radius-all-xs); max-width: 10rem; max-height: 10rem;}
+.boxrow .box.titbox h3 {font-size: 1.5rem; color: var(--txt-color);}
+.boxrow .box {text-align: center;}
+.boxrow .box .category {display: flex; justify-content: center; gap: 0.5rem; align-items: center;}
+.boxrow .box .category img {max-width: 1.5rem;}
+.boxrow .box p {font-size: 1.5rem; color: var(--txt-color);}
+.boxrow .box h3 {font-size: 1.063rem; color: var(--c-black-3); font-weight: 400; margin-top: 1.5rem;}
+.boxrow .box .starrating {width: 100%; display: flex; justify-content: center;}
+.boxrow .box .starrating .star span {font-size: 2rem;}
+.boxrow .box .tag {display: flex; gap: 0.5rem; margin-top: 0.25rem; padding: 0 2.5rem; flex-wrap: wrap; justify-content: center;}
+.boxrow .box .tag p {
+  background: var(--bg-color-2);
+  color: var(--txt-color);
+  padding: 0.125rem 0.5rem;
+  font-size: 0.925rem;
+  border-radius: 6px;
+}
+.boxrow .box .price {padding: 1rem 2.5rem 0.5rem;}
+.boxrow .box .price p {display: flex; justify-content: center; gap: 0.5rem; align-items: baseline; font-size: 1rem; color: var(--txt-color-2); margin-top: 1rem;}
+.boxrow .box .price p:first-child {margin: 0;}
+.boxrow .box .price p .point {font-size: 1.325rem; color: var(--txt-color);}
+.boxrow .box .price .mainprice {font-size: 1.25rem; }
+.boxrow .box .price .mainprice .point {color: var(--main-color); font-size: 1.625rem;}
