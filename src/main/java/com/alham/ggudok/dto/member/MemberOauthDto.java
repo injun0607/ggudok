@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class MemberOauthDto {
 
-    private String name;
+    private String memberName;
     private Gender gender;
     private int age;
 

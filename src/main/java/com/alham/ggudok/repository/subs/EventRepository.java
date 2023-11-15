@@ -4,9 +4,10 @@ import com.alham.ggudok.entity.subs.EventSubs;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
-
+@Repository
 public interface EventRepository extends JpaRepository<EventSubs,Long > {
 
     @Query("select es from EventSubs es left join fetch es.subs s left join fetch s.category c")

@@ -1,5 +1,7 @@
 package com.alham.ggudok.util;
 
+import org.springframework.beans.factory.annotation.Value;
+
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
@@ -11,6 +13,13 @@ import java.util.stream.Collectors;
 
 
 public class GgudokUtil {
+
+    @Value("${emailId}")
+    private static String emailId;
+
+    @Value("${password}")
+    private static String emailPassword;
+
     private static final String EMAIL_REGEX =
             "^[A-Za-z0-9+_.-]+@(.+)$";
 
@@ -34,13 +43,30 @@ public class GgudokUtil {
 
     public static String certEmail(String checkEmail) {
 
+        String subject = "인증 이메일";
+        String randomNum = GgudokUtil.randomNum();
+
+        String contents = "인증코드" + randomNum;
+
+        if (sendEmail(checkEmail, subject, contents)) {
+            return randomNum;
+
+        }else{
+            return EMAIL_FAIL;
+        }
+
+    }
+
+
+    public static boolean sendEmail(String recipient,String subject,String contents) {
+
         // SMTP 서버 및 계정 정보 설정
         String smtpHost = "smtp.naver.com"; // SMTP 호스트 주소
-        String username = ""; // 보내는 이메일 주소
-        String password = ""; // 이메일 비밀번호
+        String username = emailId; // 보내는 이메일 주소
+        String password = emailPassword; // 이메일 비밀번호
 
         // 이메일 수신자 정보 설정
-        String toAddress = checkEmail; // 수신자 이메일 주소
+        String toAddress = recipient; // 수신자 이메일 주소
 
         // 이메일 속성 설정
         Properties properties = new Properties();
@@ -61,20 +87,21 @@ public class GgudokUtil {
             Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress(username));
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toAddress));
-            message.setSubject("인증 이메일");
+            message.setSubject(subject);
+
             String randomNum = GgudokUtil.randomNum();
-            message.setText("인증 코드: "+ randomNum); // 본문 내용
+            message.setText(contents); // 본문 내용
 //            message.setText("인증 코드: 꽃등심,갈비,돈까스,엽떡...먹고싶다"); // 본문 내용
 
             // 이메일 보내기
             Transport.send(message);
             System.out.println("이메일을 성공적으로 보냈습니다.");
 
-            return randomNum;
+            return true;
         } catch (MessagingException e) {
             e.printStackTrace();
             System.out.println("이메일을 보내는 중 오류가 발생했습니다.");
-            return EMAIL_FAIL;
+            return false;
         }
 
     }

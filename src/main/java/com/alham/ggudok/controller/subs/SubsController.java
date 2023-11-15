@@ -291,8 +291,20 @@ public class SubsController {
     @PostMapping("/write_review")
     public boolean writeReview(Principal principal, @RequestBody ReviewDto reviewDto) {
         MemberDto memberDto = isLoginUser(principal);
+        Long subsId = reviewDto.getSubsId();
         Member member = memberService.findMemberWithReviewsByloginId(memberDto.getLoginId());
-        Subs subs = subsService.findSubsById(reviewDto.getSubsId());
+
+        //구매하지않은 사람은 리뷰 쓰지 못하게하기
+        if(!memberService.findByLoginIdWithHaveSubs(memberDto.getLoginId())
+                .getMemberHaveSubsList()
+                .stream()
+                .filter(mhs->mhs.getSubs().getSubsId().equals(subsId))
+                .findFirst()
+                .isPresent()){
+            return false;
+        }
+
+        Subs subs = subsService.findSubsById(subsId);
         reviewService.writeReview(member, subs, reviewDto.getContents(), reviewDto.getRating());
         Integer ratingAvg = reviewService.updateRatingAvg(subs.getSubsId());
         subsService.updateRatingAvg(subs,ratingAvg);

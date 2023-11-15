@@ -25,7 +25,9 @@ public class MainDto {
 
     private List<CategoryDto> categoryList = new ArrayList<>();
 
-    private List<String> memberDefaultTag = new ArrayList<>();
+    private String ageTag;
+    private String genderTag;
+
 
 
     /**

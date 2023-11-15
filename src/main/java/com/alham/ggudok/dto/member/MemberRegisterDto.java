@@ -3,6 +3,7 @@ package com.alham.ggudok.dto.member;
 import com.alham.ggudok.entity.member.Gender;
 import lombok.Data;
 
+
 @Data
 public class MemberRegisterDto {
 

@@ -1,12 +1,13 @@
 package com.alham.ggudok.dto.member;
 
-import com.alham.ggudok.entity.subs.Category;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
-import java.util.Map;
 
+/**
+ * 회원이 가지고있는 전체 subsList
+ */
 @Data
 @NoArgsConstructor
 public class MemberHaveSubsDto {

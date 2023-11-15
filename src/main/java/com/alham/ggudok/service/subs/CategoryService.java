@@ -17,6 +17,7 @@ public class CategoryService {
 
 
     public Category findCateByEngWithSubs(String categoryEng) {
+        log.info("findCateByEngWithSubs()");
         return categoryRepository.findCateByEngWithSubs(categoryEng).orElse(new Category("category Nothing"));
     }
 }

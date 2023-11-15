@@ -4,6 +4,7 @@ package com.alham.ggudok.controller;
 import com.alham.ggudok.config.security.MemberDto;
 import com.alham.ggudok.config.security.SecurityUtils;
 import com.alham.ggudok.controller.session.SessionMemberDto;
+import com.alham.ggudok.dto.ContactUsDto;
 import com.alham.ggudok.dto.LoginDto;
 import com.alham.ggudok.dto.MainDto;
 import com.alham.ggudok.dto.member.MemberLoginDto;
@@ -124,11 +125,14 @@ public class HomeController {
 
             List<String> defatulTagList = new ArrayList<>();
             for (Tag tag : basicTag) {
-
-                defatulTagList.add(tag.getTagName());
+                if (tag.getTagName().contains("대")) {
+                    mainDto.setAgeTag(tag.getTagName());
+                }else{
+                    mainDto.setGenderTag(tag.getTagName());
+                }
             }
 
-            mainDto.setMemberDefaultTag(defatulTagList);
+
 
             List<Subs> subsListRecommendBasic = subsService.findSubsListByTagList(allSubsList, basicTag);
             mainDto.transRecommendBasic(subsListRecommendBasic);
@@ -275,13 +279,6 @@ public class HomeController {
         return "logout";
     }
 
-    @GetMapping("/seohee")
-    public String seohee() {
-
-        return "서히야 안녕";
-    }
-
-
     /**
      * 세션체크 맵핑
      */
@@ -292,6 +289,7 @@ public class HomeController {
         if (memberDto != null) {
             sessionMemberDto.setMemberName(memberDto.getMemberName());
             sessionMemberDto.setLoginId(memberDto.getLoginId());
+            sessionMemberDto.setRole(memberDto.getRole());
         }
 
         return sessionMemberDto;
@@ -316,9 +314,19 @@ public class HomeController {
 
     }
 
+    @PostMapping("/contact_us")
+    public void contactUs(@RequestBody ContactUsDto contactUsDto) {
+
+        String email = "injun_office0607@naver.com";
+        String contents= contactUsDto.getContents()+"\n sendEmail : "+contactUsDto.getSubmitEmail() +"\n snedName : " + contactUsDto.getSubmitName();
+        GgudokUtil.sendEmail(email, contactUsDto.getTitle(), contents);
+
+    }
+
 
     @GetMapping("/init_review")
     public void initReview() {
+
         Member seo = memberService.findByLoginId("choiseo26@naver.com");
         Member yh = memberService.findByLoginId("yhgu0607@naver.com");
         Member in = memberService.findByLoginId("injun0607@naver.com");
@@ -331,8 +339,8 @@ public class HomeController {
         reviewService.writeReview(seo, dosirak, "서히가 배부러요", 3);
         reviewService.writeReview(seo, healthCare2, "서히부인 운동해요", 5);
 
-        memberService.likeSubs(seo,healthCare);
-        memberService.likeSubs(seo,healthCare2);
+        memberService.likeSubs(seo, healthCare);
+        memberService.likeSubs(seo, healthCare2);
 
         reviewService.writeReview(in, healthCare, "인준아저씨 건강해요 ", 5);
         reviewService.writeReview(in, dosirak, "사히부인 밥이 더맛있어요", 2);

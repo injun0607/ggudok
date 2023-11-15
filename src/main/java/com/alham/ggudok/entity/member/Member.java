@@ -98,7 +98,7 @@ public class Member {
         this.memberName = memberName;
         this.gender = gender;
         this.age = age;
-        this.role = Role.GUEST;
+        this.role = Role.SOCIAL;
     }
 
     public void updateMember(String memberName ) {

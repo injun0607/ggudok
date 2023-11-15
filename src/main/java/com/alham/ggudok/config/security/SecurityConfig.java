@@ -4,6 +4,7 @@ import com.alham.ggudok.config.security.auth.CustomOAuth2MemberService;
 import com.alham.ggudok.config.security.auth.userInfo.OAuth2LoginFailureHandler;
 import com.alham.ggudok.config.security.auth.userInfo.OAuth2LoginSuccessHandler;
 import com.alham.ggudok.config.security.jwt.JwtService;
+import com.alham.ggudok.entity.member.Role;
 import com.alham.ggudok.repository.security.MemberSecurityRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -12,12 +13,15 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
+import org.springframework.security.web.util.matcher.AndRequestMatcher;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
@@ -43,16 +47,16 @@ public class SecurityConfig {
      */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+
+        http
+                .authorizeHttpRequests()
+                .requestMatchers(new AntPathRequestMatcher("/admin/**")).hasAuthority("ROLE_"+String.valueOf(Role.ADMIN))
+                .anyRequest().permitAll();
+
         http.formLogin().disable()
                 .csrf().disable()
                 .httpBasic().disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .authorizeRequests()
-
-                .requestMatchers(new AntPathRequestMatcher("/member/**")).authenticated()
-                .requestMatchers(new AntPathRequestMatcher("/")).permitAll();
-
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         http.oauth2Login()
                 .successHandler(oAuth2LoginSuccessHandler) // 동의하고 계속하기를 눌렀을 때 Handler 설정
@@ -65,6 +69,8 @@ public class SecurityConfig {
 
         return http.build();
     }
+
+
 
 
     @Bean

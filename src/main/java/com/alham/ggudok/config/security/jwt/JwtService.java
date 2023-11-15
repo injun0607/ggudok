@@ -43,9 +43,6 @@ public class JwtService {
     private static final String REFRESH_TOKEN_SUBJECT = "RefreshToken";
     private static final String EMAIL_CLAIM = "loginId";
     private static final String BEARER = "Bearer ";
-    private long tokenValidTime = 3000 * 60 * 1000l;
-
-    private static final String SECRETKEY = "ggudok";
 
 
     private final MemberSecurityRepository memberSecurityRepository;
@@ -59,7 +56,7 @@ public class JwtService {
         Claims claims = Jwts.claims().setSubject(loginId);
         return JWT.create() // JWT 토큰을 생성하는 빌더 반환
                 .withSubject(ACCESS_TOKEN_SUBJECT) // JWT의 Subject 지정 -> AccessToken이므로 AccessToken
-                .withExpiresAt(new Date(now.getTime() + tokenValidTime)) // 토큰 만료 시간 설정
+                .withExpiresAt(new Date(now.getTime() + getAccessValidTime())) // 토큰 만료 시간 설정
 
                 //클레임으로는 저희는 email 하나만 사용합니다.
                 //추가적으로 식별자나, 이름 등의 정보를 더 추가하셔도 됩니다.
@@ -77,7 +74,7 @@ public class JwtService {
 
         return JWT.create()
                 .withSubject(REFRESH_TOKEN_SUBJECT)
-                .withExpiresAt(new Date(now.getTime() + tokenValidTime))
+                .withExpiresAt(new Date(now.getTime() + getRefreshValidTime()))
                 .sign(Algorithm.HMAC512(secretKey));
     }
 
@@ -185,6 +182,13 @@ public class JwtService {
         }
     }
 
+    private Long getAccessValidTime() {
+        return accessTokenExpirationPeriod * 60 * 1000l;
+    }
+
+    private Long getRefreshValidTime() {
+        return refreshTokenExpirationPeriod * 60 * 1000l;
+    }
 
 
 

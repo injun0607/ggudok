@@ -5,10 +5,11 @@ import com.alham.ggudok.entity.Tag;
 import com.alham.ggudok.entity.subs.Subs;
 import com.alham.ggudok.entity.subs.SubsRank;
 import com.alham.ggudok.entity.subs.SubsRelTag;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
-
+@Repository
 public interface SubsRepositoryCustom {
 
     List<SubsRank>findSubsByIdWithAllContent(Long subsId);

@@ -1,15 +1,15 @@
 package com.alham.ggudok.repository.subs;
 
-import com.alham.ggudok.entity.subs.Category;
 import com.alham.ggudok.entity.subs.Subs;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
-
+@Repository
 public interface SubsRepository extends JpaRepository<Subs, Long>, SubsRepositoryCustom {
 
     @Query("select s from Subs s left join fetch s.subsRelTags st left join fetch st.tag t where s.subsId = :subsId")

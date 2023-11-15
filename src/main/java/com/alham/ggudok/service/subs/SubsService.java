@@ -36,6 +36,7 @@ public class SubsService {
      * @return
      */
     public List<Tag> findTagsBySubsId(Long subsId) {
+        log.info("findTagsBySubsId()");
         Optional<Subs> subsByIdWithTag = subsRepository.findSubsByIdWithTag(subsId);
         List<Tag> tags = new ArrayList<>();
 
@@ -48,6 +49,7 @@ public class SubsService {
     }
 
     public List<SubsRank> findRanksBySubsId(Long subsId) {
+        log.info("findRanksBySubsId()");
         Optional<Subs> subsByIdWithRank = subsRepository.findSubsByIdWithRank(subsId);
         List<SubsRank> subsRanks = new ArrayList<>();
 
@@ -60,6 +62,7 @@ public class SubsService {
     }
 
     public Map<Long, List<SubsRank>> findSubsRankMap(List<Long> subsIdList) {
+        log.info("findSubsRankMap()");
         List<SubsRank> subsRankList = subsRepository.findSubsRankByIdListWithAllContent(subsIdList);
         Map<Long, List<SubsRank>> resultMap = new HashMap<>();
 
@@ -81,10 +84,12 @@ public class SubsService {
     }
 
     public List<SubsRank> findContentBySubsId(Long subsId) {
+        log.info("findContentBySubsId()");
         return subsRepository.findSubsByIdWithAllContent(subsId);
     }
 
     public Subs findSubsByIdWithTag(Long subsId) {
+        log.info("findSubsByIdWithTag()");
         Optional<Subs> subsByIdWithTag = subsRepository.findSubsByIdWithTag(subsId);
         if (subsByIdWithTag.isPresent()) {
             return subsByIdWithTag.get();
@@ -94,6 +99,7 @@ public class SubsService {
     }
 
     public Subs findSubsById(Long subsId) {
+        log.info("findSubsById()");
         return subsRepository.findById(subsId).get();
     }
 
@@ -104,6 +110,7 @@ public class SubsService {
      */
 
     public List<Subs> findSubsByTag(Tag tag) {
+        log.info("findSubsByTag()");
         Optional<List<Subs>> optionalSubsList = subsRepository.findSubsListByTag(tag);
         if (optionalSubsList.isPresent()) {
             return optionalSubsList.get();
@@ -119,6 +126,7 @@ public class SubsService {
 
     @Transactional
     public List<Subs> updateRecommendSort() {
+        log.info("updateRecommendSort()");
         List<Subs> allSubs = subsRepository.findAll();
 
 
@@ -150,6 +158,7 @@ public class SubsService {
      * @return tag로 걸러진 subsList
      */
     public List<Subs> findSubsListByTag(List<Subs> subsList,Tag tag) {
+        log.info("findSubsListByTag()");
         return subsList.stream()
                 .filter(subs -> subs.getSubsRelTags().stream().filter(srt -> srt.getTag().equals(tag)).findAny().isPresent())
                 .collect(Collectors.toList());
@@ -162,6 +171,7 @@ public class SubsService {
      * @return tagList에 있는 tag들중 한개라도 포함된 subsList 반환
      */
     public List<Subs> findSubsListByTag(List<Subs> subsList,List<Tag> tagList) {
+        log.info("findSubsListByTag()");
         return subsList.stream()
                 .filter(subs ->
                         subs.getSubsRelTags().stream()
@@ -177,6 +187,7 @@ public class SubsService {
      * @return 태그리스트에 있는 태그들이 모두포함된 subsList
      */
     public List<Subs> findSubsListByTagList(List<Subs> subsList ,List<Tag> tagList) {
+        log.info("findSubsListByTagList()");
         return subsList.stream().filter(
                 subs -> subs.getSubsRelTags().stream()
                         .map(srt -> srt.getTag())
@@ -186,23 +197,28 @@ public class SubsService {
     }
 
     public Subs findBySubsName(String subsName) {
+        log.info("findBySubsName()");
         return subsRepository.findSubsBySubsName(subsName);
     }
 
     public List<SubsRecommendDto> countHaveSubs() {
+        log.info("countHaveSubs()");
         return subsRepository.countHaveSubs();
     }
 
     public List<SubsRecommendDto> countFavorSubs() {
+        log.info("countFavorSubs()");
         return subsRepository.countFavorSubs();
     }
 
     public List<SubsRecommendDto> sumRating() {
+        log.info("sumRating()");
         return subsRepository.sumRating();
 
     }
 
     public List<SubsRecommendDto> countReview() {
+        log.info("countReview()");
         return subsRepository.countReview();
     }
 
@@ -215,6 +231,7 @@ public class SubsService {
      * return Map<Long,Double> key: subsId, value: score
      */
     public Map<Long,Double> recommendSubs() {
+        log.info("recommendSubs()");
         Map<Long, Double> resultMap = new HashMap<>();
 
         List<SubsRecommendDto> haveSubsScore = countHaveSubs();
@@ -235,6 +252,7 @@ public class SubsService {
     }
 
     public Map<Long, Double> subsScoreCal(Map<Long, Double> resultMap, List<SubsRecommendDto> recommendDtoList, double calScore) {
+        log.info("subsScoreCal()");
         for (SubsRecommendDto subsRecommendDto : recommendDtoList) {
             Long subsId = subsRecommendDto.getSubsId();
             Integer score = subsRecommendDto.getScore();
@@ -249,24 +267,24 @@ public class SubsService {
     }
 
     public List<Subs> findRecommendSubsList() {
+        log.info("findRecommendSubsList()");
        return subsRepository.findRecommendSubsList();
     }
 
-//    public List<Subs> findSubsListByTagList(List<Tag> tagList) {
-//       return subsRepository.findSubsListByTagList(tagList);
-//    }
-
     public List<Subs> findSubsListByTagListOr(List<Tag> tagList) {
+        log.info("findSubsListByTagListOr()");
         return subsRepository.findSubsListByTagListOr(tagList);
     }
 
     public List<Subs> findAllSubsList() {
+        log.info("findAllSubsList()");
         return subsRepository.findAllSubsList();
     }
 
 
     @Transactional
     public void updateRatingAvg(Subs subs,int ratingAvg) {
+        log.info("updateRatingAvg()");
         subs.updateRatingAvg(ratingAvg);
     }
 
@@ -274,18 +292,18 @@ public class SubsService {
     등록된 이벤트 불러오기
      */
     public List<EventSubs> findAllEventSubs() {
-
+        log.info("findAllEventSubs()");
 
         return eventRepository.findAllWithSubsValid();
     }
 
     public Subs findSubsByIdWithCategory(Long subsId) {
-
+        log.info("findSubsByIdWithCategory()");
         return subsRepository.findByIdWithCategory(subsId);
     }
 
     public List<SubsRank> findSubsRankBySubsListWithAllContent(List<Long> subsIdList) {
-
+        log.info("findSubsRankBySubsListWithAllContent()");
         return subsRepository.findSubsRankBySubsListWithAllContent(subsIdList);
     }
 
@@ -295,18 +313,19 @@ public class SubsService {
      * @return List<Subs>
      */
     public List<Subs> findBySubsListWithCategory(List<Subs> subsList) {
-
+        log.info("findBySubsListWithCategory()");
         return subsRepository.findBySubsListWithCategory(subsList);
     }
 
 
     public List<Subs> findSubsListByQuery(String searchQuery) {
-
+        log.info("findSubsListByQuery()");
         return subsRepository.findSubsListByQuery(searchQuery);
 
     }
 
     public List<Category> findAllCategory() {
+        log.info("findAllCategory()");
         return categoryRepository.findAll();
     }
 }

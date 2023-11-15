@@ -6,10 +6,7 @@ import com.alham.ggudok.dto.member.*;
 import com.alham.ggudok.dto.subs.SubsDto;
 import com.alham.ggudok.dto.subs.SubsMainDto;
 import com.alham.ggudok.entity.Tag;
-import com.alham.ggudok.entity.member.Member;
-import com.alham.ggudok.entity.member.MemberFavorSubs;
-import com.alham.ggudok.entity.member.MemberHaveSubs;
-import com.alham.ggudok.entity.member.Review;
+import com.alham.ggudok.entity.member.*;
 import com.alham.ggudok.entity.subs.RankLevel;
 import com.alham.ggudok.entity.subs.Subs;
 import com.alham.ggudok.entity.subs.SubsContent;
@@ -131,6 +128,7 @@ public class MemberController {
         updateDto.setPhoneNumber(member.getPhoneNumber());
         updateDto.setGender(member.getGender());
         updateDto.setMemberImg(member.getProfileImage());
+        updateDto.setRole(member.getRole());
 
         return updateDto;
     }
@@ -143,12 +141,14 @@ public class MemberController {
         MemberDto memberDto = isLoginUser(principal);
         Member member = memberService.findByLoginIdWithTags(memberDto.getLoginId());
 
-        if (!passwordEncoder.matches(updateDto.getPassword(), member.getPassword())) {
-            throw new MemberException("현재 비밀번호가 맞지 않습니다!");
-        }
+        if (updateDto.getRole() != Role.SOCIAL) {
+            if (!passwordEncoder.matches(updateDto.getPassword(), member.getPassword())) {
+                throw new MemberException("현재 비밀번호가 맞지 않습니다!");
+            }
 
-        if (!updateDto.getNewPassword().equals(updateDto.getNewPasswordCheck())) {
-            throw new MemberException("새로운 비밀번호가 맞지 않습니다");
+            if (!updateDto.getNewPassword().equals(updateDto.getNewPasswordCheck())) {
+                throw new MemberException("새로운 비밀번호가 맞지 않습니다");
+            }
         }
 
 

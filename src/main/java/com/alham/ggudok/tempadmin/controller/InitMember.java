@@ -6,8 +6,6 @@ import com.alham.ggudok.entity.member.Gender;
 import com.alham.ggudok.entity.subs.*;
 import com.alham.ggudok.repository.subs.SubsRepository;
 import com.alham.ggudok.service.member.MemberService;
-import com.alham.ggudok.service.subs.SubsService;
-import com.alham.ggudok.tempadmin.service.subs.AdminSubsService;
 import jakarta.annotation.PostConstruct;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -29,14 +27,7 @@ public class InitMember {
     private final InitMemberService initMemberService;
     private final MemberService memberService;
 
-    private final AdminSubsService adminSubsService;
-
-    private final SubsService subsService;
-
-    private final SubsRepository subsRepository;
     private final InitSubs initSubs;
-
-    private final EntityManager em;
 
 
 

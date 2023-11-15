@@ -30,7 +30,7 @@ public class TagService {
 
 
     public List<Tag> findTagsByLoginId(String loginId) {
-
+        log.info("findTagsByLoginId()");
         Optional<Member> optionalMember = memberRepository.findByLoginIdWithTags(loginId);
         if (optionalMember.isPresent()) {
             Member member = optionalMember.get();
@@ -41,6 +41,7 @@ public class TagService {
     }
 
     public List<Tag> findTagsBySubsId(Long subsId) {
+        log.info("findTagsBySubsId()");
         Optional<Subs> optionalSubs = subsRepository.findSubsByIdWithTag(subsId);
         if (optionalSubs.isPresent()) {
             Subs subs = optionalSubs.get();
@@ -57,6 +58,7 @@ public class TagService {
      * @return Map<Long,List<Tag>> resultMap
      */
     public Map<Long,List<Tag>> findAllSubsTag() {
+        log.info("findAllSubsTag()");
         List<SubsRelTag> subsRelTagList = subsRepository.findAllSubsRelTag();
         Map<Long, List<Tag>> resultMap = new HashMap<>();
 
@@ -82,6 +84,7 @@ public class TagService {
      * @return
      */
     public Map<Long,List<Tag>> findTagListBySubsIdList(List<Long> subsIdList) {
+        log.info("findTagListBySubsIdList()");
         List<SubsRelTag> subsRelTagList = subsRepository.findSubRelTagBySubsIdList(subsIdList);
         Map<Long, List<Tag>> resultMap = new HashMap<>();
 
@@ -108,6 +111,7 @@ public class TagService {
      * @return
      */
     public List<Tag> findTagsBySubIdList(List<Long> subsIdList) {
+        log.info("findTagsBySubIdList()");
         List<Subs> subsList = subsRepository.findSubsBySubsIdListWithTag(subsIdList);
         List<Tag> tagList = new ArrayList<>();
         subsList.stream()
@@ -146,6 +150,7 @@ public class TagService {
     }
 
     public void deleteTag(Long tagId) {
+        log.info("deleteTag()");
         Tag tag = tagRepository.findById(tagId).get();
 
         subsRepository.deleteSubsRelTagByTagId(tagId);

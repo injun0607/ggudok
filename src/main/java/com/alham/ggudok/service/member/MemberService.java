@@ -57,6 +57,7 @@ public class MemberService {
 
     @Transactional
     public boolean registerMember(MemberRegisterDto registerDto) {
+        log.info("registerMember()");
 
         if(!validMember(registerDto)){
             return false;
@@ -93,6 +94,7 @@ public class MemberService {
      */
     @Transactional
     public boolean updateOauth(MemberOauthDto memberOauthDto,String loginId) {
+        log.info("updateOauth()");
 
         Optional<Member> optionalMember = memberRepository.findByLoginId(loginId);
 
@@ -102,7 +104,7 @@ public class MemberService {
 
         Member member = optionalMember.get();
 
-        member.oauthUpdate(memberOauthDto.getName(), memberOauthDto.getGender(),memberOauthDto.getAge());
+        member.oauthUpdate(memberOauthDto.getMemberName(), memberOauthDto.getGender(),memberOauthDto.getAge());
 //      회원 태그 분류 작업
 //      나이 성별
         Tag ageTag = tagService.checkAgeTag(memberOauthDto.getAge());
@@ -122,7 +124,7 @@ public class MemberService {
      * @return
      */
     public Member memberLoginCheck(MemberLoginDto loginDto) {
-
+        log.info("memberLoginCheck()");
 
         if (memberRepository.findByLoginId(loginDto.getLoginId()).isPresent()) {
 
@@ -144,6 +146,8 @@ public class MemberService {
      */
     @Transactional
     public boolean updateMember(MemberUpdateDto updateDto,Member member) {
+        log.info("updateMember()");
+
         if (StringUtils.hasText(updateDto.getNewPassword())) {
             passwordEncoder.encode(updateDto.getNewPassword());
             member.updateMember(passwordEncoder.encode(updateDto.getNewPassword()), updateDto.getPhoneNumber(),updateDto.getGender(),updateDto.getAge(), updateDto.getMemberImg());
@@ -180,26 +184,9 @@ public class MemberService {
         return true;
     }
 
-//    @Transactional
-//    public Member updateMember(String loginId, String memberName) {
-//        Optional<Member> optionalMember = memberRepository.findByLoginId(loginId);
-//
-//        if (optionalMember.isPresent()) {
-//            Member member = optionalMember.get();
-//            member.updateMember(memberName);
-//        } else {
-//            Member member = new Member(loginId, memberName);
-//            memberRepository.save(member);
-//
-//        }
-//
-//        return memberRepository.findByLoginId(loginId).get();
-//
-//    }
-
-
     @Transactional
     public boolean createMemberHaveSubs(Member member, Subs subs, RankLevel rankLevel) {
+        log.info("createMemberHaveSubs()");
         List<MemberHaveSubs> memberHaveSubsList = member.getMemberHaveSubsList();
         Optional<MemberHaveSubs> optionalMemberHaveSubs =
                 memberHaveSubsList.stream().filter(mfs -> mfs.getSubs().getSubsId() == subs.getSubsId()).findFirst();
@@ -224,6 +211,7 @@ public class MemberService {
 
     @Transactional
     public Integer removeMemberHaveSubs(String loginId, Subs subs) {
+        log.info("removeMemberHaveSubs()");
         Member member = memberRepository.findByLoginIdWithHaveSubs(loginId).get();
         List<MemberHaveSubs> memberHaveSubsList = member.getMemberHaveSubsList();
         memberHaveSubsList.stream().filter(mhs->mhs.getSubs().getSubsId().equals(subs.getSubsId()))
@@ -237,6 +225,7 @@ public class MemberService {
 
     @Transactional
     public boolean createMemberFavorSubs(Member member, Subs subs) {
+        log.info("createMemberFavorSubs()");
         if (member.getMemberFavorSubsList().stream().filter(mfs -> mfs.getSubs().getSubsId() == subs.getSubsId()).findFirst().isPresent()) {
             return false;
         } else{
@@ -246,6 +235,7 @@ public class MemberService {
     }
     @Transactional
     public Integer removeMemberFavorSubs(String loginId, Subs subs) {
+        log.info("removeMemberFavorSubs()");
         Member member = memberRepository.findByLoginIdWithFavorSubs(loginId).get();
         List<MemberFavorSubs> memberFavorSubsList = member.getMemberFavorSubsList();
         memberFavorSubsList.stream().filter(mfs->mfs.getSubs().getSubsId().equals(subs.getSubsId()))
@@ -254,8 +244,16 @@ public class MemberService {
         return i;
 
     }
+
+    /**
+     * 멤버 태그 생성 메서드
+     * @param member
+     * @param tag
+     * @return
+     */
     @Transactional
     public boolean createRelTag(Member member, Tag tag) {
+        log.info("createRelTag()");
         Optional<Member> optionalMember = Optional.of(member);
 
         if (member.getMemberRelTags().size() == 0) {
@@ -317,17 +315,12 @@ public class MemberService {
         }
     }
 
-    public Member viewMemberInfo(String loginId) {
-        memberRepository.findByLoginId(loginId);
-
-        return null;
-    }
-
     /**
      * 멤버 구독서비스 좋아요
      */
     @Transactional
     public void likeSubs(Member member, Subs subs) {
+        log.info("likeSubs()");
         createMemberFavorSubs(member, subs);
         //subs와 연관된 태그 생성
         subs.getSubsRelTags().stream().forEach(srt->createRelTag(member,srt.getTag()));
@@ -335,6 +328,7 @@ public class MemberService {
     }
 
     public Member findByLoginIdWithTags(String loginId) {
+        log.info("findByLoginIdWithTags()");
         Optional<Member> memberWithTag = memberRepository.findByLoginIdWithTags(loginId);
         if (memberWithTag.isPresent()) {
             return memberWithTag.get();
@@ -346,6 +340,7 @@ public class MemberService {
 
 
     public Member findByLoginIdWithFavorSubs(String loginId) {
+        log.info("findByLoginIdWithFavorSubs()");
         Optional<Member> member = memberRepository.findByLoginIdWithFavorSubs(loginId);
         if(member.isPresent()){
             return member.get();
@@ -356,6 +351,7 @@ public class MemberService {
     }
 
     public Member findByLoginIdWithHaveSubs(String loginId) {
+        log.info("findByLoginIdWithHaveSubs()");
         Optional<Member> member = memberRepository.findByLoginIdWithHaveSubs(loginId);
         if(member.isPresent()){
             return member.get();
@@ -366,6 +362,7 @@ public class MemberService {
     }
 
     public Member findByLoginId(String loginId) {
+        log.info("findByLoginId()");
         Optional<Member> member = memberRepository.findByLoginId(loginId);
         if (member.isPresent()) {
             return member.get();
@@ -377,6 +374,7 @@ public class MemberService {
 
 
     public Member findMemberWithReviewsByloginId(String loginId) {
+        log.info("findMemberWithReviewsByloginId()");
         Optional<Member> member = memberRepository.findMemberWithReviewsByloginId(loginId);
         if (member.isPresent()) {
             return member.get();
@@ -387,6 +385,7 @@ public class MemberService {
 
     @Transactional
     public boolean removeReview(String loginId, Long subsId) {
+        log.info("removeReview()");
         Optional<Member> optionalMember = memberRepository.findMemberWithReviewsByloginId(loginId);
         if (optionalMember.isPresent()) {
             Member member = optionalMember.get();
@@ -401,6 +400,7 @@ public class MemberService {
 
     @Transactional
     public boolean buySubs(String loginId, Subs subs, RankLevel rankLevel) {
+        log.info("buySubs()");
         Optional<Member> optionalMember = memberRepository.findByLoginIdWithHaveSubs(loginId);
         if (optionalMember.isPresent()) {
             Member member = optionalMember.get();
@@ -423,6 +423,7 @@ public class MemberService {
     @Transactional
     public void userRecommendTag() {
 
+        log.info("userRecommendTag()");
         List<Member> all = memberRepository.findAll();
         //HaveSubs
         List<Member> allWithHaveSubs = memberRepository.findAllWithHaveSubs();
@@ -488,6 +489,7 @@ public class MemberService {
      */
     @Transactional
     public void updateMemberTagRecommend(String loginId,Subs subs) {
+        log.info("updateMemberTagRecommend()");
         //멤버들의 tag
         Optional<Member> optionalMember = memberRepository.findByLoginIdWithHaveSubs(loginId);
         if (optionalMember.isPresent()) {
@@ -526,6 +528,7 @@ public class MemberService {
      */
     public void sumTagScore(Map<Tag, Integer> tagScoreMap, Map<Tag,Integer> tagCountMap, List<Subs> subsList, int score) {
 
+        log.info("sumTagScore()");
         List<Long> subsIdList = subsList.stream().map(s -> s.getSubsId()).collect(Collectors.toList());
         List<Tag> tagsBySubsId = tagService.findTagsBySubIdList(subsIdList);
         //subs내의 태그들을 순회하면서
@@ -557,6 +560,7 @@ public class MemberService {
      */
 
     private void memberTagSortUpdate(Set<Tag> tagSet,Map<Tag, Integer>tagFavorCntMap,Map<Tag, Integer>tagHaveCntMap, Member member) {
+        log.info("memberTagSortUpdate()");
         HashMap<Tag, Integer> tagRankMap = new HashMap<>();
         Set<Tag> tags = tagSet;
 
@@ -597,6 +601,7 @@ public class MemberService {
      */
     @Transactional
     public void deleteMemberRelTag(Member member) {
+        log.info("deleteMemberRelTag()");
         List<MemberRelTag> memberRelTags = member.getMemberRelTags();
 
 
@@ -619,6 +624,7 @@ public class MemberService {
 
     @Transactional
     public void updateMemberProfile(Member member, String imgUrl) {
+        log.info("updateMemberProfile()");
         member.updateImage(imgUrl);
     }
 }

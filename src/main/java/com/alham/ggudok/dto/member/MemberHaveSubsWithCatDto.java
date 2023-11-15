@@ -6,6 +6,9 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
+/**
+ * 멤버가 가지고 있는 subs와 category 정보 DTO
+ */
 @Data
 @NoArgsConstructor
 @EqualsAndHashCode(of = "categoryName")

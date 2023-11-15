@@ -31,6 +31,7 @@ public class ReviewService {
      */
     @Transactional
     public Review writeReview(Member member, Subs subs, String content, int rating) {
+        log.info("writeReview()");
         Optional<Review> optionalReview = member.getReviews().stream()
                 .filter(r -> r.getSubs().getSubsId() == subs.getSubsId())
                 .findAny();
@@ -46,6 +47,7 @@ public class ReviewService {
     }
 
     public List<Review> findMemberReviews(Member member) {
+        log.info("findMemberReviews()");
         Optional<List<Review>> reviewByMember = reviewRepository.findReviewsByMember(member.getMemberId());
 
         if (reviewByMember.isPresent()) {
@@ -56,14 +58,17 @@ public class ReviewService {
     }
 
     public Optional<Review> findMemberSubsReview(Member member, Long subsId) {
+        log.info("findMemberSubsReview()");
         return reviewRepository.findReviewByMemberAndSubs(member.getMemberId(), subsId);
     }
 
     public Optional<List<Review>> findSubsReviewsBySubsId(Long subsId) {
+        log.info("findSubsReviewsBySubsId()");
         return reviewRepository.findSubsReviewsBySubsId(subsId);
     }
 
     public Integer updateRatingAvg(Long subsId) {
+        log.info("updateRatingAvg()");
         return reviewRepository.findRatingAvgById(subsId);
     }
 }

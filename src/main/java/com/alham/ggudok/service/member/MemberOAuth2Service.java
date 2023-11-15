@@ -24,6 +24,7 @@ public class MemberOAuth2Service {
 
     @Transactional
     public Member findMemberOAuth(String loginId) {
+        log.info("findMemberOAuth()");
         Optional<Member> optionalMember = memberRepository.findByLoginId(loginId);
 
         if (optionalMember.isPresent()) {
@@ -31,8 +32,8 @@ public class MemberOAuth2Service {
             return member;
 
         } else {
-            Member member = new Member(loginId, loginId);
-            member.updateRole(Role.WEB);
+            Member member = new Member(loginId, "");
+            member.updateRole(Role.TEMP);
             MemberSecurity memberSecurity = new MemberSecurity();
             memberSecurity.updateLoginId(loginId);
             memberSecurityRepository.saveAndFlush(memberSecurity);

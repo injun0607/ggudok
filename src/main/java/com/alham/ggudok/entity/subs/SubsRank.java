@@ -16,7 +16,7 @@ import static lombok.AccessLevel.PROTECTED;
 @Entity
 @Getter
 @NoArgsConstructor(access = PROTECTED)
-@EqualsAndHashCode(of = "rank_Id")
+@EqualsAndHashCode(of = "rankId")
 public class SubsRank {
 
     @Id

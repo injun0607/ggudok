@@ -4,6 +4,7 @@ import com.alham.ggudok.config.security.auth.CustomOAuth2User;
 import com.alham.ggudok.config.security.jwt.JwtService;
 import com.alham.ggudok.entity.member.Role;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,8 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
     private final JwtService jwtService;
 
 
+
+
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         log.info("OAuth2 Login 성공!");
@@ -29,11 +32,14 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
             CustomOAuth2User oAuth2User = (CustomOAuth2User) authentication.getPrincipal();
 
             // User의 Role이 GUEST일 경우 처음 요청한 회원이므로 회원가입 페이지로 리다이렉트
-            if(oAuth2User.getRole() == Role.WEB) {
+            if(oAuth2User.getRole() == Role.TEMP) {
                 String accessToken = jwtService.createAccessToken(oAuth2User.getLoginId());
                 response.addHeader(jwtService.getAccessHeader(), accessToken);
-//                response.sendRedirect("http://192.168.45.97:3000/Auth/JoinAfter"); // 프론트의 회원가입 추가 정보 입력 폼으로 리다이렉트
 
+                response.sendRedirect("http://192.168.45.97:3000/Auth/JoinAfter?access="+accessToken); // 프론트의 회원가입 추가 정보 입력 폼으로 리다이렉트
+
+
+                //만약 쿠키 방식사용한다면 필요없음
                 jwtService.sendAccessAndRefreshToken(response, accessToken, null);
 //                User findUser = userRepository.findByEmail(oAuth2User.getEmail())
 //                                .orElseThrow(() -> new IllegalArgumentException("이메일에 해당하는 유저가 없습니다."));
@@ -53,6 +59,13 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
         String refreshToken = jwtService.createRefreshToken();
         response.addHeader(jwtService.getAccessHeader(),  accessToken);
         response.addHeader(jwtService.getRefreshHeader(), refreshToken);
+        Cookie access = new Cookie("access", accessToken);
+        Cookie refresh = new Cookie("refresh", refreshToken);
+
+        response.addCookie(access);
+        response.addCookie(refresh);
+        response.sendRedirect("http://192.168.45.97:3000?access="+accessToken+"&refresh="+refreshToken);
+
 
         jwtService.sendAccessAndRefreshToken(response, accessToken, refreshToken);
         jwtService.updateRefreshToken(oAuth2User.getLoginId(), refreshToken);
