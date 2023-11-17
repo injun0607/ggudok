@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.CacheControl;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.concurrent.TimeUnit;
@@ -54,5 +55,13 @@ public class WebConfig implements WebMvcConfigurer {
                 .addResourceLocations("file:///C:/ggudown/event/")
                 // 접근 파일 캐싱 시간
                 .setCacheControl(CacheControl.maxAge(1, TimeUnit.MINUTES));
+    }
+
+    @Override
+    public void addViewControllers(ViewControllerRegistry registry) {
+        registry.addViewController("/")
+                .setViewName("forward:/index.html");
+        registry.addViewController("/Category/**")
+                .setViewName("forward:/index.html");
     }
 }

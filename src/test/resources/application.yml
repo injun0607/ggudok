@@ -1,4 +1,6 @@
 spring:
+  profiles:
+    active: test
 #  datasource:
 ##    url: jdbc:h2:tcp://localhost/~/ggudok;
 ##    username: sa
@@ -19,3 +21,19 @@ logging:
   level:
     org.hibernate.SQL: debug
  #   org.hibernate.orm.jdbc.bind: trace
+
+upload:
+  subs:
+    main: C:/ggudown/subs/main/
+    icon: C:/ggudown/subs/icon/
+
+  category: C:/ggudown/category/
+  member: C:/ggudown/member/
+
+download:
+  subs:
+    main: /images/subs/main/
+    icon: /images/subs/icon/
+
+  category: /images/category/
+  member: /images/member/
