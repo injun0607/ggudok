@@ -36,37 +36,37 @@ public class InitMember {
     public void init() {
         initSubs.init();
         initMemberService.init();
-        MemberRegisterDto memberRegisterDto = new MemberRegisterDto();
-        memberRegisterDto.setMemberName("깡깡지");
-        memberRegisterDto.setAge(4);
-        memberRegisterDto.setLoginId("choiseo26@naver.com");
-        memberRegisterDto.setGender(Gender.WOMAN);
-        memberRegisterDto.setPassword("1234");
-        memberRegisterDto.setPhoneNumber("01012345678");
-        memberRegisterDto.setPasswordCheck("1234");
-        memberService.registerMember(memberRegisterDto);
-
-
-        MemberRegisterDto memberRegisterDto2 = new MemberRegisterDto();
-        memberRegisterDto2.setMemberName("인인준");
-        memberRegisterDto2.setAge(4);
-        memberRegisterDto2.setLoginId("injun0607@naver.com");
-        memberRegisterDto2.setGender(Gender.MAN);
-        memberRegisterDto2.setPassword("1234");
-        memberRegisterDto2.setPhoneNumber("01012345678");
-        memberRegisterDto2.setPasswordCheck("1234");
-        memberService.registerMember(memberRegisterDto2);
-
-
-        MemberRegisterDto memberRegisterDto3 = new MemberRegisterDto();
-        memberRegisterDto3.setMemberName("인인준준");
-        memberRegisterDto3.setAge(4);
-        memberRegisterDto3.setLoginId("yhgu0607@naver.com");
-        memberRegisterDto3.setGender(Gender.WOMAN);
-        memberRegisterDto3.setPassword("1234");
-        memberRegisterDto3.setPhoneNumber("01012345678");
-        memberRegisterDto3.setPasswordCheck("1234");
-        memberService.registerMember(memberRegisterDto3);
+//        MemberRegisterDto memberRegisterDto = new MemberRegisterDto();
+//        memberRegisterDto.setMemberName("깡깡지");
+//        memberRegisterDto.setAge(4);
+//        memberRegisterDto.setLoginId("choiseo26@naver.com");
+//        memberRegisterDto.setGender(Gender.WOMAN);
+//        memberRegisterDto.setPassword("1234");
+//        memberRegisterDto.setPhoneNumber("01012345678");
+//        memberRegisterDto.setPasswordCheck("1234");
+//        memberService.registerMember(memberRegisterDto);
+//
+//
+//        MemberRegisterDto memberRegisterDto2 = new MemberRegisterDto();
+//        memberRegisterDto2.setMemberName("인인준");
+//        memberRegisterDto2.setAge(4);
+//        memberRegisterDto2.setLoginId("injun0607@naver.com");
+//        memberRegisterDto2.setGender(Gender.MAN);
+//        memberRegisterDto2.setPassword("1234");
+//        memberRegisterDto2.setPhoneNumber("01012345678");
+//        memberRegisterDto2.setPasswordCheck("1234");
+//        memberService.registerMember(memberRegisterDto2);
+//
+//
+//        MemberRegisterDto memberRegisterDto3 = new MemberRegisterDto();
+//        memberRegisterDto3.setMemberName("인인준준");
+//        memberRegisterDto3.setAge(4);
+//        memberRegisterDto3.setLoginId("yhgu0607@naver.com");
+//        memberRegisterDto3.setGender(Gender.WOMAN);
+//        memberRegisterDto3.setPassword("1234");
+//        memberRegisterDto3.setPhoneNumber("01012345678");
+//        memberRegisterDto3.setPasswordCheck("1234");
+//        memberService.registerMember(memberRegisterDto3);
 
 
 
@@ -108,9 +108,12 @@ public class InitMember {
             Category movie = new Category("영상","ott");
             Category music = new Category("음악","music");
             Category drink = new Category("음료","drink");
-            Category alcohol = new Category("주류","alcohol");
             Category extra = new Category("패션잡화","extra");
             Category book = new Category("책","book");
+            Category plant = new Category("식물","plant");
+            Category ride = new Category("교통", "ride");
+
+
             Random random = new Random();
             List<Category> categories = new ArrayList<>();
 
@@ -119,21 +122,21 @@ public class InitMember {
             categories.add(movie);
             categories.add(music);
             categories.add(drink);
-            categories.add(alcohol);
             categories.add(extra);
             categories.add(book);
-
-
-
+            categories.add(plant);
+            categories.add(ride);
 
             em.persist(health);
             em.persist(food);
             em.persist(movie);
             em.persist(music);
             em.persist(drink);
-            em.persist(alcohol);
             em.persist(extra);
             em.persist(book);
+            em.persist(plant);
+            em.persist(ride);
+
 
             List<Subs> subsList = new ArrayList<>();
 
@@ -456,22 +459,23 @@ public class InitMember {
 
             Tag category1 = new Tag("영상");
             Tag category2 = new Tag("음악");
-            Tag category3 = new Tag("식품");
-            Tag category4 = new Tag("건강");
             Tag category5 = new Tag("음료");
-            Tag category6 = new Tag("주류");
+            Tag category6 = new Tag("식물");
             Tag category7 = new Tag("패션잡화");
             Tag category8 = new Tag("책");
+            Tag category9 = new Tag("교통");
+
 
             List<Tag> categoryTag = new ArrayList<>();
             categoryTag.add(category1);
             categoryTag.add(category2);
-            categoryTag.add(category3);
-            categoryTag.add(category4);
             categoryTag.add(category5);
             categoryTag.add(category6);
             categoryTag.add(category7);
             categoryTag.add(category8);
+            categoryTag.add(category9);
+            categoryTag.add(healthTag);
+            categoryTag.add(foodTag);
 
             em.persist(age1);
             em.persist(age2);
@@ -485,12 +489,11 @@ public class InitMember {
 
             em.persist(category1);
             em.persist(category2);
-            em.persist(category3);
-            em.persist(category4);
             em.persist(category5);
             em.persist(category6);
             em.persist(category7);
             em.persist(category8);
+            em.persist(category9);
 
             List<Tag> tagList = new ArrayList<>();
             tagList.add(age1);
@@ -502,12 +505,13 @@ public class InitMember {
             tagList.add(healthTag);
             tagList.add(category1);
             tagList.add(category2);
-            tagList.add(category3);
-            tagList.add(category4);
             tagList.add(category5);
             tagList.add(category6);
             tagList.add(category7);
             tagList.add(category8);
+            tagList.add(category9);
+
+
 
 
             for (Subs subs : subsList) {

@@ -323,6 +323,7 @@ public class HomeController {
 
     }
 
+    /*
 
     @GetMapping("/init_review")
     public void initReview() {
@@ -351,5 +352,6 @@ public class HomeController {
         reviewService.writeReview(yh, healthCare2, "껑껑이 리뷰!", 4);
 
     }
+    */
 
 }

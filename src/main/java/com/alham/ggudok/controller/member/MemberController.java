@@ -360,11 +360,11 @@ public class MemberController {
     }
 
 
-
-    @GetMapping("/tagsort_init")
-    public void memberTagSortInit() {
-        memberService.userRecommendTag();
-    }
+//
+//    @GetMapping("/tagsort_init")
+//    public void memberTagSortInit() {
+//        memberService.userRecommendTag();
+//    }
 
 
 

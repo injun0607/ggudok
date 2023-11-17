@@ -333,11 +333,11 @@ public class SubsController {
         return true;
     }
 
-    @GetMapping("/sort_init")
-    public boolean sortInit() {
-        subsService.updateRecommendSort();
-        return true;
-    }
+//    @GetMapping("/sort_init")
+//    public boolean sortInit() {
+//        subsService.updateRecommendSort();
+//        return true;
+//    }
 
     private static MemberDto isLoginUser(Principal principal) {
 
@@ -349,7 +349,7 @@ public class SubsController {
         }
     }
 
-
+/*
     //TODO init임시
     @GetMapping("/init_sort")
     public void initSort() {
@@ -517,6 +517,8 @@ public class SubsController {
         subsService.updateRatingAvg(healthCare,helRating);
         subsService.updateRatingAvg(dosirak,doRating);
     }
+
+ */
 
     private List<SubsDto> setSubsDto(List<Subs>subsList,Map<Long,List<Tag>>subsTagMap, Map<Long,List<SubsRank>> subsRankMap) {
 
