@@ -9,6 +9,7 @@ import { setIsLoading, setIsResult, } from '../redux/actions/itemActions';
 import { setTwoDepthItems, setSelectedOneDepth, setCompareItem1, setCompareItem2 } from '../redux/actions/compareActions';
 
 const NO_IMAGE_URL = '/images/common/noimg.png';
+const NO_ICON_URL = '/images/common/logo_grey.png';
 
 const Compare = () => {
   const dispatch = useDispatch();
@@ -29,13 +30,16 @@ const Compare = () => {
   // ************************** 기본 아이템 fetch ***************************
   const fetchCompareData = async () => {
     try {
-      const selectedCategory = categories.filter(category => category.category === selectedOneDepth)[0];
+      const selectedCategory = categories.filter(category => category.categoryEng === selectedOneDepth)[0];
       const selectedCategoryEng = selectedCategory.categoryEng;
-      setCategoryIcon(selectedCategory.icon)
-
+      setCategoryIcon(selectedCategory.categoryImage);
+      
       const response = await axios.get(`/subs/${selectedCategoryEng}`);
       const data = response.data.items;
       dispatch(setTwoDepthItems(data));
+      console.log('categories', categories)
+      console.log('selectedCategory', selectedCategory)
+      console.log('data', data)
 
       dispatch(setIsResult(true));
     } catch (error) {
@@ -104,7 +108,7 @@ const Compare = () => {
   }, [dispatch, compareItem2, setCompareItem2])
 
   return (
-    <section className={style.pagewrapPd}>
+    categories.length !==0 && <section className={style.pagewrapPd}>
       <div className='webwidth'>
         <div className='page_tit'>
           <h2>구독서비스 간편비교하기</h2>
@@ -115,8 +119,8 @@ const Compare = () => {
             <select className={style.select} onChange={ handleChangeOneDepth } value={selectedOneDepth}>
               <option value="">우선 카테고리를 선택하세요.</option>
               {
-                categories.map((category, index) => 
-                <option value={category.category} key={index}>{category.category}</option>
+                categories.map((category, categoryId) => 
+                <option value={category.categoryEng} key={categoryId}>{category.categoryName}</option>
                 )
               }
             </select>
@@ -157,7 +161,7 @@ const Compare = () => {
               </div>
               <div className={style.box}>
                 <div className={style.category}>
-                  <img src={`${categoryIcon}`} alt={selectedOneDepth} />
+							    <img src={categoryIcon || NO_ICON_URL} alt={selectedOneDepth} />
                   <p>{compareItem1.category}</p>
                 </div>
                 <h3>카테고리</h3>
@@ -214,7 +218,7 @@ const Compare = () => {
               </div>
               <div className={style.box}>
                 <div className={style.category}>
-                  <img src={`${categoryIcon}`} alt={selectedOneDepth} />
+							    <img src={categoryIcon || NO_ICON_URL} alt={selectedOneDepth} />
                   <p>{compareItem2.category}</p>
                 </div>
                 <h3>카테고리</h3>
