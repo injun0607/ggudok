@@ -134,6 +134,10 @@ const EditProfile = () => {
   
   const handleEdit = async(e) => {
     e.preventDefault();
+    if(!password){
+      alert('현재 비밀번호를 입력해주세요.')
+      return;
+    }
     await handleImageUpload();
     const userSocialData = {
       gender,
