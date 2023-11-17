@@ -54,6 +54,4 @@ jwt:
     expiration: 30
     header: refresh
 
-email: injun_office0607@naver.com
-password: Dudlswns1!
 
