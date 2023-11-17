@@ -61,6 +61,13 @@ const Itemlist = ({ category, categoryEng }) => {
     fetchItemListData();
   }, [dispatch, categoryEng]);
 
+// 페이지 첫 진입 시 필터 초기화
+useEffect(() => {
+  dispatch(setSelectedPrice(null));
+  dispatch(setSelectedRating(null));
+  dispatch(setSelectedTag([]));
+}, []);
+
 // 결과 유무
 useEffect(() => {
   setIsResult(items.length > 0 || filtereditems.length > 0);
