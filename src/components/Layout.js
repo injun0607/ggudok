@@ -84,7 +84,7 @@ const Layout = () => {
       if (isLoggedIn && !isCheckingLogin) {
         checkAccessTokenExpiration();
       }
-    }, 3000000); // 30초마다 AccessToken 만료 시간 확인
+    }, 30000); // 30초마다 AccessToken 만료 시간 확인
 
     return () => clearInterval(checkInterval);
   }, [isLoggedIn]);

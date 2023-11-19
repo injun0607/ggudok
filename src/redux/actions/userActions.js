@@ -205,7 +205,7 @@ export const editMemberinfo = (userData, navigate) => async(dispatch) => {
     phoneNumber,
     isPassval,
     isPhoneval,
-    memberImg,
+    newMemberImg,
     role,
     } = userData;
   
@@ -226,7 +226,7 @@ export const editMemberinfo = (userData, navigate) => async(dispatch) => {
         age: age,
         password: password,
         newPassword: newPassword,
-        memberImg: memberImg,
+        memberImg: newMemberImg,
         newPasswordCheck: newPasswordCheck,
         phoneNumber: phoneNumber,
         role: role,
@@ -255,7 +255,7 @@ export const editSocialMemberinfo = (userSocialData, navigate) => async(dispatch
     age,
     phoneNumber,
     isPhoneval,
-    memberImg,
+    newMemberImg,
     role,
   } = userSocialData;
   
@@ -269,7 +269,7 @@ export const editSocialMemberinfo = (userSocialData, navigate) => async(dispatch
       const response = await axios.post('/member/update', {
         gender: gender,
         age: age,
-        memberImg: memberImg,
+        memberImg: newMemberImg,
         phoneNumber: phoneNumber,
         role: role,
       });
@@ -301,6 +301,12 @@ export const setRole = (role) => {
   return {
     type: 'SET_ROLE',
     payload: role,
+  };
+}
+export const setNewMemberImg = (newMemberImg) => {
+  return {
+    type: 'SET_NEW_MEMBERIMG',
+    payload: newMemberImg,
   };
 }
 export const setMemberImg = (memberImg) => {

@@ -9,7 +9,7 @@ const initialState = {
   isPhoneval: false,
   // 회원가입시 작성 사용자정보
   emailValNumber: '',
-  memberImg: '',
+  newMemberImg: '',
   memberName: '',
   loginId: '',
   password: '',
@@ -129,6 +129,11 @@ const userReducer = (state = initialState, action) => {
       return {
         ...state,
         gender: action.payload,
+      };
+    case 'SET_NEW_MEMBERIMG':
+      return {
+        ...state,
+        newMemberImg: action.payload,
       };
     case 'SET_MEMBERIMG':
       return {

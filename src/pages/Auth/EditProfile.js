@@ -5,7 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 // css import
 import style from '../../styles/Auth.module.css'
 // redux import
-import { editMemberinfo, editSocialMemberinfo, setRole, setValidPassword, setAge, setGender, setValidPhoneNumber, setPhoneNumber, setPassword, setNewPassword, setNewPasswordCheck, setIsLoading } from '../../redux/actions/userActions';
+import { editMemberinfo, editSocialMemberinfo, setNewMemberImg, setRole, setValidPassword, setAge, setGender, setValidPhoneNumber, setPhoneNumber, setPassword, setNewPassword, setNewPasswordCheck, setIsLoading } from '../../redux/actions/userActions';
 
 const EditProfile = () => {
   const dispatch = useDispatch();
@@ -17,6 +17,7 @@ const EditProfile = () => {
   const [memberImg, setMemberImg] = useState(null);
 
   const memberName = useSelector(state => state.user.memberName);
+  const newMemberImg = useSelector(state => state.user.newMemberImg);
   const loginId = useSelector(state => state.user.loginId);
   const password = useSelector(state => state.user.password);
   const newPassword = useSelector(state => state.user.newPassword);
@@ -43,7 +44,7 @@ const EditProfile = () => {
           dispatch(setPhoneNumber(userData.phoneNumber));
         }
         dispatch(setValidPhoneNumber(true));
-        if(memberImg){
+        if(userData.memberImg){
           setMemberImg(userData.memberImg);
         }
         if(userData.role){
@@ -125,7 +126,8 @@ const EditProfile = () => {
         })
         
         const imageUrl = response.data.imageUrl;
-        setMemberImg(imageUrl);
+        dispatch(setNewMemberImg(imageUrl));
+        console.log('imageUrl', imageUrl)
       }
     } catch (error) {
       console.error('이미지 업로드 오류:', error);
@@ -134,17 +136,18 @@ const EditProfile = () => {
   
   const handleEdit = async(e) => {
     e.preventDefault();
-    if(!password){
+    if(role !== 'SOCIAL'){if(!password){
       alert('현재 비밀번호를 입력해주세요.')
       return;
-    }
+    }}
     await handleImageUpload();
+    console.log('newMemberImg after', newMemberImg)
     const userSocialData = {
       gender,
       age,
       phoneNumber,
       isPhoneval,
-      memberImg,
+      newMemberImg,
       role,
     };
     const userData = {
@@ -156,9 +159,11 @@ const EditProfile = () => {
       phoneNumber,
       isPassval,
       isPhoneval,
-      memberImg,
+      newMemberImg,
       role,
     };
+    console.log('userSocialData', userSocialData)
+    console.log('userData', userData)
     if(role === 'SOCIAL'){ dispatch(editSocialMemberinfo(userSocialData, navigate)); }
     else{ dispatch(editMemberinfo(userData, navigate)); }
 
