@@ -68,7 +68,7 @@ const JoinEmail = () => {
   // 이메일 인증번호 fetch 해오기
   const fetchEmailValNumber = async() => {
     try {
-      const response = await axios.get('http://192.168.45.96:8080/member/emailCheck');
+      const response = await axios.get('/member/emailCheck');
       setFetchedEmailValNumber(response.data.certCode);
     } catch (error) {
       console.error('Error fetching email verification number:', error);
@@ -78,7 +78,7 @@ const JoinEmail = () => {
   const handleSendEmail = async(loginId) => {
     try {
       const data = { loginId: loginId };
-      const response = await axios.post('http://192.168.45.96:8080/member/emailCheck', data);
+      const response = await axios.post('/member/emailCheck', data);
       if (response.status === 200) {
         dispatch(setEmailSent(true));
         alert('이메일을 전송했습니다.');
