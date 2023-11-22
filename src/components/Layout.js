@@ -113,13 +113,9 @@ const Layout = () => {
 		const urlParams = new URLSearchParams(window.location.search);
 		const access = urlParams.get('access');
 		const refresh = urlParams.get('refresh');
-		console.log('access', access,'\nrefresh', refresh,);
 		// Access Token을 쿠키에 저장
 		setCookie('access', access, { path: '/' });
 		setCookie('refresh', refresh, { path: '/' });
-		console.log('저장완료');
-		console.log(document.cookie);
-
   };
 
 	const fetchSessionStatus = async () => {
@@ -132,7 +128,6 @@ const Layout = () => {
 			const userData = response.data;
 			if (userData.memberName !== undefined && userData.loginId !== undefined) {
 				dispatch(setLoggedIn(userData));
-				console.log(2);
 			}
 			if (userData.role === 'ADMIN'){
 				dispatch(setAdminUser(true))

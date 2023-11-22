@@ -41,14 +41,28 @@ const Login = () => {
           </form>
           
           <div className={`${style.easySignup} mt_30`}>
-            <Link to="http://ec2-43-202-123-248.ap-northeast-2.compute.amazonaws.com:8080/oauth2/authorization/naver" className={`${style.sns} ${style.naver}`}>
+            <div
+              className={`${style.sns} ${style.naver}`}
+              onClick={() => (window.location.href = 'http://ec2-43-202-123-248.ap-northeast-2.compute.amazonaws.com:8080/oauth2/authorization/naver')}
+            >
+              <img src='../images/icons/icon_naver.png' alt='naver' />
+              <p>네이버 간편가입하기</p>
+            </div>
+            <div
+              className={`${style.sns} ${style.kakao}`}
+              onClick={() => (window.location.href = 'http://ec2-43-202-123-248.ap-northeast-2.compute.amazonaws.com:8080/oauth2/authorization/kakao')}
+            >
+              <img src='../images/icons/icon_kakaotalk.png' alt='kakao' />
+              <p>카카오톡 간편가입하기</p>
+            </div>
+            {/* <Link to="http://ec2-43-202-123-248.ap-northeast-2.compute.amazonaws.com:8080/oauth2/authorization/naver" className={`${style.sns} ${style.naver}`}>
               <img src='../images/icons/icon_naver.png' alt='naver' />
               <p>네이버 로그인</p>
             </Link>
             <Link to="http://ec2-43-202-123-248.ap-northeast-2.compute.amazonaws.com:8080/oauth2/authorization/kakao" className={`${style.sns} ${style.kakao}`}>
               <img src='../images/icons/icon_kakaotalk.png' alt='kakao' />
               <p>카카오톡 로그인</p>
-            </Link>
+            </Link> */}
           </div>
           <div className={style.doublebutton}>
             <Link className="btn btn_normal" onClick={ ()=>{ navigate(-1) } }>뒤로 가기</Link>

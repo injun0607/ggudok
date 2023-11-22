@@ -36,7 +36,6 @@ const EditProfile = () => {
     try {
       const response = await axios.get('/member/update');
       const userData = response.data;
-      console.log('userData', userData)
       if (userData.gender && userData.age) {
         dispatch(setAge(userData.age));
         dispatch(setGender(userData.gender));
@@ -127,7 +126,6 @@ const EditProfile = () => {
         
         const imageUrl = response.data.imageUrl;
         dispatch(setNewMemberImg(imageUrl));
-        console.log('imageUrl', imageUrl)
       }
     } catch (error) {
       console.error('이미지 업로드 오류:', error);
@@ -141,7 +139,6 @@ const EditProfile = () => {
       return;
     }}
     await handleImageUpload();
-    console.log('newMemberImg after', newMemberImg)
     const userSocialData = {
       gender,
       age,
@@ -162,8 +159,6 @@ const EditProfile = () => {
       newMemberImg,
       role,
     };
-    console.log('userSocialData', userSocialData)
-    console.log('userData', userData)
     if(role === 'SOCIAL'){ dispatch(editSocialMemberinfo(userSocialData, navigate)); }
     else{ dispatch(editMemberinfo(userData, navigate)); }
 

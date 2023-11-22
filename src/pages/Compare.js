@@ -37,9 +37,6 @@ const Compare = () => {
       const response = await axios.get(`/subs/${selectedCategoryEng}`);
       const data = response.data.items;
       dispatch(setTwoDepthItems(data));
-      console.log('categories', categories)
-      console.log('selectedCategory', selectedCategory)
-      console.log('data', data)
 
       dispatch(setIsResult(true));
     } catch (error) {
