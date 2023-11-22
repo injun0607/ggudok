@@ -1026,7 +1026,9 @@ table .sub_tit:last-child {
     width: 100%;
 }
 .bannerslider .tag p {
-    background: var(--bg-color-2);
+    -webkit-backdrop-filter: blur(3px);
+    backdrop-filter: blur(3px);
+    background-color: rgba(255, 255, 255, 0.75); 
     color: var(--txt-color);
     padding: 0.25rem 0.75rem;
     font-size: 0.925rem;
@@ -1034,7 +1036,14 @@ table .sub_tit:last-child {
     width: auto;
     margin-bottom: 0;
 }
-.bannerslider .tag p:nth-child(2) {background: var(--main-color); color: #fff;}
+.bannerslider .tag p:nth-child(2) {
+    background: var(--main-color);
+    color: #fff;
+    -webkit-backdrop-filter: blur(3px);
+    backdrop-filter: blur(3px);
+    /* background-color: rgba(255, 255, 255, 0.5);  */
+    /* color: var(--txt-color); */
+}
 
 .react-slideshow-container .default-nav {background: none !important;}
 .react-slideshow-container .nav:first-of-type {left: -3rem;}
@@ -1106,7 +1115,7 @@ table .sub_tit:last-child {
 .item-list_carousel .swiper-slide .img {border-radius: var(--radius-all-sm); overflow: hidden;}
 .swiper-button-prev, .swiper-button-next {
     color: var(--txt-color) !important;
-    margin-top: -4rem;
+    margin-top: -1.5rem;
 }
 .swiper-button-prev:after, .swiper-button-next:after {
     font-size: 2rem !important;
