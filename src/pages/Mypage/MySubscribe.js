@@ -24,7 +24,7 @@ const MySubscribe = () => {
       const response = await axios.get(`/member/have_subs`);
       const data = response.data.items;
       const total = response.data.totalAvg;
-
+      console.log(response.data.items)
       if(data !== 0){
         dispatch(setMySubscribe(data));
         dispatch(setMyTotal(total));
@@ -73,8 +73,9 @@ const MySubscribe = () => {
             {category.subsList.map((subs, subsIndex) => (
               <Link to={`/subs/detail/item/${subs.subsId}`} key={subsIndex}>
                 <article className={style.subscribe}>
+                  <h4>{subs.rankName}</h4>
                   {subs.content.map((cont, index) => (
-                    <h4 key={index}>{cont}</h4>
+                    <h5 key={index}>{cont}</h5>
                   ))}
                   <div className={style.tag}>
                     <p>{subs.subsName}</p>

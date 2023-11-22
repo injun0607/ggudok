@@ -65,7 +65,8 @@
 .subscribewrap .subscribes .cont {display: flex; gap: 1.5rem; flex-wrap: wrap; width: calc(100% - 3rem - 11rem);}
 .subscribewrap .subscribes .cont .subscribe {background: var(--bg-color-2); padding: var(--pad-sm); border-radius: var(--radius-all-sm); color: var(--txt-color); transition: 0.3s;}
 /* .subscribewrap .subscribes .cont .subscribe:hover {box-shadow: rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(17, 20, 22, 0.20) 0px 0px 15px 0px;} */
-.subscribewrap .subscribes .cont .subscribe h4 {font-weight: 600;}
+.subscribewrap .subscribes .cont .subscribe h4 {font-weight: 600; margin-bottom: 0.5rem;}
+.subscribewrap .subscribes .cont .subscribe h5 {font-weight: 400; line-height: 1.3em; font-size: 0.925rem; margin: 0.325rem 0;}
 .subscribewrap .subscribes .cont .subscribe .tag {display: flex; gap: 0.5rem; margin-top: 0.5rem;}
 .subscribewrap .subscribes .cont .subscribe .tag p {
   background: #e0e0e9;

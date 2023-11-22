@@ -1,7 +1,6 @@
 import { combineReducers } from 'redux';
 import userReducer from './userReducer';
 import subscribeReducer from './subscribeReducer';
-import paymentReducer from './paymentReducer';
 import searchReducer from './searchReducer';
 import { categoryReducer } from './categoryReducer';
 import itemReducer from './itemReducer';
@@ -19,7 +18,6 @@ import adminEventsReducer from './admin/adminEventsReducer';
 const rootReducer = combineReducers({
   user: userReducer,
   subscribe: subscribeReducer,
-  payment: paymentReducer,
   search: searchReducer,
   category: categoryReducer,
   item: itemReducer,

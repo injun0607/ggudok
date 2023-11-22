@@ -32,7 +32,6 @@ const Itemlist = () => {
   const [filterTag, setFilterTag] = useState([]);
   const [page, setPage] = useState(1);
   const [startIndex, setStartIndex] = useState(0);
-  const endIndex = startIndex + ITEMS_PER_PAGE;
   
   // ************************** 기본 아이템 fetch ***************************
   const fetchItemListData = async() => {

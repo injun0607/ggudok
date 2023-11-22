@@ -44,7 +44,6 @@ const ItemDetail = () => {
   const pagedReviews = useSelector(state => state.review.pagedReviews);
   const [page, setPage] = useState(1);
   const [startIndex, setStartIndex] = useState(0);
-  const endIndex = startIndex + ITEMS_PER_PAGE;
 
   // ************************** 기본 아이템 fetch ***************************
   const fetchItemDetailData = async () => {
@@ -52,7 +51,7 @@ const ItemDetail = () => {
       const response = await axios.get(`/subs/detail/${subsId}`);
       const data = response.data;
       dispatch(fetchitemDetailSuccess(data));
-      
+
       // 아이템 회원등급 Default와 나머지 분리
       const itemRanks = data.itemDetail.ranks;
       setItemDefaultRank(itemRanks.find(obj => obj.rankLevel === "DEFAULT"));

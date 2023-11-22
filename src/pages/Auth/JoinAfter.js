@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 // css import
 import style from '../../styles/Auth.module.css'
 // redux import
-import { setCookie, getCookie, removeCookie } from '../../redux/actions/cookieActions';
+import { setCookie } from '../../redux/actions/cookieActions';
 import { joinAfter, setAge, setGender, setMemberName } from '../../redux/actions/userActions';
 
 const JoinAfter = () => {

@@ -19,7 +19,6 @@ const AdminHome = () => {
   const tags = useSelector(state => state.adminTags.tags);
   const items = useSelector(state => state.adminItems.items);
 
-  const [IsResult, setIsResult] = useState(null);
   const [IsLoading, setIsLoading] = useState(true);
   
   // ************************** 기본 전체 fetch ***************************

@@ -1,5 +1,7 @@
 const initialState = {
   mySubscribe: [],
+  mySubsRank: [],
+  mySubsOtherRank: [],
   myTotalAvg: '',
 };
   
@@ -9,6 +11,16 @@ const subscribeReducer = (state = initialState, action) => {
       return {
         ...state,
         mySubscribe: action.payload,
+      }
+    case 'SET_MY_SUBS_RANK':
+      return {
+        ...state,
+        mySubsRank: action.payload,
+      }
+    case 'SET_MY_SUBS_OTHER_RANK':
+      return {
+        ...state,
+        mySubsOtherRank: action.payload,
       }
     case 'SET_MY_TOTAL':
       return {

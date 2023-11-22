@@ -104,7 +104,7 @@ const Layout = () => {
 			}
 		);
 	
-		// 컴포넌트가 언마운트될 때 인터셉터를 정리
+		// 컴포넌트가 언마운트될 때 인터셉터 정리
 		return () => {
 			axios.interceptors.request.eject(interceptor);
 		};
@@ -165,7 +165,6 @@ const Layout = () => {
 			<div className={style.body}>
 				<Routes>
 					<Route path='/' element={<Home />} />
-					{/* <Route path='/Home' element={<Home />}></Route> */}
 					<Route path='/Home' element={isCheckingLogin ? <Loading /> : <Home isCheckingLogin={isCheckingLogin} />} />
 
 					<Route path='/Mypage' element={

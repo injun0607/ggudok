@@ -293,6 +293,9 @@ accent-color: #FF724C;
 .txt_grey {
     color: var(--c-black-4) !important;
 }
+.txt_grey02 {
+    color: var(--c-black-5) !important;
+}
 .txt_red {
     color: #d22b28 !important;
 }

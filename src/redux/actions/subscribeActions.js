@@ -5,6 +5,18 @@ export const setMySubscribe = (data) => {
     payload: data,
   };
 };
+export const setMySubsRank = (mySubsRank) => {
+  return {
+    type: 'SET_MY_SUBS_RANK',
+    payload: mySubsRank,
+  };
+};
+export const setMySubsOtherRank = (mySubsOtherRank) => {
+  return {
+    type: 'SET_MY_SUBS_OTHER_RANK',
+    payload: mySubsOtherRank,
+  };
+};
 export const setMyTotal = (data) => {
   return {
     type: 'SET_MY_TOTAL',
@@ -35,11 +47,11 @@ export const addSubscribe = (userData, navigate) => async (dispatch) => {
 };
 // *************************** 구독 변경 ****************************
 export const editSubscribe = (userData, navigate) => async (dispatch) => {
-  const { subsId, rankLevel } = userData;
+  const { subsId, selectedRankLevel } = userData;
   try {
     const response = await axios.post('/subs/buy', {
       subsId: subsId,
-      rankLevel: rankLevel,
+      rankLevel: selectedRankLevel,
     });
     if (response.status === 200) {
       dispatch({ type: 'EDIT_SUBS_SUCCESS', payload: { subsId } });
