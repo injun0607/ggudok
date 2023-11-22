@@ -242,7 +242,7 @@ const Layout = () => {
 						/>
 					))}
 
-					<Route path='/subs/detail/:subsId' element={
+					<Route path='/subs/detail/item/:subsId' element={
           	<Suspense fallback={ <Loading /> }>
 							<ItemDetail />
 						</Suspense>

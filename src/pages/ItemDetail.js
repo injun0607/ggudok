@@ -322,7 +322,7 @@ const ItemDetail = () => {
           </div>
           <div className='item-list'>
             {similarItems.slice(0,4).map((item, index) => (
-              <Link to={`/subs/detail/${item.id}`} key={index}className='item-list-box'>
+              <Link to={`/subs/detail/item/${item.id}`} key={index}className='item-list-box'>
                 <div className='img'>
                   <img src={item.image || NO_IMAGE_URL} alt={item.name} />
                 </div>

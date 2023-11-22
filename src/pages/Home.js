@@ -120,7 +120,7 @@ const Home = ({isCheckingLogin}) => {
             {
               recommendCustomized.map((item, index) => 
                 <SwiperSlide key={index} className='item-list-box'>
-                  <Link to={`/subs/detail/${item.id}`}>
+                  <Link to={`/subs/detail/item/${item.id}`}>
                     <div className='img'>
                       <img src={item.image || NO_IMAGE_URL} alt={item.name} />
                     </div>
@@ -165,7 +165,7 @@ const Home = ({isCheckingLogin}) => {
               {
                 recommendBasic.map((item, index) => 
                 <SwiperSlide key={index} className='item-list-box'>
-                  <Link to={`/subs/detail/${item.id}`}>
+                  <Link to={`/subs/detail/item/${item.id}`}>
                     <div className='img'>
                       <img src={item.image || NO_IMAGE_URL} alt={item.name} />
                     </div>

@@ -82,7 +82,7 @@ const MyLike = ({ isCheckingLogin }) => {
     <section className={style.section}>
       <div className={style.itemlist}>
         {likedItems.map((item, index) => (
-          <Link to={`/subs/detail/${item.id}`} key={index} className={style.item}>
+          <Link to={`/subs/detail/item/${item.id}`} key={index} className={style.item}>
             <div className={style.img}>
               <img src={item.image || NO_IMAGE_URL} alt={item.name} />
             </div>
