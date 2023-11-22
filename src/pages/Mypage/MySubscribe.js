@@ -71,7 +71,7 @@ const MySubscribe = () => {
           </div>
           <div className={style.cont}>
             {category.subsList.map((subs, subsIndex) => (
-              <Link to={`/subs/detail/${subs.subsId}`} key={subsIndex}>
+              <Link to={`/subs/detail/item/${subs.subsId}`} key={subsIndex}>
                 <article className={style.subscribe}>
                   {subs.content.map((cont, index) => (
                     <h4 key={index}>{cont}</h4>
