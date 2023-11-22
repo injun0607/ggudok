@@ -74,7 +74,7 @@ export const login = (userData, navigate) => async (dispatch) => {
 };
 
 // Refresh Token을 통해 새로운 AccessToken을 가져오는 액션
-export const refreshToken = () => async (dispatch) => {
+export const refreshToken = (navigate) => async (dispatch) => {
   const refresh = getCookie('refresh');
   if (!refresh) {
     return;
@@ -90,6 +90,8 @@ export const refreshToken = () => async (dispatch) => {
     } else {
       // RefreshToken을 통한 갱신에 실패할 경우
       dispatch(logout());
+      alert('접속정보가 만료되었습니다. 다시 로그인해주세요.')
+      navigate('/Home');
     }
   } catch (error) {
     console.error('Error refreshing token:', error);
