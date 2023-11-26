@@ -96,6 +96,9 @@ public class InitMember {
         @Value("${download.event}")
         private String eventImageUrl;
 
+        @Value("${download.category}")
+        private String categoryImageUrl;
+
         @PersistenceContext
         private EntityManager em;
 
@@ -109,13 +112,30 @@ public class InitMember {
 
             //카테고리 등록
             Category food = new Category("식품","food");
+            food.updateCategoryImage(categoryImageUrl+"food.svg");
+
             Category culture = new Category("문화","culture");
+            culture.updateCategoryImage(categoryImageUrl+"culture.svg");
+
             Category drink = new Category("음료","drink");
+            drink.updateCategoryImage(categoryImageUrl+"drink.svg");
+
             Category extra = new Category("패션/잡화","extra");
+            extra.updateCategoryImage(categoryImageUrl+"extra.svg");
+
             Category book = new Category("글/그림","book");
+            book.updateCategoryImage(categoryImageUrl+"book.svg");
+
             Category plant = new Category("식물","plant");
+            plant.updateCategoryImage(categoryImageUrl+"plant.svg");
+
             Category ride = new Category("교통", "ride");
+            ride.updateCategoryImage(categoryImageUrl+"ride.svg");
+
             Category health = new Category("건강/뷰티","health");
+            health.updateCategoryImage(categoryImageUrl+"health.svg");
+
+
 
             em.persist(health);
             em.persist(food);
