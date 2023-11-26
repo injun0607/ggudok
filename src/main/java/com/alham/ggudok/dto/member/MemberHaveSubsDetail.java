@@ -16,6 +16,8 @@ public class MemberHaveSubsDetail {
 
     private String subsName;
 
+    private String rankName;
+
     private List<String> content;
 
     private int price;

@@ -91,12 +91,9 @@ public class SubsController {
 
         List<Subs> subsListByQuery = subsService.findSubsListByQuery(q);
         List<Long> subsIdList = subsListByQuery.stream().map(s -> s.getSubsId()).collect(Collectors.toList());
-        Map<Long,List<Tag>> subsTagMap = subsListByQuery
-                .stream()
-                .collect(Collectors
-                        .toMap(Subs::getSubsId
-                                , subs -> subs.getSubsRelTags().stream().map(srt->srt.getTag()).collect(Collectors.toList()))
-                );
+        Map<Long, List<Tag>> subsTagMap = tagService.findTagListBySubsIdList(subsIdList);
+
+
         Map<Long, List<SubsRank>> subsRankMap = subsService.findSubsRankMap(subsIdList);
 
 
@@ -265,6 +262,9 @@ public class SubsController {
     }
 
 
+
+
+
     @PostMapping("/like/{subsId}")
     public boolean likeSubs(@PathVariable("subsId") Long subsId, Principal principal) {
         MemberDto memberDto = isLoginUser(principal);
@@ -321,6 +321,40 @@ public class SubsController {
         }
 
         return true;
+    }
+
+    @GetMapping("/buy_cancel/{subsId}")
+    public ResponseEntity<Map> showBuyCancel(Principal principal,@PathVariable("subsId") Long subsId) {
+        MemberDto memberDto = isLoginUser(principal);
+
+        Map<String, Object> resultMap = new HashMap<>();
+
+        memberService.findByLoginIdWithHaveSubs(memberDto.getLoginId())
+                .getMemberHaveSubsList()
+                .stream()
+                .filter(mhs->mhs.getSubs().getSubsId() == subsId)
+                .findFirst()
+                .ifPresent(mhs-> {
+                    resultMap.put("haveRank", mhs.getRankLevel());
+                });
+
+        List<SubsRankDetailDto> subsRankDetailDtoList = new ArrayList<>();
+        List<SubsRank> subsRankList = subsService.findContentBySubsId(subsId);
+
+        for (SubsRank subsRank : subsRankList) {
+
+            SubsRankDetailDto subsRankDetailDto = new SubsRankDetailDto();
+            subsRankDetailDto.setPrice(subsRank.getPrice());
+            subsRankDetailDto.setRankName(subsRank.getRankName());
+            subsRankDetailDto.setRankLevel(subsRank.getRankLevel());
+            subsRankDetailDto.setContent(subsRank.getContents().stream().map(sr->sr.getContent()).collect(Collectors.toList()));
+            subsRankDetailDtoList.add(subsRankDetailDto);
+
+        }
+
+        resultMap.put("subsRanks", subsRankDetailDtoList);
+
+        return new ResponseEntity(resultMap,HttpStatus.OK);
     }
 
     @PostMapping("/buy_cancel")

@@ -31,6 +31,7 @@ public class Subs extends ImageResourceEntity {
     private String subsName;
 
     //구독서비스 설명
+    @Column(length = 2000)
     private String info;
 
     private Integer recommendSort = Integer.MAX_VALUE - 10000;

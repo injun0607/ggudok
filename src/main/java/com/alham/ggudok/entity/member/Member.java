@@ -59,13 +59,14 @@ public class Member {
         this.age = age;
     }
 
-    public Member(String memberName, int age, String loginId, String password, Gender gender, String phoneNumber) {
+    public Member(String memberName, int age, String loginId, String password, Gender gender, String phoneNumber,Role role) {
         this.memberName = memberName;
         this.age = age;
         this.loginId = loginId;
         this.password = password;
         this.gender = gender;
         this.phoneNumber = phoneNumber;
+        this.role = role;
     }
 
     public Member(String loginId,String memberName) {

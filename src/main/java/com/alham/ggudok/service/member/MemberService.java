@@ -68,7 +68,8 @@ public class MemberService {
                 registerDto.getLoginId(),
                 passwordEncoder.encode(registerDto.getPassword()),
                 registerDto.getGender(),
-                registerDto.getPhoneNumber());
+                registerDto.getPhoneNumber(),
+                registerDto.getRole());
 
         Member savedMember = memberRepository.save(member);
         MemberSecurity memberSecurity = new MemberSecurity();

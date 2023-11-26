@@ -1,6 +1,7 @@
 package com.alham.ggudok.dto.member;
 
 import com.alham.ggudok.entity.member.Gender;
+import com.alham.ggudok.entity.member.Role;
 import lombok.Data;
 
 
@@ -16,6 +17,8 @@ public class MemberRegisterDto {
 
     private int age;
     private String phoneNumber;
+
+    private Role role = Role.GUEST;
 
 
 }

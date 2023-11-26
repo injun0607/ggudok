@@ -163,6 +163,7 @@ public class MemberController {
 //    서버로 requestParam으로 파일을 받음
     @PostMapping("update/image")
     public ResponseEntity<Map> memberImageUpdate(HttpServletRequest servletRequest, @RequestParam(required = false , value = "profileImage")MultipartFile file, Principal principal) {
+        log.info("updateImage() {}", file.getOriginalFilename());
         MemberDto memberDto = isLoginUser(principal);
         Member member = memberService.findByLoginId(memberDto.getLoginId());
         Map<String, String> resultMap = new HashMap<>();
@@ -190,6 +191,7 @@ public class MemberController {
 
             resultMap.put("imageUrl", imgUrl);
 
+            log.info("imageUrl {}", imgUrl);
             return new ResponseEntity<>(resultMap, HttpStatus.OK);
         } catch (IOException e) {
             return new ResponseEntity<>(resultMap, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -317,6 +319,7 @@ public class MemberController {
                     List<SubsContent> contents = subsRank.getContents();
                     List<String> contentList = contents.stream().map(c -> c.getContent()).collect(Collectors.toList());
 
+                    memberHaveSubsDetail.setRankName(subsRank.getRankName());
                     memberHaveSubsDetail.setContent(contentList);
                     memberHaveSubsDetail.setPrice(subsRank.getPrice());
                 }

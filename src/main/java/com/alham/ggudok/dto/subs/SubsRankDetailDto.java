@@ -17,4 +17,5 @@ public class SubsRankDetailDto {
     private RankLevel rankLevel;
 
     private List<String> content;
+
 }

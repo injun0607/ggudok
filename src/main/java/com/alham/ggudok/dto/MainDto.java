@@ -90,6 +90,9 @@ public class MainDto {
             int i =-1;
             while (subsDtoList.size() != 10) {
                 ++i;
+                if (inputSubsList.size() <= i) {
+                    break;
+                }
                 if (inputSubsList.get(i) != null) {
 
                     Subs subs = inputSubsList.get(i);

@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
@@ -23,7 +24,8 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
     private final JwtService jwtService;
 
 
-
+    @Value("${redirectUrl}")
+    private String redirectUrl;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
@@ -36,7 +38,7 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
                 String accessToken = jwtService.createAccessToken(oAuth2User.getLoginId());
                 response.addHeader(jwtService.getAccessHeader(), accessToken);
 
-                response.sendRedirect("http://192.168.45.97:3000/Auth/JoinAfter?access="+accessToken); // 프론트의 회원가입 추가 정보 입력 폼으로 리다이렉트
+                response.sendRedirect(redirectUrl+"/Auth/JoinAfter?access="+accessToken); // 프론트의 회원가입 추가 정보 입력 폼으로 리다이렉트
 
 
                 //만약 쿠키 방식사용한다면 필요없음
@@ -64,7 +66,7 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 
         response.addCookie(access);
         response.addCookie(refresh);
-        response.sendRedirect("http://192.168.45.97:3000?access="+accessToken+"&refresh="+refreshToken);
+        response.sendRedirect(redirectUrl+"?access="+accessToken+"&refresh="+refreshToken);
 
 
         jwtService.sendAccessAndRefreshToken(response, accessToken, refreshToken);

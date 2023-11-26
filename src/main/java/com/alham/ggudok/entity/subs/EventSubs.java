@@ -16,7 +16,7 @@ public class EventSubs {
     @Column(name = "event_id")
     private Long eventId;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "subs_id")
     private Subs subs;
 

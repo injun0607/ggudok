@@ -53,34 +53,74 @@ public class WebConfig implements WebMvcConfigurer {
                 //해당 경로의 파일을 읽는다.
                 .addResourceLocations(resourceSubsLocation)
                 // 접근 파일 캐싱 시간
-                .setCacheControl(CacheControl.maxAge(1, TimeUnit.MINUTES));
+                .setCacheControl(CacheControl.maxAge(3, TimeUnit.SECONDS));
 
 
         registry.addResourceHandler(resourceCategoryHandler)
                 //해당 경로의 파일을 읽는다.
                 .addResourceLocations(resourceCategoryLocation)
                 // 접근 파일 캐싱 시간
-                .setCacheControl(CacheControl.maxAge(1, TimeUnit.MINUTES));
+                .setCacheControl(CacheControl.maxAge(3, TimeUnit.SECONDS));
 
 
         registry.addResourceHandler(resourceMemberHandler)
                 //해당 경로의 파일을 읽는다.
                 .addResourceLocations(resourceMemberLocation)
                 // 접근 파일 캐싱 시간
-                .setCacheControl(CacheControl.maxAge(1, TimeUnit.MINUTES));
+                .setCacheControl(CacheControl.maxAge(3, TimeUnit.SECONDS));
 
         registry.addResourceHandler(resourceEventHandler)
                 //해당 경로의 파일을 읽는다.
                 .addResourceLocations(resourceEventLocation)
                 // 접근 파일 캐싱 시간
-                .setCacheControl(CacheControl.maxAge(1, TimeUnit.MINUTES));
+                .setCacheControl(CacheControl.maxAge(3, TimeUnit.SECONDS));
     }
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/")
                 .setViewName("forward:/index.html");
+
+        registry.addViewController("/Home/**")
+                .setViewName("forward:/index.html");
+
         registry.addViewController("/Category/**")
                 .setViewName("forward:/index.html");
+
+        //
+        registry.addViewController("/Auth/**")
+                .setViewName("forward:/index.html");
+
+
+        registry.addViewController("/Event/**")
+                .setViewName("forward:/index.html");
+
+        registry.addViewController("/Compare/**")
+                .setViewName("forward:/index.html");
+
+        registry.addViewController("/Mypage/**")
+                .setViewName("forward:/index.html");
+
+        registry.addViewController("/MySubscribe/**")
+                .setViewName("forward:/index.html");
+
+        registry.addViewController("/MyReview/**")
+                .setViewName("forward:/index.html");
+
+        registry.addViewController("/MyLike/**")
+                .setViewName("forward:/index.html");
+
+        registry.addViewController("/Subscribe/**")
+                .setViewName("forward:/index.html");
+
+        registry.addViewController("/SearchItemlist/**")
+                .setViewName("forward:/index.html");
+
+        registry.addViewController("/subs/detail/item/**")
+                .setViewName("forward:/index.html");
+
+        registry.addViewController("/Admin/**")
+                .setViewName("forward:/index.html");
+
     }
 }
