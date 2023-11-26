@@ -57,7 +57,7 @@ public class HomeController {
 
 
 
-    @GetMapping("/home")
+    @GetMapping("/main")
     public MainDto main(Principal principal) {
 
         MemberDto memberDto = SecurityUtils.transPrincipal(principal);
