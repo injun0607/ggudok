@@ -35,7 +35,7 @@ const Topheader = ({ isAdminUser }) => {
 	const handleLogout = () => {
     dispatch(logout());
 		alert('로그아웃되었습니다. ')
-    navigate('/home');
+    navigate('/Home');
   };
 	const handleSearchChange = (e) => {
 		dispatch(setSearchQuery(e.target.value));
@@ -99,7 +99,7 @@ const Allcategory = () => {
   // ************************** 추천 아이템 / 헤더 fetch ***************************
   const fetchCategoryData = async () => {
     try {
-      const response = await axios.get(`/home`);
+      const response = await axios.get(`/main`);
       const data = response.data;
       if(data){
         dispatch(fetchCategory(data.categoryList))
