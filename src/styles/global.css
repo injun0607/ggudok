@@ -990,7 +990,7 @@ table .sub_tit:last-child {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-radius: var(--radius-all-md);
+    border-radius: var(--radius-all-sm);
     position: absolute;
     z-index: -1;
 }
