@@ -35,7 +35,7 @@ const Topheader = ({ isAdminUser }) => {
 	const handleLogout = () => {
     dispatch(logout());
 		alert('로그아웃되었습니다. ')
-    navigate('/home');
+    navigate('/Home');
   };
 	const handleSearchChange = (e) => {
 		dispatch(setSearchQuery(e.target.value));
