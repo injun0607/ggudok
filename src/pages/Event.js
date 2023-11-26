@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 // component import
 import Error from '../components/Error';
@@ -56,7 +57,7 @@ const Event = () => {
           <section className='section'>
             {
               events.map((event, index) => (
-                <section key={index} className='bannerslider'>
+                <Link to={`/subs/detail/item/${event.subsId}`} key={index} className='bannerslider'>
                   <img src={event.image || NO_IMAGE_URL} style={{ width: '100%' }} alt={event.subsName} />
                   <div className='tag'>
                     <p>{event.categoryName}</p>
@@ -65,7 +66,7 @@ const Event = () => {
                   <h3>{event.subsName}</h3>
                   <h4>{event.info}</h4>
                   <p>{event.startDate} - {event.endDate}</p>
-                </section>
+                </Link>
               ))
             }
           </section>

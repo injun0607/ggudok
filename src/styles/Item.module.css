@@ -64,9 +64,9 @@
 .categorysection .left .category .depths p {font-size: 1rem; font-weight: 400; color: var(--txt-color-2);}
 
 /* 디테일페이지 */
-.detailwrap { display: flex; gap: 6rem; }
+.detailwrap { display: flex; gap: 3.5rem; }
 
-.detailwrap .left {width: 30%;}
+.detailwrap .left {width: 33.3%;}
 .detailwrap .fixed {position: sticky; top: 11rem;}
 .detailwrap .fixed .box {width: 100%; border: 1px solid var(--c-black-6); border-radius: var(--radius-all-md); box-shadow: var(--box-shadow);}
 .detailwrap .fixed .box .name {font-size: 1.75rem; padding: 3.5rem 2.5rem 1rem; font-weight: 400; color: var(--txt-color); line-height: 1.3em;}

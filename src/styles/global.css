@@ -1029,7 +1029,7 @@ table .sub_tit:last-child {
     -webkit-backdrop-filter: blur(3px);
     backdrop-filter: blur(3px);
     background-color: rgba(255, 255, 255, 0.75); 
-    color: var(--txt-color);
+    color: #2A2C41;
     padding: 0.25rem 0.75rem;
     font-size: 0.925rem;
     border-radius: 6px;
@@ -1086,7 +1086,7 @@ table .sub_tit:last-child {
     position: relative;
     z-index: 1;
 }
-.dark .item-list-box .txt {padding: 1.25rem 1.5rem;}
+.itemPad-list .item-list-box .txt, .dark .item-list-box .txt {padding: 1.25rem 1.5rem !important;}
 .item-list-box .txt h3 {
     font-size: 1.125rem;
     /* color: var(--txt-color); */
@@ -1113,9 +1113,10 @@ table .sub_tit:last-child {
     cursor: pointer;
     position: relative;
     height: fit-content !important;
+    border-radius: var(--radius-all-md); overflow: hidden;
 }
 .item-list_carousel .swiper-slide:hover {box-shadow: none; transform: none;}
-.item-list_carousel .swiper-slide .img {border-radius: var(--radius-all-sm); overflow: hidden;}
+/* .item-list_carousel .swiper-slide .img {border-radius: var(--radius-all-sm); overflow: hidden;} */
 .swiper-button-prev, .swiper-button-next {
     color: var(--txt-color) !important;
     margin-top: -1.5rem;
