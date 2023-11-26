@@ -82,10 +82,10 @@ public class Member {
     }
 
     public void updateMember(String phoneNumber,Gender gender,int age,String profileImage ) {
-        this.password = password;
         this.phoneNumber = phoneNumber;
         this.gender = gender;
         this.age = age;
+        this.profileImage = profileImage;
     }
 
     /**

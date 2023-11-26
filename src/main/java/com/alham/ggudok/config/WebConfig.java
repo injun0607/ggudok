@@ -13,7 +13,29 @@ import java.util.concurrent.TimeUnit;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
-//    @Value()
+    @Value("${resource.handler.subs}")
+    private String resourceSubsHandler;
+
+    @Value("${resource.handler.category}")
+    private String resourceCategoryHandler;
+
+    @Value("${resource.handler.member}")
+    private String resourceMemberHandler;
+
+    @Value("${resource.handler.event}")
+    private String resourceEventHandler;
+
+    @Value("${resource.location.subs}")
+    private String resourceSubsLocation;
+
+    @Value("${resource.location.category}")
+    private String resourceCategoryLocation;
+
+    @Value("${resource.location.member}")
+    private String resourceMemberLocation;
+
+    @Value("${resource.location.event}")
+    private String resourceEventLocation;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
@@ -27,34 +49,29 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         //해당 경로로 접근시
-        registry.addResourceHandler("/images/subs/main/**")
+        registry.addResourceHandler(resourceSubsHandler)
                 //해당 경로의 파일을 읽는다.
-                .addResourceLocations("file:///C:/ggudown/subs/main/")
-                // 접근 파일 캐싱 시간
-                .setCacheControl(CacheControl.maxAge(1, TimeUnit.MINUTES));
-
-        registry.addResourceHandler("/images/subs/icon/**")
-                //해당 경로의 파일을 읽는다.
-                .addResourceLocations("file:///C:/ggudown/subs/icon/")
-                // 접근 파일 캐싱 시간
-                .setCacheControl(CacheControl.maxAge(1, TimeUnit.MINUTES));
-
-        registry.addResourceHandler("/images/category/**")
-                //해당 경로의 파일을 읽는다.
-                .addResourceLocations("file:///C:/ggudown/category/")
+                .addResourceLocations(resourceSubsLocation)
                 // 접근 파일 캐싱 시간
                 .setCacheControl(CacheControl.maxAge(1, TimeUnit.MINUTES));
 
 
-        registry.addResourceHandler("/images/member/**")
+        registry.addResourceHandler(resourceCategoryHandler)
                 //해당 경로의 파일을 읽는다.
-                .addResourceLocations("file:///C:/ggudown/member/")
+                .addResourceLocations(resourceCategoryLocation)
                 // 접근 파일 캐싱 시간
                 .setCacheControl(CacheControl.maxAge(1, TimeUnit.MINUTES));
 
-        registry.addResourceHandler("/images/event/**")
+
+        registry.addResourceHandler(resourceMemberHandler)
                 //해당 경로의 파일을 읽는다.
-                .addResourceLocations("file:///C:/ggudown/event/")
+                .addResourceLocations(resourceMemberLocation)
+                // 접근 파일 캐싱 시간
+                .setCacheControl(CacheControl.maxAge(1, TimeUnit.MINUTES));
+
+        registry.addResourceHandler(resourceEventHandler)
+                //해당 경로의 파일을 읽는다.
+                .addResourceLocations(resourceEventLocation)
                 // 접근 파일 캐싱 시간
                 .setCacheControl(CacheControl.maxAge(1, TimeUnit.MINUTES));
     }
