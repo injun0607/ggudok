@@ -247,7 +247,13 @@ const ItemDetail = () => {
               </div>
             </article>
             <article className={style.cont}>
-              {itemDetail.info ? <p>{itemDetail.info}</p> : <p className='txt_grey'>구독서비스 설명이 없습니다.</p>}
+              {itemDetail.info ? (
+                itemDetail.info.split('\n').map((paragraph, index) => (
+                  <p key={index}>{paragraph}</p>
+                ))
+              ) : (
+                <p className='txt_grey'>구독서비스 설명이 없습니다.</p>
+              )}
             </article>
             <article className={style.cont}>
               <div className={style.tit}>
