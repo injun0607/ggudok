@@ -312,7 +312,7 @@ public class InitMember {
 
             // 식품1
             Subs realFruits = new Subs("리얼후르츠");
-            realFruits.updateImage(subsImageUrl+"realfruits.png");
+            realFruits.updateImage(subsImageUrl+"realFruits.png");
             realFruits.addCategory(food);
             realFruits.updateInfo("생산자와 소비자가 함께 나누고 싶은 리얼후르츠의 마음\n" +
                     "리얼후르츠는 바쁜 현대인들을 위한 건강한 푸드컬처를 만들어 가기 위해 노력합니다. 리얼후르츠는 기존 유통과정을 거치지 않고 과일산지와의 거래를 통하여, 농가와 소비자를 이을 수 있는 시스템을 지향하고 있습니다.\n" +
@@ -354,6 +354,7 @@ public class InitMember {
 
             //식품2
             Subs jinMatGwa = new Subs("진맛과");
+            jinMatGwa.updateImage(subsImageUrl+"jinMatGwa.png");
             jinMatGwa.addCategory(food);
             jinMatGwa.addTag(woman);
             jinMatGwa.addTag(man);
@@ -395,6 +396,7 @@ public class InitMember {
 
             //식품3
             Subs lotteMonthSnack = new Subs("롯데웰푸드 스위트몰 월간과자");
+            lotteMonthSnack.updateImage(subsImageUrl+"lotteMonthSnack.png");
             lotteMonthSnack.addCategory(food);
             lotteMonthSnack.addTag(woman);
             lotteMonthSnack.addTag(man);
@@ -425,6 +427,8 @@ public class InitMember {
 
             //식품4
             Subs lotteMonthBread = new Subs("롯데웰푸드 스위트몰 월간생빵");
+            lotteMonthBread.updateImage(subsImageUrl+"lotteMonthBread.png");
+
             lotteMonthBread.addCategory(food);
             lotteMonthBread.addTag(woman);
             lotteMonthBread.addTag(man);
@@ -446,6 +450,7 @@ public class InitMember {
 
             //식품5
             Subs rockSeaweed = new Subs("기역이미음 돌김");
+            rockSeaweed.updateImage(subsImageUrl+"rockSeaweed.png");
             rockSeaweed.addCategory(food);
             rockSeaweed.addTag(woman);
             rockSeaweed.addTag(man);
@@ -466,6 +471,7 @@ public class InitMember {
 
             //식품6
             Subs monthBanchan = new Subs("현관앞키친 월간반찬");
+            monthBanchan.updateImage(subsImageUrl+"monthBanchan.png");
             monthBanchan.addCategory(food);
             monthBanchan.addTag(woman);
             monthBanchan.addTag(man);
@@ -487,6 +493,7 @@ public class InitMember {
 
             //식품7
             Subs uglyUs = new Subs("어글리어스");
+            uglyUs.updateImage(subsImageUrl+"uglyUs.png");
             uglyUs.addCategory(food);
             uglyUs.addTag(woman);
             uglyUs.addTag(man);
@@ -529,6 +536,8 @@ public class InitMember {
 
             //식품8
             Subs sisterPack = new Subs("언니네텃밭 제철꾸러미");
+            sisterPack.updateImage(subsImageUrl+"sisterPack.png");
+
             sisterPack.addCategory(food);
             sisterPack.addTag(woman);
             sisterPack.addTag(man);
@@ -574,6 +583,8 @@ public class InitMember {
 
             //식품9
             Subs lotteMonthMeal = new Subs("롯데웰푸드 스위트몰 월간밥상");
+            lotteMonthMeal.updateImage(subsImageUrl+"lotteMonthMeal.png");
+
             lotteMonthMeal.addCategory(food);
             lotteMonthMeal.addTag(woman);
             lotteMonthMeal.addTag(man);
@@ -602,6 +613,8 @@ public class InitMember {
 
             //식품10
             Subs monthEgg = new Subs("월간계란");
+            monthEgg.updateImage(subsImageUrl+"monthEgg.png");
+
             monthEgg.addCategory(food);
             monthEgg.addTag(woman);
             monthEgg.addTag(man);
@@ -625,6 +638,8 @@ public class InitMember {
 
             //식품11
             Subs pocketSalad = new Subs("포켓샐러드");
+            pocketSalad.updateImage(subsImageUrl+"pocketSalad.png");
+
             pocketSalad.addCategory(food);
             pocketSalad.addTag(woman);
             pocketSalad.addTag(age20);
@@ -661,6 +676,9 @@ public class InitMember {
 
             //식품12
             Subs monthKimchi = new Subs("월간 농협김치맛선");
+            monthKimchi.updateImage(subsImageUrl+"monthKimchi.png");
+
+
             monthKimchi.addCategory(food);
             monthKimchi.addTag(woman);
             monthKimchi.addTag(man);
@@ -698,6 +716,8 @@ public class InitMember {
 
             //문화1
             Subs playStationPlus = new Subs("플레이스테이션 플러스");
+            playStationPlus.updateImage(subsImageUrl+"playStationPlus.png");
+
             playStationPlus.addCategory(culture);
             playStationPlus.addTag(man);
             playStationPlus.addTag(age20);
@@ -728,6 +748,8 @@ public class InitMember {
 
             //문화2
             Subs ocssub = new Subs("옥썹 경매공매정보");
+            ocssub.updateImage(subsImageUrl+"ocssub.png");
+
             ocssub.addCategory(culture);
             ocssub.addTag(man);
             ocssub.addTag(age40);
@@ -754,6 +776,8 @@ public class InitMember {
 
             //문화3
             Subs estatePlanet = new Subs("부동산플래닛");
+            estatePlanet.updateImage(subsImageUrl+"estatePlanet.png");
+
             estatePlanet.addCategory(culture);
             estatePlanet.addTag(man);
             estatePlanet.addTag(age40);
@@ -788,6 +812,8 @@ public class InitMember {
 
             //문화4
             Subs nintendoSwitch = new Subs("닌텐도 스위치 온라인");
+            nintendoSwitch.updateImage(subsImageUrl+"nintendoSwitch.png");
+
             nintendoSwitch.addCategory(culture);
             nintendoSwitch.addTag(man);
             nintendoSwitch.addTag(age20);
@@ -819,6 +845,8 @@ public class InitMember {
 
             //문화5
             Subs netflix = new Subs("넷플릭스");
+            netflix.updateImage(subsImageUrl+"netflix.png");
+
             netflix.addCategory(culture);
             netflix.addTag(man);
             netflix.addTag(woman);
@@ -878,6 +906,8 @@ public class InitMember {
 
             //문화6
             Subs tving = new Subs("티빙");
+            tving.updateImage(subsImageUrl+"tving.png");
+
             tving.addCategory(culture);
             tving.addTag(man);
             tving.addTag(woman);
@@ -951,6 +981,8 @@ public class InitMember {
 
             //문화6
             Subs watch = new Subs("왓챠");
+            watch.updateImage(subsImageUrl+"watch.png");
+
             watch.addCategory(culture);
             watch.addTag(man);
             watch.addTag(woman);
@@ -1009,6 +1041,8 @@ public class InitMember {
 
             //문화7
             Subs melon = new Subs("멜론");
+            melon.updateImage(subsImageUrl+"melon.png");
+
             melon.addCategory(culture);
             melon.addTag(man);
             melon.addTag(woman);
@@ -1044,6 +1078,7 @@ public class InitMember {
 
             //문화8
             Subs flo = new Subs("FLO 뮤직");
+            flo.updateImage(subsImageUrl+"flo.png");
             flo.addCategory(culture);
             flo.addTag(man);
             flo.addTag(woman);
@@ -1077,6 +1112,7 @@ public class InitMember {
 
             //문화9
             Subs bux = new Subs("벅스");
+            bux.updateImage(subsImageUrl+"bux.png");
             bux.addCategory(culture);
             bux.addTag(man);
             bux.addTag(woman);
@@ -1110,6 +1146,8 @@ public class InitMember {
 
             //문화10
             Subs appleMusic = new Subs("애플 뮤직");
+            appleMusic.updateImage(subsImageUrl+"appleMusic.png");
+
             appleMusic.addCategory(culture);
             appleMusic.addTag(man);
             appleMusic.addTag(woman);
@@ -1172,6 +1210,8 @@ public class InitMember {
 
             //문화11
             Subs youtubePremium = new Subs("유튜브 프리미엄");
+            youtubePremium.updateImage(subsImageUrl+"youtubePremium.png");
+
             youtubePremium.addCategory(culture);
             youtubePremium.addTag(man);
             youtubePremium.addTag(woman);
@@ -1213,6 +1253,8 @@ public class InitMember {
 
             //문화12
             Subs spotify = new Subs("스포티파이");
+            spotify.updateImage(subsImageUrl+"spotify.png");
+
             spotify.addCategory(culture);
             spotify.addTag(man);
             spotify.addTag(woman);
@@ -1266,6 +1308,8 @@ public class InitMember {
 
             //문화13
             Subs kakaoPlus = new Subs("카카오톡 이모티콘 플러스");
+            kakaoPlus.updateImage(subsImageUrl+"kakaoPlus.png");
+
             kakaoPlus.addCategory(culture);
             kakaoPlus.addTag(man);
             kakaoPlus.addTag(woman);
@@ -1300,6 +1344,7 @@ public class InitMember {
 
             //음료1
             Subs alcholTalk = new Subs("술담화");
+            alcholTalk.updateImage(subsImageUrl+"alcholTalk.png");
             alcholTalk.addCategory(drink);
             alcholTalk.addTag(man);
             alcholTalk.addTag(woman);
@@ -1340,6 +1385,8 @@ public class InitMember {
 
             //음료2
             Subs oshulock = new Subs("오설록");
+            oshulock.updateImage(subsImageUrl+"oshulock.png");
+
             oshulock.addCategory(drink);
             oshulock.addTag(man);
             oshulock.addTag(woman);
@@ -1370,6 +1417,8 @@ public class InitMember {
 
             //음료3
             Subs bottleworks = new Subs("보틀웍스");
+            bottleworks.updateImage(subsImageUrl+"bottleworks.png");
+
             bottleworks.addCategory(drink);
             bottleworks.addTag(man);
             bottleworks.addTag(woman);
@@ -1402,6 +1451,8 @@ public class InitMember {
 
             //음료4
             Subs kalascoffee = new Subs("칼라스 로스터스");
+            kalascoffee.updateImage(subsImageUrl+"kalascoffee.png");
+
             kalascoffee.addCategory(drink);
             kalascoffee.addTag(man);
             kalascoffee.addTag(woman);
@@ -1430,6 +1481,8 @@ public class InitMember {
 
             //음료4
             Subs dolce = new Subs("네스카페 돌체구스토");
+            dolce.updateImage(subsImageUrl+"dolce.png");
+
             dolce.addCategory(drink);
             dolce.addTag(man);
             dolce.addTag(woman);
@@ -1462,6 +1515,8 @@ public class InitMember {
 
             //음료5
             Subs samdasu = new Subs("제주 삼다수");
+            samdasu.updateImage(subsImageUrl+"samdasu.png");
+
             samdasu.addCategory(drink);
             samdasu.addTag(man);
             samdasu.addTag(woman);
@@ -1493,6 +1548,8 @@ public class InitMember {
 
             //음료6
             Subs pupledog = new Subs("퍼플독 와인구독");
+            pupledog.updateImage(subsImageUrl+"pupledog.png");
+
             pupledog.addCategory(drink);
             pupledog.addTag(man);
             pupledog.addTag(age20);
@@ -1532,6 +1589,8 @@ public class InitMember {
 
             //음료7
             Subs shakit = new Subs("쉐이킷 DIY 칵테일");
+            shakit.updateImage(subsImageUrl+"shakit.png");
+
             shakit.addCategory(drink);
             shakit.addTag(man);
             shakit.addTag(woman);
@@ -1567,6 +1626,8 @@ public class InitMember {
 
             //음료8
             Subs seoulmilk = new Subs("서울우유 가정배달");
+            seoulmilk.updateImage(subsImageUrl+"seoulmilk.png");
+
             seoulmilk.addCategory(drink);
             seoulmilk.addTag(man);
             seoulmilk.addTag(woman);
@@ -1596,6 +1657,8 @@ public class InitMember {
 
             //음료9
             Subs mailmilk = new Subs("매일다이렉트 가정배달");
+            mailmilk.updateImage(subsImageUrl+"mailmilk.png");
+
             mailmilk.addCategory(drink);
             mailmilk.addTag(man);
             mailmilk.addTag(woman);
@@ -1624,6 +1687,8 @@ public class InitMember {
 
             //패션잡화1
             Subs kangjipsa = new Subs("강집사 고양이모래");
+            kangjipsa.updateImage(subsImageUrl+"kangjipsa.png");
+
             kangjipsa.addCategory(extra);
             kangjipsa.addTag(man);
             kangjipsa.addTag(woman);
@@ -1656,6 +1721,8 @@ public class InitMember {
 
             //패션잡화2
             Subs scentmonster = new Subs("센트몬스터 차량용방향제");
+            scentmonster.updateImage(subsImageUrl+"scentmonster.png");
+
             scentmonster.addCategory(extra);
             scentmonster.addTag(man);
             scentmonster.addTag(woman);
@@ -1683,6 +1750,8 @@ public class InitMember {
 
             //패션잡화3
             Subs biomist = new Subs("바이오미스트 아로마인테리어");
+            biomist.updateImage(subsImageUrl+"biomist.png");
+
             biomist.addCategory(extra);
             biomist.addTag(man);
             biomist.addTag(woman);
@@ -1705,6 +1774,8 @@ public class InitMember {
 
             //패션잡화4
             Subs lael = new Subs("라엘 순면커버생리대");
+            lael.updateImage(subsImageUrl+"lael.png");
+
             lael.addCategory(extra);
             lael.addTag(woman);
             lael.addTag(age20);
@@ -1737,6 +1808,8 @@ public class InitMember {
 
             //패션잡화5
             Subs comport = new Subs("컴포트 발목보호양말");
+            comport.updateImage(subsImageUrl+"comport.png");
+
             comport.addCategory(extra);
             comport.addTag(woman);
             comport.addTag(man);
@@ -1761,6 +1834,8 @@ public class InitMember {
 
             //패션잡화6
             Subs eyeluview = new Subs("아이러뷰");
+            eyeluview.updateImage(subsImageUrl+"eyeluview.png");
+
             eyeluview.addCategory(extra);
             eyeluview.addTag(woman);
             eyeluview.addTag(man);
@@ -1784,6 +1859,8 @@ public class InitMember {
 
             //패션잡화7
             Subs motipia = new Subs("모티피아 디퓨저");
+            motipia.updateImage(subsImageUrl+"motipia.png");
+
             motipia.addCategory(extra);
             motipia.addTag(woman);
             motipia.addTag(man);
@@ -1815,6 +1892,8 @@ public class InitMember {
 
             //패션잡화8
             Subs monthNyang = new Subs("월간냥씨 리필장난감");
+            monthNyang.updateImage(subsImageUrl+"monthNyang.png");
+
             monthNyang.addCategory(extra);
             monthNyang.addTag(woman);
             monthNyang.addTag(man);
@@ -1847,6 +1926,8 @@ public class InitMember {
 
             //패션잡화9
             Subs closetshare = new Subs("클로젯셰어");
+            closetshare.updateImage(subsImageUrl+"closetshare.png");
+
             closetshare.addCategory(extra);
             closetshare.addTag(woman);
             closetshare.addTag(age20);
@@ -1894,6 +1975,8 @@ public class InitMember {
 
             //패션잡화10
             Subs wisely = new Subs("와이즐리 제로마진멤버십");
+            wisely.updateImage(subsImageUrl+"wisely.png");
+
             wisely.addCategory(extra);
             wisely.addTag(woman);
             wisely.addTag(age20);
@@ -1918,6 +2001,8 @@ public class InitMember {
 
             //패션잡화11
             Subs cupang = new Subs("쿠팡 와우 멤버십");
+            cupang.updateImage(subsImageUrl+"cupang.png");
+
             cupang.addCategory(extra);
             cupang.addTag(woman);
             cupang.addTag(man);
@@ -1962,6 +2047,8 @@ public class InitMember {
 
             //패션잡화12
             Subs launchbox = new Subs("런치박스 티셔츠");
+            launchbox.updateImage(subsImageUrl+"launchbox.png");
+
             launchbox.addCategory(extra);
             launchbox.addTag(woman);
             launchbox.addTag(man);
@@ -1996,6 +2083,8 @@ public class InitMember {
 
             //패션잡화13
             Subs phonego = new Subs("폰고 리퍼기기");
+            phonego.updateImage(subsImageUrl+"phonego.png");
+
             phonego.addCategory(extra);
             phonego.addTag(man);
             phonego.addTag(age20);
@@ -2047,6 +2136,8 @@ public class InitMember {
 
             //글그림1
             Subs dbpia = new Subs("디비피아");
+            dbpia.updateImage(subsImageUrl+"dbpia.png");
+
             dbpia.addCategory(book);
             dbpia.addTag(man);
             dbpia.addTag(woman);
@@ -2084,6 +2175,8 @@ public class InitMember {
 
             //글그림2
             Subs samEbook = new Subs("샘 eBook");
+            samEbook.updateImage(subsImageUrl+"samEbook.png");
+
             samEbook.addCategory(book);
             samEbook.addTag(man);
             samEbook.addTag(woman);
@@ -2116,6 +2209,8 @@ public class InitMember {
 
             //글그림3
             Subs flipbox = new Subs("플립북 문제해결력");
+            flipbox.updateImage(subsImageUrl+"flipbox.png");
+
             flipbox.addCategory(book);
             flipbox.addTag(man);
             flipbox.addTag(woman);
@@ -2148,6 +2243,8 @@ public class InitMember {
 
             //글그림4
             Subs ridibooks = new Subs("리디셀렉트");
+            ridibooks.updateImage(subsImageUrl+"ridibooks.png");
+
             ridibooks.addCategory(book);
             ridibooks.addTag(man);
             ridibooks.addTag(woman);
@@ -2171,6 +2268,8 @@ public class InitMember {
 
             //글그림5
             Subs carrit = new Subs("캐릿");
+            carrit.updateImage(subsImageUrl+"carrit.png");
+
             carrit.addCategory(book);
             carrit.addTag(man);
             carrit.addTag(woman);
@@ -2207,6 +2306,8 @@ public class InitMember {
 
             //글그림6
             Subs pinzle = new Subs("핀즐");
+            pinzle.updateImage(subsImageUrl+"pinzle.png");
+
             pinzle.addCategory(book);
             pinzle.addTag(woman);
             pinzle.addTag(age30);
@@ -2241,6 +2342,8 @@ public class InitMember {
 
             //글그림7
             Subs longblack = new Subs("롱블랙");
+            longblack.updateImage(subsImageUrl+"longblack.png");
+
             longblack.addCategory(book);
             longblack.addTag(woman);
             longblack.addTag(man);
@@ -2267,6 +2370,8 @@ public class InitMember {
 
             //글그림8
             Subs millie = new Subs("밀리의 서재");
+            millie.updateImage(subsImageUrl+"millie.png");
+
             millie.addCategory(book);
             millie.addTag(woman);
             millie.addTag(man);
@@ -2300,6 +2405,8 @@ public class InitMember {
 
             //식물1
             Subs kukka = new Subs("꾸까");
+            kukka.updateImage(subsImageUrl+"kukka.png");
+
             kukka.addCategory(plant);
             kukka.addTag(woman);
             kukka.addTag(age20);
@@ -2335,6 +2442,8 @@ public class InitMember {
 
             //식물2
             Subs dailoz = new Subs("데일로즈");
+            dailoz.updateImage(subsImageUrl+"dailoz.png");
+
             dailoz.addCategory(plant);
             dailoz.addTag(woman);
             dailoz.addTag(age40);
@@ -2378,6 +2487,8 @@ public class InitMember {
 
             //식물3
             Subs florano = new Subs("플로라노");
+            florano.updateImage(subsImageUrl+"florano.png");
+
             florano.addCategory(plant);
             florano.addTag(woman);
             florano.addTag(age30);
@@ -2418,6 +2529,8 @@ public class InitMember {
 
             //식물4
             Subs moooi = new Subs("모이");
+            moooi.updateImage(subsImageUrl+"moooi.png");
+
             moooi.addCategory(plant);
             moooi.addTag(woman);
             moooi.addTag(age20);
@@ -2450,6 +2563,8 @@ public class InitMember {
 
             //식물5
             Subs honestflower = new Subs("어니스트플라워");
+            honestflower.updateImage(subsImageUrl+"honestflower.png");
+
             honestflower.addCategory(plant);
             honestflower.addTag(woman);
             honestflower.addTag(age20);
@@ -2495,6 +2610,8 @@ public class InitMember {
 
             //식물6
             Subs friendlyflower = new Subs("프렌들리플라워");
+            friendlyflower.updateImage(subsImageUrl+"friendlyflower.png");
+
             friendlyflower.addCategory(plant);
             friendlyflower.addTag(woman);
             friendlyflower.addTag(age20);
@@ -2532,6 +2649,8 @@ public class InitMember {
 
             //식물7
             Subs rebekah = new Subs("레베카");
+            rebekah.updateImage(subsImageUrl+"rebekah.png");
+
             rebekah.addCategory(plant);
             rebekah.addTag(woman);
             rebekah.addTag(age40);
@@ -2558,6 +2677,8 @@ public class InitMember {
 
             //교통1
             Subs hyundai = new Subs("현대셀렉션");
+            hyundai.updateImage(subsImageUrl+"hyundai.png");
+
             hyundai.addCategory(ride);
             hyundai.addTag(man);
             hyundai.addTag(age30);
@@ -2622,6 +2743,8 @@ public class InitMember {
 
             //교통2
             Subs mycaro = new Subs("카로");
+            mycaro.updateImage(subsImageUrl+"mycaro.png");
+
             mycaro.addCategory(ride);
             mycaro.addTag(man);
             mycaro.addTag(age20);
@@ -2660,6 +2783,8 @@ public class InitMember {
 
             //교통3
             Subs thetrive = new Subs("트라이브");
+            thetrive.updateImage(subsImageUrl+"thetrive.png");
+
             thetrive.addCategory(ride);
             thetrive.addTag(man);
             thetrive.addTag(age30);
@@ -2712,6 +2837,8 @@ public class InitMember {
 
             //교통4
             Subs bikeseoul = new Subs("따릉이 정기권");
+            bikeseoul.updateImage(subsImageUrl+"bikeseoul.png");
+
             bikeseoul.addCategory(ride);
             bikeseoul.addTag(man);
             bikeseoul.addTag(woman);
@@ -2744,6 +2871,8 @@ public class InitMember {
 
             //건강뷰티1
             Subs dongitoothPaste = new Subs("동이오감 고체치약");
+            dongitoothPaste.updateImage(subsImageUrl+"dongitoothPaste.png");
+
             dongitoothPaste.addCategory(health);
             dongitoothPaste.addTag(man);
             dongitoothPaste.addTag(woman);
@@ -2777,6 +2906,8 @@ public class InitMember {
 
             //건강뷰티2
             Subs toun28 = new Subs("톤28");
+            toun28.updateImage(subsImageUrl+"toun28.png");
+
             toun28.addCategory(health);
             toun28.addTag(woman);
             toun28.addTag(age20);
@@ -2829,6 +2960,8 @@ public class InitMember {
 
             //건강뷰티3
             Subs philli = new Subs("필리 영양제");
+            philli.updateImage(subsImageUrl+"philli.png");
+
             philli.addCategory(health);
             philli.addTag(woman);
             philli.addTag(age20);
@@ -2872,6 +3005,8 @@ public class InitMember {
 
             //건강뷰티4
             Subs mypuzzle = new Subs("마이퍼즐");
+            mypuzzle.updateImage(subsImageUrl+"mypuzzle.png");
+
             mypuzzle.addCategory(health);
             mypuzzle.addTag(man);
             mypuzzle.addTag(woman);
@@ -2913,6 +3048,8 @@ public class InitMember {
 
             //건강뷰티5
             Subs balanceFix = new Subs("발란스 맞춤형화장품");
+            balanceFix.updateImage(subsImageUrl+"balanceFix.png");
+
             balanceFix.addCategory(health);
             balanceFix.addTag(man);
             balanceFix.addTag(woman);
