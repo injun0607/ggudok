@@ -1082,10 +1082,11 @@ table .sub_tit:last-child {
 .dark .item-list_carousel .swiper-slide .img {border-radius: 0.875rem 0.875rem 0 0;}
 .item-list-box .txt {
     /* background: var(--bg-color); */
-    padding: 1.25rem 1.5rem;
+    padding: 1.25rem 0;
     position: relative;
     z-index: 1;
 }
+.dark .item-list-box .txt {padding: 1.25rem 1.5rem;}
 .item-list-box .txt h3 {
     font-size: 1.125rem;
     /* color: var(--txt-color); */
