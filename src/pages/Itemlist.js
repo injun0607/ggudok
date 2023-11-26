@@ -12,7 +12,7 @@ import Paging from '../components/Paging';
 import { fetchItemsSuccess, filterItem, pagingItem } from '../redux/actions/itemActions';
 import { setSelectedPrice, setSelectedRating, setSelectedTag } from '../redux/actions/filterActions';
 
-const ITEMS_PER_PAGE = 12;
+const ITEMS_PER_PAGE = 8;
 const NO_IMAGE_URL = '/images/common/noimg.png';
 
 const Itemlist = ({ category, categoryEng }) => {
@@ -42,6 +42,8 @@ const Itemlist = ({ category, categoryEng }) => {
         setFilterTag(tagsAll.reduce((ac, v) => ac.includes(v) ? ac : [...ac, v], []));
         dispatch(fetchItemsSuccess(data));
 
+        console.log("filter sucess")
+        
         setStartIndex(0);
         setPage(1);
       } else {
@@ -157,7 +159,7 @@ useEffect(() => {
 
     setIsResult(updateditems.length > 0);
 
-    if(updateditems.length < 13){
+    if(updateditems.length < 9){
       setStartIndex(0);
       setPage(1);
     }

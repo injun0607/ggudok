@@ -47,26 +47,51 @@
 .ratingwrap .ratings .txt .reviewEdit .editArea {width: calc(100% - 1rem - 5rem);}
 .ratingwrap .ratings .txt .reviewEdit .editBtn {width: 5rem; border-radius: var(--radius-all-xs); background: var(--sub-color-5); height: 64px;}
 
-.subscribewrap .overallprice {border-top: 2px solid var(--sub-color); padding: 1.5rem 0; display: flex; align-items: flex-end; justify-content: flex-end; gap: 0.5rem;  z-index: -2; color: var(--txt-color);}
+.subscribewrap .overallprice {border-top: 2px solid var(--sub-color); padding: 1.125rem 0 1.5rem; display: flex; align-items: flex-end; justify-content: flex-end; gap: 0.5rem;  z-index: -2; color: var(--txt-color);}
 .subscribewrap .overallprice img {max-width: 2.25rem;}
 .subscribewrap .overallprice .md {font-size: 1.25rem;}
 .subscribewrap .overallprice .lg {font-size: 1.75rem; font-weight: 600; display: inline-block; padding: 0 0.25rem; position: relative; z-index: 1; color: var(--txt-color);}
 .subscribewrap .overallprice .lg::before {content: '';  position: absolute; bottom: 2px; width: 100%; height: 0.75rem; background: #fdbf50ad; left: 50%; transform: translateX(-50%); z-index: -1;}
 .subscribewrap .subscribes {display: flex; gap: 3rem; padding: var(--pad-tb-md); border-top: 1px solid var(--c-black-6); flex-wrap: wrap;}
 /* .subscribewrap .subscribes:nth-child(3) {border: 0;} */
-.subscribewrap .subscribes .tit {display: flex; flex-wrap: wrap; align-content: space-between; justify-content: flex-end; width: 11rem; color: var(--txt-color);}
+.subscribewrap .subscribes .tit {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: space-between;
+  /* align-content: flex-start; */
+  /* gap: 2rem; */
+  /* justify-content: flex-end; */
+  width: 8rem;
+  color: var(--txt-color);
+}
 .subscribewrap .subscribes .tit .name { width: 100%; display: flex; align-items: center;}
 .subscribewrap .subscribes .tit .name img {max-width: 1.45rem; margin-right: 0.75rem;}
 .subscribewrap .subscribes .tit .name h3 {font-size: 1.325rem; font-weight: 500;}
-.subscribewrap .subscribes .tit .price { text-align: right;}
+/* .subscribewrap .subscribes .tit .price { text-align: right;} */
 .subscribewrap .subscribes .tit .price .sm { color: var(--txt-color-2);}
 .subscribewrap .subscribes .tit .price .md {font-size: 1.125rem;}
 .subscribewrap .subscribes .tit .price .lg {font-weight: 500; color: var(--txt-color);}
-.subscribewrap .subscribes .cont {display: flex; gap: 1.5rem; flex-wrap: wrap; width: calc(100% - 3rem - 11rem);}
+.subscribewrap .subscribes .cont {display: flex; gap: 1.5rem; flex-wrap: wrap; width: calc(100% - 3rem - 8rem);}
 .subscribewrap .subscribes .cont .subscribe {background: var(--bg-color-2); padding: var(--pad-sm); border-radius: var(--radius-all-sm); color: var(--txt-color); transition: 0.3s;}
 /* .subscribewrap .subscribes .cont .subscribe:hover {box-shadow: rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(17, 20, 22, 0.20) 0px 0px 15px 0px;} */
 .subscribewrap .subscribes .cont .subscribe h4 {font-weight: 600; margin-bottom: 0.5rem;}
-.subscribewrap .subscribes .cont .subscribe h5 {font-weight: 400; line-height: 1.3em; font-size: 0.925rem; margin: 0.325rem 0;}
+.subscribewrap .subscribes .cont .subscribe h5 {
+  font-weight: 400;
+  line-height: 1.3em;
+  font-size: 0.875rem;
+  margin: 0.125rem 0;
+  position: relative;
+  padding-left: 18px;
+}
+.subscribewrap .subscribes .cont .subscribe h5::before {
+  content: '▪';
+  position: absolute;
+  color: var(--sub-color-5);
+  left: 0;
+  top: 0px;
+  width: 8px;
+  height: 8px;
+}
 .subscribewrap .subscribes .cont .subscribe .tag {display: flex; gap: 0.5rem; margin-top: 0.5rem;}
 .subscribewrap .subscribes .cont .subscribe .tag p {
   background: #e0e0e9;

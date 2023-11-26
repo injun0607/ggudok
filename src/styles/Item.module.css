@@ -22,7 +22,7 @@
 .itemlist {
   display: flex;
   flex-wrap: wrap;
-  gap: 2rem;
+  gap: 3rem 2rem;
 }
 .itemlist .item {
   width: calc((100% - 6em) / 4);
@@ -69,7 +69,7 @@
 .detailwrap .left {width: 30%;}
 .detailwrap .fixed {position: sticky; top: 11rem;}
 .detailwrap .fixed .box {width: 100%; border: 1px solid var(--c-black-6); border-radius: var(--radius-all-md); box-shadow: var(--box-shadow);}
-.detailwrap .fixed .box .name {font-size: 1.75rem; padding: 3.5rem 2.5rem 1rem; font-weight: 400; color: var(--txt-color);}
+.detailwrap .fixed .box .name {font-size: 1.75rem; padding: 3.5rem 2.5rem 1rem; font-weight: 400; color: var(--txt-color); line-height: 1.3em;}
 .detailwrap .fixed .box .tag {display: flex; gap: 0.5rem; margin-top: 0.25rem; padding: 0 2.5rem; flex-wrap: wrap;}
 .detailwrap .fixed .box .tag p {
   background: var(--bg-color-2);
@@ -78,10 +78,9 @@
   font-size: 0.925rem;
   border-radius: 6px;
 }
-.detailwrap .fixed .box .price {padding: 1rem 2.5rem 1.5rem;}
-.detailwrap .fixed .box .price p {display: flex; justify-content: flex-end; gap: 0.5rem; align-items: baseline; font-size: 1rem; color: var(--txt-color-2); margin-top: 0.5rem;}
-.detailwrap .fixed .box .price p .point {font-size: 1.25rem; color: var(--txt-color);}
-.detailwrap .fixed .box .price .mainprice {font-size: 1.125rem; }
+.detailwrap .fixed .box .price {padding: 0.5rem 2.5rem 1.5rem;}
+.detailwrap .fixed .box .price p {display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 0.5rem; align-items: baseline; font-size: 1rem; color: var(--txt-color-2); margin-top: 1rem; text-align: right;}
+.detailwrap .fixed .box .price p .point {font-size: 1.25rem; color: var(--txt-color); width: 100%; text-align: right;}
 .detailwrap .fixed .box .price .mainprice .point {color: var(--main-color); font-size: 1.5rem;}
 .detailwrap .fixed .box .starrating {border-top: 1px solid var(--c-black-6); display: flex; width: 100%; padding: 1.5rem 2.5rem 1.75rem; gap: 0.5rem;}
 .detailwrap .fixed .btnArea {margin-top: 1.25rem; display: flex; gap: 0.75rem; justify-content: flex-end;}
@@ -116,7 +115,7 @@
 .detailwrap .cont:last-child {border: 0;}
 .detailwrap .cont p { color: var(--txt-color); font-size: 0.938rem; line-height: 1.6em; white-space: pre-line;}
 .detailwrap .detailLg {border: 0; padding: 0;}
-.detailwrap .detailLg .img {width: 100%; overflow: hidden; aspect-ratio: 3/1.5;}
+.detailwrap .detailLg .img {width: 100%; overflow: hidden; aspect-ratio: 3/1.5; border-radius: var(--radius-all-md);}
 .detailwrap .detailLg .img img {width: 100%; height: 100%; object-fit: cover;}
 .detailwrap .chartwrap {display: flex; gap: 2rem; flex-wrap: wrap;}
 .detailwrap .chartwrap .tit {margin-bottom: 0.5rem;}
@@ -137,6 +136,24 @@
 .subscribe .box .right {width: 10rem; text-align: right; display: flex; justify-content: flex-end; align-items: center;}
 .subscribe .box .name {font-size: 1.325rem; padding-bottom: 1rem; font-weight: 400; color: var(--txt-color);}
 .subscribe .box .detail {font-size: 1rem; font-weight: 400; color: var(--txt-color-2);}
+.subscribe .box .detail li {
+  position: relative;
+  padding-left: 18px;
+  line-height: 1.4em;
+  margin-bottom: 4px;
+}
+.subscribe .box .detail li:last-child {
+  margin-bottom: 0;
+}
+.subscribe .box .detail li::before {
+  content: '▪';
+  position: absolute;
+  color: var(--sub-color-5);
+  left: 0;
+  top: 0px;
+  width: 8px;
+  height: 8px;
+}
 .subscribe .box .price {display: flex; justify-content: flex-end; gap: 0.5rem; align-items: baseline; font-size: 1.125rem; color: var(--txt-color-2);}
 .subscribe .box .price .point {font-size: 1.325rem; color: var(--txt-color); font-weight: 500;}
 

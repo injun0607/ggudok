@@ -12,6 +12,7 @@
     color: var(--txt-color);
     font-weight: 600;
 }
+.section .tit span {vertical-align: baseline;}
 .box {
     width: 100%;
     background: var(--bg-color-2);

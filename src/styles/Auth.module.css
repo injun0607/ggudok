@@ -157,7 +157,27 @@
 .subscribe .box .left {width: calc(100% - 5rem - 10rem); flex-grow: 1;}
 .subscribe .box .right {width: 10rem; text-align: right; display: flex; justify-content: flex-end; align-items: center;}
 .subscribe .box .name {font-size: 1.75rem; padding-bottom: 1rem; font-weight: 400; color: var(--txt-color);}
-.subscribe .box .detail {font-size: 1rem; font-weight: 400; color: var(--txt-color-2);}
+.subscribe .box .detail {
+  font-size: 1rem;
+  font-weight: 400;
+  color: var(--txt-color-2);
+  position: relative;
+  padding-left: 16px;
+  line-height: 1.4em;
+  margin-bottom: 6px;
+}
+.subscribe .box .detail:last-child {
+  margin-bottom: 0;
+}
+.subscribe .box .detail::before {
+  content: '▪';
+  position: absolute;
+  color: var(--sub-color-5);
+  left: 0;
+  top: 0px;
+  width: 8px;
+  height: 8px;
+}
 .subscribe .box .price {display: flex; justify-content: flex-end; gap: 0.5rem; align-items: baseline; font-size: 1.25rem; color: var(--txt-color-2);}
 .subscribe .box .price .point {font-size: 1.5rem; color: var(--txt-color); font-weight: 500;}
 /* 구독 변경/해지 */
