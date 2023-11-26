@@ -4,6 +4,7 @@ import com.alham.ggudok.dto.TagDto;
 import com.alham.ggudok.entity.Tag;
 import com.alham.ggudok.entity.subs.*;
 import com.alham.ggudok.repository.subs.EventRepository;
+import com.alham.ggudok.service.member.MemberService;
 import com.alham.ggudok.service.subs.SubsService;
 import com.alham.ggudok.tempadmin.dto.TagForm;
 import com.alham.ggudok.tempadmin.dto.subs.*;
@@ -35,6 +36,7 @@ public class TempAdminController {
 
     private final AdminSubsService adminSubsService;
 
+    private final MemberService memberService;
     private final SubsService subsService;
 
     private final AdminTagService tagService;
@@ -617,6 +619,15 @@ public class TempAdminController {
         eventForm.setEventImage(eventSubs.getEventImage());
 
         return eventForm;
+    }
+
+    @PostMapping("update/recommend")
+    @ResponseBody
+    public boolean updateRecommend() {
+        subsService.updateRecommendSort();
+        memberService.userRecommendTag();
+        return true;
+
     }
 
     /**

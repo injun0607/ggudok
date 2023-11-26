@@ -21,6 +21,7 @@ import com.alham.ggudok.exception.ErrorResult;
 import com.alham.ggudok.service.TagService;
 import com.alham.ggudok.service.member.MemberService;
 import com.alham.ggudok.service.member.ReviewService;
+import com.alham.ggudok.service.subs.CategoryService;
 import com.alham.ggudok.service.subs.SubsService;
 import com.alham.ggudok.tempadmin.dto.subs.category.CategoryDto;
 import com.alham.ggudok.tempadmin.dto.subs.category.CategoryListDto;
@@ -33,6 +34,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -50,6 +52,8 @@ public class HomeController {
 
     private final ReviewService reviewService;
 
+    private final CategoryService categoryService;
+
 
 
 
@@ -60,7 +64,7 @@ public class HomeController {
 
         MainDto mainDto = new MainDto();
 
-        List<Category> categoryList =subsService.findAllCategory();
+        List<Category> categoryList =categoryService.findAllCategoryWithSubsCnt();
 
         List<CategoryDto> categoryDtoList = new ArrayList<>();
 
@@ -115,8 +119,8 @@ public class HomeController {
                     .map(mfs -> mfs.getSubs())
                     .collect(Collectors.toList());
 
+            //구독한것은 추천리스트 삭제
             allSubsList.removeAll(memberHaveSubsList);
-            allSubsList.removeAll(memberFavorSubsList);
 
             List<Tag> basicTag = member.getMemberRelTags().stream()
                     .filter(mrt -> mrt.isBasic())

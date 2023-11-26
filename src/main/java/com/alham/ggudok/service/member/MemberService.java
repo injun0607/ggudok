@@ -425,6 +425,7 @@ public class MemberService {
     public void userRecommendTag() {
 
         log.info("userRecommendTag()");
+        //모든유저대상
         List<Member> all = memberRepository.findAll();
         //HaveSubs
         List<Member> allWithHaveSubs = memberRepository.findAllWithHaveSubs();

@@ -70,6 +70,17 @@ public class InitMember {
         memberRegisterDto2.setPasswordCheck("1234");
         memberRegisterDto2.setRole(Role.ADMIN);
         memberService.registerMember(memberRegisterDto2);
+
+        MemberRegisterDto memberRegisterDto3 = new MemberRegisterDto();
+        memberRegisterDto3.setMemberName("관리자");
+        memberRegisterDto3.setAge(28);
+        memberRegisterDto3.setLoginId("admin@naver.com");
+        memberRegisterDto3.setGender(Gender.MAN);
+        memberRegisterDto3.setPassword("1234");
+        memberRegisterDto3.setPhoneNumber("01012345678");
+        memberRegisterDto3.setPasswordCheck("1234");
+        memberRegisterDto3.setRole(Role.ADMIN);
+        memberService.registerMember(memberRegisterDto3);
 //
 //
 //        MemberRegisterDto memberRegisterDto3 = new MemberRegisterDto();
@@ -1243,7 +1254,7 @@ public class InitMember {
             youtubePremium.addTag(event);
 
 
-            youtubePremium.updateInfo("새YouTube와 YouTube Music에서 광고로 끊김 없는 감상, 오프라인 저장, 그리고 백그라운드 재생\n" +
+            youtubePremium.updateInfo("YouTube와 YouTube Music에서 광고로 끊김 없는 감상, 오프라인 저장, 그리고 백그라운드 재생\n" +
                     "\n" +
                     "광고 없는 무제한 동영상\n" +
                     " 광고가 끝나기를 기다릴 필요 없이 좋아하는 동영상에 마음껏 빠져 보세요. 광고로 끊김 없이 유용한 노하우를 찾거나, 새로운 레시피를 시도하거나, 좋아하는 크리에이터와 함께 운동해 보세요.\n" +
@@ -1251,7 +1262,7 @@ public class InitMember {
                     "오프라인으로 동영상 즐기기\n" +
                     "언제 어디서나 시청해 보세요. 동영상을 오프라인 저장하여 모바일 데이터나 Wi-Fi 없이도 언제 어디서나 시청할 수 있습니다.\n" +
                     "\n" +
-                    "백그라운드 재0생\n" +
+                    "백그라운드 재생\n" +
                     "화면이 꺼진 상태나 다른 앱을 사용하는 중에도 재생을 중단할 필요 없이 끊김 없이 백그라운드에서 동영상을 계속 재생할 수 있습니다.");
 
             SubsRank youtubePremiumDefaultRank = new SubsRank("개인", 10450, RankLevel.DEFAULT);
