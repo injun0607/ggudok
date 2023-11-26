@@ -1016,12 +1016,12 @@ table .sub_tit:last-child {
     padding: 0 5rem;
     width: 100%;
     color: var(--sub-color-4);
-    margin-bottom: 3rem;
+    margin-bottom: 4rem;
 }
 .bannerslider .tag {
     display: flex;
     gap: 0.5rem;
-    margin-top: 3rem;
+    margin-top: 4rem;
     padding: 0 5rem;
     width: 100%;
 }
@@ -1103,6 +1103,7 @@ table .sub_tit:last-child {
 .swiper {overflow: inherit !important;}
 .swiper-wrapper {height: inherit !important;}
 .item-list_carousel {margin-top: 2rem;}
+.mainslider .item-list_carousel {margin-top: 1rem;}
 .item-list_carousel .swiper-slide {
     background: #fff;
     box-shadow: none;
