@@ -51,7 +51,7 @@ const FeaturedItemlist = () => {
         <div className='page_tit'>
           <h2>베스트 20</h2>
         </div>
-        <section className='item-list mb_60'>
+        <section className='item-list itemPad-list mb_60'>
           {bestitems.slice(0, 4).map((item, index) => 
             <Link to={`/subs/detail/item/${item.id}`} key={index} className='item-list-box'>
               <div className='rank'>
@@ -76,7 +76,7 @@ const FeaturedItemlist = () => {
 
         <section className={style.section}>
           <div className={style.itemlist}>
-            {bestitems.map((item, index) => (
+            {bestitems.slice(4, 16).map((item, index) => (
               <Link to={`/subs/detail/item/${item.id}`} key={index} className={style.item}>
                 <div className={style.img}>
                   <img src={item.image || NO_IMAGE_URL} alt={item.name} />

@@ -63,7 +63,7 @@ const Bannerslider = () => {
       {
         events.map((event, index) => (
           <SwiperSlide key={index} className='bannerslider'>
-            <Link to={`/subs/detail/${event.subsId}`}>
+            <Link to={`/subs/detail/item/${event.subsId}`}>
               <img src={event.image || NO_IMAGE_URL} style={{ width: '100%' }} alt={event.subsName} />
               <div className='tag'>
                 <p>{event.categoryName}</p>

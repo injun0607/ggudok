@@ -64,9 +64,9 @@
 .categorysection .left .category .depths p {font-size: 1rem; font-weight: 400; color: var(--txt-color-2);}
 
 /* 디테일페이지 */
-.detailwrap { display: flex; gap: 6rem; }
+.detailwrap { display: flex; gap: 3.5rem; }
 
-.detailwrap .left {width: 30%;}
+.detailwrap .left {width: 33.3%;}
 .detailwrap .fixed {position: sticky; top: 11rem;}
 .detailwrap .fixed .box {width: 100%; border: 1px solid var(--c-black-6); border-radius: var(--radius-all-md); box-shadow: var(--box-shadow);}
 .detailwrap .fixed .box .name {font-size: 1.75rem; padding: 3.5rem 2.5rem 1rem; font-weight: 400; color: var(--txt-color); line-height: 1.3em;}
@@ -113,7 +113,8 @@
 .detailwrap .cont .tit h3 {font-size: 1.5rem; font-weight: 500; color: var(--txt-color);}
 .detailwrap .cont { padding: 2.5rem 0; border-bottom: 1px solid var(--c-black-6);}
 .detailwrap .cont:last-child {border: 0;}
-.detailwrap .cont p { color: var(--txt-color); font-size: 0.938rem; line-height: 1.6em; white-space: pre-line;}
+.detailwrap .cont p { color: var(--txt-color); font-size: 0.938rem; line-height: 1.4em; white-space: pre-line; margin-top: 0.5rem;}
+.detailwrap .cont p:first-child {font-size: 1.25rem; font-weight: 600; margin-top: 0; margin-bottom: 0.75rem;}
 .detailwrap .detailLg {border: 0; padding: 0;}
 .detailwrap .detailLg .img {width: 100%; overflow: hidden; aspect-ratio: 3/1.5; border-radius: var(--radius-all-md);}
 .detailwrap .detailLg .img img {width: 100%; height: 100%; object-fit: cover;}

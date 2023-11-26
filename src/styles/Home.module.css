@@ -5,7 +5,7 @@
     padding: 2rem 0;
 }
 .section {
-    margin-top: 4rem;
+    margin-top: 3.5rem;
 }
 .section .tit {
     font-size: 1.5rem;
@@ -19,7 +19,8 @@
     display: flex;
     gap: 1rem;
     border-radius: var(--radius-all-md);
-    box-shadow: 4px 12px 30px 6px rgba(0,0,0,.09);
+    box-shadow: 0 6px 15px 1px rgba(0,0,0,.09);
+    /* box-shadow: var(--box-shadow); */
     transition: all .3s ease;
     margin-top: 2rem;
     padding: 1.5rem 0 1.25rem;
@@ -35,7 +36,7 @@
     width: 2.5rem;
 }
 .category p {font-size: 1rem; font-weight: 600; color: var(--txt-color); text-align: center; margin-top: 1rem;}
-.home .section:last-child {margin-bottom: 2rem;}
+.home .section:last-child {margin-bottom: 1rem;}
 
 
 @media screen and (max-width:800px) {
