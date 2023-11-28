@@ -102,7 +102,11 @@ const Home = ({isCheckingLogin}) => {
         </section>
         { IsResult ?
           <section className={style.section}>
-          <h2 className={style.tit}>알고리즘 저격! <span className='sub_clr'>맞춤 서비스</span></h2>
+          {
+            isLoggedIn ?
+            <h2 className={style.tit}>알고리즘 저격! <span className='sub_clr'>맞춤 서비스</span></h2> :
+            <h2 className={style.tit}>꾸독이 <span className='sub_clr'>추천하는</span> 서비스</h2>
+          }
           <Swiper
             cssMode={true}
             navigation={true}
@@ -146,7 +150,7 @@ const Home = ({isCheckingLogin}) => {
             {
               isLoggedIn ?
               <h2 className={style.tit}>나와 같은 <span className='main_clr'>{ageTag} {genderTag}</span>이 가장 많이 구독한 서비스</h2> :
-              <h2 className={style.tit}>지금 가장 인기있는 서비스</h2>
+              <h2 className={style.tit}>지금 <span className='main_clr'>가장 인기있는</span> 서비스</h2>
             }
             <Swiper
               cssMode={true}

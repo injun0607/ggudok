@@ -68,7 +68,7 @@ const Filteraside = ({ resetFilters, handleSelectedPrice, handleSelectedRating, 
                   }}
                   checked={selectedPrice==='priceRow'} />
                 <label htmlFor="priceRow" className='checkbox-label'>
-                    5,900원 미만
+                    10,000원 미만
                 </label>
               </li>
               <li className={style.checkInputWrap}>
@@ -79,7 +79,7 @@ const Filteraside = ({ resetFilters, handleSelectedPrice, handleSelectedRating, 
                   }}
                   checked={selectedPrice==='priceMedium'} />
                 <label htmlFor="priceMedium" className='checkbox-label'>
-                    5,900원 ~ 9,900원
+                    10,000원 ~ 50,000원
                 </label>
               </li>
               <li className={style.checkInputWrap}>
@@ -90,7 +90,7 @@ const Filteraside = ({ resetFilters, handleSelectedPrice, handleSelectedRating, 
                   }}
                   checked={selectedPrice==='priceHigh'} />
                 <label htmlFor="priceHigh" className='checkbox-label'>
-                    9,900원 이상
+                    50,000원 초과
                 </label>
               </li>
             </ul>

@@ -68,7 +68,7 @@ useEffect(() => {
   dispatch(setSelectedPrice(null));
   dispatch(setSelectedRating(null));
   dispatch(setSelectedTag([]));
-}, []);
+}, [category]);
 
 // 결과 유무
 useEffect(() => {
@@ -133,11 +133,11 @@ useEffect(() => {
     if(selectedPrice !== null){
       updateditems = updateditems.filter(item => {
         if (selectedPrice === 'priceRow') {
-          return item.ranks.some(rank => rank.price < 5900);
+          return item.ranks.some(rank => rank.price < 10000);
         } else if (selectedPrice === 'priceMedium') {
-          return item.ranks.some(rank => 5900 <= rank.price && rank.price <= 9900);
+          return item.ranks.some(rank => 10000 <= rank.price && rank.price <= 50000);
         } else {
-          return item.ranks.some(rank => rank.price > 9900);
+          return item.ranks.some(rank => rank.price > 50000);
         }
       });
     };
@@ -153,9 +153,9 @@ useEffect(() => {
       );
     };
     // 필터조작 후 1페이지로 이동
-    if (selectedPrice !== null || selectedRating !== null || selectedTag.length !== 0) {
-      setPage(1);
-    }
+    // if (selectedPrice !== null || selectedRating !== null || selectedTag.length !== 0) {
+    //   setPage(1);
+    // }
 
     setIsResult(updateditems.length > 0);
 
@@ -173,6 +173,18 @@ useEffect(() => {
 
     return updateditems;
   }, [items, selectedPrice, selectedRating, selectedTag, startIndex, page]);
+
+  useEffect(() => {
+    // 카테고라조작 후 1페이지로 이동
+    setPage(1);
+  }, [category]);
+
+  useEffect(() => {
+    // 필터조작 후 1페이지로 이동
+    if (selectedPrice !== null || selectedRating !== null || selectedTag.length !== 0) {
+      setPage(1);
+    }
+  }, [items, selectedPrice, selectedRating, selectedTag]);
 
   useEffect(() => {
     if (!IsLoading) {
