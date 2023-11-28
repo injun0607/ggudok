@@ -97,7 +97,7 @@ const Filteraside = ({ resetFilters, handleSelectedPrice, handleSelectedRating, 
           </section>
           <section className={style.filter}>
             <div className={style.tit}>
-              <h3>평점</h3>
+              <h3>별점</h3>
               <button className={`${style.hideMenuBtn} ${hideMenuRating ? style.hideMenuBtnActive : ''}`} type='button' onClick={() => handlehideMenu('rating')} data-section={'rating'}>
                 <span className='material-icons'>expand_more</span>
               </button>

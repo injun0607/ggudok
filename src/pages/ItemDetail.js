@@ -286,7 +286,7 @@ const ItemDetail = () => {
             </article>
             <article className={`${style.cont} ${style.ratingwrap}`}>
               <div className={style.tit}>
-                <h3>구독자 한줄평</h3>
+                <h3>구독자 한줄리뷰</h3>
               </div>
               { ratingMap && ratingMap.length > 0 ? (
                 <>
@@ -326,7 +326,7 @@ const ItemDetail = () => {
         
         <section className={style.section}>
           <div className='cont_tit_m'>
-            <h2>비슷한 구독상품</h2>
+            <h2>비슷한 구독서비스</h2>
           </div>
           <div className='item-list itemPad-list'>
             {similarItems.slice(0,4).map((item, index) => (
