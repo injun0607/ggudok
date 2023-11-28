@@ -113,7 +113,9 @@
 .detailwrap .cont .tit h3 {font-size: 1.5rem; font-weight: 500; color: var(--txt-color);}
 .detailwrap .cont { padding: 2.5rem 0; border-bottom: 1px solid var(--c-black-6);}
 .detailwrap .cont:last-child {border: 0;}
-.detailwrap .cont p { color: var(--txt-color); font-size: 0.938rem; line-height: 1.4em; white-space: pre-line; margin-top: 0.5rem;}
+.detailwrap .cont p { color: var(--txt-color); font-size: 0.938rem; line-height: 1.4em; white-space: pre-line;
+  /* margin-top: 0.5rem; */
+}
 .detailwrap .cont p:first-child {font-size: 1.25rem; font-weight: 600; margin-top: 0; margin-bottom: 0.75rem;}
 .detailwrap .detailLg {border: 0; padding: 0;}
 .detailwrap .detailLg .img {width: 100%; overflow: hidden; aspect-ratio: 3/1.5; border-radius: var(--radius-all-md);}

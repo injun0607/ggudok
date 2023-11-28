@@ -84,6 +84,9 @@ const ItemDetail = () => {
       if (isLoggedIn && data.memberInfo?.review) {
         dispatch(setMyItemReviewRating(data.memberInfo.review.rating));
         dispatch(setMyItemReviewContents(data.memberInfo.review.contents));
+      } else {
+        dispatch(setMyItemReviewRating(0));
+        dispatch(setMyItemReviewContents(""));
       }
     } catch (error) {
       console.log('Error fetching item:', error);
