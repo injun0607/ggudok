@@ -1122,7 +1122,7 @@ public class InitMember {
             flo.updateInfo("지금 당신의 음악, FLO\n" +
                     "\n" +
                     "쓰면 쓸수록 나와 점점 닮아가는 FLO 뮤직. 인기순으로 듣는 것이 아닌 나만의 취향을 채우는 FLO 뮤직.\n" +
-                    "똑같은 음악에 질리셨나요? FLO는 매일 내게 맞춘 음악을 배달합니다. FLO에서 내 맘에 쏙 드는 곡을 발견하세");
+                    "똑같은 음악에 질리셨나요? FLO는 매일 내게 맞춘 음악을 배달합니다. FLO에서 내 맘에 쏙 드는 곡을 발견하세요");
 
             SubsRank floDefaultRank = new SubsRank("모바일 무제한 듣기", 6900, RankLevel.DEFAULT);
             SubsContent floDefaultContent1 = new SubsContent("모바일에서만 듣는다면 스마트하게");

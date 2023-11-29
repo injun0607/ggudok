@@ -199,9 +199,6 @@ public class MemberController {
     }
 
 
-//    @PostMapping("/add/reltag")
-//    public void
-
 
     @GetMapping("/reviews")
     public ResponseEntity memberReview(Principal principal) {
@@ -362,12 +359,6 @@ public class MemberController {
 
     }
 
-
-//
-//    @GetMapping("/tagsort_init")
-//    public void memberTagSortInit() {
-//        memberService.userRecommendTag();
-//    }
 
 
 

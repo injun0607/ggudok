@@ -105,6 +105,10 @@ public class HomeController {
 
         mainDto.setEventSubs(eventSubsDtoList);
 
+
+        /*
+        로그인 한 사용자 추천 알고리즘 시작
+         */
         if (memberDto != null) {
 
             List<Tag> tagList = tagService.findTagsByLoginId(memberDto.getLoginId());

@@ -420,7 +420,8 @@ public class MemberService {
      * 구독한 subs들의 태그들은 개당 2점
      * 좋아요한 subs들의 태그들은 개당 1점을 부여
      * 태그들의 전체 나온 횟수로 점수부여
-     */
+     * 모든 유저 대상
+     * */
     @Transactional
     public void userRecommendTag() {
 
@@ -485,6 +486,7 @@ public class MemberService {
     }
 
     /**
+     * 개인유저 대상
      * 멤버들의 subs들을 확인한다음
      * subs에 해당하는 태그의 횟수들을 업데이트
      * @param loginId

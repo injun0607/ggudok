@@ -91,7 +91,6 @@ public class GgudokUtil {
 
             String randomNum = GgudokUtil.randomNum();
             message.setText(contents); // 본문 내용
-//            message.setText("인증 코드: 꽃등심,갈비,돈까스,엽떡...먹고싶다"); // 본문 내용
 
             // 이메일 보내기
             Transport.send(message);
@@ -123,6 +122,9 @@ public class GgudokUtil {
     }
 
 
+    /*
+    value 값을 기준으로 key 값을 asc 정렬한다.
+     */
     public static <K, V extends Comparable<? super V>> Map<K, V> mapSortByValueDescending(Map<K, V> map) {
         List<Map.Entry<K, V>> sortedEntry = map.entrySet()
                 .stream()
