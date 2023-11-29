@@ -211,17 +211,20 @@
 
 <center><img src="./readme_image/detail03.png" alt ="리뷰작성"></center>
 
-우측 상세정보란에는 **구독서비스의 대표 이미지와 설명**이 들어갑니다. 또한 `요금제 섹션`에는 각 요금제명과 함께 상세한 혜택과 한달 기준 요금이 들어갑니다. `구독자 한줄리뷰 섹션`에는 해당 서비스를 구독중인 회원들이 작성한 리뷰가 들어갑니다.
+리뷰작성 버튼을 누르면 `팝업`이 열리며, 사용자는 **별점과 한줄리뷰를 작성**할 수 있습니다.
 
 <table>
   <tr>
     <td><img src="./readme_image/detail04.png" alt="상세페이지 상단" /></td>
     <td><img src="./readme_image/detail05.png" alt="상세페이지 중단" /></td>
-    <td><img src="./readme_image/detail06.png" alt="상세페이지 하단" /></td>
   </tr>
 </table>
 <!-- ![상세페이지 상단](./readme_image/detail04.png)|![상세페이지 중단](./readme_image/detail05.png)|![상세페이지 하단](./readme_image/detail06.png)
 ---|---|---|  -->
+
+우측 상세정보란에는 **구독서비스의 대표 이미지와 설명**이 들어갑니다. 또한 `요금제 섹션`에는 각 요금제명과 함께 상세한 혜택과 한달 기준 요금이 들어갑니다. `구독자 한줄리뷰 섹션`에는 해당 서비스를 구독중인 회원들이 작성한 리뷰가 들어갑니다.
+
+<center><img src="./readme_image/detail06.png" alt ="상세페이지 하단"></center>
 
 상세페이지의 맨 하단에는 해당 **구독서비스와 비슷한 다른 서비스** 4가지를 추천합니다.
 
