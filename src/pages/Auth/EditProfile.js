@@ -30,6 +30,8 @@ const EditProfile = () => {
   
   const [errorMessage, setErrorMessage] = useState('');
   const [errorMessageP, seterrorMessageP] = useState('');
+
+  let updateMemberImg = "";
   
 	// 회원 정보 조회 요청
   const fetchMemberInfo = async () => {
@@ -45,7 +47,7 @@ const EditProfile = () => {
         dispatch(setValidPhoneNumber(true));
         if(userData.memberImg){
           setMemberImg(userData.memberImg);
-        }
+        } else { setMemberImg(null) }
         if(userData.role){
           dispatch(setRole(userData.role));
         }
@@ -107,46 +109,46 @@ const EditProfile = () => {
     }
   };
   
-  const handleImageUpload = async () => {
-    try {
-      if (memberImg) {
-        const blobData = await convertBlobURLToBlob(memberImg);
-        const formData = new FormData();
-        formData.append('profileImage', blobData);
-        
-        const response = await axios({
-          method: "POST",
-          url: `/member/update/image`,
-          charset: 'utf-8',
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-          data: formData
-        })
-        
-        const imageUrl = response.data.imageUrl;
-        dispatch(setNewMemberImg(imageUrl));
+  const handleImageUpload = () => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        if (memberImg) {
+          const blobData = await convertBlobURLToBlob(memberImg);
+          const formData = new FormData();
+          formData.append('profileImage', blobData);
+          
+          const response = await axios({
+            method: "POST",
+            url: `/member/update/image`,
+            charset: 'utf-8',
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+            data: formData
+          });
+          
+          const imageUrl = response.data.imageUrl;
+          // setMemberImg(imageUrl);
+          updateMemberImg = imageUrl;
+          resolve(); // 성공적으로 완료되었음을 알림
+        }
+      } catch (error) {
+        console.error('이미지 업로드 오류:', error);
+        reject(error); // 에러가 발생하면 reject 호출
       }
-    } catch (error) {
-      console.error('이미지 업로드 오류:', error);
-    }
+    });
   };
   
-  const handleEdit = async(e) => {
-    e.preventDefault();
-    if(role !== 'SOCIAL'){if(!password){
-      alert('현재 비밀번호를 입력해주세요.')
-      return;
-    }}
-    await handleImageUpload();
+  const handleEditInfo = () => {
     const userSocialData = {
       gender,
       age,
       phoneNumber,
       isPhoneval,
-      newMemberImg,
+      updateMemberImg,
       role,
     };
+    debugger;
     const userData = {
       password,
       newPassword,
@@ -156,18 +158,36 @@ const EditProfile = () => {
       phoneNumber,
       isPassval,
       isPhoneval,
-      newMemberImg,
+      updateMemberImg,
       role,
     };
+    debugger;
     if(role === 'SOCIAL'){ dispatch(editSocialMemberinfo(userSocialData, navigate)); }
     else{ dispatch(editMemberinfo(userData, navigate)); }
+  }
+  
+  const handleEdit = async (e) => {
+    e.preventDefault();
+    if (role !== 'SOCIAL') {
+      if (!password) {
+        alert('현재 비밀번호를 입력해주세요.');
+        return;
+      }
+    }
 
-    dispatch(setPassword(''));
-    dispatch(setNewPassword(''));
-    dispatch(setNewPasswordCheck(''));
-    dispatch(setGender(''));
-    dispatch(setAge(''));
-    dispatch(setPhoneNumber(''));
+    try {
+      await handleImageUpload(); // handleImageUpload가 완료될 때까지 기다림
+      handleEditInfo(); // handleImageUpload가 완료된 후에 실행
+    } catch (error) {
+      console.error('Edit failed:', error);
+    } finally {
+      dispatch(setPassword(''));
+      dispatch(setNewPassword(''));
+      dispatch(setNewPasswordCheck(''));
+      dispatch(setGender(''));
+      dispatch(setAge(''));
+      dispatch(setPhoneNumber(''));
+    }
   };
   
 	useEffect(() => {

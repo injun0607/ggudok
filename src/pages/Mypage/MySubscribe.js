@@ -24,7 +24,6 @@ const MySubscribe = () => {
       const response = await axios.get(`/member/have_subs`);
       const data = response.data.items;
       const total = response.data.totalAvg;
-      console.log(response.data.items)
       if(data !== 0){
         dispatch(setMySubscribe(data));
         dispatch(setMyTotal(total));

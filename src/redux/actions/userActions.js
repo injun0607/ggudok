@@ -209,10 +209,10 @@ export const editMemberinfo = (userData, navigate) => async(dispatch) => {
     phoneNumber,
     isPassval,
     isPhoneval,
-    newMemberImg,
+    updateMemberImg,
     role,
     } = userData;
-  
+    debugger;
   if(password === ''){ alert('비밀번호를 입력하세요.')
   } else if ((newPassword !== '' || newPasswordCheck !== '') && !isPassval) {
     alert('변경할 비밀번호를 올바르게 입력하세요.')
@@ -230,7 +230,7 @@ export const editMemberinfo = (userData, navigate) => async(dispatch) => {
         age: age,
         password: password,
         newPassword: newPassword,
-        memberImg: newMemberImg,
+        memberImg: updateMemberImg,
         newPasswordCheck: newPasswordCheck,
         phoneNumber: phoneNumber,
         role: role,
