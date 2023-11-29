@@ -146,7 +146,7 @@
 
 > [[백엔드] 태그 추천 시스템 관련 주요코드 링크](https://github.com/injun0607/ggudok/blob/master/src/main/java/com/alham/ggudok/service/member/MemberService.java#L417)
 
-<center><img src="./readme_image/main01.png" width="680" alt ="메인페이지"></center>
+<center><img src="./readme_image/main01.png" alt ="메인페이지"></center>
 
 메인페이지의 이벤트배너와 전체 카테고리 아래에는 두 가지의 `추천 서비스 슬라이더`가 있습니다. **유저가 로그인했을 경우 "선호하는 태그"와 "성별과 나이"에 맞추어 각각 추천**하고, 로그인하지 않았을 경우 인기 순으로 추천합니다.
 <table>
@@ -162,7 +162,7 @@
 
 > [[백엔드] 인기서비스 추천 시스템 주요코드 링크](https://github.com/injun0607/ggudok/blob/master/src/main/java/com/alham/ggudok/service/subs/SubsService.java#L225)
 
-<center><img src="./readme_image/best01.png" width="680" alt ="베스트"></center>
+<center><img src="./readme_image/best01.png" alt ="베스트"></center>
 
 알고리즘에 따라 **가장 인기있는 구독서비스 20개**가 노출됩니다. 1위부터 4위까지는 순위 라벨을 붙여 정보전달력을 높였습니다.
 
@@ -171,12 +171,12 @@
 
 > [[프론트엔드] 간편비교 기능 관련 주요코드 링크](https://github.com/Zoey-Sunlight/ggudok/blob/main/src/pages/Compare.js#L70)
 
-<center><img src="./readme_image/compare01.png" width="680" alt ="간편비교"></center>
+<center><img src="./readme_image/compare01.png" alt ="간편비교"></center>
 
 카테고리를 우선 선택한 후, 카테고리 내의 **두 가지 구독서비스를 골라 한 눈에 비교**할 수 있습니다.
 
 ### 4. 이벤트
-<center><img src="./readme_image/event01.png" width="680" alt ="이벤트"></center>
+<center><img src="./readme_image/event01.png" alt ="이벤트"></center>
 
 관리자가 등록한 **진행중인 이벤트**를 배너이미지와 함께 확인할 수 있습니다. 이벤트의 상세 설명과 이벤트 기간이 표시됩니다.
 
@@ -184,12 +184,12 @@
 
 > [[프론트엔드] 필터 기능 관련 주요코드 링크](https://github.com/Zoey-Sunlight/ggudok/blob/main/src/pages/Itemlist.js#L88)
 
-<center><img src="./readme_image/categorylist01.png" width="680" alt ="카테고리별리스트"></center>
+<center><img src="./readme_image/categorylist01.png" alt ="카테고리별리스트"></center>
 
 해당 카테고리에 등록된 서비스 리스트입니다. **`필터` 내의 가격/별점/태그 체크를 통해** 원하는 구독서비스를 골라 볼 수 있습니다. 필터의 태그에는 카테고리에 등록된 서비스들의 태그가 노출됩니다.
 
 ### 6. 검색결과 : 구독서비스명 또는 태그명
-<center><img src="./readme_image/searchlist01.png" width="680" alt ="검색결과"></center>
+<center><img src="./readme_image/searchlist01.png" alt ="검색결과"></center>
 
 검색결과 페이지에서는 **유저가 검색한 검색어를 기반으로 일치하는 구독서비스명 또는 태그를 가진 구독서비스**를 볼 수 있습니다. 통합검색 결과 내에서 `필터`를 통해 추가적으로 유저가 원하는 서비스를 골라낼 수 있습니다.
 
@@ -209,7 +209,7 @@
 상세페이지에는 좌측에는 `구독서비스 카드`가 위치하고, 우측에는 `상세정보`가 위치합니다.
 구독서비스 카드에는 **구독서비스명과 태그, 요금, 평균 별점과 리뷰 작성자 수**가 들어갑니다. 또한 `구독서비스 관련 버튼`이 위치합니다. 구독하기 버튼 외에, **로그인했을 경우찜하기 버튼**이 노출되고, **구독중인 경우 구독하기 버튼이 구독변경/해지 버튼으로 대체되며, 리뷰작성 버튼이 노출**됩니다.
 
-<center><img src="./readme_image/detail03.png" width="680" alt ="리뷰작성"></center>
+<center><img src="./readme_image/detail03.png" alt ="리뷰작성"></center>
 
 우측 상세정보란에는 **구독서비스의 대표 이미지와 설명**이 들어갑니다. 또한 `요금제 섹션`에는 각 요금제명과 함께 상세한 혜택과 한달 기준 요금이 들어갑니다. `구독자 한줄리뷰 섹션`에는 해당 서비스를 구독중인 회원들이 작성한 리뷰가 들어갑니다.
 
@@ -279,7 +279,7 @@ JWT 토큰 방식을 통해 로그인 상태를 관리하고 있습니다.
 
 ### 11. 마이페이지 : 11-1. 나의 구독내역
 
-<center><img src="./readme_image/mypage01.png" width="680" alt ="구독내역"></center>
+<center><img src="./readme_image/mypage01.png" alt ="구독내역"></center>
 
 유저의 **이번 달 총 요금**을 맨 상단에서 확인할 수 있습니다. 또한 **카테고리별로 지출하는 카테고리별 요금**과 **구독중인 서비스의 혜택, 각 요금**을 확인할 수 있습니다.
 
@@ -287,13 +287,13 @@ JWT 토큰 방식을 통해 로그인 상태를 관리하고 있습니다.
 
 > [[프론트엔드] 리뷰내역 기능 관련 주요코드 링크](https://github.com/Zoey-Sunlight/ggudok/blob/main/src/pages/Mypage/MyReview.js#L102)
 
-<center><img src="./readme_image/mypage02.png" width="680" alt ="리뷰내역"></center>
+<center><img src="./readme_image/mypage02.png" alt ="리뷰내역"></center>
 
 유저가 **작성한 모든 리뷰를 관리**할 수 있습니다. 유저는 수정 및 삭제버튼을 눌러 마이페이지에서 바로 수정하거나 삭제할 수 있습니다.
 
 ### 11. 마이페이지 : 11-3. 관심서비스
 
-<center><img src="./readme_image/mypage03.png" width="680" alt ="관심서비스"></center>
+<center><img src="./readme_image/mypage03.png" alt ="관심서비스"></center>
 
 유저가 상세페이지에서 **찜하기 버튼을 누른 서비스**를 한 눈에 모아 볼 수 있습니다.
 
@@ -312,11 +312,11 @@ JWT 토큰 방식을 통해 로그인 상태를 관리하고 있습니다.
 
 ### 1. 메인대시보드 : 카테고리/구독서비스/태그/이벤트 관리
 
-<center><img src="./readme_image/admin01.png" width="680" alt ="메인대시보드"></center>
+<center><img src="./readme_image/admin01.png" alt ="메인대시보드"></center>
 
 ### 2. 카테고리 관리 : 리스트, 등록, 수정, 삭제
 
-<center><img src="./readme_image/admin_cate01.png" width="680" alt ="카테고리 관리"></center>
+<center><img src="./readme_image/admin_cate01.png" alt ="카테고리 관리"></center>
 
 카테고리 관리 페이지에서는 **등록한 카테고리명과 영문명, 아이콘을 확인** 할 수 있으며, **각 카테고리를 수정하거나 삭제**할 수 있습니다. 또한 **신규 카테고리를 등록**할 수 있습니다.
 
@@ -331,7 +331,7 @@ JWT 토큰 방식을 통해 로그인 상태를 관리하고 있습니다.
 
 > [[프론트엔드] 구독서비스 등록 관련 주요코드 링크](https://github.com/Zoey-Sunlight/ggudok/blob/main/src/pages/Admin/ItemsCreate.js#L69)
 
-<center><img src="./readme_image/admin_subs01.png" width="680" alt ="구독서비스 관리"></center>
+<center><img src="./readme_image/admin_subs01.png" alt ="구독서비스 관리"></center>
 
 구독서비스 관리 페이지에서는 각 구독서비스를 셀렉박스를 통해 **카테고리별로 서비스를 필터링**할 수 있으며, **각 서비스를 수정하거나 삭제**할 수 있습니다.
 
@@ -366,7 +366,7 @@ JWT 토큰 방식을 통해 로그인 상태를 관리하고 있습니다.
 
 ### 5. 이벤트 관리 : 리스트, 등록, 삭제
 
-<center><img src="./readme_image/admin_event01.png" width="680" alt ="이벤트 관리"></center>
+<center><img src="./readme_image/admin_event01.png" alt ="이벤트 관리"></center>
 
 이벤트 관리 페이지에서는 **등록한 이벤트**의 대표이미지와 해당 이벤트의 구독서비스명, 이벤트 태그, 설명, 이벤트 기간을 확인할 수 있습니다. **각 이벤트를 수정하거나 삭제**하고, **새 이벤트를 등록**할 수 있습니다.
 
