@@ -133,7 +133,6 @@
 <center><img src="./readme_image/erdtable.png" alt ="ERD 테이블"></center>
 
 > [[백엔드] ERD테이블 링크](https://www.erdcloud.com/d/gvnDR33HcRn6uZk2M)
-<a href="https://www.erdcloud.com/d/gvnDR33HcRn6uZk2M" target="_blank">[백엔드] ERD테이블 링크</a>
 
 
 
