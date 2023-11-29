@@ -132,8 +132,8 @@
 ### 2. ERD테이블
 <center><img src="./readme_image/erdtable.png" alt ="ERD 테이블"></center>
 
-> [[백엔드] ERD테이블 링크](https://www.erdcloud.com/d/gvnDR33HcRn6uZk2M){:target="_blank"}
-
+> [[백엔드] ERD테이블 링크](https://www.erdcloud.com/d/gvnDR33HcRn6uZk2M)
+<a href="https://www.erdcloud.com/d/gvnDR33HcRn6uZk2M" target="_blank">[백엔드] ERD테이블 링크</a>
 
 
 
@@ -142,9 +142,9 @@
 
 ### 1. 메인페이지 : 이벤트배너/전체카테고리/맞춤서비스 추천
 
-> [[백엔드] 추천서비스 관련 주요코드 링크](https://github.com/injun0607/ggudok/blob/master/src/main/java/com/alham/ggudok/controller/HomeController.java#L108){:target="_blank"}
+> [[백엔드] 추천서비스 관련 주요코드 링크](https://github.com/injun0607/ggudok/blob/master/src/main/java/com/alham/ggudok/controller/HomeController.java#L108)
 
-> [[백엔드] 태그 추천 시스템 관련 주요코드 링크](https://github.com/injun0607/ggudok/blob/master/src/main/java/com/alham/ggudok/service/member/MemberService.java#L417){:target="_blank"}
+> [[백엔드] 태그 추천 시스템 관련 주요코드 링크](https://github.com/injun0607/ggudok/blob/master/src/main/java/com/alham/ggudok/service/member/MemberService.java#L417)
 
 <center><img src="./readme_image/main01.png" alt ="메인페이지"></center>
 
@@ -158,9 +158,9 @@
 
 ### 2. 베스트
 
-> [[백엔드] 인기서비스 관련 주요코드 링크](https://github.com/injun0607/ggudok/blob/master/src/main/java/com/alham/ggudok/controller/HomeController.java#L233){:target="_blank"}
+> [[백엔드] 인기서비스 관련 주요코드 링크](https://github.com/injun0607/ggudok/blob/master/src/main/java/com/alham/ggudok/controller/HomeController.java#L233)
 
-> [[백엔드] 인기서비스 추천 시스템 주요코드 링크](https://github.com/injun0607/ggudok/blob/master/src/main/java/com/alham/ggudok/service/subs/SubsService.java#L225){:target="_blank"}
+> [[백엔드] 인기서비스 추천 시스템 주요코드 링크](https://github.com/injun0607/ggudok/blob/master/src/main/java/com/alham/ggudok/service/subs/SubsService.java#L225)
 
 <center><img src="./readme_image/best01.png" alt ="베스트"></center>
 
@@ -169,7 +169,7 @@
 
 ### 3. 간편비교
 
-> [[프론트엔드] 간편비교 기능 관련 주요코드 링크](https://github.com/Zoey-Sunlight/ggudok/blob/main/src/pages/Compare.js#L70){:target="_blank"}
+> [[프론트엔드] 간편비교 기능 관련 주요코드 링크](https://github.com/Zoey-Sunlight/ggudok/blob/main/src/pages/Compare.js#L70)
 
 <center><img src="./readme_image/compare01.png" alt ="간편비교"></center>
 
@@ -182,7 +182,7 @@
 
 ### 5. 카테고리별 리스트 : 필터, 구독서비스 리스트
 
-> [[프론트엔드] 필터 기능 관련 주요코드 링크](https://github.com/Zoey-Sunlight/ggudok/blob/main/src/pages/Itemlist.js#L88){:target="_blank"}
+> [[프론트엔드] 필터 기능 관련 주요코드 링크](https://github.com/Zoey-Sunlight/ggudok/blob/main/src/pages/Itemlist.js#L88)
 
 <center><img src="./readme_image/categorylist01.png" alt ="카테고리별리스트"></center>
 
@@ -195,9 +195,9 @@
 
 ### 7. 구독서비스 상세페이지
 
-> [[프론트엔드] 리뷰작성 기능 관련 주요코드 링크](https://github.com/Zoey-Sunlight/ggudok/blob/main/src/pages/ItemDetail.js#L364){:target="_blank"}
+> [[프론트엔드] 리뷰작성 기능 관련 주요코드 링크](https://github.com/Zoey-Sunlight/ggudok/blob/main/src/pages/ItemDetail.js#L364)
 
-> [[백엔드] 구독서비스 기능 관련 주요코드 링크](https://github.com/injun0607/ggudok/blob/master/src/main/java/com/alham/ggudok/controller/subs/SubsController.java#L110){:target="_blank"}
+> [[백엔드] 구독서비스 기능 관련 주요코드 링크](https://github.com/injun0607/ggudok/blob/master/src/main/java/com/alham/ggudok/controller/subs/SubsController.java#L110)
 
 <table>
   <tr>
@@ -269,7 +269,7 @@ JWT 토큰 방식을 통해 로그인 상태를 관리하고 있습니다.
 
 ### 10. 회원정보수정
 
-> [[프론트엔드] 회원정보수정 기능 관련 주요코드 링크](https://github.com/Zoey-Sunlight/ggudok/blob/main/src/pages/Auth/EditProfile.js#L64){:target="_blank"}
+> [[프론트엔드] 회원정보수정 기능 관련 주요코드 링크](https://github.com/Zoey-Sunlight/ggudok/blob/main/src/pages/Auth/EditProfile.js#L64)
 
 <table>
   <tr>
@@ -288,7 +288,7 @@ JWT 토큰 방식을 통해 로그인 상태를 관리하고 있습니다.
 
 ### 11. 마이페이지 : 11-2. 내가 작성한 리뷰
 
-> [[프론트엔드] 리뷰내역 기능 관련 주요코드 링크](https://github.com/Zoey-Sunlight/ggudok/blob/main/src/pages/Mypage/MyReview.js#L102){:target="_blank"}
+> [[프론트엔드] 리뷰내역 기능 관련 주요코드 링크](https://github.com/Zoey-Sunlight/ggudok/blob/main/src/pages/Mypage/MyReview.js#L102)
 
 <center><img src="./readme_image/mypage02.png" alt ="리뷰내역"></center>
 
@@ -332,7 +332,7 @@ JWT 토큰 방식을 통해 로그인 상태를 관리하고 있습니다.
 
 ### 3. 구독서비스 관리 : 리스트, 등록, 수정 삭제
 
-> [[프론트엔드] 구독서비스 등록 관련 주요코드 링크](https://github.com/Zoey-Sunlight/ggudok/blob/main/src/pages/Admin/ItemsCreate.js#L69){:target="_blank"}
+> [[프론트엔드] 구독서비스 등록 관련 주요코드 링크](https://github.com/Zoey-Sunlight/ggudok/blob/main/src/pages/Admin/ItemsCreate.js#L69)
 
 <center><img src="./readme_image/admin_subs01.png" alt ="구독서비스 관리"></center>
 
