@@ -126,7 +126,8 @@ const Layout = () => {
 				},
 			});
 			const userData = response.data;
-			if (userData.memberName !== undefined && userData.loginId !== undefined) {
+			if (userData.memberName && userData.loginId) {
+				// if (userData.memberName !== undefined && userData.loginId !== undefined) {
 				dispatch(setLoggedIn(userData));
 			}
 			if (userData.role === 'ADMIN'){

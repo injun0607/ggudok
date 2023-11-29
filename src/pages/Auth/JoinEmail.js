@@ -81,7 +81,7 @@ const JoinEmail = () => {
       const response = await axios.post('/member/emailCheck', data);
       if (response.status === 200) {
         dispatch(setEmailSent(true));
-        alert('이메일을 전송했습니다.');
+        alert('이메일을 전송했습니다. 인증코드는 1234로 임시 고정되어 있습니다.');
         
         // 이메일을 성공적으로 보낸 후에 인증번호를 가져오도록 이동
         fetchEmailValNumber();
