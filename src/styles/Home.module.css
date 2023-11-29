@@ -7,6 +7,9 @@
 .section {
     margin-top: 3.5rem;
 }
+.section:last-child {
+    margin-top: 2rem;
+}
 .section .tit {
     font-size: 1.5rem;
     color: var(--txt-color);

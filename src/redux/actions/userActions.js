@@ -80,11 +80,13 @@ export const refreshToken = (navigate) => async (dispatch) => {
     return;
   }
   try {
-    const response = await axios.post('/refresh', { refresh });
+    const response = await axios.post('/getSession', { refresh });
     if (response.status === 200) {
       const newAccessToken = response.headers.access;
+      const newRefreshToken = response.headers.refresh;
 
       setCookie('access', newAccessToken, { path: '/' });
+      setCookie('refresh', newRefreshToken, { path: '/' });
 
       dispatch(refreshTokenSuccess(newAccessToken));
     } else {
