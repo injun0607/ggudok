@@ -148,7 +148,6 @@ const EditProfile = () => {
       updateMemberImg,
       role,
     };
-    debugger;
     const userData = {
       password,
       newPassword,
@@ -161,7 +160,6 @@ const EditProfile = () => {
       updateMemberImg,
       role,
     };
-    debugger;
     if(role === 'SOCIAL'){ dispatch(editSocialMemberinfo(userSocialData, navigate)); }
     else{ dispatch(editMemberinfo(userData, navigate)); }
   }

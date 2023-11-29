@@ -212,7 +212,6 @@ export const editMemberinfo = (userData, navigate) => async(dispatch) => {
     updateMemberImg,
     role,
     } = userData;
-    debugger;
   if(password === ''){ alert('비밀번호를 입력하세요.')
   } else if ((newPassword !== '' || newPasswordCheck !== '') && !isPassval) {
     alert('변경할 비밀번호를 올바르게 입력하세요.')
