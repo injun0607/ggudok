@@ -120,7 +120,7 @@ const Layout = () => {
 
 	const fetchSessionStatus = async () => {
 		try {
-			const response = await axios.get('/getSession', {
+			const response = await axios.get('/getSession', null, {
 				headers: {
 					access: `Bearer ${getCookie('access')}`,
 				},

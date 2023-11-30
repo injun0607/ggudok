@@ -148,7 +148,7 @@ const AdminLayout = () => {
   // ************************** 리뷰데이터 init ***************************
   const InitReviewData = async () => {
     try {
-			const response = await axios.get('/getSession', {
+			const response = await axios.post('/admin/init_review', null, {
 				headers: {
 					access: `Bearer ${getCookie('access')}`,
 				},
