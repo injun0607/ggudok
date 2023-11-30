@@ -54,7 +54,7 @@
   .category .pointdepth p {display: none;}
 }
 @media screen and (max-width:480px) {
-  .header .link .search {width: calc(100% - 50px - 1rem);}
+  .header .link .search {width: calc(100% - 40px - 1rem);}
   .header .link .search input::placeholder {letter-spacing: -1px;}
   .category>div {gap: 1rem;}
   .category .featuredcategory {gap: 2rem;}

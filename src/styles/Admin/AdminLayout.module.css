@@ -237,3 +237,19 @@
     transform: rotate(-360deg);
   }
 }
+
+@media screen and (max-width:800px) {
+  .dashboxWrap {grid-template-columns: repeat(auto-fill, minmax(100%, auto));}
+  .dashbox .dashtit {padding: 0.75rem 1.5rem 0.5rem;}
+  .tableWrap>button, .tableWrap>a {width: 120px; padding: 0.16px; height: 42px;}
+  .table .tdBtn button {width: 100%;}
+  .table .tdBtn button:last-child {margin-top: 0.5rem;}
+  .AdminBox {gap: 0.5rem;}
+  .AdminBox .box {padding: 0.5rem 1rem; gap: 1rem;}
+  .AdminBox .box h3 {font-size: 1rem;}
+  .AdminBox .box button {min-height: 32px;}
+}
+
+@media screen and (max-width:480px) {
+  .dashbox .dashtit h2 {font-size: 1rem;}
+}

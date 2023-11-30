@@ -117,7 +117,7 @@
   /* margin-top: 0.5rem; */
 }
 .detailwrap .cont p:first-child {font-size: 1.25rem; font-weight: 600; margin-top: 0; margin-bottom: 0.75rem;}
-.detailwrap .detailLg {border: 0; padding: 0;}
+.detailwrap .detailLg {border: 0; padding: 0 !important;}
 .detailwrap .detailLg .img {width: 100%; overflow: hidden; aspect-ratio: 3/1.5; border-radius: var(--radius-all-md);}
 .detailwrap .detailLg .img img {width: 100%; height: 100%; object-fit: cover;}
 .detailwrap .chartwrap {display: flex; gap: 2rem; flex-wrap: wrap;}
@@ -166,8 +166,8 @@
 .modalCont .starrating .star span {font-size: 2.5rem;}
 .modalCont .reviewEdit {width: 100%; margin-top: 1rem;}
 .modalCont .reviewEdit .editArea {width: 100%; margin-bottom: 1rem; min-height: 6rem;}
-.modalCont .doublebutton {margin-top: 1rem; display: flex; flex-wrap: wrap; gap: 1rem; width: 100%;}
-.modalCont .doublebutton a, .form .doublebutton button {width: calc((100% - 1rem) / 2);}
+.modalCont .doublebutton {margin-top: 1rem; display: flex; gap: 1rem; width: 100%;}
+.modalCont .doublebutton a, .form .doublebutton button {width: calc((100% - 1rem) / 2); min-width: inherit;}
 
 @media screen and (max-width:1024px) {
   .categorysection {gap: 2rem;}
@@ -177,7 +177,25 @@
 }
 
 
-@media screen and (max-width:640px) {
+@media screen and (max-width:800px) {
   .categorysection {flex-wrap: wrap;}
   .categorysection .right {width: 100%; }
+  .detailwrap .cont .tit h3 {font-size: 1.325rem;}
+  .detailwrap {flex-wrap: wrap; gap: 2rem;}
+  .detailwrap .left, .detailwrap .right {width: 100%;}
+  .detailwrap .fixed .box .name {padding: 2rem 2rem 1rem; font-size: 1.5rem;}
+  .detailwrap .fixed .box .tag {padding: 0 2rem;}
+  .detailwrap .fixed .box .price {padding: 0.5rem 2rem 1rem;}
+  .detailwrap .fixed .box .price p .point {font-size: 1.125rem;}
+  .detailwrap .fixed .box .price .mainprice .point {font-size: 1.325rem;}
+  .detailwrap .fixed .box .starrating {padding: 1rem 2rem 1.5rem; align-items: center;}
+  .detailwrap .detailLg .img {aspect-ratio: 3/1;}
+  .detailwrap .cont {padding: 2rem 0;}
+  .subscribe .box {padding: 1.5rem 1.25rem 1.25rem 1.5rem; flex-wrap: wrap;}
+  .subscribe .box .left, .subscribe .box .right {width: 100%;}
+  .detailwrap .cont p:first-child {margin: 0; font-size: 1.125rem; font-weight: 500; gap: 0.25rem;}
+  .subscribe .box .name, .subscribe .box .price .point {font-size: 1.25rem;}
+}
+@media screen and (max-width:480px) {
+  .detailwrap .fixed .box .starrating {flex-wrap: wrap;}
 }

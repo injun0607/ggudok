@@ -50,7 +50,7 @@
 .boxrow.boxrowerror {width: 100%; min-height: 17rem; display: flex; justify-content: center; align-items: flex-start; border-bottom: 1px solid var(--c-black-6); color: var(--txt-color-2); border-top: 2px var(--sub-color-5) solid; padding-top: 3rem;}
 .boxrow .box {width: 100%; border-bottom: 1px solid var(--c-black-7); padding: 2rem;}
 .boxrow .box.titbox img {border-radius: var(--radius-all-xs); max-width: 18rem; max-height: 10rem;}
-.boxrow .box.titbox h3 {font-size: 1.5rem; color: var(--txt-color);}
+.boxrow .box.titbox h3 {font-size: 1.5rem; color: var(--txt-color); line-height: 1.3em;}
 .boxrow .box {text-align: center;}
 .boxrow .box .category {display: flex; justify-content: center; gap: 0.5rem; align-items: center;}
 .boxrow .box .category img {max-width: 1.5rem;}
@@ -72,3 +72,17 @@
 .boxrow .box .price p .point {font-size: 1.325rem; color: var(--txt-color);  width: 100%;}
 /* .boxrow .box .price .mainprice {font-size: 1.25rem; } */
 .boxrow .box .price .mainprice .point {color: var(--main-color); font-size: 1.625rem;}
+
+@media screen and (max-width:800px) {
+  .search .twodepth .select {width: 100%;}
+  .detail {margin-top: 2rem;}
+  .boxrow .box {padding: 1.5rem 0 1rem;}
+  .boxrow .box.titbox img {max-width: 100%;}
+  .boxrow .box.titbox h3 {font-size: 1.175rem;}
+  .boxrow .box h3 {margin-top: 0.75rem;}
+  .boxrow .box .category img {max-width: 1.25rem;}
+  .boxrow .box .price p {gap: 0.25rem;}
+  .boxrow .box .price p, .boxrow .box .price p .point {font-size: 1rem;}
+  .boxrow .box p, .boxrow .box .price .mainprice .point {font-size: 1.125rem;}
+  .boxrow .box .tag, .boxrow .box .price {padding: 0.5rem 0 0.25rem;}
+}

@@ -129,6 +129,7 @@ border: 1px solid #c1c1c1;
 height: 40px;
 border-radius: 2px;
 padding: 0 10px;
+max-width: 100%;
 }
 
 /* textarea 요소의 스타일링 설정 */

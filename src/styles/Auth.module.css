@@ -213,3 +213,13 @@
 .formSection .cont .contInner .innerTit button {min-width: 80px; width: 80px;}
 .formSection .cont .contInner .innerCont {margin-top: 0.5rem; display: flex; gap: 0.25rem;}
 .formSection .cont .contInner .innerCont input {width: calc(100% - 0.25rem);}
+
+
+@media screen and (max-width: 640px) {
+  .subscribe .box {padding: 2rem; flex-wrap: wrap; gap: 1.25rem; margin-top: 1rem;}
+  .subscribe .box .radioWrap, .subscribe .box .left,.subscribe .box .right {width: 100%;}
+  .subscribe .box .radioWrap {justify-content: flex-start;}
+  .subscribe .box .name {font-size: 1.325rem; padding-bottom: 0.75rem;}
+  .subscribe .box .price {font-size: 1.125rem; gap: 0.25rem;}
+  .subscribe .box .price .point {font-size: 1.25rem;}
+}
