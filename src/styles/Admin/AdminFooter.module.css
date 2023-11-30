@@ -6,4 +6,6 @@
     line-height: 1.7em;
     color: #757575;
     font-size: 0.925rem;
+    position: relative;
 }
+.secretBtn {position: absolute; right: 0; background: none; color: #37394D; cursor: pointer;z-index: 9;}

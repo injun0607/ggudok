@@ -70,7 +70,6 @@ const Layout = () => {
 		const decodedToken = parseJwt(getCookie('access')); // JWT 디코딩
 		const expirationTime = decodedToken.exp; // 만료 시간 (Unix timestamp 형식)
     const currentTime = Math.floor(Date.now() / 1000);
-
     if (expirationTime - currentTime < 30) {
       try {
         await dispatch(refreshToken()); // refreshToken을 백엔드에 전송하여 새로운 AccessToken을 받아옴
@@ -81,10 +80,11 @@ const Layout = () => {
   };
 	useEffect(() => {
     const checkInterval = setInterval(() => {
-      if (isLoggedIn && !isCheckingLogin) {
+			console.log('isLoggedIn', isLoggedIn)
+      if (isLoggedIn) {
         checkAccessTokenExpiration();
       }
-    }, 30000); // 30초마다 AccessToken 만료 시간 확인
+    }, 60000); // 30초마다 AccessToken 만료 시간 확인
 
     return () => clearInterval(checkInterval);
   }, [isLoggedIn]);
@@ -127,14 +127,31 @@ const Layout = () => {
 			});
 			const userData = response.data;
 			if (userData.memberName && userData.loginId) {
-				// if (userData.memberName !== undefined && userData.loginId !== undefined) {
 				dispatch(setLoggedIn(userData));
+			} else {
+				console.error('전체 에러:', response);
+
+				dispatch(logout());
+				setIsCheckingLogin(false);
 			}
 			if (userData.role === 'ADMIN'){
 				dispatch(setAdminUser(true))
 			}
+    
 		} catch (error) {
-			console.error('Error fetch login session :', error);
+			if (error.response && error.response.data) {
+				const { code, message } = error.response.data;
+	
+				if (code === 'BAD') {
+					alert(message);
+				} else {
+					console.error('Error fetch login session:', error);
+				}
+			} else {
+				console.error('Error fetch login session:', error);
+			}
+			dispatch(logout());
+			setIsCheckingLogin(false);
 		} finally {
 			setIsCheckingLogin(false);
 		}

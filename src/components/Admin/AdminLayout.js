@@ -142,7 +142,23 @@ const AdminLayout = () => {
 
 		fetchAccessSession();
 	}, [location.pathname, getCookie('access')])
-  
+
+	
+ 
+  // ************************** 리뷰데이터 init ***************************
+  const InitReviewData = async () => {
+    try {
+			const response = await axios.get('/getSession', {
+				headers: {
+					access: `Bearer ${getCookie('access')}`,
+				},
+			});
+			console.log('InitReviewData Succress:', response)
+    } catch (error) {
+      console.error('Error InitReviewData:', error);
+      alert(`리뷰 데이터를 받아오던 중 오류가 발생했습니다. 잠시 후 다시 시도해주시기 바랍니다.`)
+    }
+  };
 
   return (
 		isCheckingLogin ? <Loading /> : (
@@ -172,7 +188,8 @@ const AdminLayout = () => {
           <Route path='*' element={ <Error message="이런! 존재하지 않는 페이지입니다." /> }></Route>
         </Routes>
       </div>
-      <AdminFooter />
+      <AdminFooter InitReviewData={() => InitReviewData()} />
+
     </div>
      : 
       <>

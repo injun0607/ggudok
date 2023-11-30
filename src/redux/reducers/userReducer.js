@@ -72,12 +72,11 @@ const userReducer = (state = initialState, action) => {
         ...state,
         loginId: action.payload.loginId,
         password: action.payload.password,
-        // isLoggedIn: true,
+        isLoggedIn: true,
       };
     case 'LOGIN_FAILURE':
       return {
         ...state,
-        // isLoggedIn: false,
       };
     case 'LOGOUT':
       return {

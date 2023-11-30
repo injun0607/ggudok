@@ -80,14 +80,16 @@ export const refreshToken = (navigate) => async (dispatch) => {
     return;
   }
   try {
-    const response = await axios.post('/getSession', { refresh });
+    const response = await axios.post('/getSession', null, {
+      headers: {
+        refresh: `Bearer ${getCookie('refresh')}`,
+      },
+    });
     if (response.status === 200) {
       const newAccessToken = response.headers.access;
       const newRefreshToken = response.headers.refresh;
-
       setCookie('access', newAccessToken, { path: '/' });
       setCookie('refresh', newRefreshToken, { path: '/' });
-
       dispatch(refreshTokenSuccess(newAccessToken));
     } else {
       // RefreshToken을 통한 갱신에 실패할 경우
