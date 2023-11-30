@@ -326,7 +326,7 @@ public class HomeController {
     public void contactUs(@RequestBody ContactUsDto contactUsDto) {
 
         String email = "injun_office0607@naver.com";
-        String contents= contactUsDto.getContents()+"\n sendEmail : "+contactUsDto.getSubmitEmail() +"\n snedName : " + contactUsDto.getSubmitName();
+        String contents= contactUsDto.getContents()+"\n sendEmail : "+contactUsDto.getSubmitEmail() +"\n sendName : " + contactUsDto.getSubmitName();
         GgudokUtil.sendEmail(email, contactUsDto.getTitle(), contents);
 
     }

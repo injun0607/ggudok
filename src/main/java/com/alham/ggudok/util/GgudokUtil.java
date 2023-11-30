@@ -11,14 +11,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import static com.alham.ggudok.util.UtilConfig.emailId;
+import static com.alham.ggudok.util.UtilConfig.emailPassword;
+
 
 public class GgudokUtil {
 
-    @Value("${emailId}")
-    private static String emailId;
-
-    @Value("${password}")
-    private static String emailPassword;
 
     private static final String EMAIL_REGEX =
             "^[A-Za-z0-9+_.-]+@(.+)$";
@@ -58,7 +56,8 @@ public class GgudokUtil {
     }
 
 
-    public static boolean sendEmail(String recipient,String subject,String contents) {
+
+    public static boolean sendEmail(String recipient, String subject, String contents) {
 
         // SMTP 서버 및 계정 정보 설정
         String smtpHost = "smtp.naver.com"; // SMTP 호스트 주소

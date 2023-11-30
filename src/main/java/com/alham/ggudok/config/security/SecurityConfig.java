@@ -8,6 +8,7 @@ import com.alham.ggudok.entity.member.Role;
 import com.alham.ggudok.repository.security.MemberSecurityRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -29,6 +30,8 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @EnableWebSecurity
 public class SecurityConfig {
 
+    @Value("${resource.main}")
+    private String imageResourceMain;
     private final UserDetailServiceCustom loginService;
     private final JwtService jwtService;
     private final MemberSecurityRepository memberSecurityRepository;
@@ -50,6 +53,7 @@ public class SecurityConfig {
 
         http
                 .authorizeHttpRequests()
+                .requestMatchers(new AntPathRequestMatcher(imageResourceMain)).permitAll()
                 .requestMatchers(new AntPathRequestMatcher("/admin/**")).hasAuthority("ROLE_"+String.valueOf(Role.ADMIN))
                 .anyRequest().permitAll();
 
@@ -63,11 +67,19 @@ public class SecurityConfig {
                 .failureHandler(oAuth2LoginFailureHandler) // 소셜 로그인 실패 시 핸들러 설정
                 .userInfoEndpoint().userService(customOAuth2MemberService); // customUserService 설정
 
+
         http.addFilterAfter(customJsonUsernamePasswordAuthenticationFilter(), LogoutFilter.class);
-        http.addFilterBefore(jwtAuthenticationProcessingFilter(), JsonLoginProcessFilter.class);
+        http.addFilterBefore(new JwtAuthenticationFilter(jwtService, memberSecurityRepository,loginService), JsonLoginProcessFilter.class);
 
 
         return http.build();
+    }
+
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer(){
+        return web -> {
+            web.ignoring().requestMatchers(new AntPathRequestMatcher(imageResourceMain),new AntPathRequestMatcher("/static/**"));
+        };
     }
 
 
@@ -125,11 +137,11 @@ public class SecurityConfig {
         return jsonLoginProcessFilter;
     }
 
-    @Bean
-    public JwtAuthenticationFilter jwtAuthenticationProcessingFilter() {
-        JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(jwtService, memberSecurityRepository,loginService);
-        return jwtAuthenticationFilter;
-    }
+//    @Bean
+//    public JwtAuthenticationFilter jwtAuthenticationProcessingFilter() {
+//        JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(jwtService, memberSecurityRepository,loginService);
+//        return jwtAuthenticationFilter;
+//    }
 
 
 
