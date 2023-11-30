@@ -198,7 +198,7 @@ const Compare = () => {
                     {item1DefaultRank.rankName} <span className={style.point}>월 {item1DefaultRank.price} 원</span>
                   </p>
                 </div>
-                <h3>가격</h3>
+                <h3>요금제</h3>
               </div>
             </div>
             ) : (

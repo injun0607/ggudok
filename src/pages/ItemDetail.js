@@ -80,6 +80,7 @@ const ItemDetail = () => {
       } else {
         dispatch(setReview([]));
         dispatch(pagingReview([]))
+        setItemStarAvg([])
       }
       if (isLoggedIn && data.memberInfo?.review) {
         dispatch(setMyItemReviewRating(data.memberInfo.review.rating));
