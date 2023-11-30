@@ -631,4 +631,8 @@ public class MemberService {
         log.info("updateMemberProfile()");
         member.updateImage(imgUrl);
     }
+
+    public List<Member> findAllMember() {
+        return memberRepository.findAll();
+    }
 }

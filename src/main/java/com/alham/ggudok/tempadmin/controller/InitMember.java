@@ -3,10 +3,12 @@ package com.alham.ggudok.tempadmin.controller;
 import com.alham.ggudok.dto.member.MemberRegisterDto;
 import com.alham.ggudok.entity.Tag;
 import com.alham.ggudok.entity.member.Gender;
+import com.alham.ggudok.entity.member.Member;
 import com.alham.ggudok.entity.member.Role;
 import com.alham.ggudok.entity.subs.*;
 import com.alham.ggudok.repository.subs.SubsRepository;
 import com.alham.ggudok.service.member.MemberService;
+import com.alham.ggudok.service.member.ReviewService;
 import jakarta.annotation.PostConstruct;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -41,6 +43,10 @@ public class InitMember {
 
     private final InitSubs initSubs;
 
+    private final ReviewService reviewService;
+
+
+
 
 
 
@@ -58,6 +64,7 @@ public class InitMember {
         memberRegisterDto.setPasswordCheck("1234");
         memberRegisterDto.setRole(Role.ADMIN);
         memberService.registerMember(memberRegisterDto);
+
 //
 //
         MemberRegisterDto memberRegisterDto2 = new MemberRegisterDto();
@@ -81,6 +88,230 @@ public class InitMember {
         memberRegisterDto3.setPasswordCheck("1234");
         memberRegisterDto3.setRole(Role.ADMIN);
         memberService.registerMember(memberRegisterDto3);
+
+        MemberRegisterDto memberRegisterDto4 = new MemberRegisterDto();
+        memberRegisterDto4.setMemberName("김지영");
+        memberRegisterDto4.setAge(23);
+        memberRegisterDto4.setLoginId("test1@naver.com");
+        memberRegisterDto4.setGender(Gender.WOMAN);
+        memberRegisterDto4.setPassword("1234");
+        memberRegisterDto4.setPhoneNumber("01012345678");
+        memberRegisterDto4.setPasswordCheck("1234");
+        memberRegisterDto4.setRole(Role.GUEST);
+        memberService.registerMember(memberRegisterDto4);
+
+        MemberRegisterDto memberRegisterDto5 = new MemberRegisterDto();
+        memberRegisterDto5.setMemberName("이승준");
+        memberRegisterDto5.setAge(31);
+        memberRegisterDto5.setLoginId("test2@naver.com");
+        memberRegisterDto5.setGender(Gender.MAN);
+        memberRegisterDto5.setPassword("1234");
+        memberRegisterDto5.setPhoneNumber("01012345678");
+        memberRegisterDto5.setPasswordCheck("1234");
+        memberRegisterDto5.setRole(Role.GUEST);
+        memberService.registerMember(memberRegisterDto5);
+
+        MemberRegisterDto memberRegisterDto6 = new MemberRegisterDto();
+        memberRegisterDto6.setMemberName("박민지");
+        memberRegisterDto6.setAge(33);
+        memberRegisterDto6.setLoginId("test3@naver.com");
+        memberRegisterDto6.setGender(Gender.WOMAN);
+        memberRegisterDto6.setPassword("1234");
+        memberRegisterDto6.setPhoneNumber("01012345678");
+        memberRegisterDto6.setPasswordCheck("1234");
+        memberRegisterDto6.setRole(Role.GUEST);
+        memberService.registerMember(memberRegisterDto6);
+
+        MemberRegisterDto memberRegisterDto7 = new MemberRegisterDto();
+        memberRegisterDto7.setMemberName("정현우");
+        memberRegisterDto7.setAge(28);
+        memberRegisterDto7.setLoginId("test4@naver.com");
+        memberRegisterDto7.setGender(Gender.MAN);
+        memberRegisterDto7.setPassword("1234");
+        memberRegisterDto7.setPhoneNumber("01012345678");
+        memberRegisterDto7.setPasswordCheck("1234");
+        memberRegisterDto7.setRole(Role.GUEST);
+        memberService.registerMember(memberRegisterDto7);
+
+        MemberRegisterDto memberRegisterDto8 = new MemberRegisterDto();
+        memberRegisterDto8.setMemberName("최가은");
+        memberRegisterDto8.setAge(44);
+        memberRegisterDto8.setLoginId("test5@naver.com");
+        memberRegisterDto8.setGender(Gender.WOMAN);
+        memberRegisterDto8.setPassword("1234");
+        memberRegisterDto8.setPhoneNumber("01012345678");
+        memberRegisterDto8.setPasswordCheck("1234");
+        memberRegisterDto8.setRole(Role.GUEST);
+        memberService.registerMember(memberRegisterDto8);
+
+        MemberRegisterDto memberRegisterDto9 = new MemberRegisterDto();
+        memberRegisterDto9.setMemberName("강태호");
+        memberRegisterDto9.setAge(55);
+        memberRegisterDto9.setLoginId("test6@naver.com");
+        memberRegisterDto9.setGender(Gender.MAN);
+        memberRegisterDto9.setPassword("1234");
+        memberRegisterDto9.setPhoneNumber("01012345678");
+        memberRegisterDto9.setPasswordCheck("1234");
+        memberRegisterDto9.setRole(Role.GUEST);
+        memberService.registerMember(memberRegisterDto9);
+
+        MemberRegisterDto memberRegisterDto10 = new MemberRegisterDto();
+        memberRegisterDto10.setMemberName("신지혜");
+        memberRegisterDto10.setAge(38);
+        memberRegisterDto10.setLoginId("test7@naver.com");
+        memberRegisterDto10.setGender(Gender.WOMAN);
+        memberRegisterDto10.setPassword("1234");
+        memberRegisterDto10.setPhoneNumber("01012345678");
+        memberRegisterDto10.setPasswordCheck("1234");
+        memberRegisterDto10.setRole(Role.GUEST);
+        memberService.registerMember(memberRegisterDto10);
+
+        MemberRegisterDto memberRegisterDto11 = new MemberRegisterDto();
+        memberRegisterDto11.setMemberName("윤선영");
+        memberRegisterDto11.setAge(62);
+        memberRegisterDto11.setLoginId("test8@naver.com");
+        memberRegisterDto11.setGender(Gender.WOMAN);
+        memberRegisterDto11.setPassword("1234");
+        memberRegisterDto11.setPhoneNumber("01112345678");
+        memberRegisterDto11.setPasswordCheck("1234");
+        memberRegisterDto11.setRole(Role.GUEST);
+        memberService.registerMember(memberRegisterDto11);
+
+        MemberRegisterDto memberRegisterDto12 = new MemberRegisterDto();
+        memberRegisterDto12.setMemberName("황성민");
+        memberRegisterDto12.setAge(63);
+        memberRegisterDto12.setLoginId("test14@naver.com");
+        memberRegisterDto12.setGender(Gender.WOMAN);
+        memberRegisterDto12.setPassword("1234");
+        memberRegisterDto12.setPhoneNumber("01212345678");
+        memberRegisterDto12.setPasswordCheck("1234");
+        memberRegisterDto12.setRole(Role.GUEST);
+        memberService.registerMember(memberRegisterDto12);
+
+        MemberRegisterDto memberRegisterDto13 = new MemberRegisterDto();
+        memberRegisterDto13.setMemberName("임지수");
+        memberRegisterDto13.setAge(30);
+        memberRegisterDto13.setLoginId("test9@naver.com");
+        memberRegisterDto13.setGender(Gender.WOMAN);
+        memberRegisterDto13.setPassword("1234");
+        memberRegisterDto13.setPhoneNumber("01313345678");
+        memberRegisterDto13.setPasswordCheck("1234");
+        memberRegisterDto13.setRole(Role.GUEST);
+        memberService.registerMember(memberRegisterDto13);
+
+        MemberRegisterDto memberRegisterDto14 = new MemberRegisterDto();
+        memberRegisterDto14.setMemberName("송재원");
+        memberRegisterDto14.setAge(64);
+        memberRegisterDto14.setLoginId("test10@naver.com");
+        memberRegisterDto14.setGender(Gender.MAN);
+        memberRegisterDto14.setPassword("1234");
+        memberRegisterDto14.setPhoneNumber("01313345678");
+        memberRegisterDto14.setPasswordCheck("1234");
+        memberRegisterDto14.setRole(Role.GUEST);
+        memberService.registerMember(memberRegisterDto14);
+
+
+        MemberRegisterDto memberRegisterDto15 = new MemberRegisterDto();
+        memberRegisterDto15.setMemberName("한가람");
+        memberRegisterDto15.setAge(34);
+        memberRegisterDto15.setLoginId("test11@naver.com");
+        memberRegisterDto15.setGender(Gender.MAN);
+        memberRegisterDto15.setPassword("1234");
+        memberRegisterDto15.setPhoneNumber("01313345678");
+        memberRegisterDto15.setPasswordCheck("1234");
+        memberRegisterDto15.setRole(Role.GUEST);
+        memberService.registerMember(memberRegisterDto15);
+
+        MemberRegisterDto memberRegisterDto16 = new MemberRegisterDto();
+        memberRegisterDto16.setMemberName("강민호");
+        memberRegisterDto16.setAge(24);
+        memberRegisterDto16.setLoginId("test12@naver.com");
+        memberRegisterDto16.setGender(Gender.MAN);
+        memberRegisterDto16.setPassword("1234");
+        memberRegisterDto16.setPhoneNumber("01313345678");
+        memberRegisterDto16.setPasswordCheck("1234");
+        memberRegisterDto16.setRole(Role.GUEST);
+        memberService.registerMember(memberRegisterDto16);
+
+        MemberRegisterDto memberRegisterDto17 = new MemberRegisterDto();
+        memberRegisterDto17.setMemberName("조유진");
+        memberRegisterDto17.setAge(29);
+        memberRegisterDto17.setLoginId("test13@naver.com");
+        memberRegisterDto17.setGender(Gender.WOMAN);
+        memberRegisterDto17.setPassword("1234");
+        memberRegisterDto17.setPhoneNumber("01313345678");
+        memberRegisterDto17.setPasswordCheck("1234");
+        memberRegisterDto17.setRole(Role.GUEST);
+        memberService.registerMember(memberRegisterDto17);
+
+        MemberRegisterDto memberRegisterDto18 = new MemberRegisterDto();
+        memberRegisterDto18.setMemberName("권태윤");
+        memberRegisterDto18.setAge(42);
+        memberRegisterDto18.setLoginId("test15@naver.com");
+        memberRegisterDto18.setGender(Gender.MAN);
+        memberRegisterDto18.setPassword("1234");
+        memberRegisterDto18.setPhoneNumber("01313345678");
+        memberRegisterDto18.setPasswordCheck("1234");
+        memberRegisterDto18.setRole(Role.GUEST);
+        memberService.registerMember(memberRegisterDto18);
+
+        MemberRegisterDto memberRegisterDto19 = new MemberRegisterDto();
+        memberRegisterDto19.setMemberName("오서연");
+        memberRegisterDto19.setAge(44);
+        memberRegisterDto19.setLoginId("test16@naver.com");
+        memberRegisterDto19.setGender(Gender.WOMAN);
+        memberRegisterDto19.setPassword("1234");
+        memberRegisterDto19.setPhoneNumber("01313345678");
+        memberRegisterDto19.setPasswordCheck("1234");
+        memberRegisterDto19.setRole(Role.GUEST);
+        memberService.registerMember(memberRegisterDto19);
+
+        MemberRegisterDto memberRegisterDto20 = new MemberRegisterDto();
+        memberRegisterDto20.setMemberName("백승우");
+        memberRegisterDto20.setAge(26);
+        memberRegisterDto20.setLoginId("test17@naver.com");
+        memberRegisterDto20.setGender(Gender.MAN);
+        memberRegisterDto20.setPassword("1234");
+        memberRegisterDto20.setPhoneNumber("01313345678");
+        memberRegisterDto20.setPasswordCheck("1234");
+        memberRegisterDto20.setRole(Role.GUEST);
+        memberService.registerMember(memberRegisterDto20);
+
+        MemberRegisterDto memberRegisterDto21 = new MemberRegisterDto();
+        memberRegisterDto21.setMemberName("나미경");
+        memberRegisterDto21.setAge(58);
+        memberRegisterDto21.setLoginId("test18@naver.com");
+        memberRegisterDto21.setGender(Gender.WOMAN);
+        memberRegisterDto21.setPassword("1234");
+        memberRegisterDto21.setPhoneNumber("01313345678");
+        memberRegisterDto21.setPasswordCheck("1234");
+        memberRegisterDto21.setRole(Role.GUEST);
+        memberService.registerMember(memberRegisterDto21);
+
+        MemberRegisterDto memberRegisterDto22 = new MemberRegisterDto();
+        memberRegisterDto22.setMemberName("정하림");
+        memberRegisterDto22.setAge(44);
+        memberRegisterDto22.setLoginId("test19@naver.com");
+        memberRegisterDto22.setGender(Gender.MAN);
+        memberRegisterDto22.setPassword("1234");
+        memberRegisterDto22.setPhoneNumber("01313345678");
+        memberRegisterDto22.setPasswordCheck("1234");
+        memberRegisterDto22.setRole(Role.GUEST);
+        memberService.registerMember(memberRegisterDto22);
+
+        MemberRegisterDto memberRegisterDto23 = new MemberRegisterDto();
+        memberRegisterDto23.setMemberName("김동희");
+        memberRegisterDto23.setAge(34);
+        memberRegisterDto23.setLoginId("test20@naver.com");
+        memberRegisterDto23.setGender(Gender.MAN);
+        memberRegisterDto23.setPassword("1234");
+        memberRegisterDto23.setPhoneNumber("01313345678");
+        memberRegisterDto23.setPasswordCheck("1234");
+        memberRegisterDto23.setRole(Role.GUEST);
+        memberService.registerMember(memberRegisterDto23);
+
+
+
 //
 //
 //        MemberRegisterDto memberRegisterDto3 = new MemberRegisterDto();

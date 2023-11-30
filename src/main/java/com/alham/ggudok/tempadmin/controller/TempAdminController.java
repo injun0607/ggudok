@@ -2,9 +2,11 @@ package com.alham.ggudok.tempadmin.controller;
 
 import com.alham.ggudok.dto.TagDto;
 import com.alham.ggudok.entity.Tag;
+import com.alham.ggudok.entity.member.Member;
 import com.alham.ggudok.entity.subs.*;
 import com.alham.ggudok.repository.subs.EventRepository;
 import com.alham.ggudok.service.member.MemberService;
+import com.alham.ggudok.service.member.ReviewService;
 import com.alham.ggudok.service.subs.SubsService;
 import com.alham.ggudok.tempadmin.dto.TagForm;
 import com.alham.ggudok.tempadmin.dto.subs.*;
@@ -44,6 +46,8 @@ public class TempAdminController {
     private final EventRepository eventRepository;
 
     private final AdminTagService adminTagService;
+
+    private final ReviewService reviewService;
 
 
 
@@ -652,12 +656,66 @@ public class TempAdminController {
         return true;
     }
 
+    @PostMapping("/init_review")
+    @ResponseBody
+    public boolean initReview() {
+
+        HashMap<String, ArrayList<String>> reviewContent = GgudokUtil.reviewInit();
+        List<Member> allMember = memberService.findAllMember();
+        for (int i = 1; i <= 20; i++) {
+            String loginId = "test" + i;
+            allMember.stream().filter(m->m.getLoginId().equals(loginId+"@naver.com"))
+                    .findFirst()
+                    .ifPresent(m->memberService.updateMemberProfile(m,downLoadMember+loginId+".png"));
+        }
+
+        Random random = new Random();
+
+
+        int beforeNum = 0;
+        List<Subs> allSubsList = subsService.findAllSubsList();
+        for (Subs subs : allSubsList) {
+            ArrayList<String> reviews = reviewContent.get(subs.getSubsName());
+            if (reviews == null) {
+                continue;
+            }
+            for (String review : reviews) {
+                int i = random.nextInt(20) + 1;
+
+                while (true) {
+                    i = random.nextInt(20) + 1;
+                    if (i != beforeNum) {
+                        break;
+                    }
+                }
+
+                beforeNum = i;
+                String memberLoginId = "test"+i+"@naver.com";
+                Member findMember = memberService.findByLoginIdWithTags(memberLoginId);
+                if (memberService.buySubs(findMember.getLoginId(), subs, RankLevel.DEFAULT)) {
+                    memberService.updateMemberTagRecommend(memberLoginId, subs);
+                }
+                int rating = random.nextInt(4) + 2;
+                reviewService.writeReview(findMember, subs, review, rating);
+                Integer ratingAvg = reviewService.updateRatingAvg(subs.getSubsId());
+                subsService.updateRatingAvg(subs,ratingAvg);
+
+            }
+
+        }
+    return true;
+
+
+
+
+    }
 
 
     /*
     이벤트 날짜 표시시 day 7 -> 07로 바꿔주는 역할
      */
     public String transferStringDay(int day) {
+
         String result = String.valueOf(day);
         if (result.length() == 1) {
             result = "0" + result;

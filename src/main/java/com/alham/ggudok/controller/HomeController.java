@@ -291,17 +291,18 @@ public class HomeController {
      * 세션체크 맵핑
      */
     @GetMapping("/getSession")
-    public SessionMemberDto getSession(Principal principal) {
+    public ResponseEntity getSession(Principal principal) {
         MemberDto memberDto = SecurityUtils.transPrincipal(principal);
         SessionMemberDto sessionMemberDto = new SessionMemberDto();
         if (memberDto != null) {
             sessionMemberDto.setMemberName(memberDto.getMemberName());
             sessionMemberDto.setLoginId(memberDto.getLoginId());
             sessionMemberDto.setRole(memberDto.getRole());
+            return new ResponseEntity(sessionMemberDto, HttpStatus.OK);
+
+        }else{
+           return new ResponseEntity<>(sessionMemberDto,HttpStatus.BAD_REQUEST);
         }
-
-        return sessionMemberDto;
-
     }
 
     @GetMapping("/login_fail")
@@ -331,35 +332,5 @@ public class HomeController {
 
     }
 
-    /*
-
-    @GetMapping("/init_review")
-    public void initReview() {
-
-        Member seo = memberService.findByLoginId("choiseo26@naver.com");
-        Member yh = memberService.findByLoginId("yhgu0607@naver.com");
-        Member in = memberService.findByLoginId("injun0607@naver.com");
-
-        Subs healthCare = subsService.findBySubsName("healthCare");
-        Subs dosirak = subsService.findBySubsName("dosirak");
-        Subs healthCare2 = subsService.findBySubsName("healthCare2");
-
-        reviewService.writeReview(seo, healthCare, "건강이 매우좋아졌어요", 4);
-        reviewService.writeReview(seo, dosirak, "서히가 배부러요", 3);
-        reviewService.writeReview(seo, healthCare2, "서히부인 운동해요", 5);
-
-        memberService.likeSubs(seo, healthCare);
-        memberService.likeSubs(seo, healthCare2);
-
-        reviewService.writeReview(in, healthCare, "인준아저씨 건강해요 ", 5);
-        reviewService.writeReview(in, dosirak, "사히부인 밥이 더맛있어요", 2);
-        reviewService.writeReview(in, healthCare2, "인준아저씨 운동해요", 4);
-
-        reviewService.writeReview(yh, healthCare, "깡깡이 리뷰!", 3);
-        reviewService.writeReview(yh, dosirak, "낑낑이 리뷰!", 5);
-        reviewService.writeReview(yh, healthCare2, "껑껑이 리뷰!", 4);
-
-    }
-    */
 
 }
